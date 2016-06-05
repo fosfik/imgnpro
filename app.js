@@ -132,10 +132,10 @@ app.use(function(err, req, res, next) {
 //process.env.CLIENT_ID,
  //process.env.CLIENT_SECRET,
 passport.use(new Strategy({
-    clientID: config.facebook.key, 
-    clientSecret: config.facebook.secret,
-    callbackURL: 'http://localhost:3000/login/facebook/return',
-    auth_type: 'reauthenticate',
+    clientID     : config.facebook.key, 
+    clientSecret : config.facebook.secret,
+    callbackURL  : config.facebook.callbackURL,
+    auth_type    : 'reauthenticate',
     profileFields: ['id','displayName','photos']
   },
   function(accessToken, refreshToken, profile, cb) {

@@ -5,6 +5,8 @@
  */
 
 var app = require('../app');
+//var router = require('../routes/router');
+
 var debug = require('debug')('imaginadores:server');
 var http = require('http');
 

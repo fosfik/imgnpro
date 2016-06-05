@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
-
-
+var multer = require('multer');
+var cloudinary = require('cloudinary');
 var passport = require('passport');
-var Strategy = require('passport-facebook').Strategy;
+//var Strategy = require('passport-facebook').Strategy;
 var config = require('../config');
 
 
@@ -18,8 +18,15 @@ var config = require('../config');
 router.get('/',
   function(req, res) {
     res.render('index', { user: req.user });
-    console.log(req.user);
+    //console.log(req.user);
   });
+
+router.get('/uploadfile',
+  function(req, res) {
+    res.render('uploadfile', { user: req.user });
+  });
+
+
 
 router.get('/login',
   function(req, res){
@@ -29,14 +36,14 @@ router.get('/login',
 router.get('/logout',
   function(req, res){
      
-res.redirect('https://www.facebook.com/logout.php?next=localhost:3000/&access_token='+passport.accessToken);
-req.logOut();
+     //res.redirect('https://www.facebook.com/logout.php?next=localhost:3000/&access_token='+passport.accessToken);
+     req.logOut();
      req.session.destroy();
      res.clearCookie('connect.sid');
 
      setTimeout(function() {
         res.redirect("/");
-     }, 2000);
+     }, 1000);
   });
 
 router.get('/login/facebook',
@@ -56,6 +63,55 @@ router.get('/profile',
   function(req, res){
     res.render('profile', { user: req.user });
   });
+
+//var upload = multer({ dest: 'uploads/' });
+
+
+
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({extended:true}));
+
+// app.set("view engine", "jade");
+// app.use(express.static("public"));
+
+
+cloudinary.config({ 
+  cloud_name: config.cloudinary.cloud_name, 
+  api_key: config.cloudinary.api_key, 
+  api_secret: config.cloudinary.api_secret 
+});
+
+var storage =   multer.diskStorage({
+  destination: function (req, file, callback) {
+    callback(null, 'public/uploads/');
+  },
+  filename: function (req, file, callback) {
+    callback(null, file.originalname + '-' + Date.now());
+  }
+});
+ 
+
+ var type = multer({ storage : storage}).single('photoimage');
+
+
+router.post('/upload', type, function (req,res) {
+
+  /** When using the "single"
+      data come in "req.file" regardless of the attribute "name". **/
+  var tmp_path = req.file.path;
+  console.log(tmp_path);
+  cloudinary.uploader.upload(req.file.path, function(result) { 
+     console.log(result) 
+     //res.render("index");
+     res.render('photo', {file : result});
+     //res.send(result);
+  });
+
+});
+
+
+
+
 
 
 module.exports = router;

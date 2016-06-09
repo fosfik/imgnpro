@@ -26,6 +26,10 @@ router.get('/uploadfile',
     res.render('uploadfile', { user: req.user });
   });
 
+router.get('/paypal',
+  function(req, res) {
+    res.render('paypal', { user: req.user });
+  });
 
 
 router.get('/login',

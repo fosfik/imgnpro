@@ -5,6 +5,8 @@ var config = require('./config');
 
 
 
+
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -14,6 +16,32 @@ var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+
+
+// Retrieve
+// var MongoClient = require('mongodb').MongoClient;
+
+// // Connect to the db
+// MongoClient.connect("mongodb://admin:1j79ol4f@ds051903.mlab.com:51903/heroku_554zpg9r", function(err, db) {
+//   if(!err) {
+//     console.log("We are connected");
+//     MongoClient.prueba.insert(
+//     {
+//         name:"Tyrion",
+//         hobbyes:["books","girls","wine"],
+//         friends:
+//         [
+//             {name:"Bronn", ocuppation:"sellsword"},
+//             {name:"Shae", ocuppation:"handmaiden"}
+//         ]
+//     })
+//   }
+//   else
+//   {
+//     console.log("not connected"); 
+//   }
+// });
+
 
 var app = express();
 

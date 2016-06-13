@@ -1,0 +1,109 @@
+* {
+    border: 0px;
+    margin: 0px;
+    padding: 0px;
+    font-family: helvetica, arial, sans-serif;
+}
+
+html {
+    background: url(../images/fondo_intro.jpg) no-repeat center center fixed;
+    background-size: cover;
+}
+
+#logo {
+    padding: 5px;
+    margin: 5px;
+    display: inline-block;
+    width: 10%
+}
+
+#menuhor {
+    width:400px;
+    height: 20px;
+    margin-top: 25px;
+    padding: 5px;
+    background: #000000;
+    float: right;
+}
+
+#menu1 li a{
+    color: #FFFFFF;
+    text-decoration: none;
+    font-size: 12px;
+}
+
+#navregistro {
+    height: 20px;
+    padding: 8px;
+    background: red;
+}
+
+#menu1 li a:hover {
+    color: #CCCCCC;
+}
+
+#menu1 {
+    text-align: center;
+    padding: 0px;
+}
+
+#menu1 li {
+    list-style: none;
+    display: inline-block;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#texto_intro {
+    color: #FFFFFF;
+    text-decoration: none;
+    text-align: center;
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+
+#uno {
+    font-size: 52px;
+}
+
+#dos {
+    font-size: 46px;
+}
+
+#tres {
+    font-size: 24px;
+}
+
+#botones_intro{
+    padding: 20px;
+    height: 50px;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.button1 a{
+    border: 2px solid;
+    border-color: #FFFFFF;
+    color: #FFFFFF;
+    padding: 10px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    float: left;
+}
+
+.button2 a{
+    background-color: red;
+    color: #FFFFFF;
+    padding: 10px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    float: right;
+}

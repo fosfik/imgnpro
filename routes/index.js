@@ -5,6 +5,7 @@ var cloudinary = require('cloudinary');
 var passport = require('passport');
 //var Strategy = require('passport-facebook').Strategy;
 var config = require('../config');
+var path = require('path');
 
 
 /* GET home page. */
@@ -15,11 +16,21 @@ var config = require('../config');
 // PASSPORT
 
 // Define routes.
+// router.get('/',
+//   function(req, res) {
+//     res.render('index', { user: req.user });
+//     //console.log(req.user);
+//   });
+
 router.get('/',
   function(req, res) {
-    res.render('index', { user: req.user });
+    res.sendFile(path.join(__dirname, '../htmls', 'intro.html'));
+
+    //res.sendFile('../public/htmls/intro.html' , { root : __dirname});
     //console.log(req.user);
   });
+
+//res.sendFile(__dirname + '/indexAgent.html');
 
 router.get('/uploadfile',
   function(req, res) {

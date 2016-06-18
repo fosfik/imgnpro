@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8">
+        <title>IMGNpro, hagamos que tu producto destaque</title>
+        <link rel="stylesheet" href="stylesheets/imgncss.css">
+        <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico"/>
+    </head>
+    <body>
+    <div id="contenedor">
+        <header>
+            <section id="logo">
+            <h1><a href="intro.html"><img src="images/logo_black.png" alt="logo"></a></h1>
+            </section>
+            <section id="menuhor">
+                <nav id="menu1">
+                <ul>
+                    <li><a href="como.html">Cómo Funciona</a></li>
+                    <li><a href="precios.html">Precios</a></li>
+                    <li><a href="faq.html">FAQ</a></li>
+                    <li><a id="navregistro" href="registro.html">Regístrate</a></li>
+                    <li><a href="login.html">Accede</a></li>
+                </ul>
+                </nav>
+            </section>
+        </header>
+        <section id="faqs">
+            <div class="parrafo1">
+                <p class="encabezado" id="cabeza">1. ¿Qué tan seguros están mis datos?</p>
+                <p class="texto_plano">Si, nunguna persona o empresa ajena a IMGNpro tendrá acceso a tus datos.
+                <br>Consulta nuestro aviso de privasidad.
+                </p>
+                <p class="texto_plano"></p>
+                <p class="encabezado">2.¿Tiempo de entrega?</p>
+                <p class="texto_plano">Nuestro tiempo de entrega de tus imágenes es de 72 horas despues de hecha la solicitud y validado el pago.</p>
+                <p class="encabezado">3.¿Prueba gratis?</p>
+                <p class="texto_plano">Al registrarte en nuestra página, tus primeras 3 imágenes a optimizar, no tendrán costo alguno. Aplican restricciones. Ponte en línea con nosotros si tienes dudas al respecto.</p>
+                <p class="encabezado">4.¿Cómo pago?</p>
+                <p class="texto_plano">Contamos con varios métodos de pago, Pay-Pal, tarjetas Visa y Mastercard, etc. Elige el método de pago más conveniente para ti.</p>
+            </div>
+        </section>
+        
+        <section id="botones_como1">
+            <div class="button1">
+            <a href="contacto.html">Contáctanos</a>
+            </div>
+            <div class="button2">
+            <a href="#openRegistroModal">Empieza Ya!</a>
+            </div>
+        </section>
+        
+    </div>
+        
+    <div id="openRegistroModal" class="modalDialogRegistro">
+        <div>
+            <a href="#close" title="Close" Class="close">X</a>
+            <h1 class="encabezado">Introduce tus datos</h1>
+            <form class="registro_form" action="" method="post" name="registro_form">
+                <ul>
+                    <li>
+                        <label id="etiquetas">Nombre</label>
+                        <input type="text" placeholder="Lupito Pérez" required>
+                    </li>
+                    <li>
+                        <label id="etiquetas">Dirección</label>
+                        <input type="text" placeholder="calle primera 123 código postal 80000" required>
+                    </li>
+                    <li>
+                        <label id="etiquetas">Teléfono</label>
+                        <input type="text" placeholder="+52 (667) 123 4567">
+                    </li>
+                    <li>
+                        <label id="etiquetas">País</label>
+                        <input type="text" placeholder="México">
+                    </li>
+                    <li>
+                        <label id="etiquetas">Empresa</label>
+                        <input type="text" placeholder="Industrias Patito">
+                    </li>
+                    <li>
+                        <label id="etiquetas">eMail</label>
+                        <input type="email" placeholder="lupito@industriaspatito.com">
+                    </li>
+                    <li>
+                        <label id="etiquetas">Contraseña</label>
+                        <input type="text">
+                    </li>
+                    <li>
+                        <label id="etiquetas">Confirmar Contraseña</label>
+                        <input type="text">
+                    </li>
+                </ul>
+            <div class="button2">
+                <a href="#">Quiero mis 3 imágenes Gratis!</a>
+            </div>
+            </form>
+        </div>
+    </div>
+        
+    </body>
+</html>

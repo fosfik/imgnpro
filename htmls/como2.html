@@ -4,6 +4,7 @@
         <meta charset="utf-8">
         <title>IMGNpro, hagamos que tu producto destaque</title>
         <link rel="stylesheet" href="stylesheets/imgncss.css">
+        <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico"/>
     </head>
     <body>
     <div id="contenedor">
@@ -25,7 +26,7 @@
         </header>
         <section id="texto_como2">
             <div class="video">
-                <div class="video_med"><img src="images/tumbnail_video.jpg"></div>
+                <div class="video_med"><a onclick="ponleplay()" href="#openVideoModal"><img src="images/tumbnail_video.jpg"></a></div>
             </div>
             <div class="atributos">
                 <ul>
@@ -57,5 +58,28 @@
         </section>
                 
     </div>
+    
+    <div id="openVideoModal" class="modalDialogVideo">
+        <div>
+            <a onclick="setCurTime()" href="#close" title="Close" Class="close">X</a>
+            <h1 class="encabezado">Video Tutorial</h1>
+            <video id="videoTutorial" poster="images/tumbnail_video.jpg" width="400" preload="auto" controls><source src="videos/big_buck_bunny.mp4" type="video/mp4"></video>
+        </div>
+    </div>
+        
+        <script>
+            var vid = document.getElementById("videoTutorial");
+            
+            function setCurTime() {
+                vid.currentTime=0;
+                vid.pause();
+            }
+            
+            function ponleplay() {
+                vid.play();
+            }
+        
+        </script>
+        
     </body>
 </html>

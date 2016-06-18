@@ -74,7 +74,7 @@ app.use(logger('dev'));
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-//app.use(express.static('htmls'));
+app.use(express.static('htmls'));
 
 app.use(cookieParser());
 app.use(bodyParser.json());

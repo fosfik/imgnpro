@@ -12,9 +12,9 @@ html {
 
 #logo {
     padding: 5px;
-    margin: 5px;
+    margin: 10px;
     display: inline-block;
-    width: 10%
+    width: auto;
 }
 
 #menuhor {
@@ -23,7 +23,7 @@ html {
     margin-top: 25px;
     padding: 5px;
     background: #000000;
-    float: right;
+    float: right;3
 }
 
 #menu1 li a{
@@ -66,7 +66,7 @@ html {
 
 .columna {
     padding: 10px;
-    width: 250px;
+    width: 252px;
     height: 240px;
     text-align: center;
     display: inline-block;
@@ -80,6 +80,7 @@ html {
 .encabezado {
     font-size: 28px;
     padding: 10px 5px;
+    font-weight: bold;
 }
 
 .texto_enfasis {
@@ -160,3 +161,237 @@ html {
     cursor: pointer;
     float: right;
 }
+
+.modalDialogVideo {
+    color: #FFFFFF;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0,0,0,0.8);
+    z-index: 99999;
+    opacity: 0;
+    -webkit-transition: opacity 400ms ease-in;
+    -moz-transition: opacity 400ms ease-in;
+    transition: opacity 400ms ease-in;
+    pointer-events: none;
+}
+
+.modalDialogVideo:target {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modalDialogVideo > div {
+    width: 400px;
+    position: relative;
+    margin: 10% auto;
+    padding: 5px 20px 13px 20px;
+    background: #000000;
+}
+
+.close {
+    background: #000000;
+    color: #FFFFFF;
+    border: 2px solid;
+    border-color: #FFFFFF;
+    line-height: 24px;
+    position: absolute;
+    right: -10px;
+    text-align: center;
+    top: -7px;
+    width: 24px;
+    text-decoration: none;
+    font-size: 12px;
+    -webkit-border-radius: 12px;
+    -moz-border-radius: 12px;
+    border-radius: 24px;
+}
+
+#texto_Precios {
+    color: #000000;
+    text-decoration: none;
+    text-align: center;
+    margin-top: 40px;
+    margin-bottom: 50px;
+    height: auto;
+}
+
+#wraper {
+    border: 2px solid;
+    margin: 0;
+    height: 200px;
+    padding: 10px 30px;
+}
+
+#texto_Precios .columna {
+    padding: 10px;
+    width: 300px;
+    height: 440px;
+    text-align: left;
+    display: inline-block;
+    vertical-align: bottom;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 20px;
+}
+
+
+#texto_Precios .texto_plano {
+    list-style: disc;
+}
+
+#texto_Precios .button2 {
+    margin: 20px;
+    height: 60px;
+}
+
+#texto_Precios .button1 {
+    margin: 20px;
+    height: 60px;
+}
+
+#texto_Precios .button2 a{
+    background-color: red;
+    color: #FFFFFF;
+    text-align: right;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    float: left;
+}
+
+#bajoprecio1 {
+    margin-top: 35px;
+    margin-left: 20px;
+}
+
+#bajoprecio {
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+.megatex {
+    font-size: 36px;
+    font-weight: bolder;
+}
+
+#faqs {
+    color: #000000;
+    text-decoration: none;
+    text-align: center;
+    margin-top: 40px;
+    margin-bottom: 50px;
+    height: auto;
+}
+
+.parrafo1 {
+    padding: 10px;
+    max-width: 800px;
+    width: auto;
+    height: auto;
+    text-align: left;
+    display: inline-block;
+    vertical-align: bottom;
+}
+
+.modalDialogRegistro {
+    color: #FFFFFF;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0,0,0,0.8);
+    z-index: 99999;
+    opacity: 0;
+    -webkit-transition: opacity 400ms ease-in;
+    -moz-transition: opacity 400ms ease-in;
+    transition: opacity 400ms ease-in;
+    pointer-events: none;
+}
+
+.modalDialogRegistro:target {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modalDialogRegistro > div {
+    width: 500px;
+    position: relative;
+    margin: 10% auto;
+    padding: 5px 20px 20px 20px;
+    background: #000000;
+}
+
+
+#openRegistroModal .encabezado {
+    text-align: center;
+}
+
+.registro_form ul {
+    width: 500px;
+    list-style-type: none;
+    list-style-position: outside;
+    margin: 0px;
+    padding: 0px;
+}
+
+.registro_form li {
+    padding: 12px;
+    border-bottom: 1px solid #555555;
+    position: relative;
+}
+
+.registro_form li:first-child {
+    border-top: 1px #555555;
+}
+
+.registro_form label {
+    width: 150px;
+    margin-top: 3px;
+    display: inline-block;
+    float: left;
+    padding: 5px 8px;
+    font-size: 12px;
+}
+
+:-moz-placeholder {color: #333333}
+::-webkit-input-placeholder {color: #333333;}
+
+.registro_form input {
+    height: 20px;
+    width: 270px;
+    padding: 5px 8px;
+    font-size: 16px;
+    background: none;
+    color: #FFFFFF;
+}
+
+.registro_form .button2 a{
+    background-color: red;
+    color: #FFFFFF;
+    padding: 10px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 10px 10px;
+    cursor: pointer;
+    float: none;
+    right: 25%;
+    left: 25%;
+    width: auto;
+    position: absolute;
+}
+
+.registro_form input:focus {
+    outline-color: #555555;
+}
+
+/*.registro_form input:focus:invalid {
+    background: url(../images/icon_bad.png) no-repeat 98% center;
+    border-color: #77EE00;
+}*/

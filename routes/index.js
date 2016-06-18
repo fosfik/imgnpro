@@ -22,13 +22,13 @@ var path = require('path');
 //     //console.log(req.user);
 //   });
 
-router.get('/',
-  function(req, res) {
-    res.sendFile(path.join(__dirname, '../htmls', 'intro.html'));
+// router.get('/',
+//   function(req, res) {
+//     res.sendFile(path.join(__dirname, '../htmls', 'intro.html'));
 
-    //res.sendFile('../public/htmls/intro.html' , { root : __dirname});
-    //console.log(req.user);
-  });
+//     //res.sendFile('../public/htmls/intro.html' , { root : __dirname});
+//     //console.log(req.user);
+//   });
 
 //res.sendFile(__dirname + '/indexAgent.html');
 

@@ -441,6 +441,31 @@ html {
     
 }
 
+#terminos a{
+    text-align: left;
+    color: #FFFFFF;
+    text-decoration: none;
+}
+#terminos{
+    float: left;
+    width: auto;
+}
+
+#checkbox{
+    padding-top: 10px;
+    font-style: italic;
+}
+
+#checkbox input{
+    width: auto;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+#checkbox a:hover {
+    color: red;
+}
+
 /*.registro_form input:focus:invalid {
     background: url(../images/icon_bad.png) no-repeat 98% center;
     border-color: #77EE00;

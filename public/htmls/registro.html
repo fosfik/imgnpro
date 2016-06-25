@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8">
+        <title>IMGNpro, hagamos que tu producto destaque</title>
+        <link rel="stylesheet" href="../stylesheets/imgncss.css">
+        <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico"/>
+    </head>
+    <body>
+    <div id="contenedor">
+        <header>
+            <section id="logo">
+            <h1><a href="intro.html"><img src="../images/logo_black.png" alt="logo"></a></h1>
+            </section>
+            <section id="menuhor">
+                <nav id="menu1">
+                <ul>
+                    <li><a href="como.html">Cómo Funciona</a></li>
+                    <li><a href="precios.html">Precios</a></li>
+                    <li><a href="faq.html">FAQ</a></li>
+                    <li><a id="navregistro" href="registro.html">Regístrate</a></li>
+                    <li><a href="login.html">Accede</a></li>
+                    <li><a href="modalContacto">Contacto</a></li>
+                </ul>
+                </nav>
+            </section>
+        </header>
+        <section id="registro">
+            <div class="registro1">
+                <p class="encabezado" id="cabeza">Regístrate</p>
+                <p class="texto_plano">Crea tu cuenta para acceder a tus 3 primeras fotos Gratis</p>
+                <br>
+                <p class="texto_plano">regístrate con tu cuenta de</p>
+            </div>
+        </section>
+        <section id="botones_redesReg">
+            <div class="button3">
+                <a>Facebook</a>
+            </div>
+            <div class="button4">
+                <a>Google</a>
+            </div>
+            <div class="button5">
+                <a>Linkedin</a>
+            </div>
+        </section>
+        <section id="registro">
+            <div class="registro1">
+            <p class="texto_plano">o bien, regístrate con <a id="paraabrirmodal" href="#openRegistroModal">tu dirección de correo electrónico</a></p>
+            </div>
+        </section>
+        <section id="registro">
+            <div class="registro1">
+                <p class="texto_plano">¿Ya tienes cuenta?</p>
+                <div class="button2"><a>Empieza Ya!</a></div>
+            </div>
+        </section>
+        <section id="registro">
+            <div class="registro1">
+                <p class="texto_plano">¿Eres una empresa?</p>
+                <div class="button1"><a>Contáctanos</a></div>
+            </div>
+        </section>
+    </div>
+        
+    <div id="openRegistroModal" class="modalDialogRegistro">
+        <div>
+            <a href="#close" title="Close" Class="close">X</a>
+            <h1 class="encabezado">Introduce tus datos</h1>
+            <form class="registro_form" action="" method="post" name="registro_form">
+                <ul>
+                    <li>
+                        <label id="etiquetas">Nombre de Usuario</label>
+                        <input type="text" placeholder="Lupito Pérez" maxlength="20" required>
+                    </li>
+                    <li>
+                        <label id="etiquetas">eMail</label>
+                        <input type="email" placeholder="lupito@industriaspatito.com" maxlength="50" required>
+                    </li>
+                    <li>
+                        <label id="etiquetas">Contraseña</label>
+                        <input type="password" id="password" maxlength="20" required>
+                    </li>
+                    <li>
+                        <label id="etiquetas">Confirmar Contraseña</label>
+                        <input type="password" id="confirmarpassword" maxlength="20" required>
+                    </li>
+                </ul>
+                <div class="button2">
+                    <input type="submit" value="Quiero mis 3 imágenes Gratis!">
+                </div>                
+            </form>
+        </div>
+    </div>
+        
+    </body>
+</html>

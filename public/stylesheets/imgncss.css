@@ -18,7 +18,7 @@ html {
 }
 
 #menuhor {
-    width:400px;
+    width:460px;
     height: 20px;
     margin-top: 25px;
     padding: 5px;
@@ -297,6 +297,15 @@ html {
     vertical-align: bottom;
 }
 
+#registro {
+    color: #000000;
+    text-decoration: none;
+    text-align: center;
+    margin-top: 40px;
+    margin-bottom: 10px;
+    height: auto;
+}
+
 .modalDialogRegistro {
     color: #FFFFFF;
     position: fixed;
@@ -320,6 +329,7 @@ html {
 
 .modalDialogRegistro > div {
     width: 500px;
+    height: auto;
     position: relative;
     margin: 10% auto;
     padding: 5px 20px 20px 20px;
@@ -370,7 +380,7 @@ html {
     color: #FFFFFF;
 }
 
-.registro_form .button2 a{
+.registro_form .button2 input{
     background-color: red;
     color: #FFFFFF;
     padding: 10px 10px;
@@ -384,11 +394,51 @@ html {
     right: 25%;
     left: 25%;
     width: auto;
+    height: auto;
     position: absolute;
 }
 
 .registro_form input:focus {
     outline-color: #555555;
+}
+
+#botones_redesReg{
+    text-align: center;
+}
+
+.button3, .button4, .button5 {
+    display: inline-block;
+    color: #FFFFFF;
+    padding: 10px 10px;
+    text-decoration: none;
+    font-size: 16px;
+    margin: 10px 10px;
+    cursor: pointer;
+    float: none;
+    width: auto;
+    height: auto;
+}
+
+.button3 {
+    background-color: #0952b8;
+}
+
+.button4 {
+    background-color: #d60000;
+}
+
+.button5 {
+    background-color: #0368ae;
+}
+
+#paraabrirmodal{
+    text-decoration: none;
+    cursor: pointer;
+    color: red;
+}
+
+#registro .button1{
+    
 }
 
 /*.registro_form input:focus:invalid {

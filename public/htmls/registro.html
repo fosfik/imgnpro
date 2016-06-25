@@ -67,19 +67,19 @@
         <div>
             <a href="#close" title="Close" Class="close">X</a>
             <h1 class="encabezado">Introduce tus datos</h1>
-            <form class="registro_form" action="" method="post" name="registro_form">
+            <form class="registro_form" action="/signuplocal" method="post" name="registro_form">
                 <ul>
                     <li>
                         <label id="etiquetas">Nombre de Usuario</label>
-                        <input type="text" placeholder="Lupito Pérez" maxlength="20" required>
+                        <input type="text" name="user" placeholder="Lupito Pérez" maxlength="20" required>
                     </li>
                     <li>
                         <label id="etiquetas">eMail</label>
-                        <input type="email" placeholder="lupito@industriaspatito.com" maxlength="50" required>
+                        <input type="email" name="username" placeholder="lupito@industriaspatito.com" maxlength="50" required>
                     </li>
                     <li>
                         <label id="etiquetas">Contraseña</label>
-                        <input type="password" id="password" maxlength="20" required>
+                        <input type="password" name="password" id="password" maxlength="20" required>
                     </li>
                     <li>
                         <label id="etiquetas">Confirmar Contraseña</label>

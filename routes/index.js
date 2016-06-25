@@ -3,9 +3,14 @@ var router = express.Router();
 var multer = require('multer');
 var cloudinary = require('cloudinary');
 var passport = require('passport');
+//var passport = require('passport-local');
 //var Strategy = require('passport-facebook').Strategy;
 var config = require('../config');
 var path = require('path');
+//var flash = require('connect-flash'); // middleware para mensajes en passport
+
+//app.use(flash());
+
 
 
 /* GET home page. */
@@ -15,12 +20,59 @@ var path = require('path');
 
 // PASSPORT
 
+// Passport local 
+/* GET login page. */
+  router.get('/reglocal', function(req, res) {
+    // Display the Login page with any flash message, if any
+    console.log(req);
+    res.render('indexlocal', {message: req.flash('message')});
+  });
+ 
+
+ router.get('/homelocal', function(req, res) {
+    // Display the Login page with any flash message, if any
+    console.log("inicio de sesion");
+    res.render('homelocal', {message: req.flash('message')});
+  });
+
+  /* Handle Login POST */
+  router.post('/loginlocal', passport.authenticate('login', {
+    successRedirect: '/homelocal',
+    failureRedirect: '/reglocal'
+    ,failureFlash : true 
+  }));
+ 
+  /* GET Registration Page */
+  router.get('/signuplocal', function(req, res){
+    console.log("get signuplocal");
+    res.render('registerlocal',{ message: req.flash('message')});
+  });
+ 
+  /* Handle Registration POST */
+  router.post('/signuplocal', passport.authenticate('signup', {
+    successRedirect: '/homelocal',
+    failureRedirect: '/signuplocal'
+    //,failureFlash : true 
+  }));
+
+ 
+
+
+
+// Passport local
+
 // Define routes.
 // router.get('/',
 //   function(req, res) {
 //     res.render('index', { user: req.user });
 //     //console.log(req.user);
 //   });
+
+
+
+
+
+
 
 router.get('/',
   function(req, res) {

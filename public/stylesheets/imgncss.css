@@ -406,6 +406,12 @@ html {
     text-align: center;
 }
 
+.redes_icon{
+    margin-right: 10px;
+    float: left;
+    height: 16px;
+}
+
 .button3, .button4, .button5 {
     display: inline-block;
     color: #FFFFFF;
@@ -431,14 +437,57 @@ html {
     background-color: #0368ae;
 }
 
-#paraabrirmodal{
+.button6{
+    padding: 10px 10px;
+    text-align: center;
+    margin: 10px 10px;
+}
+
+.button6 a{
+    background-color: red;
+    color: #FFFFFF;
+    padding: 10px 10px;
+    text-decoration: none;
+    text-align: center;
+    font-size: 16px;
+    cursor: pointer;
+    float: none;
+    width: auto;
+    height: auto;
+}
+
+.button7 {
+    padding: 10px 10px;
+    text-align: center;
+    margin: 10px 10px;
+}
+
+.button7 a{
+    padding: 10px 10px;
+    text-decoration: none;
+    text-align: center;
+    font-size: 16px;
+    cursor: pointer;
+    float: none;
+    width: auto;
+    height: auto;
+    border: 2px solid;
+    border-color: #000000;
+}
+
+#registro_boton .texto_plano {
+    text-align: center;
+    margin-top: 30px;
+}
+
+#paraabrirmodal {
     text-decoration: none;
     cursor: pointer;
     color: red;
 }
 
-#registro .button1{
-    
+#paraabrirmodal:hover {
+    color: #CCCCCC;
 }
 
 #terminos a{
@@ -462,11 +511,71 @@ html {
     margin-left: 10px;
 }
 
-#checkbox a:hover {
-    color: red;
+#login {
+    text-align: center
 }
 
-/*.registro_form input:focus:invalid {
-    background: url(../images/icon_bad.png) no-repeat 98% center;
-    border-color: #77EE00;
-}*/
+#login .texto_plano {
+    margin-top: 5px;
+}
+
+.accedeForm {
+    margin-top: 30px;
+    width: 440px;
+    text-align: center;
+    display: inline-block;
+}
+
+.accedeForm ul {
+    width: auto;
+    list-style-type: none;
+    list-style-position: outside;
+    margin: 0px;
+    padding: 0px;
+}
+
+.accedeForm li {
+    padding: 12px;
+    position: relative;
+}
+
+.accedeForm label {
+    width: 100px;
+    margin-top: 3px;
+    display: inline-block;
+    padding: 5px 8px;
+    font-size: 12px;
+    text-align: right;
+}
+
+.accedeForm input {
+    display: inline-block;
+    height: 20px;
+    width: 270px;
+    padding: 5px 8px;
+    font-size: 16px;
+    background: none;
+    color: #000000;
+    cursor: text;
+    background-color: #ddd;
+}
+
+.accedeForm input:focus {
+    outline-color: #CCCCCC;
+    background-color: #EEEEEE;
+}
+
+.accedeForm .button2 input{
+    background-color: red;
+    color: #FFFFFF;
+    padding: 10px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 10px 10px;
+    cursor: pointer;
+    width: auto;
+    height: auto;
+    border: none;
+}

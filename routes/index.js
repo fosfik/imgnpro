@@ -22,24 +22,25 @@ var path = require('path');
 
 // Passport local 
 /* GET login page. */
-  router.get('/reglocal', function(req, res) {
+  router.get('/login', function(req, res) {
     // Display the Login page with any flash message, if any
     console.log(req);
-    res.render('indexlocal', {message: req.flash('message')});
+    res.render('signin', {message: req.flash('message')});
   });
  
 
  router.get('/homelocal', function(req, res) {
     // Display the Login page with any flash message, if any
     console.log("inicio de sesion");
-    res.render('homelocal', {message: req.flash('message')});
+    console.log(req.user);
+    res.render('principal', {message: req.flash('message'), user: req.user});
   });
 
   /* Handle Login POST */
-  router.post('/loginlocal', passport.authenticate('login', {
+  router.post('/signin', passport.authenticate('login', {
     successRedirect: '/homelocal',
-    failureRedirect: '/reglocal'
-    ,failureFlash : true 
+    failureRedirect: '/login',
+    failureFlash : true 
   }));
  
   /* GET Registration Page */
@@ -51,9 +52,12 @@ var path = require('path');
   /* Handle Registration POST */
   router.post('/signuplocal', passport.authenticate('signup', {
     successRedirect: '/homelocal',
-    failureRedirect: '/signuplocal'
-    //,failureFlash : true 
+    failureRedirect: '/signuplocal',
+    failureFlash : true 
   }));
+
+
+
 
  
 
@@ -95,10 +99,10 @@ router.get('/paypal',
   });
 
 
-router.get('/login',
-  function(req, res){
-    res.render('login');
-  });
+// router.get('/login',
+//   function(req, res){
+//     res.render('login');
+//   });
 
 router.get('/logout',
   function(req, res){

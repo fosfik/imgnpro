@@ -1,0 +1,15 @@
+extends layout
+ 
+block content
+  div.container
+    div.row
+      div.col-sm-6.col-md-4.col-md-offset-4
+        h1.text-center.login-title Página principal Dummy
+          div.account-wall
+            img(class='profile-img' src='')
+          
+          #message
+          if message
+            h1.text-center.error-message #{message}
+            h1 #{user.userlongname}
+            h1 #{user.email}

@@ -1,0 +1,18 @@
+extends layout
+ 
+block content
+  div.container
+    div.row
+      div.col-sm-6.col-md-4.col-md-offset-4
+        h1.text-center.login-title Ingresa con tu cuenta de correo
+          div.account-wall
+            img(class='profile-img', src='')
+            form(class='form-signin', action='/signin', method='POST')
+              input(type='text', name='email' class='form-control', placeholder='correo electrónico',required, autofocus)
+              input(type='password', name='password' class='form-control', placeholder='Contraseña', required)
+              button(class='btn btn-lg btn-primary btn-block', type='submit') Ingresa
+              span.clearfix
+          a(href='/registro.html', class='text-center new-account') Crea una cuenta
+          #message
+          if message
+            h1.text-center.error-message #{message}

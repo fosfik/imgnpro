@@ -253,14 +253,12 @@ passport.deserializeUser(function(id, done) {
 
 // passport/login.js
 passport.use('login', new LocalStrategy({
-    passReqToCallback : true
-  },
+    passReqToCallback : true,
+    usernameField: 'email'
+   },
   function(req,username, password, done) { 
     // check in mongo if a user with username exists or not
-
-    console.log(username);  
-         console.log(password);  
-    User.findOne({ 'username' :  username }, 
+    User.findOne({ 'email' :  username }, 
       function(err, user) {
         // In case of any error, return using the done method
 
@@ -268,17 +266,17 @@ passport.use('login', new LocalStrategy({
           return done(err);
         // Username does not exist, log error & redirect back
         if (!user){
-          console.log('User Not Found with username '+username);
-          return done(null, false, req.flash('message', 'User Not found.'));                 
+          console.log('No se encontró el usuario'+username);
+          return done(null, false, req.flash('message', 'Correo electrónico no existe.'));                 
         }
         // User exists but wrong password, log the error 
         if (!isValidPassword(user, password)){
-          console.log('Invalid Password');
-          return done(null, false, req.flash('message', 'Invalid password.'));
+          console.log('Contraseña inválida');
+          return done(null, false, req.flash('message', 'Contraseña inválida.'));
         }
         // User and password both match, return user from 
         // done method which will be treated like success
-        return done(null, user);
+        return done(null, user,req.flash('message', 'Inicio de sesión correcto.'));
       }
     );
 }));
@@ -311,40 +309,40 @@ passport.use('login', new LocalStrategy({
 
 
 passport.use('signup', new LocalStrategy({
-    passReqToCallback : true
+    passReqToCallback : true,
+    usernameField: 'email'
   },
   function(req, username, password, done) {
     findOrCreateUser = function(){
       // find a user in Mongo with provided username
-      User.findOne({'username':username},function(err, user) {
+      User.findOne({'email':username},function(err, user) {
         // In case of any error return
         if (err){
-          console.log('Error in SignUp: '+err);
+          console.log('Error al crear cuenta: '+err);
           return done(err);
         }
         // already exists
         if (user) {
           console.log('User already exists');
-          return done(null, false,{message:'User Already Exists'});
+          return done(null, false,{message:'El correo ya existe'});
         } else {
           // if there is no user with that email
           // create the user
           
           var newUser = new User();
           // set the user's local credentials
-          newUser.username = username;
+          newUser.userlongname = req.param('userlongname');
           newUser.password = createHash(password);
-          newUser.email = req.param('email');
-          newUser.firstName = req.param('firstName');
-          newUser.lastName = req.param('lastName');
+          newUser.email = username;
+          newUser.accept_terms = req.param('accept_terms');
  
           // save the user
           newUser.save(function(err) {
             if (err){
-              console.log('Error in Saving user: '+err);  
+              console.log('No se pudo guardar el usuario: '+err);  
               throw err;  
             }
-            console.log('User Registration succesful');    
+            console.log('Se registró correctamente el usuario');    
             return done(null, newUser);
           });
 

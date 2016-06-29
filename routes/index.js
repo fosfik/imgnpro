@@ -20,6 +20,11 @@ var path = require('path');
 
 // PASSPORT
 
+router.get('*',function(req,res){  
+    res.redirect('https://imgnpro.com'+req.url)
+});
+
+
 // Passport local 
 /* GET login page. */
   router.get('/login', function(req, res) {

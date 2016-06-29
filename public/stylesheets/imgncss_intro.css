@@ -130,3 +130,7 @@ html {
     z-index: -99999;
     overflow: hidden;
 }
+
+.button1 a:hover,.button2 a:hover, .button2 input:hover, .button3:hover, .button4:hover, .button5:hover, .button6 a:hover, .button7 a:hover{
+    box-shadow: 2px 2px 2px rgba(20, 20, 20, 0.2);
+}

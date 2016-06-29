@@ -368,8 +368,8 @@ html {
     font-size: 12px;
 }
 
-:-moz-placeholder {color: #333333}
-::-webkit-input-placeholder {color: #333333;}
+.registro_form :-moz-placeholder {color: #333333; font-size: 14px; font-style: italic;}
+.registro_form ::-webkit-input-placeholder {color: #333333; font-size: 14px; font-style: italic;}
 
 .registro_form input {
     height: 20px;
@@ -473,6 +473,7 @@ html {
     height: auto;
     border: 2px solid;
     border-color: #000000;
+    color: #000000;
 }
 
 #registro_boton .texto_plano {
@@ -548,7 +549,7 @@ html {
     text-align: right;
 }
 
-.accedeForm input {
+.accedeForm input, textarea {
     display: inline-block;
     height: 20px;
     width: 270px;
@@ -560,7 +561,7 @@ html {
     background-color: #ddd;
 }
 
-.accedeForm input:focus {
+.accedeForm input:focus,textarea:focus {
     outline-color: #CCCCCC;
     background-color: #EEEEEE;
 }
@@ -578,4 +579,17 @@ html {
     width: auto;
     height: auto;
     border: none;
+}
+
+textarea {
+    min-height: 20px;
+    max-width: 270px;
+    height: 150px;
+    max-height: 150px;}
+
+.accedeForm :-moz-placeholder {color: #BBBBBB; font-size: 14px; font-style: italic;}
+.accedeForm ::-webkit-input-placeholder {color: #BBBBBB; font-size: 14px; font-style: italic;}
+
+.button1 a:hover,.button2 a:hover, .button2 input:hover, .button3:hover, .button4:hover, .button5:hover, .button6 a:hover, .button7 a:hover{
+    box-shadow: 2px 2px 2px rgba(20, 20, 20, 0.2);
 }

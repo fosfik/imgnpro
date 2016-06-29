@@ -97,6 +97,15 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
+app.use (function (req, res, next) {
+      var schema = (req.headers['x-forwarded-proto'] || '').toLowerCase();
+      if (schema === 'https') {
+        next();
+      } else {
+        res.redirect('https://' + req.headers.host + req.url);
+      }
+    });
+
 app.use('/', routes);
 app.use('/users', users);
 
@@ -173,7 +182,7 @@ app.use(function(req, res, next){
 });
 
 
-app.enable('trust proxy');
+//app.enable('trust proxy');
 
 // Configure the Facebook strategy for use by Passport.
 //

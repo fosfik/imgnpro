@@ -173,6 +173,8 @@ app.use(function(req, res, next){
 });
 
 
+app.enable('trust proxy');
+
 // Configure the Facebook strategy for use by Passport.
 //
 // OAuth 2.0-based strategies require a `verify` function which receives the

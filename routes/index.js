@@ -20,9 +20,9 @@ var path = require('path');
 
 // PASSPORT
 
-router.get('*',function(req,res){  
-    res.redirect('https://imgnpro.com'+req.url)
-});
+// router.get('*',function(req,res){  
+//     res.redirect('https://imgnpro.com'+req.url)
+// });
 
 
 // Passport local 

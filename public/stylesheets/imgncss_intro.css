@@ -259,7 +259,6 @@ html, body {
 
 .insticon:hover {
     opacity: 0.2;
-    /*background-position: center top; */
     transition: .2s;
 }
 

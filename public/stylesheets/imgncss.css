@@ -30,6 +30,7 @@ html {
     color: #FFFFFF;
     text-decoration: none;
     font-size: 12px;
+    transition: .1s;
 }
 
 #navregistro {
@@ -40,6 +41,7 @@ html {
 
 #menu1 li a:hover {
     color: #CCCCCC;
+    transition: .2s;
 }
 
 #menu1 {
@@ -147,6 +149,7 @@ html {
     margin: 4px 2px;
     cursor: pointer;
     float: left;
+    transition: .1s;
 }
 
 .button2 a{
@@ -160,6 +163,7 @@ html {
     margin: 4px 2px;
     cursor: pointer;
     float: right;
+    transition: .1s;
 }
 
 .modalDialogVideo {
@@ -245,11 +249,13 @@ html {
 #texto_Precios .button2 {
     margin: 20px;
     height: 60px;
+    transition: .1s;
 }
 
 #texto_Precios .button1 {
     margin: 20px;
     height: 60px;
+    transition: .1s;
 }
 
 #texto_Precios .button2 a{
@@ -261,6 +267,7 @@ html {
     font-size: 16px;
     cursor: pointer;
     float: left;
+    transition: .1s;
 }
 
 #bajoprecio1 {
@@ -423,24 +430,29 @@ html {
     float: none;
     width: auto;
     height: auto;
+    transition: .1s;
 }
 
 .button3 {
     background-color: #0952b8;
+    transition: .1s;
 }
 
 .button4 {
     background-color: #d60000;
+    transition: .1s;
 }
 
 .button5 {
     background-color: #0368ae;
+    transition: .1s;
 }
 
 .button6{
     padding: 10px 10px;
     text-align: center;
     margin: 10px 10px;
+    transition: .1s;
 }
 
 .button6 a{
@@ -454,12 +466,14 @@ html {
     float: none;
     width: auto;
     height: auto;
+    transition: .1s;
 }
 
 .button7 {
     padding: 10px 10px;
     text-align: center;
     margin: 10px 10px;
+    transition: .1s;
 }
 
 .button7 a{
@@ -474,6 +488,7 @@ html {
     border: 2px solid;
     border-color: #000000;
     color: #000000;
+    transition: .1s;
 }
 
 #registro_boton .texto_plano {
@@ -481,14 +496,20 @@ html {
     margin-top: 30px;
 }
 
+#registro_boton .button7{
+    margin-bottom: 50px;
+}
+
 #paraabrirmodal {
     text-decoration: none;
     cursor: pointer;
     color: red;
+    transition: .1s;
 }
 
 #paraabrirmodal:hover {
     color: #CCCCCC;
+    transition: .2s;
 }
 
 #terminos a{
@@ -592,4 +613,143 @@ textarea {
 
 .button1 a:hover,.button2 a:hover, .button2 input:hover, .button3:hover, .button4:hover, .button5:hover, .button6 a:hover, .button7 a:hover{
     box-shadow: 2px 2px 2px rgba(20, 20, 20, 0.2);
+    transition: .2s;
+}
+
+
+html, body {
+    height: 100%;
+}
+
+#contenedor {
+    min-height: 100%;
+    margin-bottom: -70px;
+}
+
+#contenedor:after {
+    content: "";
+    display: block;
+}
+
+.cetificate, #contenedor:after {
+    height: 70px;
+}
+
+.certificate {
+    height: 70px;
+    background: rgba(0,0,0,0.5);
+    width: auto;
+    bottom: 0;
+    right: 0;
+    text-align: center;
+}
+
+#letras li{
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    list-style: none;
+    padding: 5px;
+    color: #FFFFFF;
+    float: left;
+    margin-right: 10px;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+#letras{
+    margin-top: 5px;
+    height: 40px;
+    width: 400px;
+    display: inline-block;
+    transition: .1s;
+}
+
+#letras a:hover{
+    opacity: 0.2;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.iconos{
+    margin-top: 5px;
+    height: 40px;
+    width: 160px;
+    display: inline-block;
+}
+
+.certificate a {
+    font-size: 12px;
+}
+
+.iconos span {
+    display: none;
+}
+
+.faceicon {
+    padding-top: 13px;
+    padding-left: 13px;
+    padding-right: 13px;
+    padding-bottom: 13px;
+    background: url(../images/footicon_face.png) no-repeat left center;
+    background-size: 26px;
+    opacity: 1;
+    display: inline-block;
+    transition: .1s;
+}
+
+.faceicon:hover {
+    opacity: 0.2;
+    /*background-position: center top; */
+    transition: .2s;
+}
+
+.twiticon {
+    padding-top: 13px;
+    padding-left: 13px;
+    padding-right: 13px;
+    padding-bottom: 13px;
+    background: url(../images/footicon_twit.png) no-repeat left center;
+    background-size: 26px;
+    opacity: 1;
+    display: inline-block;
+    transition: .1s;
+}
+
+.twiticon:hover {
+    opacity: 0.2;
+    /*background-position: center top; */
+    transition: .2s;
+}
+
+.insticon {
+    padding-top: 13px;
+    padding-left: 13px;
+    padding-right: 13px;
+    padding-bottom: 13px;
+    background: url(../images/footicon_insta.png) no-repeat left center;
+    background-size: 26px;
+    opacity: 1;
+    display: inline-block;
+    transition: .1s;
+}
+
+.insticon:hover {
+    opacity: 0.2;
+    /*background-position: center top; */
+    transition: .2s;
+}
+
+.iconos li{
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    list-style: none;
+    color: #FFFFFF;
+    float: left;
+    margin-right: 10px;
+    margin-left: 10px;
+    margin-top: 10px;
+    height: 26px;
+    width: 26px;
 }

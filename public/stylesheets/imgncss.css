@@ -674,7 +674,7 @@ html, body {
 .iconos{
     margin-top: 5px;
     height: 40px;
-    width: 160px;
+    width: 140px;
     display: inline-block;
 }
 
@@ -736,7 +736,6 @@ html, body {
 
 .insticon:hover {
     opacity: 0.2;
-    /*background-position: center top; */
     transition: .2s;
 }
 
@@ -752,4 +751,8 @@ html, body {
     margin-top: 10px;
     height: 26px;
     width: 26px;
+}
+
+span {
+    margin-left: 20px;
 }

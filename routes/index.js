@@ -44,14 +44,23 @@ var path = require('path');
   router.post('/signin', passport.authenticate('login', {
     successRedirect: '/homelocal',
     failureRedirect: '/login',
-    failureFlash : true 
+    failureFlash : true,
+    successFlash : true 
   }));
  
   router.get('/reslocal', function(req, res) {
     // Display the Login page with any flash message, if any
     console.log("inicio de sesion");
     console.log(req.user);
-    res.send('Hola Mundo');
+    //res.send('Hola Mundo');
+    //console.log(req.flash());
+
+    var msjres = req.flash('success');
+
+    console.log(msjres[0]);
+    res.setHeader('Content-Type', 'application/json');
+    //res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify({ error: 0, message: msjres[0]}));
   });
 
 
@@ -59,14 +68,25 @@ var path = require('path');
     // Display the Login page with any flash message, if any
     console.log("falló");
     console.log(req.user);
-    res.send('error');
+    
+    var msjres = req.flash('error');
+
+    console.log(msjres[0]);
+    res.setHeader('Content-Type', 'application/json');
+    //var msg_res = req.flash('message');
+
+    //res.render('msjview', { error: 1, message: req.flash('message')});
+    res.send(JSON.stringify({ error: 1, message: msjres[0]}));
+ 
+    //res.send(req.flash('message'));
   });
 
   /* Handle Registration POST */
   router.post('/signuplocal', passport.authenticate('signup', {
     successRedirect: '/homelocal',
     failureRedirect: '/signuplocal',
-    failureFlash : true 
+    failureFlash : true,
+    successFlash : true 
   }));
 
 
@@ -81,7 +101,8 @@ var path = require('path');
   router.post('/signup', passport.authenticate('signup', {
     successRedirect: '/reslocal',
     failureRedirect: '/signup_error',
-    failureFlash : true 
+    failureFlash : true, 
+    successFlash : true 
   }));
 
 

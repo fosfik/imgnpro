@@ -348,7 +348,7 @@ passport.use('signup', new LocalStrategy({
               throw err;  
             }
             console.log('Se registró correctamente el usuario');    
-            return done(null, newUser);
+            return done(null, newUser, {message:'Se registró correctamente el usuario'});
           });
 
           

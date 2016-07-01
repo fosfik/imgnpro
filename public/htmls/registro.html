@@ -108,9 +108,10 @@
                         url: frm.attr('action'),
                         data: frm.serialize(),
                         success: function (data) {
-                            console.log(data)
-                            if (data ==='error'){
-                                document.getElementById('res_message').innerHTML='Error al crear usuario';    
+                            console.log(data);
+                            console.log(data.error);
+                            if (data.error == 1 ){
+                                document.getElementById('res_message').innerHTML= data.message;    
                             }
                             else{
                                 setTimeout(window.location='homelocal',1000);    

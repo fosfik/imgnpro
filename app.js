@@ -82,12 +82,7 @@ app.use(logger('dev'));
 // app.router
 
 app.use(express.static(path.join(__dirname, 'public')));
-
 app.use(express.static(path.join(__dirname, 'public/htmls')));
-
-
-
-
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -95,7 +90,6 @@ app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveU
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
-
 // para redirigir a https
 app.use (function (req, res, next) {
       var schema = (req.headers['x-forwarded-proto'] || '').toLowerCase();

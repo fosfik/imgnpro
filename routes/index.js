@@ -29,8 +29,7 @@ var path = require('path');
 /* GET login page. */
   router.get('/login', function(req, res) {
     // Display the Login page with any flash message, if any
-    console.log(req);
-    res.render('signin', {message: req.flash('message')});
+    res.render('login', {message: req.flash('message')});
   });
  
 
@@ -48,12 +47,21 @@ var path = require('path');
     failureFlash : true 
   }));
  
-  /* GET Registration Page */
-  router.get('/signuplocal', function(req, res){
-    console.log("get signuplocal");
-    res.render('registerlocal',{ message: req.flash('message')});
+  router.get('/reslocal', function(req, res) {
+    // Display the Login page with any flash message, if any
+    console.log("inicio de sesion");
+    console.log(req.user);
+    res.send('Hola Mundo');
   });
- 
+
+
+  router.get('/signup_error', function(req, res) {
+    // Display the Login page with any flash message, if any
+    console.log("falló");
+    console.log(req.user);
+    res.send('error');
+  });
+
   /* Handle Registration POST */
   router.post('/signuplocal', passport.authenticate('signup', {
     successRedirect: '/homelocal',
@@ -62,6 +70,19 @@ var path = require('path');
   }));
 
 
+  /* GET Registration Page */
+  router.get('/signup', function(req, res){
+    console.log("get signup");
+    res.render('registerlocal',{ message: req.flash('message')});
+  });
+ 
+
+ /* Handle Registration POST */
+  router.post('/signup', passport.authenticate('signup', {
+    successRedirect: '/reslocal',
+    failureRedirect: '/signup_error',
+    failureFlash : true 
+  }));
 
 
  

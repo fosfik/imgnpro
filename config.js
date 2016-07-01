@@ -3,7 +3,7 @@ var config = {
 	facebook:{
 		key:'1748473698730930',
 		secret:'947279e657965fc061e89ff28bc0d4fe',
-		callbackURL: 'https://imgnpro.herokuapp.com/login/facebook/return'
+		callbackURL: 'https://www.imgnpro.com/login/facebook/return'
 	},
 	// Prueba
 	// facebook:{

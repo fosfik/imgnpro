@@ -1,3 +1,70 @@
-a(href="/login/facebook") Inicie sesion con Facebook
-br
-a(href="/login/twitter") Inicie sesion con Twitter
+doctype html
+html(lang='es')
+  head
+    meta(charset='utf-8')
+    title IMGNpro, hagamos que tu producto destaque
+    link(rel='stylesheet', href='../stylesheets/imgncss.css')
+    link(rel='shortcut icon', type='image/x-icon', href='../images/favicon.ico')
+  body
+    #contenedor
+      header
+        section#logo
+          h1
+            a(href='intro.html')
+              img(src='../images/logo_black.png', alt='logo')
+        section#menuhor
+          nav#menu1
+            ul
+              li
+                a(href='como.html') Cómo Funciona
+              li
+                a(href='precios.html') Precios
+              li
+                a(href='faq.html') FAQ
+              li
+                a#navregistro(href='registro.html') Regístrate
+              li
+                a(href='login.html') Accede
+              li
+                a(href='contacto.html') Contacto
+      section#login
+        .login1
+          p#cabeza.encabezado ¡Qué gusto verte de nuevo!
+          p.texto_plano ingresa tus datos para realizar una nueva orden
+      section#login
+        form.accedeForm(action='/signin', method='POST')
+          ul
+            li
+              label.texto_plano Correo Electrónico
+              input(type='email', name='email', required='')
+            li
+              label.texto_plano Contraseña
+              input(type='password', name='password', required='')
+          .button2
+            input(type='submit', value='Aceptar')
+         if message
+            h1.text-center.error-message #{message}   
+    footer.certificate
+      #footerwraper
+        ul#letras
+          li
+            a.footex Términos y Condiciones
+          li
+            a.footex Políticas de Privacidad
+          li
+            a.footex Cookies
+        ul.iconos
+          li
+            a.faceicon(href='https://www.facebook.com/TheBackgroundRemover/', rel='nofollow', target='_blank')
+              span fac
+          li
+            a.twiticon(href='https://www.twitter.com/imgn_pro/', rel='nofollow', target='_blank')
+              span twi
+          li
+            a.insticon(href='https://www.instagram.com/imgnpro/', rel='nofollow', target='_blank')
+              span ins
+        span#siteseal
+          script(async='', type='text/javascript', src='https://seal.godaddy.com/getSeal?sealID=MM8zFLA1javq1eFaGcvXAxCizAwhbOeBEtWtmH2HxtB9DsFEbuTbkOPcnTG5')
+        span#siteseal
+          a(href='http://www.beyondsecurity.com/vulnerability-scanner-verification/imgnpro.com')
+            img(src='https://seal.beyondsecurity.com/verification-images/imgnpro.com/vulnerability-scanner-2.gif', alt='Website Security Test', border='0')

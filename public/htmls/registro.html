@@ -108,13 +108,11 @@
                         url: frm.attr('action'),
                         data: frm.serialize(),
                         success: function (data) {
-                            console.log(data);
-                            console.log(data.error);
                             if (data.error == 1 ){
                                 document.getElementById('res_message').innerHTML= data.message;    
                             }
                             else{
-                                setTimeout(window.location='homelocal',1000);    
+                                setTimeout(window.location='principal',1000);    
                             }
                         }
                     });

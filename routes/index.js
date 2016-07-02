@@ -32,58 +32,39 @@ var path = require('path');
     res.render('login', {message: req.flash('message')});
   });
  
-
- router.get('/homelocal', function(req, res) {
-    // Display the Login page with any flash message, if any
-    console.log("inicio de sesion");
-    console.log(req.user);
-    res.render('principal', {message: req.flash('message'), user: req.user});
+  /* Maneja la aplicación principal */
+  router.get('/principal', 
+     require('connect-ensure-login').ensureLoggedIn('/login'),
+         function(req, res){
+           res.render('principal', {message: req.flash('message'), user: req.user});
   });
+
 
   /* Handle Login POST */
   router.post('/signin', passport.authenticate('login', {
-    successRedirect: '/homelocal',
+    successRedirect: '/principal',
     failureRedirect: '/login',
     failureFlash : true,
     successFlash : true 
   }));
  
+  /* maneja si el registro fue exitoso */
   router.get('/reslocal', function(req, res) {
-    // Display the Login page with any flash message, if any
-    console.log("inicio de sesion");
-    console.log(req.user);
-    //res.send('Hola Mundo');
-    //console.log(req.flash());
-
     var msjres = req.flash('success');
-
-    console.log(msjres[0]);
     res.setHeader('Content-Type', 'application/json');
-    //res.setHeader('Content-Type', 'application/json');
     res.send(JSON.stringify({ error: 0, message: msjres[0]}));
   });
 
-
+  // Si sucede un error al registrar un usuario se ejecuta esta ruta
   router.get('/signup_error', function(req, res) {
-    // Display the Login page with any flash message, if any
-    console.log("falló");
-    console.log(req.user);
-    
     var msjres = req.flash('error');
-
-    console.log(msjres[0]);
     res.setHeader('Content-Type', 'application/json');
-    //var msg_res = req.flash('message');
-
-    //res.render('msjview', { error: 1, message: req.flash('message')});
     res.send(JSON.stringify({ error: 1, message: msjres[0]}));
- 
-    //res.send(req.flash('message'));
   });
 
   /* Handle Registration POST */
   router.post('/signuplocal', passport.authenticate('signup', {
-    successRedirect: '/homelocal',
+    successRedirect: '/reslocal',
     failureRedirect: '/signuplocal',
     failureFlash : true,
     successFlash : true 

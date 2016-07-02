@@ -100,6 +100,12 @@ app.use (function (req, res, next) {
       }
     });
 // para redirigir a https
+// Prueba del uso de middleware de express incorporando una función que siempre se ejecuta
+// app.use(function (req, res, next) {
+//   console.log('Time:', Date.now());
+//   next();
+// });
+//
 app.use('/', routes);
 app.use('/users', users);
 

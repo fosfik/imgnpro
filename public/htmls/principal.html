@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8">
+        <title>IMGNpro, hagamos que tu producto destaque</title>
+        <link rel="stylesheet" href="../stylesheets/imgncss_session.css">
+        <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico"/>
+    </head>
+    <body>
+        <header class="bienvenida">
+            <ul>
+                <li>Bienvenido <a id="user" class="bold">Lupito Pérez</a><a class="bold">!</a></li>
+                <li>Órdenes en Proceso <a id="orders" class="bold">2</a></li>
+                <li><a id="salir" class="bold" href="logout">Salir</a></li>
+            </ul>
+        </header>
+        <section id="menuver"class="logo">
+            <h1><a href="principal.html"><img src="../images/logo_black.png" alt="logo"></a></h1>
+        </section>
+        <section>
+            <nav id="menuver">
+                <ul>
+                    <li><a href="como.html">Cómo Funciona</a></li>
+                    <li><a href="precios.html">Precios</a></li>
+                    <li><a href="faq.html">FAQ</a></li>
+                    <li><a id="navregistro" href="registro.html">Regístrate</a></li>
+                    <li><a href="login.html">Accede</a></li>
+                    <li><a href="contacto.html">Contacto</a></li>
+                </ul>
+            </nav>
+        </section>
+    <div id="contenedor">
+        <div class="tabla">
+            <p class="encabezado">Mis Pedidos</p>
+            <table>
+                <tr>
+                    <th>Orden</th>
+                    <th>Imágenes</th>
+                    <th>Fecha</th>
+                    <th>Estatus</th>
+                </tr>
+                <tr>
+                    <td>12345abc</td>
+                    <td>150</td>
+                    <td>12/05/2016</td>
+                    <td class="done">Entregado</td>
+                </tr>
+                <tr>
+                    <td>12345abc</td>
+                    <td>150</td>
+                    <td>12/05/2016</td>
+                    <td class="undone">En proceso</td>
+                </tr>
+                <tr>
+                    <td>12345abc</td>
+                    <td>150</td>
+                    <td>12/05/2016</td>
+                    <td class="none">Pendiente Pago</td>
+                </tr>
+            </table>
+        </div>
+        <hr>
+        <div class="tabla">
+            <p class="encabezado">Especificaciones</p>
+            <table>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Fecha</th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td>Página Herramientas</td>
+                    <td>12/05/2016</td>
+                    <td><a id="icontable" href=""><img src="../images/icon_cloud.png" height="20px" width="20px"></a><a id="icontable"  href=""><img src="../images/icon_edit.png" height="20px" width="20px"></a></td>
+                </tr>
+                <tr>
+                    <td>Página Herramientas</td>
+                    <td>12/05/2016</td>
+                    <td><a id="icontable" href=""><img src="../images/icon_cloud.png" height="20px" width="20px"></a><a id="icontable"  href=""><img src="../images/icon_edit.png" height="20px" width="20px"></a></td>
+                </tr>
+                <tr>
+                    <td>Página Herramientas</td>
+                    <td>12/05/2016</td>
+                    <td><a id="icontable"  href=""><img src="../images/icon_cloud.png" height="20px" width="20px"></a><a id="icontable"  href=""><img src="../images/icon_edit.png" height="20px" width="20px"></a></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+        <div id="menurigth">
+            <p class="encabezado"> Tutorial</p>
+             <div class="video_med"><a onclick="ponleplay()" href="#openVideoModal"><img src="../images/tumbnail_video.jpg" width="140px"></a></div>
+            <hr>
+            <p class="encabezado"> FAQs</p>
+            <p><a class="texto_plano">1. ¿Están seguros mis datos?</a></p>
+            <p><a class="texto_plano">2. ¿Tiempo de Entrega?</a></p>
+            <p><a class="texto_plano">3. ¿Prueba Gratis?</a></p>
+            <p><a class="texto_plano">4. ¿Cómo Pago?</a></p>
+            <div class="button1">
+            <a href="faq.html">Ver más</a> 
+            </div>
+        </div>
+    </body>
+</html>

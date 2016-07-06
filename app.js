@@ -91,14 +91,14 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 // para redirigir a https
-app.use (function (req, res, next) {
-      var schema = (req.headers['x-forwarded-proto'] || '').toLowerCase();
-      if (schema === 'https') {
-        next();
-      } else {
-        res.redirect('https://' + req.headers.host + req.url);
-      }
-    });
+// app.use (function (req, res, next) {
+//       var schema = (req.headers['x-forwarded-proto'] || '').toLowerCase();
+//       if (schema === 'https') {
+//         next();
+//       } else {
+//         res.redirect('https://' + req.headers.host + req.url);
+//       }
+//     });
 // para redirigir a https
 // Prueba del uso de middleware de express incorporando una función que siempre se ejecuta
 // app.use(function (req, res, next) {

@@ -24,14 +24,37 @@ var path = require('path');
 //     res.redirect('https://imgnpro.com'+req.url)
 // });
 
+  router.get('/',
+  function(req, res) {
+    res.sendFile(path.join(__dirname, '../public/htmls', 'intro.html'));
 
-// Passport local 
+    //res.sendFile('../public/htmls/intro.html' , { root : __dirname});
+    //console.log(req.user);
+  });
+
 /* GET login page. */
   router.get('/login', function(req, res) {
     // Display the Login page with any flash message, if any
     res.render('login', {message: req.flash('message')});
   });
  
+  router.get('/logout',
+  function(req, res){
+     
+     //res.redirect('https://www.facebook.com/logout.php?next=localhost:3000/&access_token='+passport.accessToken);
+     req.logOut();
+     req.session.destroy();
+     res.clearCookie('connect.sid');
+
+     setTimeout(function() {
+        res.redirect("/");
+     }, 1000);
+  });
+
+
+// Passport local 
+
+
   /* Maneja la aplicación principal */
   router.get('/principal', 
      require('connect-ensure-login').ensureLoggedIn('/login'),
@@ -48,48 +71,55 @@ var path = require('path');
     successFlash : true 
   }));
  
-  /* maneja si el registro fue exitoso */
-  router.get('/reslocal', function(req, res) {
-    var msjres = req.flash('success');
-    res.setHeader('Content-Type', 'application/json');
-    res.send(JSON.stringify({ error: 0, message: msjres[0]}));
-  });
-
-  // Si sucede un error al registrar un usuario se ejecuta esta ruta
-  router.get('/signup_error', function(req, res) {
-    var msjres = req.flash('error');
-    res.setHeader('Content-Type', 'application/json');
-    res.send(JSON.stringify({ error: 1, message: msjres[0]}));
-  });
-
-  /* Handle Registration POST */
-  router.post('/signuplocal', passport.authenticate('signup', {
-    successRedirect: '/reslocal',
-    failureRedirect: '/signuplocal',
-    failureFlash : true,
-    successFlash : true 
-  }));
-
-
-  /* GET Registration Page */
-  router.get('/signup', function(req, res){
-    console.log("get signup");
-    res.render('registerlocal',{ message: req.flash('message')});
-  });
- 
-
- /* Handle Registration POST */
+   /* Handle Registration POST */
   router.post('/signup', passport.authenticate('signup', {
-    successRedirect: '/reslocal',
+    successRedirect: '/signup_success',
     failureRedirect: '/signup_error',
     failureFlash : true, 
     successFlash : true 
   }));
 
+  /* maneja si el registro fue exitoso */
+  // router.get('/signup_success', function(req, res) {
+  //   var msjres = req.flash('success');
+  //   res.setHeader('Content-Type', 'application/json');
+  //   res.send(JSON.stringify({ error: 0, message: msjres[0]}));
+  // });
 
- 
 
 
+ router.get('/signup_success', require('connect-ensure-login').ensureLoggedIn('/login'),
+    function(req, res){
+        var msjres = req.flash('success');
+        res.setHeader('Content-Type', 'application/json');
+        res.send(JSON.stringify({ error: 0, message: msjres[0]}));
+  });
+
+
+
+
+  // Si sucede un error al registrar un usuario se ejecuta esta ruta
+  router.get('/signup_error', function(req, res) {
+    var msjres = req.flash('error');
+    if (msjres[0]!= undefined){
+         console.log(msjres[0]);
+         res.setHeader('Content-Type', 'application/json');
+         res.send(JSON.stringify({ error: 1, message: msjres[0]}));
+    }
+    else {
+         res.redirect('/');
+    }
+  });
+
+
+
+  /* Handle Registration POST */
+  // router.post('/signuplocal', passport.authenticate('signup', {
+  //   successRedirect: '/reslocal',
+  //   failureRedirect: '/signuplocal',
+  //   failureFlash : true,
+  //   successFlash : true 
+  // }));
 
 // Passport local
 
@@ -100,20 +130,6 @@ var path = require('path');
 //     //console.log(req.user);
 //   });
 
-
-
-
-
-
-
-router.get('/',
-  function(req, res) {
-    res.sendFile(path.join(__dirname, '../public/htmls', 'intro.html'));
-
-    //res.sendFile('../public/htmls/intro.html' , { root : __dirname});
-    //console.log(req.user);
-  });
-
 //res.sendFile(__dirname + '/indexAgent.html');
 
 router.get('/uploadfile',
@@ -121,10 +137,10 @@ router.get('/uploadfile',
     res.render('uploadfile', { user: req.user });
   });
 
-router.get('/paypal',
-  function(req, res) {
-    res.render('paypal', { user: req.user });
-  });
+// router.get('/paypal',
+//   function(req, res) {
+//     res.render('paypal', { user: req.user });
+//   });
 
 
 // router.get('/login',
@@ -132,18 +148,12 @@ router.get('/paypal',
 //     res.render('login');
 //   });
 
-router.get('/logout',
-  function(req, res){
-     
-     //res.redirect('https://www.facebook.com/logout.php?next=localhost:3000/&access_token='+passport.accessToken);
-     req.logOut();
-     req.session.destroy();
-     res.clearCookie('connect.sid');
-
-     setTimeout(function() {
-        res.redirect("/");
-     }, 1000);
-  });
+ // /* GET Registration Page */
+  // router.get('/signup', function(req, res){
+  //   console.log("get signup");
+  //   res.render('registerlocal',{ message: req.flash('message')});
+  // });
+ 
 
 router.get('/login/facebook',
   passport.authenticate('facebook'));

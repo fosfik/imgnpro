@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Subir mis fotos</title>
+
+    <!-- Dependencies! -->
+    <script type="text/javascript" src="js/angular.js"></script>
+    <script type="text/javascript" src="js/ng-droplet.js"></script>
+    <script type="text/javascript" src="js/progressbar.js"></script>
+
+    <!-- Styles! -->
+    <link rel="stylesheet" type="text/css" href="../stylesheets/uploadfiles.css" />
+    <link href="http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,100italic,300italic,400italic,700italic,900italic" rel="stylesheet" type="text/css">
+
+    <!-- Application! -->
+    <script type="text/javascript" src="js/appuploadfiles.js"></script>
+    <meta charset="UTF-8">
+
+</head>
+<body ng-app="dropletApp">
+
+    <section class="background colourful"></section>
+
+    <section class="container">
+
+        <section class="droplet" ng-controller="IndexController" ng-class="{ uploading: interface.isUploading() }">
+
+            <h1><a target="_blank" href="https://github.com/Wildhoney/ngDroplet">Subir mis fotos</a></h1>
+
+            <ul class="statistics">
+                <li><label>Validos:</label> {{interface.getFiles(interface.FILE_TYPES.VALID).length}}</li>
+                <li><label>Invalidos:</label> {{interface.getFiles(interface.FILE_TYPES.INVALID).length}}</li>
+                <li><label>Enviados:</label> {{interface.getFiles(interface.FILE_TYPES.UPLOADED).length}}</li>
+                <li><label>Borrados:</label> {{interface.getFiles(interface.FILE_TYPES.DELETED).length}}</li>
+                <li><label>Total:</label> {{interface.getFiles().length}}</li>
+            </ul>
+
+            <section class="toolbar">
+
+                <input type="button" class="button upload-files" value="Enviar fotos"
+                       ng-click="interface.uploadFiles()"
+                       ng-hide="interface.isUploading()"
+                       ng-class="{ clickable: interface.isReady() }" />
+
+                <input type="button" class="button upload-files" value="Enviando..." ng-show="interface.isUploading()" />
+
+                <div class="add-files">
+                    <input type="button" class="button add-files" value="Agregar fotos..." />
+                    <droplet-upload-multiple ng-model="interface"></droplet-upload-multiple>
+                </div>
+
+                <comment class="progress" ng-class="{ visible: interface.isUploading() }">
+                    Enviando: {{interface.progress.percent}}%
+                </comment>
+
+            </section>
+
+            <droplet ng-model="interface">
+
+                <div class="loading" ng-class="{ visible: interface.isUploading() }">
+                    <svg viewBox="0 0 400 400">
+                        <path class="loading-path" data-progressbar ng-model="interface.progress.percent"
+                              d="M 0,1 L 398,1 L 398,234 L 1,234 L 0,1"
+                              stroke="#D3B2D1" stroke-width="1" fill-opacity="0"
+                              style="stroke-dasharray: 392px, 392px;stroke-dashoffset: 392px;"></path>
+                    </svg>
+                </div>
+
+                <comment></comment>
+
+                <section class="message success" ng-class="{ visible: success }" ng-click="success = false">
+                    Se enviaron exitosamente {{uploadCount}} fotos.
+                </section>
+
+                <section class="message error" ng-class="{ visible: error }" ng-click="error = false">
+                    Se presentó un problema al enviar algunas de las fotos.
+                </section>
+
+                <ul class="files">
+
+                    <li ng-repeat="model in interface.getFiles(interface.FILE_TYPES.VALID)">
+                        <droplet-preview ng-model="model"></droplet-preview>
+                        <div class="delete" ng-click="model.deleteFile()">&times;</div>
+                        <div class="size">{{model.file.size / 1024 / 1024 | number: 1}}MB</div>
+                    </li>
+
+                </ul>
+
+            </droplet>
+
+        </section>
+
+    </section>
+
+</body>
+</html>

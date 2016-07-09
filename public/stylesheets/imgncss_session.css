@@ -8,16 +8,18 @@
 html {
     background: #E5E5E5 no-repeat center center fixed;
     background-size: cover;
+    min-width: 850px;
+    height: 100%;
 }
 
 #menuver {
-    margin: 0;
     padding: 0;
+    margin-top: 0px;
     width: 160px;
     height: 100%;
-    display: block;
     margin-bottom: 0px;
 }
+
 
 #menuver ul{
     height: 100%;
@@ -27,17 +29,24 @@ html {
     margin-top: 0px;
 }
 
+#menuver ul li:first-child {
+    background-color: #E5E5E5;
+    height: 110px;
+    width: 160px;
+}
+
+#menuver ul li:first-child:hover {
+    background-color: #CCC;
+    padding-left: 0px;
+    text-align: center;
+}
+
 #menuver h1 {
-    padding: 20px;
+    text-align: center;
     transition: .2s;
 }
 
-#menuver h1:hover{
-    background-color: #DDDDDD;
-    transition: .2s;
-}
-
-#menuver li a{
+#menuver li a {
     text-decoration: none;
     font-size: 12px;
     color: #FFFFFF;
@@ -56,9 +65,11 @@ html {
     float: right;
     text-align: right;
     font-size: 12px;
-    width: 500px;
-    height: auto;
-    margin-top: 20px;
+    width: 80%;
+    min-width: 400px;
+    height: 40px;
+    padding-top: 20px;
+    margin-top: 0px;
     margin-right: 10px;
     display: inline-block;
     border-bottom: 2px #CCC solid;
@@ -72,6 +83,8 @@ html {
 
 .bienvenida ul{
     list-style: none;
+    height: 40px;
+    
 }
 
 .bienvenida li{
@@ -94,10 +107,12 @@ html {
 }
 
 #contenedor{
+    float: left;
     margin-left: 200px;
-    margin-top: 0px;
+    margin-top: 60px;
     display: inline-block;
-    width: 55%;
+    max-width: 100%;
+    min-width: 400px;
 }
 
 .encabezado {
@@ -110,14 +125,15 @@ html {
 }
 
 .tabla{
+    margin-top: 0px;
     padding: 10px;
 }
 
 table{
-    width: 80%;
     color: #000000;
     border-collapse: collapse;
     min-width: 400px;
+    width: 100%;
 }
 
 th, td{
@@ -152,7 +168,7 @@ td {
 }
 
 hr {
-    width: 80%;
+    width: 100%;
     margin-top: 20px;
     margin-bottom: 20px;
     border: 0;
@@ -171,12 +187,14 @@ hr {
 
 #menurigth {
     width: 180px;
-    margin-top: 0px;
+    margin-top: 60px;
     float: right;
     display: inline-block;
     height: 100%;
     padding-left: 20px;
-    border-left: 2px #CCC solid;
+    border-width: 2px 2px 2px 2px;
+    border-style: solid;
+    border-image: linear-gradient(to top, rgba(0, 0, 0, 0), #CCCCCC, rgba(0, 0, 0, 0)) 1 100%;
 }
 
 .button1 a{
@@ -193,4 +211,46 @@ hr {
     float: left;
     transition: .1s;
     margin-top: 30px;
+}
+
+.button2 a{
+    background-color: red;
+    color: #FFFFFF;
+    padding: 10px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    transition: .1s;
+    float: right;
+}
+#micuenta{
+    width: 100%;
+    height: 100%;
+    
+}
+.col1, .col2{
+    padding: 10px;
+    display: inline-block;
+    float: left;
+}
+
+.col2 {
+    margin-left: 20px;
+}
+
+#micuenta label{
+    font-size: 10px;
+    text-decoration: none;
+}
+
+#micuenta input{
+    text-decoration: none;
+    background: none;
+    font-size: 12px;
+    width: 180px;
+    font-weight: bold;
+    margin-bottom: 10px;
 }

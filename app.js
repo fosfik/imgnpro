@@ -5,13 +5,11 @@ var passport = require('passport');
 var Strategy = require('passport-facebook').Strategy;
 var LocalStrategy = require('passport-local').Strategy;
 var config = require('./config');
-
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
@@ -20,37 +18,7 @@ var dbConfig = require('./db.js');
 var mongoose = require('mongoose');
 var User = require('./models/user.js');
 var bCrypt = require('bcrypt');
-
 mongoose.connect(dbConfig.url);
-
-
-
-
-// Retrieve
-// var MongoClient = require('mongodb').MongoClient;
-
-// // Connect to the db
-// MongoClient.connect("mongodb://admin:1j79ol4f@ds051903.mlab.com:51903/heroku_554zpg9r", function(err, db) {
-//   if(!err) {
-//     console.log("We are connected");
-//     MongoClient.prueba.insert(
-//     {
-//         name:"Tyrion",
-//         hobbyes:["books","girls","wine"],
-//         friends:
-//         [
-//             {name:"Bronn", ocuppation:"sellsword"},
-//             {name:"Shae", ocuppation:"handmaiden"}
-//         ]
-//     })
-//   }
-//   else
-//   {
-//     console.log("not connected"); 
-//   }
-// });
-
-
 var app = express();
 
 // view engine setup

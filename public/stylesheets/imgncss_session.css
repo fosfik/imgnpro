@@ -287,3 +287,52 @@ hr {
 .buttonblue img {
     margin-right: 10px;
 }
+
+.especificaciones_form{
+    padding: 10px;
+    display: inline-block;
+    float: left;
+}
+
+
+.especificaciones_form label {
+    font-size: 10px;
+    text-decoration: none;
+}
+
+.especificaciones_form input {
+    text-decoration: none;
+    background: none;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.checks {
+    width: auto;
+}
+
+.margin {
+    width: 25px;
+    text-align: right;
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+.especificaciones_form select {
+    text-decoration: none;
+    background: none;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.especificaciones_form a{
+    font-size: 12px;
+    font-weight: bold;
+    margin-left: 3px;
+}
+
+.radio {
+    max-width: 20px;
+}

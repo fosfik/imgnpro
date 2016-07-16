@@ -52,11 +52,11 @@
                     <option value="sin_fondo">SIN FONDO</option>
                 </select><br>
                 <label>Alineación</label><br>
-                <input class="checks" type="checkbox" name="alineacion" value="centrado" onclick=""><a>Centrado</a>
-                <input class="radio" type="radio" name="updown" value="arriba"><a>Arriba</a>
-                <input class="radio" type="radio" name="updown" value="abajo"><a>Abajo</a>
-                <input class="radio" type="radio" name="leftright" value="derecha"><a>Derecha</a>
-                <input class="radio" type="radio" name="leftright" value="izquierda"><a>Izquierda</a>
+                <input id="chkalgn" class="checks" type="checkbox" name="alineacion" value="centrado" onclick="javascript:desactRadioAlign();"><a>Centrado</a>
+                <input id="radioup" class="radio" type="radio" name="updown" value="arriba"><a>Arriba</a>
+                <input id="radiodown" class="radio" type="radio" name="updown" value="abajo"><a>Abajo</a>
+                <input id="radioright" class="radio" type="radio" name="leftright" value="derecha"><a>Derecha</a>
+                <input id="radioleft" class="radio" type="radio" name="leftright" value="izquierda"><a>Izquierda</a>
                 <br>
                 <label>Márgenes</label><br>
                 <label>Arriba</label><input class="margin" type="text" value="5"> <label>Abajo</label><input class="margin" type="text" value="5"> <label>Derecha</label><input class="margin" type="text" value="5"> <label>Izquierda</label><input class="margin" type="text" value="5"><br>
@@ -95,5 +95,17 @@
             <a href="faq.html">Ver más</a> 
             </div>
         </aside>
+        <script>
+
+            function desactRadioAlign(){
+                var chkalng = document.getElementById('chkalgn').checked;
+                document.getElementById("radioup").disabled = chkalng;
+                document.getElementById("radiodown").disabled = chkalng; 
+                document.getElementById("radioright").disabled = chkalng;
+                document.getElementById("radioleft").disabled = chkalng; 
+            }
+
+        </script>
+        
     </body>
 </html>

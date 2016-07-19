@@ -52,21 +52,29 @@
                     <option value="sin_fondo">SIN FONDO</option>
                 </select><br>
                 <label>Alineación</label><br>
-                <input id="chkalgn" class="checks" type="checkbox" name="alineacion" value="centrado" onclick="javascript:desactRadioAlign();"><a>Centrado</a>
-                <input id="radioup" class="radio" type="radio" name="updown" value="arriba"><a>Arriba</a>
-                <input id="radiodown" class="radio" type="radio" name="updown" value="abajo"><a>Abajo</a>
-                <input id="radioright" class="radio" type="radio" name="leftright" value="derecha"><a>Derecha</a>
-                <input id="radioleft" class="radio" type="radio" name="leftright" value="izquierda"><a>Izquierda</a>
+                <input id="chkalgnnone" class="checks" type="checkbox" name="alineacion" value="none" onclick="javascript:desactAllNext();"><span class="postinput">Sin Cambios</span>
+                <input id="chkalgn" class="checks" type="checkbox" name="alineacion" value="centrado" onclick="javascript:desactRadioAlign();"><span class="postinput">Centrado</span>
+                <input id="radioup" class="radio" type="radio" name="updown" value="arriba"><span class="postinput">Arriba</span>
+                <input id="radiodown" class="radio" type="radio" name="updown" value="abajo"><span class="postinput">Abajo</span>
+                <input id="radioright" class="radio" type="radio" name="leftright" value="derecha"><span class="postinput">Derecha</span>
+                <input id="radioleft" class="radio" type="radio" name="leftright" value="izquierda"><span class="postinput">Izquierda</span>
                 <br>
                 <label>Márgenes</label><br>
-                <label>Arriba</label><input class="margin" type="text" value="5"> <label>Abajo</label><input class="margin" type="text" value="5"> <label>Derecha</label><input class="margin" type="text" value="5"> <label>Izquierda</label><input class="margin" type="text" value="5"><br>
+                <select name="medida">
+                    <option value="cm">cm</option>
+                    <option value="px">px</option>
+                    <option value="%">%</option>
+                </select>
+                <span class="postinput">Arriba</span><input class="margin" type="text" value="5">
+                <span class="postinput">Abajo</span><input class="margin" type="text" value="5">
+                <span class="postinput">Derecha</span><input class="margin" type="text" value="5">
+                <span class="postinput">Izquierda</span><input class="margin" type="text" value="5"><br>
                 <label>Extras</label><br>
-                <input class="checks" type="checkbox"><a>Sombra Natural</a>
-                <input class="checks" type="checkbox"><a>Drop Shadow</a>
-                <input class="checks" type="checkbox"><a>Corrección de Color</a>
-                <input  class="checks" type="checkbox"><a>Clipping Path</a>
-                <input  class="checks" type="checkbox"><a>Retoque Básico</a>
-                
+                <input class="checks" type="checkbox"><span  class="postinput">Sombra Natural</span>
+                <input class="checks" type="checkbox"><span class="postinput">Drop Shadow</span>
+                <input class="checks" type="checkbox"><span class="postinput">Corrección de Color</span>
+                <input  class="checks" type="checkbox"><span class="postinput">Clipping Path</span>
+                <input  class="checks" type="checkbox"><span class="postinput"> Retoque Básico</span>
             </form>
             <section id="area_botones">
                 <div class="buttonblue">
@@ -98,14 +106,23 @@
         <script>
 
             function desactRadioAlign(){
-                var chkalng = document.getElementById('chkalgn').checked;
-                document.getElementById("radioup").disabled = chkalng;
-                document.getElementById("radiodown").disabled = chkalng; 
-                document.getElementById("radioright").disabled = chkalng;
-                document.getElementById("radioleft").disabled = chkalng; 
+                var chkalgn = document.getElementById('chkalgn').checked;
+                document.getElementById("radioup").disabled = chkalgn;
+                document.getElementById("radiodown").disabled = chkalgn; 
+                document.getElementById("radioright").disabled = chkalgn;
+                document.getElementById("radioleft").disabled = chkalgn; 
             }
-
+            
+            function desactAllNext(){
+                var chkalgnnone = document.getElementById('chkalgnnone').checked;
+                document.getElementById("chkalgn").disabled = chkalgnnone;
+                document.getElementById("radioup").disabled = chkalgnnone;
+                document.getElementById("radiodown").disabled = chkalgnnone; 
+                document.getElementById("radioright").disabled = chkalgnnone;
+                document.getElementById("radioleft").disabled = chkalgnnone; 
+            }
+         
         </script>
-        
+
     </body>
 </html>

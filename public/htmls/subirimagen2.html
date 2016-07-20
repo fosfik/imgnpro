@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8">
+        <title>IMGNpro, hagamos que tu producto destaque</title>
+        <link rel="stylesheet" href="../stylesheets/imgncss_session.css">
+        <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico"/>
+        <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+        <script type="text/javascript" src="../js/dropzone.js"></script>
+        <script type="text/javascript">
+            Dropzone.autoDiscover = false;
+            $(document).ready(function(){
+                $("div#myId").dropzone({
+                    url:"#",
+                    dictDefaultMessage: "Arrastra y suelta tus archivos aquí",
+                    method: "PUT",
+                    uploadMultiple: false,
+                    paramName: "file",
+                    maxFiles: 10,
+                    thumbnailWidth: 100,
+                    thumbnailHeight: 100,
+                    parallelUploads: 20,
+                    autoProcessQueue: true,
+                    //previewTemplate: dropPreviewTemplate,
+                    //autoQueue: false, // Make sure the files aren't queued until manually added
+                    //previewsContainer: dropPreviewContainer, // Define the container to display the previews
+                    clickable: true, //".fileinput-button" // Define the element that should be used as click trigger to select files.
+                    accept: function(file, cb) {
+                    //override the file name, to use the s3 signature
+                    //console.log(file);
+                    var params = {
+                    filename: file.name,
+                    filetype: file.type,
+                    };
+                    //path to S3 signature
+                    $.getJSON('/sign-s3', params).done(function(data) {
+                    //console.log(data);
+
+                    if (!data.signedRequest) {
+                        return cb('Failed to receive an upload url');
+                    }
+
+                    file.signedRequest = data.signedRequest;
+                    file.finalURL = data.downloadURL;
+                    cb();
+                    }).fail(function() {
+                        return cb('Failed to receive an upload url');
+                    });
+                    },
+                    sending: function(file, xhr) {
+
+                        console.log('sending')
+                        var _send = xhr.send;
+                        xhr.setRequestHeader('x-amz-acl', 'public-read');
+                        xhr.send = function() {
+                            _send.call(xhr, file);
+                        }
+
+                    },
+                    processing:function(file){
+
+                        this.options.url = file.signedRequest;
+
+                    }
+
+                });
+                });
+        </script>
+<link rel="stylesheet" href="../stylesheets/dropzone.css">
+    </head>
+    <body>
+        <header class="bienvenida">
+            <ul>
+                <li>Bienvenido <a id="user" class="bold">Lupito Pérez</a><a class="bold">!</a></li>
+                <li>Órdenes en Proceso <a id="orders" class="bold">2</a></li>
+                <li><a id="salir" class="bold" href="logout">Salir</a></li>
+            </ul>
+        </header>
+        <section id="menuver">
+            <nav>
+                <ul>
+                    <li class="menulogo"><h1><a href="principal.html"><img src="../images/logo_black.png" alt="logo"></a></h1></li>
+                    <li><a href="micuenta.html">Mi Cuenta</a></li>
+                    <li><a href="historial.html">Historial</a></li>
+                    <li><a href="especificaciones1.html">Especificaciones</a></li>
+                    <li><a href="uploadfiles.html">Subir Imagenes</a></li>
+                    <li><a href="contacto.html">Contacto</a></li>
+                </ul>
+            </nav>
+        </section>
+    <section id="contenedor">
+        <p class="encabezado">Subir Imágenes</p>
+        <a class="ruta_on">Sube tus imágenes</a>
+        <a class="slash">/</a>
+        <a class="ruta">Especificación</a>
+        <a class="slash">/</a>
+        <a class="ruta">Tamaño</a>
+        <a class="slash">/</a>
+        <a class="ruta">Alineación</a>
+        <a class="slash">/</a>
+        <a class="ruta">Margen</a>
+        <a class="slash">/</a>
+        <a class="ruta">Extras</a>
+        <div>
+            <div id="myId" class="dropzone"> </div>
+        </div>
+        <div class="picnum">Total</div>
+        <div class="picnum">2</div>
+        <div class="picnum">Imágenes</div>
+        <hr>
+        <div class="button2">
+            <a href="registro.html">Guardar y Subir Imágenes</a>
+        </div>
+    </section>
+        <aside id="menurigth">
+            <p class="encabezado"> Tutorial</p>
+             <div class="video_med"><a onclick="ponleplay()" href="#openVideoModal"><img src="../images/tumbnail_video.jpg" width="140px"></a></div>
+            <hr>
+            <p class="encabezado"> FAQs</p>
+            <p><a class="texto_plano">1. ¿Están seguros mis datos?</a></p>
+            <p><a class="texto_plano">2. ¿Tiempo de Entrega?</a></p>
+            <p><a class="texto_plano">3. ¿Prueba Gratis?</a></p>
+            <p><a class="texto_plano">4. ¿Cómo Pago?</a></p>
+            <div class="button1">
+            <a href="faq.html">Ver más</a> 
+            </div>
+        </aside>
+    </body>
+</html>

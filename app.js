@@ -316,48 +316,42 @@ passport.use('login', new LocalStrategy({
 
 
 // passport.use('signup', new LocalStrategy({
-//     passReqToCallback : true,
-//     usernameField: 'email'
+//     passReqToCallback : true
 //   },
 //   function(req, username, password, done) {
 //     findOrCreateUser = function(){
 //       // find a user in Mongo with provided username
-//       console.log('Crear usuario');
-//       mongoose.model('User').findOne({'email':username},function(err, user) {
+//       User.findOne({'username':username},function(err, user) {
 //         // In case of any error return
 //         if (err){
-//           console.log('Error al crear cuenta: '+err);
+//           console.log('Error in SignUp: '+err);
 //           return done(err);
 //         }
-//           // already exists
-//           if (user) {
-//             console.log('User already exists');
-//             return done(null, false,{message:'El correo ya existe'});
-//           } 
-//           else {
-//             // if there is no user with that email
-//             // create the user
-
-//               mongoose.model('User').create({
-
-//                 userlongname : req.param('userlongname'),
-//                 password : createHash(password),
-//                 email : username,
-//                 accept_terms : req.param('accept_terms'),
-     
-//               }, function(err,userNew) {
-//                    if (err){
-//                      console.log('No se pudo guardar el usuario: '+err);  
-//                      throw err;  
-//                    }
-//                    else{
-//                       console.log('Se registró correctamente el usuario');
-//                       console.log(user);    
-//                       return done(null,mongoose.model('User'), {message:'Se registró correctamente el usuario'});
-//                    }
-//                   }
-//             );
-
+//         // already exists
+//         if (user) {
+//           console.log('User already exists');
+//           return done(null, false, 
+//              req.flash('message','User Already Exists'));
+//         } else {
+//           // if there is no user with that email
+//           // create the user
+//           var newUser = new User();
+//           // set the user's local credentials
+//           newUser.username = username;
+//           newUser.password = createHash(password);
+//           newUser.email = req.param('email');
+//           newUser.firstName = req.param('firstName');
+//           newUser.lastName = req.param('lastName');
+ 
+//           // save the user
+//           newUser.save(function(err) {
+//             if (err){
+//               console.log('Error in Saving user: '+err);  
+//               throw err;  
+//             }
+//             console.log('User Registration succesful');    
+//             return done(null, newUser);
+//           });
 //         }
 //       });
 //     };
@@ -365,7 +359,61 @@ passport.use('login', new LocalStrategy({
 //     // Delay the execution of findOrCreateUser and execute 
 //     // the method in the next tick of the event loop
 //     process.nextTick(findOrCreateUser);
-//   }));
+//   })
+// );
+
+
+
+
+passport.use('signup', new LocalStrategy({
+    passReqToCallback : true,
+    usernameField: 'email'
+  },
+  function(req, username, password, done) {
+    console.log("prueba");
+    findOrCreateUser = function(){
+      // find a user in Mongo with provided username
+     User.findOne({'email':username},function(err, user) {
+        // In case of any error return
+         if (err){
+           console.log('Error al crear cuenta: '+err);
+           return done(err);
+         }
+         console.log("prueba 2");
+       // already exists
+        if (user) {
+          console.log('User already exists');
+          return done(null, false,{message:'El correo ya existe'});
+        } 
+        else {
+          // if there is no user with that email
+          // create the user
+          var newUser = new User();
+          // set the user's local credentials
+          newUser.userlongname = req.param('userlongname');
+          newUser.password = createHash(password);
+          newUser.email = username;
+          newUser.accept_terms = req.param('accept_terms');
+ 
+          // save the user
+          newUser.save(function(err) {
+            if (err){
+              console.log('No se pudo guardar el usuario: '+err);  
+              throw err;  
+            }
+            console.log('Se registró correctamente el usuario');    
+            return done(null, newUser, {message:'Se registró correctamente el usuario'});
+          }
+          );
+        }
+      });
+
+    };
+ 
+    // Delay the execution of findOrCreateUser and execute 
+    // the method in the next tick of the event loop
+    process.nextTick(findOrCreateUser);
+  }));
 
           
           // var newUser = new mongoose.model('User').create();
@@ -387,9 +435,6 @@ passport.use('login', new LocalStrategy({
           // }
 
           // );
-
-
-
           
 
     

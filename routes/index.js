@@ -178,7 +178,7 @@ router.get('/profile',
 
 
 
-const S3_BUCKET = process.env.S3_BUCKET;
+const S3_BUCKET = process.env.S3_BUCKET_NAME;
 
 
 

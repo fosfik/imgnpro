@@ -5,6 +5,28 @@
         <title>IMGNpro, hagamos que tu producto destaque</title>
         <link rel="stylesheet" href="../stylesheets/imgncss_session.css">
         <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico"/>
+
+    <style type="text/css">
+        
+        .checks {
+    padding-left:5px;
+    padding-right:5px;
+    border-radius:15px;
+
+    -webkit-appearance:button;
+
+    border: double 2px #00F;
+
+    background-color:#0b0095;
+    color:#FFF;
+    white-space: nowrap;
+    overflow:hidden;
+
+    width:15px;
+    height:15px;
+}
+
+    </style>>    
     </head>
     <body>
         <header class="bienvenida">
@@ -52,7 +74,7 @@
                     <option value="sin_fondo">SIN FONDO</option>
                 </select><br>
                 <label>Alineación</label><br>
-                <input id="chkalgn" class="checks" type="checkbox" name="alineacion" value="centrado" onclick="javascript:desactRadioAlign();"><a>Centrado</a>
+                <input id="chkalgn" class="checks" type="checkbox" name="alineacion" value="centrado" onclick="javascript:desactRadioAlign();"><span class="checks">Centrado</span>
                 <input id="radioup" class="radio" type="radio" name="updown" value="arriba"><a>Arriba</a>
                 <input id="radiodown" class="radio" type="radio" name="updown" value="abajo"><a>Abajo</a>
                 <input id="radioright" class="radio" type="radio" name="leftright" value="derecha"><a>Derecha</a>

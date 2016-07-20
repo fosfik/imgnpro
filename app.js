@@ -14,11 +14,13 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 
 //MongoDB 
-var dbConfig = require('./db.js');
+var dbConfig = require('./models/db.js');
 var mongoose = require('mongoose');
 var User = require('./models/user.js');
 var bCrypt = require('bcrypt');
-mongoose.connect(dbConfig.url);
+
+//mongoose.connect(dbConfig.url);
+
 var app = express();
 
 // view engine setup
@@ -28,6 +30,23 @@ app.set('view engine', 'jade');
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
+
+
+
+
+// var newUser1 = new User();
+//           // set the user's local credentials
+// newUser1.userlongname = "Juan Ernesto";
+// newUser1.password = "12345";
+// newUser1.email = "miemail@gmail.com";
+// // save the user
+// newUser1.save(function(err) {
+//   if (err){
+//     console.log('No se pudo guardar el usuario: '+err);  
+//     throw err;  
+//   }
+//   console.log('Se registró correctamente el usuario');    
+// });
 
 
 // el orden de los app.use es importante
@@ -59,14 +78,14 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 // para redirigir a https
-app.use (function (req, res, next) {
-     var schema = (req.headers['x-forwarded-proto'] || '').toLowerCase();
-     if (schema === 'https') {
-         next();
-     } else {
-       res.redirect('https://' + req.headers.host + req.url);
-     }
-   });
+// app.use (function (req, res, next) {
+//      var schema = (req.headers['x-forwarded-proto'] || '').toLowerCase();
+//      if (schema === 'https') {
+//          next();
+//      } else {
+//        res.redirect('https://' + req.headers.host + req.url);
+//      }
+//    });
 // para redirigir a https
 // Prueba del uso de middleware de express incorporando una función que siempre se ejecuta
 // app.use(function (req, res, next) {
@@ -294,38 +313,41 @@ passport.use('signup', new LocalStrategy({
   function(req, username, password, done) {
     findOrCreateUser = function(){
       // find a user in Mongo with provided username
-      User.findOne({'email':username},function(err, user) {
+      console.log('Crear usuario');
+      mongoose.model('User').findOne({'email':username},function(err, user) {
         // In case of any error return
         if (err){
           console.log('Error al crear cuenta: '+err);
           return done(err);
         }
-        // already exists
-        if (user) {
-          console.log('User already exists');
-          return done(null, false,{message:'El correo ya existe'});
-        } else {
-          // if there is no user with that email
-          // create the user
-          
-          var newUser = new User();
-          // set the user's local credentials
-          newUser.userlongname = req.param('userlongname');
-          newUser.password = createHash(password);
-          newUser.email = username;
-          newUser.accept_terms = req.param('accept_terms');
- 
-          // save the user
-          newUser.save(function(err) {
-            if (err){
-              console.log('No se pudo guardar el usuario: '+err);  
-              throw err;  
-            }
-            console.log('Se registró correctamente el usuario');    
-            return done(null, newUser, {message:'Se registró correctamente el usuario'});
-          });
+          // already exists
+          if (user) {
+            console.log('User already exists');
+            return done(null, false,{message:'El correo ya existe'});
+          } 
+          else {
+            // if there is no user with that email
+            // create the user
 
-          
+              mongoose.model('User').create({
+
+                userlongname : req.param('userlongname'),
+                password : createHash(password),
+                email : username,
+                accept_terms : req.param('accept_terms'),
+     
+              }, function(err,userNew) {
+                   if (err){
+                     console.log('No se pudo guardar el usuario: '+err);  
+                     throw err;  
+                   }
+                   else{
+                      console.log('Se registró correctamente el usuario');
+                      console.log(user);    
+                      return done(null,mongoose.model('User'), {message:'Se registró correctamente el usuario'});
+                   }
+                  }
+            );
 
         }
       });
@@ -336,6 +358,32 @@ passport.use('signup', new LocalStrategy({
     process.nextTick(findOrCreateUser);
   }));
 
+          
+          // var newUser = new mongoose.model('User').create();
+          // // set the user's local credentials
+          // newUser.userlongname = req.param('userlongname');
+          // newUser.password = createHash(password);
+          // newUser.email = username;
+          // newUser.accept_terms = req.param('accept_terms');
+ 
+          // // save the user
+          // newUser.save(function(err) {
+          //   if (err){
+          //     console.log('No se pudo guardar el usuario: '+err);  
+          //     throw err;  
+          //   }
+          //   console.log('Se registró correctamente el usuario');    
+          //   return done(null, newUser, {message:'Se registró correctamente el usuario'});
+          
+          // }
+
+          // );
+
+
+
+          
+
+    
 
 var isValidPassword = function(user, password){
   return bCrypt.compareSync(password, user.password);

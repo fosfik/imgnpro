@@ -32,6 +32,15 @@ app.set('view engine', 'jade');
 app.use(logger('dev'));
 
 
+// app.use(bodyParser.json() );       // to support JSON-encoded bodies
+// app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+//   extended: true
+// })); 
+
+
+/*
+ * Load the S3 information from the environment variables.
+ */
 
 
 // var newUser1 = new User();

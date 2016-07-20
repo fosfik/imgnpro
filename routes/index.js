@@ -202,8 +202,7 @@ router.get('/sign-s3', (req, res) => {
   console.log(fileType);
   s3.getSignedUrl('putObject', s3Params, (err, data) => {
     if(err){
-      console.log(err);
-      res.write(err);
+      console.log("error");
       return res.end();
     }
     const returnData = {

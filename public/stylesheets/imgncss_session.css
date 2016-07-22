@@ -361,3 +361,17 @@ hr {
     margin-top: 5px;
     margin-bottom: 15px;
 }
+
+.columna {
+    border: 2px solid #000000;
+    width: 200px;
+    padding: 10px;
+}
+
+.encabezado2 {
+    font-size: 20px;
+}
+
+.texto_plano2{
+    font-size: 12px
+}

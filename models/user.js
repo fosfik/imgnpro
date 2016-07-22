@@ -8,3 +8,11 @@ module.exports = mongoose.model('User',{
 });
 
 
+// var mongoose = require('mongoose');
+// var userSchema = new mongoose.Schema({
+//     userlongname: String,
+//     password: String,
+//     email: String,
+//     accept_terms: Boolean
+// });
+// mongoose.model('User', userSchema);

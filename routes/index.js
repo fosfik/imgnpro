@@ -56,17 +56,17 @@ var path = require('path');
 // Passport local 
 
 
-  /* Maneja la aplicación principal */
-  router.get('/principal', 
+  /* Maneja la aplicación micuenta */
+  router.get('/micuenta', 
      require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){
-           res.render('principal', {message: req.flash('message'), user: req.user});
+           res.render('micuenta', {message: req.flash('message'), user: req.user});
   });
 
 
   /* Handle Login POST */
   router.post('/signin', passport.authenticate('login', {
-    successRedirect: '/principal',
+    successRedirect: '/micuenta',
     failureRedirect: '/login',
     failureFlash : true,
     successFlash : true 

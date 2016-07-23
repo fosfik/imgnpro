@@ -1,5 +1,7 @@
 //var express = require('express');
+var compression = require('compression');
 var express = require('express');
+var ejs = require('ejs');
 var flash = require('connect-flash'); // middleware para mensajes en passport
 var passport = require('passport');
 var Strategy = require('passport-facebook').Strategy;
@@ -25,7 +27,12 @@ var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+// manejador de vistas ejs para usar HTML en lugas de archivos .jade
+//app.set('view engine', 'ejs');
+// Usar HTML en lugar de archivos ejs para mayor facilidad de los diseñadores.
+app.set('view engine', 'html');
+app.engine('html', ejs.renderFile);
+
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -105,6 +112,8 @@ app.use (function (req, res, next) {
 app.use('/', routes);
 app.use('/users', users);
 
+// Usar compresión de archivos para mejorar rendimiento
+app.use(compression());
 
 
 

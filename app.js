@@ -92,7 +92,8 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 // para redirigir a https
-app.use (function (req, res, next) {
+if (app.get('env') !== 'development') {
+  app.use (function (req, res, next) {
      var schema = (req.headers['x-forwarded-proto'] || '').toLowerCase();
      if (schema === 'https') {
          next();
@@ -100,6 +101,7 @@ app.use (function (req, res, next) {
        res.redirect('https://' + req.headers.host + req.url);
      }
    });
+}
 // para redirigir a https
 // Prueba del uso de middleware de express incorporando una función que siempre se ejecuta
 // app.use(function (req, res, next) {
@@ -114,6 +116,7 @@ app.use('/users', users);
 app.use(compression());
 
 
+console.log(app.get('env'));
 
 // PASSPORT.
 //var app = express();

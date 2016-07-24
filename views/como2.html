@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <% include partials/head.html %>        
+    </head>
+    <body>
+    <div id="contenedor">
+        <header>
+            <section id="logo">
+                <h1><a href="/"><img src="../images/logo_black.png" alt="logo"></a></h1>
+            </section>
+           <% include partials/menutop.html %>
+        </header>
+        <section id="texto_como2">
+            <div class="video">
+                <div class="video_med"><a onclick="ponleplay()" href="#openVideoModal"><img src="../images/tumbnail_video.jpg"></a></div>
+            </div>
+            <div class="atributos">
+                <ul>
+                    <li class="encabezado"><p>Precios Justos</p></li>
+                    <li class="encabezado"><p>Especificaciones Claras</p></li>
+                    <li class="texto_plano"><p>Te llevamos de la mano para
+                        optimizar tus imagenes.</p>
+                    </li>
+                    <li class="encabezado"><p>Garantía al 100%</p></li>
+                    <li class="texto_plano"><p>No tienes que preocuparte, tenemos
+                        el mejor control de calidad, para lograr tu total
+                        satisfacción.</p>
+                    </li>
+                    <li class="encabezado"><p>Siempre a Tiempo</p></li>
+                    <li class="texto_plano"><p>Ten la seguridad que siempre
+                        tendrás tus fotos a tiempo, contamos con un gran equipo humano.</p>
+                    </li>
+                </ul>
+            </div>
+        </section>
+        
+        <section id="botones_como1">
+            <div class="button1">
+            <a href="precios">Ver más</a>
+            </div>
+            <div class="button2">
+            <a href="registro">Empieza Ya!</a>
+            </div>
+        </section>
+                
+    </div>
+    <footer class="certificate">
+       <% include partials/footer.html %>
+    </footer>
+    <div id="openVideoModal" class="modalDialogVideo">
+        <div>
+            <a onclick="setCurTime()" href="#close" title="Close" Class="close">X</a>
+            <h1 class="encabezado">Video Tutorial</h1>
+            <video id="videoTutorial" poster="../images/tumbnail_video.jpg" width="400" preload="auto" controls><source src="../videos/big_buck_bunny.mp4" type="video/mp4"></video>
+        </div>
+    </div>
+        
+        <script>
+            var vid = document.getElementById("videoTutorial");
+            
+            function setCurTime() {
+                vid.currentTime=0;
+                vid.pause();
+            }
+            
+            function ponleplay() {
+                vid.play();
+            }
+        
+        </script>
+        
+    </body>
+</html>

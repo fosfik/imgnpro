@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <% include partials/headintro.html %>
+    </head>
+    <body>
+    <div id="contenedor">
+        <header>
+            <section id="logo">
+                <h1><a href="/"><img src="../images/logo_white.png" alt="logo"></a></h1>
+            </section>
+           <% include partials/menutop.html %>
+        </header>
+        <section id="texto_intro">
+            <p id="uno">¡Ahorra Tiempo y Dinero!</p>
+            <p id="dos">Hagamos que tu producto destaque</p>
+            <p id="tres">Recortamos la imagen del fondo</p>
+        </section>
+        <section id="botones_intro">
+            <div class="button1">
+            <a href="como">Ver más</a>
+            </div>
+            <div class="button2">
+            <a href="registro">Empieza Ya!</a>
+            </div>
+        </section>   
+    </div>
+    <footer class="certificate">
+        <% include partials/footer.html %>
+    </footer>
+    <div class="fondoopaco"></div>    
+
+<!--AQUI VA EL VIDEO DE INICIO
+        <video autoplay="autoplay" loop="loop" id="video_background" preload="auto" muted poster="../images/fondo_intro.jpg"><source src="../videos/big_buck_bunny.mp4" type="video/mp4">
+        </video>
+-->
+    </body>
+</html>

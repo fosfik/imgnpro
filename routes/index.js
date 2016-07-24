@@ -27,12 +27,42 @@ var path = require('path');
 
   router.get('/',
   function(req, res) {
-    res.sendFile(path.join(__dirname, '../public/htmls', 'intro.html'));
-
+    res.render('intro', {message: req.flash('message')});
     //res.sendFile('../public/htmls/intro.html' , { root : __dirname});
     //console.log(req.user);
   });
 
+
+/* GET como page. */
+  router.get('/como', function(req, res) {
+    // Display the Login page with any flash message, if any
+    res.render('como', {message: req.flash('message')});
+  });
+
+  router.get('/contacto', function(req, res) {
+    // Display the Login page with any flash message, if any
+    res.render('contacto', {message: req.flash('message')});
+  });
+
+  router.get('/registro', function(req, res) {
+    // Display the Login page with any flash message, if any
+    res.render('registro', {message: req.flash('message')});
+  });
+  router.get('/faq', function(req, res) {
+    // Display the Login page with any flash message, if any
+    res.render('faq', {message: req.flash('message')});
+  });
+
+  router.get('/como2', function(req, res) {
+    // Display the Login page with any flash message, if any
+    res.render('como2', {message: req.flash('message')});
+  });
+
+
+  router.get('/precios', function(req, res) {
+    // Display the Login page with any flash message, if any
+    res.render('precios', {message: req.flash('message')});
+  });
 /* GET login page. */
   router.get('/login', function(req, res) {
     // Display the Login page with any flash message, if any

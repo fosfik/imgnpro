@@ -2,7 +2,7 @@ var express = require('express');
 var aws = require('aws-sdk');
 var router = express.Router();
 var multer = require('multer');
-var cloudinary = require('cloudinary');
+//var cloudinary = require('cloudinary');
 var passport = require('passport');
 //var passport = require('passport-local');
 //var Strategy = require('passport-facebook').Strategy;
@@ -267,39 +267,39 @@ router.post('/save-details', (req, res) => {
 // app.use(express.static("public"));
 
 
-cloudinary.config({ 
-  cloud_name: config.cloudinary.cloud_name, 
-  api_key: config.cloudinary.api_key, 
-  api_secret: config.cloudinary.api_secret 
-});
+// cloudinary.config({ 
+//   cloud_name: config.cloudinary.cloud_name, 
+//   api_key: config.cloudinary.api_key, 
+//   api_secret: config.cloudinary.api_secret 
+// });
 
-var storage =   multer.diskStorage({
-  destination: function (req, file, callback) {
-    callback(null, 'public/uploads/');
-  },
-  filename: function (req, file, callback) {
-    callback(null, file.originalname + '-' + Date.now());
-  }
-});
+// var storage =   multer.diskStorage({
+//   destination: function (req, file, callback) {
+//     callback(null, 'public/uploads/');
+//   },
+//   filename: function (req, file, callback) {
+//     callback(null, file.originalname + '-' + Date.now());
+//   }
+// });
  
 
- var type = multer({ storage : storage}).single('photoimage');
+//  var type = multer({ storage : storage}).single('photoimage');
 
 
-router.post('/upload', type, function (req,res) {
+// router.post('/upload', type, function (req,res) {
 
-  /** When using the "single"
-      data come in "req.file" regardless of the attribute "name". **/
-  var tmp_path = req.file.path;
-  console.log(tmp_path);
-  cloudinary.uploader.upload(req.file.path, function(result) { 
-     console.log(result) 
-     //res.render("index");
-     res.render('photo', {file : result});
-     //res.send(result);
-  });
+//   /** When using the "single"
+//       data come in "req.file" regardless of the attribute "name". **/
+//   var tmp_path = req.file.path;
+//   console.log(tmp_path);
+//   cloudinary.uploader.upload(req.file.path, function(result) { 
+//      console.log(result) 
+//      //res.render("index");
+//      res.render('photo', {file : result});
+//      //res.send(result);
+//   });
 
-});
+// });
 
 
 

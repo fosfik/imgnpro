@@ -9,6 +9,9 @@
         <script type="text/javascript" src="../js/dropzone.js"></script>
         <script type="text/javascript">
             Dropzone.autoDiscover = false;
+            var acceptedFileType = ".jpg, .jpeg, .png, .tif, .tiff, .psd";
+            var imageCount = 1;
+            var imageUploadInfos =[];
             $(document).ready(function(){
                 $("div#myId").dropzone({
                     url:"#",
@@ -25,27 +28,32 @@
                     //autoQueue: false, // Make sure the files aren't queued until manually added
                     //previewsContainer: dropPreviewContainer, // Define the container to display the previews
                     clickable: true, //".fileinput-button" // Define the element that should be used as click trigger to select files.
+                    acceptedFiles: acceptedFileType,
                     accept: function(file, cb) {
                     //override the file name, to use the s3 signature
                     //console.log(file);
-                    var params = {
-                    filename: file.name,
-                    filetype: file.type,
-                    };
-                    //path to S3 signature
-                    $.getJSON('/sign-s3', params).done(function(data) {
-                    //console.log(data);
+                        var params = {
+                            filename: file.name,
+                            filetype: file.type,
+                        };
+                        //path to S3 signature
+                        $.getJSON('/sign-s3', params).done(function(data) {
+                            //console.log(data);
 
-                    if (!data.signedRequest) {
-                        return cb('Failed to receive an upload url');
-                    }
+                            if (!data.signedRequest) {
+                                return cb('Failed to receive an upload url');
+                            }
 
-                    file.signedRequest = data.signedRequest;
-                    file.finalURL = data.downloadURL;
-                    cb();
-                    }).fail(function() {
-                        return cb('Failed to receive an upload url');
-                    });
+                            file.signedRequest = data.signedRequest;
+                            file.finalURL = data.downloadURL;
+                            imageCount++;
+
+                            $('#imageCount').val(imageCount);
+
+                            cb();
+                        }).fail(function() {
+                            return cb('Failed to receive an upload url');
+                        });
                     },
                     sending: function(file, xhr) {
 
@@ -61,10 +69,30 @@
 
                         this.options.url = file.signedRequest;
 
+                    },
+                    complete:function(file){
+                        if (file.accepted && file.status == 'error' && file.retryTime > 5) {
+                            file.accepted = false;
+                            // removeStorageFile(file);
+                            // app._checkDone(this);
+
+                            // $(file.previewElement).find('.dz-remove').remove();
+                            // $(file.previewElement).find('.dz-progress').fadeOut();
+
+                            // app._showDefaultError(this, file, "Network Error!");
+                            alert("Error subiendo archivo");
+                        } else {
+                            imageUploadInfos.push({
+                                imageName: file.name,
+                                width: file.width,
+                                height: file.height,
+                                length: file.size
+                            });
+                        }
                     }
 
                 });
-                });
+            });
         </script>
 <link rel="stylesheet" href="../stylesheets/dropzone.css">
     </head>
@@ -105,7 +133,7 @@
             <div id="myId" class="dropzone"> </div>
         </div>
         <div class="picnum">Total</div>
-        <div class="picnum">2</div>
+        <div id = "imageCount" class="picnum">0</div>
         <div class="picnum">Imágenes</div>
         <hr>
         <div class="buttoncont">

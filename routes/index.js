@@ -16,6 +16,7 @@ var Orderstest = require('../models/order.js');
   router.get('/neworder', function(req, res) {
     // Display the Login page with any flash message, if any
 
+    var numorderstr="";
     var newOrder = new Orderstest();
           newOrder.name = 'orderfotos';
         
@@ -31,12 +32,22 @@ var Orderstest = require('../models/order.js');
             {
 
               console.log(' se guardo el pedido'); 
+              console.log(newOrder.testvalue);
               // res.render('como2', {message: req.flash('message')});
+              numorderstr = String(newOrder.testvalue);
+              console.log(numorderstr);
+        
+
+
+res.write('<h1>'+ numorderstr + '</h1>');
+    res.end();
             }
 
         });  
+    //res.set('Content-Type', 'application/javascript');
+    //res.render('ordertest', {numorder: numorderstr });
 
-    res.render('ordertest', {message: req.flash('message')});
+
   });
  
 

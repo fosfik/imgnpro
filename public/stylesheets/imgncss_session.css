@@ -294,6 +294,36 @@ hr {
     float: left;
 }
 
+.label {
+    display: inline-block;
+    width: 133px;
+    height: 95px;
+    margin-left: 400px;
+    position: absolute;
+    margin-top: 70px;
+    background: url(../images/label.svg);
+    background-size: cover;
+    text-align: center;
+}
+
+.texto_precio {
+    color: #FFFFFF;
+    font-size: 36px;
+    padding: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: 0px;
+}
+
+.texto_plano4{
+    color: #FFFFFF;
+    font-size: 10px;
+    font-style: italic;
+    padding: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: 5px;
+}
 
 .especificaciones_form label {
     font-size: 10px;
@@ -363,9 +393,27 @@ hr {
 }
 
 .columna {
+    display: inline-block;
     border: 2px solid #000000;
-    width: 200px;
-    padding: 10px;
+    width: 130px;
+    height: 100px;
+    padding: 20px;
+    margin-top: 50px;
+    vertical-align: bottom;
+    cursor: pointer;
+    text-decoration: none;
+    color: #000000;
+    transition: .2s;
+    margin-right: 20px;
+}
+
+.columna:hover{
+    z-index: 100;
+    background-color: #00BFFF;
+    color: #FFFFFF;
+    border: 2px solid #00BFFF;
+    transition: .3s;
+    box-shadow: 2px 2px 2px rgba(20, 20, 20, 0.2);
 }
 
 .encabezado2 {
@@ -373,5 +421,126 @@ hr {
 }
 
 .texto_plano2{
-    font-size: 12px
+    margin-top: 20px;
+    font-size: 12px;
 }
+
+.texto_plano3{
+    font-size: 10px;
+    font-style: italic;
+    color: red;
+    margin-top: 20px;
+    transition: .2s;
+}
+
+#colok .encabezado2{
+    color: r
+    font-size: 22px;
+    font-weight: bold;
+}
+
+#colok:hover {
+    background-color: red;
+    border: 2px solid red;
+}
+
+#colok:hover p{
+    color: #FFFFFF;
+    transition: .3s;
+}
+
+.buttonback a{
+    border: 2px solid;
+    border-color: #000000;
+    color: #000000;
+    padding: 10px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    float: left;
+    transition: .2s;
+    margin-top: 0px;
+}
+
+.buttonback a:hover, .buttoncont a:hover {
+    box-shadow: 2px 2px 2px rgba(20, 20, 20, 0.2);
+    transition: .3s;
+}
+
+.buttoncont a{
+    border: 2px solid;
+    border-color: #000000;
+    color: #000000;
+    padding: 10px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    float: right;
+    transition: .2s;
+    margin-top: 0px;
+}
+
+.recontenedor {
+    min-height: 150px;
+    border: 3px solid #000;
+    padding: 20px 20px;
+    max-width: auto;
+    height: 240px;
+}
+
+.recontenedor form{
+    display: block;
+    text-decoration: none;
+}
+
+.recontenedor label {
+    font-size: 10px;
+    text-decoration: none;
+}
+
+.recontenedor input {
+    text-decoration: none;
+    background: none;
+    font-size: 12px;
+    font-weight: bold;
+    width: 200px;
+    margin-bottom: 10px;
+}
+
+.recontenedor select {
+    text-decoration: none;
+    background: none;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+input[name="DPI"] {
+    width: 38px;
+    text-align: right;
+    margin-right: 5px;
+}
+
+input, select {
+    outline-color: #555555;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.checkcheck{
+    max-width: 20px;
+}
+
+.postcheck{
+    font-size: 12px;
+    font-weight: bold;
+}
+
+:-moz-placeholder {color: #BBBBBB; font-size: 12px; font-style: italic; font-weight: normal;}
+::-webkit-input-placeholder {color: #BBBBBB; font-size: 12px; font-style: italic; font-weight: normal;}

@@ -48,7 +48,7 @@
                             file.finalURL = data.downloadURL;
                             imageCount++;
   
-                            $('#imageCount').val(imageCount);
+                            $('#imageCount').innerHTML = imageCount;
 
                             cb();
                         }).fail(function() {

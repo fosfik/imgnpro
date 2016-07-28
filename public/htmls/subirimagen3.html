@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8">
+        <title>IMGNpro, hagamos que tu producto destaque</title>
+        <link rel="stylesheet" href="../stylesheets/imgncss_session.css">
+        <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico"/>
+    </head>
+    <body>
+        <header class="bienvenida">
+            <ul>
+                <li>Bienvenido <a id="user" class="bold">Lupito Pérez</a><a class="bold">!</a></li>
+                <li>Órdenes en Proceso <a id="orders" class="bold">2</a></li>
+                <li><a id="salir" class="bold" href="logout">Salir</a></li>
+            </ul>
+        </header>
+        <section id="menuver">
+            <nav>
+                <ul>
+                    <li class="menulogo"><h1><a href="principal.html"><img src="../images/logo_black.png" alt="logo"></a></h1></li>
+                    <li><a href="micuenta.html">Mi Cuenta</a></li>
+                    <li><a href="historial.html">Historial</a></li>
+                    <li><a href="especificaciones1.html">Especificaciones</a></li>
+                    <li><a href="subirimagen1.html">Subir Imagenes</a></li>
+                    <li><a href="contacto.html">Contacto</a></li>
+                </ul>
+            </nav>
+        </section>
+    <section id="contenedor">
+        <p class="encabezado">Subir Imágenes</p>
+        <a class="ruta">Sube tus imágenes</a>
+        <a class="slash">/</a>
+        <a class="ruta_on">Especificación</a>
+        <a class="slash">/</a>
+        <a class="ruta">Tamaño</a>
+        <a class="slash">/</a>
+        <a class="ruta">Alineación</a>
+        <a class="slash">/</a>
+        <a class="ruta">Margen</a>
+        <a class="slash">/</a>
+        <a class="ruta">Extras</a>
+        
+        <div class="recontenedor">
+            <form class="col1">
+                <label for="nombre">Nombre</label><br>
+                <input type="text" name="nombre" placeholder="Nombra tu Especificación" value="Página Herramientas"><br>
+                <label for="formato">Formato</label><br>
+                <select name="formato">
+                    <option value="jpg">JPG</option>
+                    <option value="jpg_web">JPG WEB</option>
+                    <option value="png">PNG</option>
+                    <option value="psd">PSD</option>
+                    <option value="tiff">TIFF</option>
+                </select><br>
+                <label for="modo">Modo Color</label><br>
+                <select name="modo">
+                    <option value="rgb">RGB</option>
+                    <option value="cmyk">CMYK</option>
+                </select><br>
+                <label for="fondo">Fondo</label><br>
+                <select name="fondo">
+                    <option value="blanco">BLANCO</option>
+                    <option value="negro">NEGRO</option>
+                    <option value="sin_fondo">SIN FONDO</option>
+                </select><br>
+                <label for="dpi">DPI</label><br>
+                <input id="depeis" type="text" name="DPI" value="300" maxlength="5"><label for="dpi">dpi</label>
+                <input id="chkalgnnone" class="checkcheck" type="checkbox" name="dpi" value="none" onclick="javascript:desactAllNext();"><span class="postcheck">Sin Cambios</span>
+            </form>
+        </div>
+        <div class="picnum">Seleccione las Opciones Adecuadas</div>
+        <hr>
+        <div class="buttonback">
+            <a href="subirimagen1.html">Regresar</a>
+        </div>
+        <div class="buttoncont">
+            <a href="subirimagen4.html">Continuar</a>
+        </div>
+    </section>
+        <aside id="menurigth">
+            <p class="encabezado"> Tutorial</p>
+             <div class="video_med"><a onclick="ponleplay()" href="#openVideoModal"><img src="../images/tumbnail_video.jpg" width="140px"></a></div>
+            <hr>
+            <p class="encabezado"> FAQs</p>
+            <p><a class="texto_plano">1. ¿Están seguros mis datos?</a></p>
+            <p><a class="texto_plano">2. ¿Tiempo de Entrega?</a></p>
+            <p><a class="texto_plano">3. ¿Prueba Gratis?</a></p>
+            <p><a class="texto_plano">4. ¿Cómo Pago?</a></p>
+            <div class="button1">
+            <a href="faq">Ver más</a> 
+            </div>
+        </aside>
+        <script>
+            function desactAllNext(){
+                var chkalgnnone = document.getElementById('chkalgnnone').checked;
+                document.getElementById("depeis").disabled = chkalgnnone; 
+            }
+         
+        </script>
+    </body>
+</html>

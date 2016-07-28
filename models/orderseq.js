@@ -1,12 +1,13 @@
 var mongoose = require('mongoose');
  
-module.exports = mongoose.model('User',{
-    userlongname: String,
-    username: String,
-    password: String,
-    email: String,
-    accept_terms: Boolean
+module.exports = mongoose.model('Orderseq',{
+    _id: String,
+    seq: Number
 });
+
+
+
+
 
 
 // var mongoose = require('mongoose');

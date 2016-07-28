@@ -44,6 +44,13 @@ app.use(logger('dev'));
 // })); 
 
 
+ 
+
+
+
+
+
+
 /*
  * Load the S3 information from the environment variables.
  */
@@ -378,7 +385,7 @@ passport.use('signup', new LocalStrategy({
     usernameField: 'email'
   },
   function(req, username, password, done) {
-    console.log("prueba");
+    //console.log("prueba");
     findOrCreateUser = function(){
       // find a user in Mongo with provided username
      User.findOne({'email':username},function(err, user) {
@@ -387,7 +394,7 @@ passport.use('signup', new LocalStrategy({
            console.log('Error al crear cuenta: '+err);
            return done(err);
          }
-         console.log("prueba 2");
+         //console.log("prueba 2");
        // already exists
         if (user) {
           console.log('User already exists');

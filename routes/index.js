@@ -8,6 +8,48 @@ var passport = require('passport');
 //var Strategy = require('passport-facebook').Strategy;
 var config = require('../config');
 var path = require('path');
+var Orderstest = require('../models/order.js');
+
+
+
+/* GET como page. */
+  router.get('/neworder', function(req, res) {
+    // Display the Login page with any flash message, if any
+
+    var newOrder = new Orderstest();
+          newOrder.name = 'orderfotos';
+        
+          
+          // save the user
+          newOrder.save(function(err) {
+            if (err){
+              console.log('No se pudo guardar el pedido: '+err); 
+              //res.render('como2', {message: req.flash('message')}); 
+              //throw err;  
+            }
+            else
+            {
+
+              console.log(' se guardo el pedido'); 
+              // res.render('como2', {message: req.flash('message')});
+            }
+
+        });  
+
+    res.render('ordertest', {message: req.flash('message')});
+  });
+ 
+
+ // router.get('/neworder',
+ //  function(req, res) {
+
+ //  });
+
+
+
+      
+
+
 //var flash = require('connect-flash'); // middleware para mensajes en passport
 
 //app.use(flash());
@@ -90,6 +132,20 @@ var path = require('path');
   router.get('/micuenta', 
      require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){
+
+          var newOrder = new Orders();
+          // set the user's local credentials
+          newOrder.useremail = 'userlongname';
+          
+          
+          // save the user
+          newOrder.save(function(err) {
+            if (err){
+              console.log('No se pudo guardar el pedido: '+err);  
+              throw err;  
+            }
+            console.log('Se registró correctamente el pedido ' + newOrder.useremail );    
+          });
            res.render('micuenta', {message: req.flash('message'), user: req.user});
   });
 

@@ -680,6 +680,8 @@ html, body {
 
 .certificate a {
     font-size: 12px;
+    color: #FFFFFF;
+    text-decoration: none;
 }
 
 .iconos span {

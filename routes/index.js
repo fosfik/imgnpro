@@ -140,30 +140,46 @@ res.write('<h1>'+ numorderstr + '</h1>');
 
 
   /* Maneja la aplicación micuenta */
-  router.get('/micuenta', 
+  // router.get('/micuenta', 
+  //    require('connect-ensure-login').ensureLoggedIn('/login'),
+  //        function(req, res){
+
+  //         var newOrder = new Orders();
+  //         // set the user's local credentials
+  //         newOrder.useremail = 'userlongname';
+          
+          
+  //         // save the user
+  //         newOrder.save(function(err) {
+  //           if (err){
+  //             console.log('No se pudo guardar el pedido: '+err);  
+  //             throw err;  
+  //           }
+  //           console.log('Se registró correctamente el pedido ' + newOrder.useremail );    
+  //         });
+  //          res.render('micuenta', {message: req.flash('message'), user: req.user});
+  // });
+
+
+  /* Maneja la aplicación principal */
+  router.get('/principal', 
      require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){
+           res.render('principal', {message: req.flash('message'), user: req.user});
+  });
 
-          var newOrder = new Orders();
-          // set the user's local credentials
-          newOrder.useremail = 'userlongname';
-          
-          
-          // save the user
-          newOrder.save(function(err) {
-            if (err){
-              console.log('No se pudo guardar el pedido: '+err);  
-              throw err;  
-            }
-            console.log('Se registró correctamente el pedido ' + newOrder.useremail );    
-          });
-           res.render('micuenta', {message: req.flash('message'), user: req.user});
+
+/* Maneja la pagina que tiene el dropzone para subir imágenes */
+  router.get('/subirimagen2', 
+     require('connect-ensure-login').ensureLoggedIn('/login'),
+         function(req, res){
+           res.render('subirimagen2', {message: req.flash('message'), user: req.user});
   });
 
 
   /* Handle Login POST */
   router.post('/signin', passport.authenticate('login', {
-    successRedirect: '/micuenta',
+    successRedirect: '/principal',
     failureRedirect: '/login',
     failureFlash : true,
     successFlash : true 

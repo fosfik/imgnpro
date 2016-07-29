@@ -48,11 +48,14 @@
                             file.finalURL = data.downloadURL;
                             imageCount++;
   
-                            $("div#imageCount").innerHTML = imageCount;
+                            $("div#imageCount").html(imageCount);
 
                             cb();
                         }).fail(function() {
+                            $("div#imageCount").html(imageCount);
+                            imageCount++;
                             return cb('Failed to receive an upload url');
+
                         });
                     },
                     sending: function(file, xhr) {

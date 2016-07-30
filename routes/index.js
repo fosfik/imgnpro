@@ -161,11 +161,48 @@ res.write('<h1>'+ numorderstr + '</h1>');
   // });
 
 
+/* Maneja la página micuenta */
+  router.get('/micuenta', 
+     require('connect-ensure-login').ensureLoggedIn('/login'),
+         function(req, res){
+           res.render('micuenta', {message: req.flash('message'), user: req.user});
+  });
+
+
+/* Maneja la página especificaciones1 */
+  router.get('/especificaciones1', 
+     require('connect-ensure-login').ensureLoggedIn('/login'),
+         function(req, res){
+           res.render('especificaciones1', {message: req.flash('message'), user: req.user});
+  });
+
+  /* Maneja la página especificaciones2 */
+  router.get('/especificaciones2', 
+     require('connect-ensure-login').ensureLoggedIn('/login'),
+         function(req, res){
+           res.render('especificaciones2', {message: req.flash('message'), user: req.user});
+  });
+
   /* Maneja la aplicación principal */
   router.get('/principal', 
      require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){
            res.render('principal', {message: req.flash('message'), user: req.user});
+  });
+
+/* Maneja la página historial */
+  router.get('/historial', 
+     require('connect-ensure-login').ensureLoggedIn('/login'),
+         function(req, res){
+           res.render('historial', {message: req.flash('message'), user: req.user});
+  });
+
+
+/* Maneja la pagina donde se escoge la tecnica para subir imagenes */
+  router.get('/subirimagen1', 
+     require('connect-ensure-login').ensureLoggedIn('/login'),
+         function(req, res){
+           res.render('subirimagen1', {message: req.flash('message'), user: req.user});
   });
 
 
@@ -174,6 +211,13 @@ res.write('<h1>'+ numorderstr + '</h1>');
      require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){
            res.render('subirimagen2', {message: req.flash('message'), user: req.user});
+  });
+
+/* Maneja la pagina donde se cierra el pedido o la orden de compra */
+  router.get('/subirimagen3', 
+     require('connect-ensure-login').ensureLoggedIn('/login'),
+         function(req, res){
+           res.render('subirimagen3', {message: req.flash('message'), user: req.user});
   });
 
 

@@ -20,11 +20,20 @@ var Orderstest = require('../models/order.js');
     var newOrder = new Orderstest();
           newOrder.name = 'orderfotos';
           newOrder.userid = req.user._id;
-        
+
+          newOrder.images.push({url:"https://s3.amazonaws/imagen.jpg", imagetype:"JPEG"});
+          newOrder.images.push({url:"https://s3.amazonaws/imagen2.jpg", imagetype:"JPEG"});
+          newOrder.images.push({url:"https://s3.amazonaws/imagen3.jpg", imagetype:"JPEG"});
+          newOrder.images.push({url:"https://s3.amazonaws/imagen4.jpg", imagetype:"JPEG"});
+          
+
+          
           
           // save the user
           newOrder.save(function(err) {
             if (err){
+              console.log(newOrder);
+              console.log(newOrder.images);
               console.log('No se pudo guardar el pedido: '+err); 
               //res.render('como2', {message: req.flash('message')}); 
               //throw err;  

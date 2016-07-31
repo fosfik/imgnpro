@@ -19,6 +19,7 @@ var Orderstest = require('../models/order.js');
     var numorderstr="";
     var newOrder = new Orderstest();
           newOrder.name = 'orderfotos';
+          newOrder.userid = req.user._id;
         
           
           // save the user
@@ -187,6 +188,7 @@ res.write('<h1>'+ numorderstr + '</h1>');
   router.get('/principal', 
      require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){
+          console.log(req.user);
            res.render('principal', {message: req.flash('message'), user: req.user});
   });
 

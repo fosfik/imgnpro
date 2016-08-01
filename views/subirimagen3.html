@@ -20,7 +20,7 @@
                                 document.getElementById('res_message').innerHTML= data.message;    
                             }
                             else{
-                                setTimeout(window.location='subirimagen4.html',500);
+                                setTimeout(window.location='/subirimagen4.html',500);
                             }
                         }
                     });
@@ -33,7 +33,10 @@
         <header class="bienvenida">
             <ul>
                 <li>Bienvenido <a id="user" class="bold"><%= user.userlongname %></a><a class="bold">!</a></li>
-                <li>Órdenes en Proceso <a id="orders" class="bold">2</a></li>
+                <li>Órdenes en Proceso <a id="orders" class="bold">0</a></li>
+                <li>Pedido número:<a id="" class="bold"><%= numorder %></a></li>
+
+                
                 <li><a id="salir" class="bold" href="logout">Salir</a></li>
             </ul>
         </header>
@@ -64,7 +67,7 @@
         <a class="ruta">Extras</a>
         
         <div class="recontenedor">
-            <form id = "specForm" class="col1" action="newspec" method="post">
+            <form id = "specForm" class="col1" action="/newspec" method="post">
                 <label for="nombre">Nombre</label><br>
                 <input type="text" name="name" placeholder="Nombra tu Especificación" value="Página Herramientas"><br>
                 <label for="formato">Formato</label><br>
@@ -92,6 +95,7 @@
                 <div>
                     <h1 id="res_message"></h1>
                 </div> 
+                <input type="hidden" name="numorder" value=<%= numorder %>>
             </form>
         </div>
         <div class="picnum">Seleccione las Opciones Adecuadas</div>

@@ -12,16 +12,18 @@ var Orderstest = require('../models/order.js');
 var Spec = require('../models/specification.js');
 
 
+
  
 /* GET como page. */
-  router.get('/neworder', function(req, res) {
+  router.post('/neworder', function(req, res) {
     // Display the Login page with any flash message, if any
-
+    console.log(req.body);
+    //console.log(req.params);
     var numorderstr="";
     var newOrder = new Orderstest();
           newOrder.name = 'orderfotos';
           newOrder.userid = req.user._id;
-
+          // todo: recorrer el req.body para obtener los datos de las imagenes
           newOrder.images.push({url:"https://s3.amazonaws/imagen.jpg", imagetype:"JPEG"});
           newOrder.images.push({url:"https://s3.amazonaws/imagen2.jpg", imagetype:"JPEG"});
           newOrder.images.push({url:"https://s3.amazonaws/imagen3.jpg", imagetype:"JPEG"});
@@ -38,6 +40,8 @@ var Spec = require('../models/specification.js');
               console.log('No se pudo guardar el pedido: '+err); 
               //res.render('como2', {message: req.flash('message')}); 
               //throw err;  
+              res.setHeader('Content-Type', 'application/json');
+              res.send(JSON.stringify({ error: 1, message: 'No se pudo guardar el pedido'})); 
 
 
             }
@@ -45,15 +49,18 @@ var Spec = require('../models/specification.js');
             {
 
               console.log(' se guardo el pedido'); 
-              console.log(newOrder.testvalue);
+              console.log(newOrder.numorder);
               // res.render('como2', {message: req.flash('message')});
-              numorderstr = String(newOrder.testvalue);
+              numorderstr = String(newOrder.numorder);
               console.log(numorderstr);
-        
+              
+
+              //res.write('<h1>'+ numorderstr + '</h1>');
+              //res.end();
+              res.setHeader('Content-Type', 'application/json');
+              res.send(JSON.stringify({ error: 0, message: 'Se guardó el pedido', numorder: newOrder.numorder})); 
 
 
-res.write('<h1>'+ numorderstr + '</h1>');
-    res.end();
             }
 
         });  
@@ -234,6 +241,13 @@ res.write('<h1>'+ numorderstr + '</h1>');
            res.render('subirimagen3', {message: req.flash('message'), user: req.user});
   });
 
+/* Maneja la pagina donde se cierra el pedido o la orden de compra */
+  router.get('/subirimagen3/:numorder', 
+     require('connect-ensure-login').ensureLoggedIn('/login'),
+         function(req, res){
+           console.log(req.params);
+           res.render('subirimagen3', {message: req.flash('message'), user: req.user, numorder:req.params.numorder});
+  });
 
   /* Handle Login POST */
   router.post('/signin', passport.authenticate('login', {
@@ -292,6 +306,7 @@ res.write('<h1>'+ numorderstr + '</h1>');
     console.log(req.param('colormode'));
     console.log(req.param('format'));
     console.log(req.param('dpi'));
+    console.log(req.param('numorder'));
 
     console.log(req.user._id);
 
@@ -303,7 +318,8 @@ res.write('<h1>'+ numorderstr + '</h1>');
           newSpec.background = req.param('background');
           newSpec.dpi = req.param('dpi');
           newSpec.userid = req.user._id; 
- 
+          newSpec.numorder = req.param('numorder'); 
+        
           // save the user
           newSpec.save(function(err) {
             if (err){
@@ -312,7 +328,26 @@ res.write('<h1>'+ numorderstr + '</h1>');
               res.send(JSON.stringify({ error: 1, message: 'No se pudo guardar la especificación'})); 
               throw err;  
             }
-            console.log('Se registró correctamente el usuario');    
+            console.log('Se guardó correctamente la especificación');
+
+
+
+// orderSchema.pre('save', function(next) {
+//     var doc = this;
+//     counter.findByIdAndUpdate({_id: 'entityId'}, {$inc: { seq: 1} },{upsert:true, new: true}, function(error, counter)   {
+//         if(error)
+//             return next(error);
+//         doc.numorder = counter.seq;
+//         next();
+//     }); 
+// });
+//             findOneAndUpdate(
+//     {_id: req.query.id},
+//     {$push: {items: item}},
+//     {safe: true, upsert: true},
+//     function(err, model) {
+//         console.log(err);
+//     }    
             res.setHeader('Content-Type', 'application/json');
             res.send(JSON.stringify({ error: 0, message: 'Se guardó la especificación'})); 
               

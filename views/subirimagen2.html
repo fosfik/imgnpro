@@ -48,13 +48,16 @@
                             file.signedRequest = data.signedRequest;
                             file.finalURL = data.downloadURL;
                             imageCount++;
-  
+                            //document.forms[0].imagelist.value = imageUploadInfos;
+
                             $("div#imageCount").html(imageCount);
 
                             cb();
                         }).fail(function() {
                             $("div#imageCount").html(imageCount);
                             imageCount++;
+                            //document.forms[0].imagelist.value = imageUploadInfos;
+
                             return cb('Failed to receive an upload url');
 
                         });
@@ -86,6 +89,7 @@
                             // app._showDefaultError(this, file, "Network Error!");
                             alert("Error subiendo archivo");
                         } else {
+                            // corregir esto para que solo agregue al array archivos completos
                             imageUploadInfos.push({
                                 imageName: file.name,
                                 width: file.width,
@@ -98,25 +102,52 @@
                 });
 
 
-                var frm = $('#buttoncontorder');
-                frm.click(function (ev) {
+
+
+
+
+
+
+
+                // var frm = $('#buttoncontorder');
+                // frm.click(function (ev) {
+                //     $.ajax({
+                //         type: 'GET',
+                //         url: 'neworder',
+                //         data: '1',
+                //         success: function (data) {
+                //             if (data.error == 1 ){
+                //                 document.getElementById('res_message').innerHTML= data.message;    
+
+                //             }
+                //             else{
+                //                 setTimeout(window.location='subirimagen3',500);
+                //             }
+                //         }
+                //     });
+
+                //     ev.preventDefault();
+                // });   
+
+                var buttonspec = $('#buttoncontorder');
+                var frm = $('#orderForm');
+                buttonspec.click(function (ev) {
                     $.ajax({
-                        type: 'GET',
-                        url: 'neworder',
-                        data: '1',
+                        type: frm.attr('method'),
+                        url: frm.attr('action'),
+                        data: {imageUploadInfos:imageUploadInfos, numorder:0},   //frm.serialize(),
                         success: function (data) {
                             if (data.error == 1 ){
                                 document.getElementById('res_message').innerHTML= data.message;    
-
                             }
                             else{
-                                setTimeout(window.location='subirimagen3',500);
+                                setTimeout(window.location='/subirimagen3/' + data.numorder,500);
                             }
                         }
                     });
-
                     ev.preventDefault();
-                });   
+                });  
+
 
             });
 
@@ -172,6 +203,9 @@
         <div>
             <h1 id="res_message"></h1>
         </div>  
+        <form id = "orderForm" class="" action="/neworder" method="post">
+            <input type="hidden" name="imagelist" placeholder="" value=""><br>
+        </form>
     </section>
         <aside id="menurigth">
             <p class="encabezado"> Tutorial</p>

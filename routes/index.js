@@ -9,9 +9,10 @@ var passport = require('passport');
 var config = require('../config');
 var path = require('path');
 var Orderstest = require('../models/order.js');
+var Spec = require('../models/specification.js');
 
 
-
+ 
 /* GET como page. */
   router.get('/neworder', function(req, res) {
     // Display the Login page with any flash message, if any
@@ -37,6 +38,8 @@ var Orderstest = require('../models/order.js');
               console.log('No se pudo guardar el pedido: '+err); 
               //res.render('como2', {message: req.flash('message')}); 
               //throw err;  
+
+
             }
             else
             {
@@ -280,7 +283,41 @@ res.write('<h1>'+ numorderstr + '</h1>');
     }
   });
 
+ /* Handle new specification POST */
+  router.post('/newspec', function (req,res) {
+    // body...
+    //console.log(req);
+    console.log(req.param('background'));
+    console.log(req.param('name'));
+    console.log(req.param('colormode'));
+    console.log(req.param('format'));
+    console.log(req.param('dpi'));
 
+    console.log(req.user._id);
+
+     var newSpec = new Spec();
+          // set the user's local credentials
+          newSpec.name = req.param('name');
+          newSpec.format = req.param('format');
+          newSpec.colormode = req.param('colormode');
+          newSpec.background = req.param('background');
+          newSpec.dpi = req.param('dpi');
+          newSpec.userid = req.user._id; 
+ 
+          // save the user
+          newSpec.save(function(err) {
+            if (err){
+              console.log('No se pudo guardar la especificación: ' + err); 
+              res.setHeader('Content-Type', 'application/json');
+              res.send(JSON.stringify({ error: 1, message: 'No se pudo guardar la especificación'})); 
+              throw err;  
+            }
+            console.log('Se registró correctamente el usuario');    
+            res.setHeader('Content-Type', 'application/json');
+            res.send(JSON.stringify({ error: 0, message: 'Se guardó la especificación'})); 
+              
+          });
+  });
 
   /* Handle Registration POST */
   // router.post('/signuplocal', passport.authenticate('signup', {
@@ -362,7 +399,7 @@ router.get('/sign-s3', (req, res) => {
   const s3Params = {
     Bucket: S3_BUCKET,
     Key: fileName,
-    Expires: 100000,
+    Expires: 10000,
     ContentType: fileType,
     ACL: 'public-read'
   };

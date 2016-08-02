@@ -4,7 +4,44 @@
         <meta charset="utf-8">
         <title>IMGNpro, hagamos que tu producto destaque</title>
         <link rel="stylesheet" href="../stylesheets/imgncss_session.css">
+        <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
         <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico"/>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                    $.ajax({
+                        type: 'get',
+                        url: '/listorders',
+                        success: function (data) {
+                            alert(data);
+                            alert(data[0].numorder);
+
+
+                            // var table = document.getElementById("orderstable");
+                            // var row = table.insertRow(0);
+                            // var cell1 = row.insertCell(0);
+                            // var cell2 = row.insertCell(1);
+                            // var cell3 = row.insertCell(2);
+                            // var cell4 = row.insertCell(3);
+                            // cell1.innerHTML = data[0].numorder;
+                            // cell2.innerHTML = data[0].imagecount;
+                            // cell3.innerHTML = data[0].date;
+                            // cell4.innerHTML = data[0].status;
+
+                            for (var i = 0; i < data.length; i++){
+                                var row = $("<tr>");
+                                row.append($("<td>" + data[i].numorder + "</td>"))
+                                     .append($("<td>" + data[i].imagecount + "</td>"))
+                                     .append($("<td>" + data[i].date + "</td>"))
+                                     .append($("<td>" + data[i].status + "</td>"));
+                                $("#orderstable tbody").append(row);
+                            }
+                              
+
+                        }
+                    });
+            });
+
+        </script>
     </head>
     <body>
         <header class="bienvenida">
@@ -27,7 +64,7 @@
             </nav>
         </section>
     <section id="contenedor">
-        <div class="tabla">
+        <div id= "orderstable" class="tabla">
             <p class="encabezado">Mis Pedidos</p>
             <table>
                 <tr>

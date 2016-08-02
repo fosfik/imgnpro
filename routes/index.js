@@ -13,10 +13,31 @@ var Spec = require('../models/specification.js');
 
 
 
+router.get('/listorders', function(req, res) {
+  Orderstest.find({'userid':req.user._id},function(err, orders) {
+    // In case of any error return
+     if (err){
+       console.log('Error al consultar');
+     }
+     //console.log("prueba 2");
+   // already exists
+    if (orders) {
+      console.log('se encontraron pedidos');
+      res.setHeader('Content-Type', 'application/json');
+      res.send(orders); 
+
+    } 
+    else {
+      console.log('No se encontraron pedidos');
+    }
+   
+  }).select('imagecount numorder status date');
+});
  
 /* GET como page. */
   router.post('/neworder', function(req, res) {
     // Display the Login page with any flash message, if any
+   // todo: modificar este try catch
    try {
     console.log(req.body['imageUploadInfos']);
     //console.log(req.params);

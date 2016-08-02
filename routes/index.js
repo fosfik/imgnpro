@@ -362,7 +362,7 @@ catch(err) {
           newSpec.background = req.param('background');
           newSpec.dpi = req.param('dpi');
           newSpec.userid = req.user._id; 
-          newSpec.numorder = req.param('numorder'); 
+          newSpec.specid = '0'; 
         
           // save the user
           newSpec.save(function(err) {
@@ -373,7 +373,18 @@ catch(err) {
               throw err;  
             }
             console.log('Se guardó correctamente la especificación');
+            console.log(newSpec._id);
 
+            Orderstest.findOneAndUpdate({numorder: req.param('numorder')}, {$set: { specid: newSpec._id } },{upsert:true, new: true}, function(error, Order)   {
+                if(error){
+                  //throw err;
+                  console.log(error);
+                }
+                else {
+                  console.log("Se actualizó el pedido");
+                } 
+                
+            }); 
 
 
 // orderSchema.pre('save', function(next) {

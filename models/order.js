@@ -7,6 +7,7 @@ var orderSchema = mongoose.Schema({
     date: { type: Date, default: Date.now },
     status: {type: String, default:'Generado'},
     imagecount: {type:Number, default:0},
+    specid: {type: String}, //id de la especificación
     images: [{  imagename: String, width: Number, height: Number, length: Number }]
 });
 orderSchema.pre('save', function(next) {

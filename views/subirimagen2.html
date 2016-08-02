@@ -11,7 +11,7 @@
         <script type="text/javascript">
             Dropzone.autoDiscover = false;
             var acceptedFileType = ".jpg, .jpeg, .png, .tif, .tiff, .psd";
-            var imageCount = 1;
+            var imageCount = 0;
             var imageUploadInfos =[];
             $(document).ready(function(){
                 $("div#myId").dropzone({
@@ -54,8 +54,9 @@
 
                             cb();
                         }).fail(function() {
-                            $("div#imageCount").html(imageCount);
+                            
                             imageCount++;
+                            $("div#imageCount").html(imageCount);
                             //document.forms[0].imagelist.value = imageUploadInfos;
 
                             return cb('Failed to receive an upload url');

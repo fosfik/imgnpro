@@ -12,7 +12,7 @@ var Orderstest = require('../models/order.js');
 var Spec = require('../models/specification.js');
 
 
-
+// TODO agregar seguridad a esta ruta
 router.get('/listorders', function(req, res) {
   Orderstest.find({'userid':req.user._id},function(err, orders) {
     // In case of any error return
@@ -34,6 +34,27 @@ router.get('/listorders', function(req, res) {
   }).select('imagecount numorder status date');
 });
  
+// TODO agregar seguridad a esta ruta
+router.get('/listspecs', function(req, res) {
+  Spec.find({'userid':req.user._id},function(err, specs) {
+    // In case of any error return
+     if (err){
+       console.log('Error al consultar');
+     }
+     //console.log("prueba 2");
+   // already exists
+    if (specs) {
+      console.log('se encontraron especificaciones');
+      res.setHeader('Content-Type', 'application/json');
+      res.send(specs); 
+    } 
+    else {
+      console.log('No se encontraron pedidos');
+    }
+  }).select('name date');
+});
+
+
 /* GET como page. */
   router.post('/neworder', function(req, res) {
     // Display the Login page with any flash message, if any

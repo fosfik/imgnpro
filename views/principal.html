@@ -24,6 +24,22 @@
 
                         }
                     });
+                    $.ajax({
+                        type: 'get',
+                        url: '/listspecs',
+                        success: function (data) {
+                            for (var i = 0; i < data.length; i++){
+                                var row = $("<tr>");
+                                row.append($("<td>" + data[i].name + "</td>"))
+                                     .append($("<td>" + data[i].date + "</td>"))
+                                     .append( $('<td><a id="icontable" href=""><img src="../images/icon_cloud.png" height="20px" width="20px"></a><a id="icontable"  href=""><img src="../images/icon_edit.png" height="20px" width="20px"></a></td>'));
+                                $("#specstable tbody").append(row);
+                            }
+                              
+
+                        }
+                    });
+
             });
 
         </script>
@@ -62,7 +78,7 @@
             </table>
         </div>
         <hr>
-        <div class="tabla">
+        <div id="specstable" class="tabla">
             <p class="encabezado">Especificaciones</p>
             <table>
                 <tr>
@@ -70,21 +86,7 @@
                     <th>Fecha</th>
                     <th></th>
                 </tr>
-                <tr>
-                    <td>Página Herramientas</td>
-                    <td>12/05/2016</td>
-                    <td><a id="icontable" href=""><img src="../images/icon_cloud.png" height="20px" width="20px"></a><a id="icontable"  href=""><img src="../images/icon_edit.png" height="20px" width="20px"></a></td>
-                </tr>
-                <tr>
-                    <td>Página Herramientas</td>
-                    <td>12/05/2016</td>
-                    <td><a id="icontable" href=""><img src="../images/icon_cloud.png" height="20px" width="20px"></a><a id="icontable"  href=""><img src="../images/icon_edit.png" height="20px" width="20px"></a></td>
-                </tr>
-                <tr>
-                    <td>Página Herramientas</td>
-                    <td>12/05/2016</td>
-                    <td><a id="icontable"  href=""><img src="../images/icon_cloud.png" height="20px" width="20px"></a><a id="icontable"  href=""><img src="../images/icon_edit.png" height="20px" width="20px"></a></td>
-                </tr>
+                
             </table>
         </div>
         <hr>

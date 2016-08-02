@@ -4,7 +4,10 @@ var orderSchema = mongoose.Schema({
     numorder: {type: String},
     name: {type: String},
     userid: {type: String},
-    images: [{  url: String, imagetype: String }]
+    date: { type: Date, default: Date.now },
+    status: {type: String, default:'Generado'},
+    imagecount: {type:Number, default:0},
+    images: [{  imagename: String, width: Number, height: Number, length: Number }]
 });
 orderSchema.pre('save', function(next) {
     var doc = this;

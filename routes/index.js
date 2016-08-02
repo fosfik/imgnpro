@@ -17,22 +17,32 @@ var Spec = require('../models/specification.js');
 /* GET como page. */
   router.post('/neworder', function(req, res) {
     // Display the Login page with any flash message, if any
-    console.log(req.body);
+   try {
+    console.log(req.body['imageUploadInfos']);
     //console.log(req.params);
     var numorderstr="";
     var newOrder = new Orderstest();
           newOrder.name = 'orderfotos';
           newOrder.userid = req.user._id;
+          newOrder.imagecount = req.body['imagecount'];
           // todo: recorrer el req.body para obtener los datos de las imagenes
-          newOrder.images.push({url:"https://s3.amazonaws/imagen.jpg", imagetype:"JPEG"});
-          newOrder.images.push({url:"https://s3.amazonaws/imagen2.jpg", imagetype:"JPEG"});
-          newOrder.images.push({url:"https://s3.amazonaws/imagen3.jpg", imagetype:"JPEG"});
-          newOrder.images.push({url:"https://s3.amazonaws/imagen4.jpg", imagetype:"JPEG"});
           
 
-          
-          
-          // save the user
+
+
+    var imageUploadInfos = JSON.parse(req.body['imageUploadInfos']);
+    console.log(imageUploadInfos);
+
+          for (var i=0; i < imageUploadInfos.length; i++){
+              //i === 0: arr[0] === undefined;
+              //i === 1: arr[1] === 'hola';
+              //i === 2: arr[2] === 'chau';
+              console.log(imageUploadInfos[i]);
+            newOrder.images.push(imageUploadInfos[i]);
+
+          }
+
+           // save the user
           newOrder.save(function(err) {
             if (err){
               console.log(newOrder);
@@ -64,6 +74,19 @@ var Spec = require('../models/specification.js');
             }
 
         });  
+}
+catch(err) {
+   
+   console.log(err.message);
+}
+          // newOrder.images.push({imagename:"https://s3.amazonaws/imagen.jpg", width:300});
+          // newOrder.images.push({imagename:"https://s3.amazonaws/imagen.jpg", width:300});
+          // newOrder.images.push({imagename:"https://s3.amazonaws/imagen.jpg", width:300});
+          // newOrder.images.push({imagename:"https://s3.amazonaws/imagen.jpg", width:300});
+
+          
+          
+         
     //res.set('Content-Type', 'application/javascript');
     //res.render('ordertest', {numorder: numorderstr });
 

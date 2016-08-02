@@ -7,7 +7,8 @@ var SpecSchema = new mongoose.Schema({
 	colormode: {type: String},
 	dpi: {type: Number, default: 0},
 	userid: {type: String},
-	numorder: {type: String}
+	numorder: {type: String},
+	date: { type: Date, default: Date.now }
 
 });
 // se genera un objeto basado en el esquema contador

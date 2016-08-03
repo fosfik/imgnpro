@@ -10,6 +10,7 @@ var config = require('../config');
 var path = require('path');
 var Orderstest = require('../models/order.js');
 var Spec = require('../models/specification.js');
+var Contact = require('../models/contact.js');
 
 
 // TODO agregar seguridad a esta ruta
@@ -54,8 +55,29 @@ router.get('/listspecs', function(req, res) {
   }).select('name date');
 });
 
+/* Crea un nuevo contacto. */
+  router.post('/newcontact', function(req, res) {
+    console.log(req.body);
+    var newContact = new Contact();
+    newContact.name = req.body['name'];
+    newContact.email = req.body['email'];
+    newContact.message = req.body['message'];
+    newContact.save(function(err) {
+      if (err){
+          console.log('No se pudo guardar el pedido: '+err);  
+          res.setHeader('Content-Type', 'application/json');
+          res.send(JSON.stringify({ error: 1, message: 'No se pudo guardar el contacto'})); 
+      }
+      else{
+          res.setHeader('Content-Type', 'application/json');
+          res.send(JSON.stringify({ error: 0, message: 'Se guardó el contacto'})); 
+      }
+    });  
+  });
+ 
 
-/* GET como page. */
+
+/* Crea un nuevo pedido. */
   router.post('/neworder', function(req, res) {
     // Display the Login page with any flash message, if any
    // todo: modificar este try catch

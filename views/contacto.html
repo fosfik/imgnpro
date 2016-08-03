@@ -2,6 +2,29 @@
 <html lang="es">
     <head>
         <% include partials/head.html %>
+    <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var frm = $('#contactForm');
+            frm.submit(function (ev) {
+                $.ajax({
+                    type: frm.attr('method'),
+                    url: frm.attr('action'),
+                    data: frm.serialize(),
+                    success: function (data) {
+                        if (data.error == 1 ){
+                            document.getElementById('res_message').innerHTML= data.message;    
+                        }
+                        else{
+                            console.log(data);
+                            setTimeout(window.location='/',500);    
+                        }
+                    }
+                });
+                ev.preventDefault();
+            })
+        });
+    </script>
     </head>
     <body>
     <div id="contenedor">
@@ -18,7 +41,10 @@
             </div>
         </section>
         <section id="login">
-            <form class="accedeForm">
+            <div>
+                <h1 id="res_message"></h1>
+            </div>  
+            <form id = "contactForm" class="accedeForm" action="/newcontact" method = "post">
                 <ul>
                     <li>
                         <label class="texto_plano">Nombre</label>
@@ -26,11 +52,11 @@
                     </li>
                     <li>
                         <label class="texto_plano">Correo Electrónico</label>
-                        <input type="email" name="username" required placeholder="tunombre@ejemplo.com">
+                        <input type="email" name="email" required placeholder="tunombre@ejemplo.com">
                     </li>
                     <li>
                         <label class="texto_plano">Mensaje</label>
-                        <textarea cols="40" rows="6" placeholder="Escribe tu mensaje, nuestro personal se pondrá en contacto a la brevedad."></textarea>
+                        <textarea cols="40" rows="6" name="message" placeholder="Escribe tu mensaje, nuestro personal se pondrá en contacto a la brevedad."></textarea>
                     </li>
                 </ul>
                 <div class="button2">

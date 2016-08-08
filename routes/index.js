@@ -4,6 +4,7 @@ var router = express.Router();
 var multer = require('multer');
 //var cloudinary = require('cloudinary');
 var passport = require('passport');
+var sha1 = require('sha1');
 //var passport = require('passport-local');
 //var Strategy = require('passport-facebook').Strategy;
 var config = require('../config');
@@ -452,6 +453,26 @@ catch(err) {
           });
   });
 
+
+/* Handle get payment sign POST */
+  router.post('/getpaymentsign', function (req,res) {
+   
+    var secretkey = 'trgy4y55664dgf'; 
+    var paymentsign = '';
+    var Ds_Merchant_Amount = req.param('Ds_Merchant_Amount');
+    var Ds_Merchant_Order = req.param('Ds_Merchant_Order');
+    var Ds_Merchant_MerchantCode = req.param('Ds_Merchant_MerchantCode');
+    var Ds_Merchant_Currency = req.param('Ds_Merchant_Currency');
+    var Ds_Merchant_TransactionType  = req.param('Ds_Merchant_TransactionType');
+    paymentsign = sha1(Ds_Merchant_Amount + Ds_Merchant_Order + Ds_Merchant_MerchantCode + Ds_Merchant_Currency + Ds_Merchant_TransactionType + secretkey);
+    console.log(paymentsign);
+
+ //SHA-1()
+           
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify({ error: 0, sign: paymentsign})); 
+              
+  });
   /* Handle Registration POST */
   // router.post('/signuplocal', passport.authenticate('signup', {
   //   successRedirect: '/reslocal',

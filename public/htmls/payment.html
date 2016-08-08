@@ -13,7 +13,7 @@
                 buttonspec.click(function (ev) {
                     $.ajax({
                         type: frm.attr('method'),
-                        url: frm.attr('action'),
+                        url: '/getpaymentsign', //frm.attr('action'),
                         data: frm.serialize(),
                         success: function (data) {
 
@@ -26,20 +26,23 @@
                                 document.getElementById('res_message').innerHTML= data.sign; 
 
                                $('#Dsmerchantsign').val(data.sign);
-                                //request payment    
-                               
-                                $.ajax({
-                                    type: 'post',
-                                    url: 'https://ecom.eglobal.com.mx/VPBridgeWeb/servlets/TransactionStartBridge',
-                                    data: frm.serialize(),
-                                    success: function (data) {
+                                //request payment  
 
-                                    },
-                                    error: function(xhr,status,error){
-                                        document.getElementById('res_message').innerHTML = error;
-                                    }
+                                // $('<form action="comments.php" method="POST"><input type="hidden" name="aid" value="hjhhjhj"></form>').submit();  
+                               $('#paymentForm').submit();
+                                // $.ajax({
+                                //     type: 'post',
+                                //     url: 'https://ecom.eglobal.com.mx/VPBridgeWeb/servlets/TransactionStartBridge',
+                                //     data: frm.serialize(),
+                                //     async: false,
+                                //     success: function (data) {
 
-                                });
+                                //     },
+                                //     error: function(xhr,status,error){
+                                //         document.getElementById('res_message').innerHTML = error;
+                                //     }
+
+                                // });
                                  
                             }
                         },
@@ -96,7 +99,7 @@
                 </h1>
             </div>
 
-            <form id = "paymentForm" class="col1" action="/getpaymentsign" method="post">
+            <form id = "paymentForm" class="col1" action="https://ecom.eglobal.com.mx/VPBridgeWeb/servlets/TransactionStartBridge" method="post">
                 <label for="Ds_Merchant_Amount">Monto</label><br>
                 <input type="text" name="Ds_Merchant_Amount" placeholder="Cantidad a pagar" value="20.00"><br>
                 

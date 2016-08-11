@@ -26,7 +26,7 @@ if (app.get('env') !== 'development') {
 	google:{
 		key:'812259967962-gcvtg69gr1grfhbhi09poagqmjb1gkrl.apps.googleusercontent.com',
 		secret:'7naFjeqHyO1ZG6xEV8Vw9EYI',
-		callbackURL: 'http://www.imgnpro.com/auth/google/return'
+		callbackURL: 'http://www.imgnpro.com/login/google/return'
 	}
 	//,
 	// // Prueba

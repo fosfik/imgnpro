@@ -543,6 +543,26 @@ router.get('/login/facebook/return',
     successFlash : true 
   }));
 
+ 
+  // =====================================
+  // GOOGLE ROUTES =======================
+  // =====================================
+  // send to google to do the authentication
+  // profile gets us their basic information including their name
+  // email gets their emails
+  router.get('/login/google', passport.authenticate('google', 
+    { scope : ['profile', 'email'] }
+    )
+  );
+
+  // the callback after google has authenticated the user
+  router.get('/login/google/return',
+          passport.authenticate('google', {
+            successRedirect : '/principal',
+            failureRedirect : '/login'
+  }));
+
+
 
 router.get('/profile',
   require('connect-ensure-login').ensureLoggedIn(),

@@ -22,6 +22,11 @@ if (app.get('env') !== 'development') {
 		key:'1709249819339885',
 		secret:'4894456da8d734e0aa2685d202e9d489',
 		callbackURL: 'http://www.imgnpro.com/login/facebook/return'
+	},
+	google:{
+		key:'812259967962-gcvtg69gr1grfhbhi09poagqmjb1gkrl.apps.googleusercontent.com',
+		secret:'7naFjeqHyO1ZG6xEV8Vw9EYI',
+		callbackURL: 'http://www.imgnpro.com/auth/google/return'
 	}
 	//,
 	// // Prueba
@@ -51,7 +56,14 @@ else{
 		key:'1709249819339885',
 		secret:'4894456da8d734e0aa2685d202e9d489',
 		callbackURL: 'http://localhost:3000/login/facebook/return'
+	},
+	google:{
+		key:'812259967962-gcvtg69gr1grfhbhi09poagqmjb1gkrl.apps.googleusercontent.com',
+		secret:'7naFjeqHyO1ZG6xEV8Vw9EYI',
+		callbackURL: 'http://localhost:3000/login/google/return'
 	}
+
+
 
 	// facebook:{
 	// 	key:'1569270823378058',

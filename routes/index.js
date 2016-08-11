@@ -519,12 +519,29 @@ router.get('/login/facebook',
   passport.authenticate('facebook'));
 
 
+// router.get('/login/facebook/return', 
+//   passport.authenticate('facebook', { failureRedirect: '/login' }),
+//   function(req, res) {
+//     res.redirect('/principal');
+//     console.log (req);
+//   });
+
+
+ // router.get('/signin', passport.authenticate('login', {
+ //    successRedirect: '/principal',
+ //    failureRedirect: '/login',
+ //    failureFlash : true,
+ //    successFlash : true 
+ //  }));
+ 
+
 router.get('/login/facebook/return', 
-  passport.authenticate('facebook', { failureRedirect: '/login' }),
-  function(req, res) {
-    res.redirect('/');
-    console.log (req);
-  });
+  passport.authenticate('facebook', { 
+    successRedirect: '/principal',
+    failureRedirect: '/login',
+    failureFlash : true,
+    successFlash : true 
+  }));
 
 
 router.get('/profile',

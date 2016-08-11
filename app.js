@@ -4,7 +4,7 @@ var express = require('express');
 var ejs = require('ejs');
 var flash = require('connect-flash'); // middleware para mensajes en passport
 var passport = require('passport');
-var Strategy = require('passport-facebook').Strategy;
+var FacebookStrategy = require('passport-facebook').Strategy;
 var LocalStrategy = require('passport-local').Strategy;
 var config = require('./config');
 var path = require('path');
@@ -177,13 +177,13 @@ app.use(function(req, res, next) {
 
 // production error handler
 // no stacktraces leaked to user
-app.use(function(err, req, res, next) {
-  res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: {}
-  });
-});
+// app.use(function(err, req, res, next) {
+//   res.status(err.status || 500);
+//   res.render('error', {
+//     message: err.message,
+//     error: {}
+//   });
+// });
 
 
 app.use(function(req, res, next){
@@ -204,22 +204,60 @@ app.use(function(req, res, next){
 // authentication.
 //process.env.CLIENT_ID,
  //process.env.CLIENT_SECRET,
-passport.use(new Strategy({
+passport.use(new FacebookStrategy({
     clientID     : config.facebook.key, 
     clientSecret : config.facebook.secret,
     callbackURL  : config.facebook.callbackURL,
     auth_type    : 'reauthenticate',
     profileFields: ['id','displayName','photos']
   },
-  function(accessToken, refreshToken, profile, cb) {
+  function(accessToken, refreshToken, profile, done) {
     // In this example, the user's Facebook profile is supplied as the user
     // record.  In a production-quality application, the Facebook profile should
     // be associated with a user record in the application's database, which
     // allows for account linking and authentication with other identity
     // providers.
-    console.log(accessToken);
+    console.log(profile);
+    User.findOne({provider_id:profile.id},function(err, user) {
+        // In case of any error return
+         if (err){
+           console.log('Error al crear cuenta: '+err);
+           return done(err);
+         }
+         //console.log("prueba 2");
+       // already exists
+        if (user) {
+          console.log('Usuario ya existe');
+          return done(null, user,{message:'Se registró correctamente el usuario'});
     
-    return cb(null, profile);
+        } 
+        else {
+          // if there is no user with that email
+          // create the user
+          console.log(profile);
+          var newUser = new User();
+          // set the user's local credentials
+          newUser.provider_id = profile.id;
+          newUser.provider = profile.provider;
+          newUser.userlongname = profile.displayName;
+          newUser.photo = profile.photos[0].value;
+ 
+          // save the user
+          newUser.save(function(err) {
+            if (err){
+              console.log('No se pudo guardar el usuario: '+err);  
+              throw err;  
+            }
+            console.log('Se registró correctamente el usuario');    
+            return done(null, newUser, {message:'Se registró correctamente el usuario'});
+          }
+          );
+        }
+      });
+
+    // console.log(accessToken);
+    
+    // return cb(null, profile);
   }));
 
 
@@ -243,13 +281,17 @@ passport.use(new Strategy({
 
 
 passport.serializeUser(function(user, done) {
-  done(null, user.id);
+  done(null, user);
 });
  
-passport.deserializeUser(function(id, done) {
-  User.findById(id, function(err, user) {
-    done(err, user);
-  });
+// passport.deserializeUser(function(id, done) {
+//   User.findById(id, function(err, user) {
+//     done(err, user);
+//   });
+// });
+
+passport.deserializeUser(function(obj, done) {
+    done(null, obj);
 });
 
 

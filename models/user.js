@@ -5,7 +5,12 @@ module.exports = mongoose.model('User',{
     username: String,
     password: String,
     email: String,
-    accept_terms: Boolean
+    accept_terms: Boolean,
+    name: String,
+    provider: String,
+    provider_id: {type:String, unique:true},
+    photo: String,
+    createdAt: {type:Date, default: Date.now}
 });
 
 

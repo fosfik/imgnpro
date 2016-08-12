@@ -35,6 +35,28 @@ router.get('/listorders', function(req, res) {
    
   }).select('imagecount numorder status date');
 });
+
+// TODO agregar seguridad a esta ruta
+router.get('/listallorders', function(req, res) {
+  Orderstest.find({},function(err, orders) {
+    // In case of any error return
+     if (err){
+       console.log('Error al consultar');
+     }
+     //console.log("prueba 2");
+   // already exists
+    if (orders) {
+      console.log('se encontraron pedidos');
+      res.setHeader('Content-Type', 'application/json');
+      res.send(orders); 
+
+    } 
+    else {
+      console.log('No se encontraron pedidos');
+    }
+   
+  }).select('imagecount numorder status date');
+});
  
 // TODO agregar seguridad a esta ruta
 router.get('/listspecs', function(req, res) {
@@ -224,6 +246,13 @@ catch(err) {
     // Display the Login page with any flash message, if any
     res.render('precios', {message: req.flash('message')});
   });
+
+ router.get('/pedidos', function(req, res) {
+    // Display the Login page with any flash message, if any
+    res.render('pedidos', {message: req.flash('message')});
+  });
+
+
 /* GET login page. */
   router.get('/login', function(req, res) {
     // Display the Login page with any flash message, if any
@@ -298,6 +327,8 @@ catch(err) {
           console.log(req.user);
            res.render('principal', {message: req.flash('message'), user: req.user});
   });
+
+ 
 
 /* Maneja la página historial */
   router.get('/historial', 

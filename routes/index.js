@@ -4,6 +4,7 @@ var router = express.Router();
 var multer = require('multer');
 //var cloudinary = require('cloudinary');
 var passport = require('passport');
+var sha1 = require('sha1');
 //var passport = require('passport-local');
 //var Strategy = require('passport-facebook').Strategy;
 var config = require('../config');
@@ -16,6 +17,28 @@ var Contact = require('../models/contact.js');
 // TODO agregar seguridad a esta ruta
 router.get('/listorders', function(req, res) {
   Orderstest.find({'userid':req.user._id},function(err, orders) {
+    // In case of any error return
+     if (err){
+       console.log('Error al consultar');
+     }
+     //console.log("prueba 2");
+   // already exists
+    if (orders) {
+      console.log('se encontraron pedidos');
+      res.setHeader('Content-Type', 'application/json');
+      res.send(orders); 
+
+    } 
+    else {
+      console.log('No se encontraron pedidos');
+    }
+   
+  }).select('imagecount numorder status date');
+});
+
+// TODO agregar seguridad a esta ruta
+router.get('/listallorders', function(req, res) {
+  Orderstest.find({},function(err, orders) {
     // In case of any error return
      if (err){
        console.log('Error al consultar');
@@ -223,6 +246,13 @@ catch(err) {
     // Display the Login page with any flash message, if any
     res.render('precios', {message: req.flash('message')});
   });
+
+ router.get('/pedidos', function(req, res) {
+    // Display the Login page with any flash message, if any
+    res.render('pedidos', {message: req.flash('message')});
+  });
+
+
 /* GET login page. */
   router.get('/login', function(req, res) {
     // Display the Login page with any flash message, if any
@@ -297,6 +327,8 @@ catch(err) {
           console.log(req.user);
            res.render('principal', {message: req.flash('message'), user: req.user});
   });
+
+ 
 
 /* Maneja la página historial */
   router.get('/historial', 
@@ -452,6 +484,26 @@ catch(err) {
           });
   });
 
+
+/* Handle get payment sign POST */
+  router.post('/getpaymentsign', function (req,res) {
+   
+    var secretkey = 'trgy4y55664dgf'; 
+    var paymentsign = '';
+    var Ds_Merchant_Amount = req.param('Ds_Merchant_Amount');
+    var Ds_Merchant_Order = req.param('Ds_Merchant_Order');
+    var Ds_Merchant_MerchantCode = req.param('Ds_Merchant_MerchantCode');
+    var Ds_Merchant_Currency = req.param('Ds_Merchant_Currency');
+    var Ds_Merchant_TransactionType  = req.param('Ds_Merchant_TransactionType');
+    paymentsign = sha1(Ds_Merchant_Amount + Ds_Merchant_Order + Ds_Merchant_MerchantCode + Ds_Merchant_Currency + Ds_Merchant_TransactionType + secretkey);
+    console.log(paymentsign);
+
+ //SHA-1()
+           
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify({ error: 0, sign: paymentsign})); 
+              
+  });
   /* Handle Registration POST */
   // router.post('/signuplocal', passport.authenticate('signup', {
   //   successRedirect: '/reslocal',
@@ -498,12 +550,49 @@ router.get('/login/facebook',
   passport.authenticate('facebook'));
 
 
+// router.get('/login/facebook/return', 
+//   passport.authenticate('facebook', { failureRedirect: '/login' }),
+//   function(req, res) {
+//     res.redirect('/principal');
+//     console.log (req);
+//   });
+
+
+ // router.get('/signin', passport.authenticate('login', {
+ //    successRedirect: '/principal',
+ //    failureRedirect: '/login',
+ //    failureFlash : true,
+ //    successFlash : true 
+ //  }));
+ 
+
 router.get('/login/facebook/return', 
-  passport.authenticate('facebook', { failureRedirect: '/login' }),
-  function(req, res) {
-    res.redirect('/');
-    console.log (req);
-  });
+  passport.authenticate('facebook', { 
+    successRedirect: '/principal',
+    failureRedirect: '/login',
+    failureFlash : true,
+    successFlash : true 
+  }));
+
+ 
+  // =====================================
+  // GOOGLE ROUTES =======================
+  // =====================================
+  // send to google to do the authentication
+  // profile gets us their basic information including their name
+  // email gets their emails
+  router.get('/login/google', passport.authenticate('google', 
+    { scope : ['profile', 'email'] }
+    )
+  );
+
+  // the callback after google has authenticated the user
+  router.get('/login/google/return',
+          passport.authenticate('google', {
+            successRedirect : '/principal',
+            failureRedirect : '/login'
+  }));
+
 
 
 router.get('/profile',

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8">
+        <title>IMGNpro, hagamos que tu producto destaque</title>
+        <link rel="stylesheet" href="../stylesheets/imgncss_session.css">
+        <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+        <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico"/>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                var buttonspec = $('#buttonpayment');
+                var frm = $('#paymentForm');
+                buttonspec.click(function (ev) {
+                    $.ajax({
+                        type: frm.attr('method'),
+                        url: '/getpaymentsign', //frm.attr('action'),
+                        data: frm.serialize(),
+                        success: function (data) {
+
+                            //https://ecom.eglobal.com.mx/VPBridgeWeb/servlets/TransactionStartBridge
+
+                            if (data.error == 1 ){
+                                document.getElementById('res_message').innerHTML= data.message;    
+                            }
+                            else{
+                                document.getElementById('res_message').innerHTML= data.sign; 
+
+                               $('#Dsmerchantsign').val(data.sign);
+                                //request payment  
+
+                                // $('<form action="comments.php" method="POST"><input type="hidden" name="aid" value="hjhhjhj"></form>').submit();  
+                               $('#paymentForm').submit();
+                                // $.ajax({
+                                //     type: 'post',
+                                //     url: 'https://ecom.eglobal.com.mx/VPBridgeWeb/servlets/TransactionStartBridge',
+                                //     data: frm.serialize(),
+                                //     async: false,
+                                //     success: function (data) {
+
+                                //     },
+                                //     error: function(xhr,status,error){
+                                //         document.getElementById('res_message').innerHTML = error;
+                                //     }
+
+                                // });
+                                 
+                            }
+                        },
+                        error: function(xhr,status,error){
+                            document.getElementById('res_message').innerHTML= error;
+                        }
+
+                    });
+                    ev.preventDefault();
+                });  
+            });
+        </script>
+    </head>
+    <body>
+        <header class="bienvenida">
+            <ul>
+                <li>Bienvenido <a id="user" class="bold"><%= user.userlongname %></a><a class="bold">!</a></li>
+                <li>Órdenes en Proceso <a id="orders" class="bold">0</a></li>
+                <li>Pedido número:<a id="" class="bold"><%= numorder %></a></li>
+
+                
+                <li><a id="salir" class="bold" href="logout">Salir</a></li>
+            </ul>
+        </header>
+        <section id="menuver">
+            <nav>
+                <ul>
+                    <li class="menulogo"><h1><a href="principal.html"><img src="../images/logo_black.png" alt="logo"></a></h1></li>
+                    <li><a href="micuenta">Mi Cuenta</a></li>
+                    <li><a href="historial">Historial</a></li>
+                    <li><a href="especificaciones1">Especificaciones</a></li>
+                    <li><a href="subirimagen1">Subir Imagenes</a></li>
+                    <li><a href="contacto">Contacto</a></li>
+                </ul>
+            </nav>
+        </section>
+    <section id="contenedor">
+        <p class="encabezado">PAGO</p>
+        <a class="ruta">Sube tus imágenes</a>
+        <a class="slash">/</a>
+        <a class="ruta_on">Especificación</a>
+        <a class="slash">/</a>
+        <a class="ruta">Tamaño</a>
+        <a class="slash">/</a>
+        <a class="ruta">Alineación</a>
+        <a class="slash">/</a>
+        <a class="ruta">Margen</a>
+        <a class="slash">/</a>
+        <a class="ruta">Extras</a>
+        
+        <div class="recontenedor">
+            <div>
+                <h1 id = "res_message">
+                </h1>
+            </div>
+
+            <form id = "paymentForm" class="col1" action="https://ecom.eglobal.com.mx/VPBridgeWeb/servlets/TransactionStartBridge" method="post">
+                <label for="Ds_Merchant_Amount">Monto</label><br>
+                <input type="text" name="Ds_Merchant_Amount" placeholder="Cantidad a pagar" value="20.00"><br>
+                
+                <label for="Ds_Merchant_Currency">Moneda</label><br>
+                <input type="text" name="Ds_Merchant_Currency" placeholder="Moneda (méxico 484)" value="484"><br>
+                
+                <label for="Ds_Merchant_Order">Pedido</label><br>
+                <input type="text" name="Ds_Merchant_Order" placeholder="Número Pedido" value="000001"><br>
+
+
+                <label for="Ds_Merchant_ProductDescription">Descripción</label><br>
+                <input type="text" name="Ds_Merchant_ProductDescription" placeholder="Descripción" value="30 imágenes especificación 1"><br>
+
+                <label for="Ds_Merchant_MerchantCode">Código Comercio</label><br>
+                <input type="text" name="Ds_Merchant_MerchantCode" placeholder="Código de comercio" value="4093847"><br>
+
+                <label for="Ds_Merchant_MerchantURL">URL comercio</label><br>
+                <input type="text" name="Ds_Merchant_MerchantURL" placeholder="URL comercio" value="https://www.imgnpro.com"><br>
+
+                <label for="Ds_Merchant_UrlOK">URL OK</label><br>
+                <input type="text" name="Ds_Merchant_UrlOK" placeholder="Ruta callback OK" value="https://www.imgnpro.com/transactionok"><br>
+
+                <label for="Ds_Merchant_UrlKO">URL Deny</label><br>
+                <input type="text" name="Ds_Merchant_UrlKO" placeholder="Ruta deny" value="https://www.imgnpro.com/transactiondeny"><br>
+
+                <label for="Ds_Merchant_MerchantName">Nombre comercio</label><br>
+                <input type="text" name="Ds_Merchant_MerchantName" placeholder="Nombre comercio" value="IMGNPro"><br>
+
+<!-- La firma electrónica del comercio se deberá calcular de la forma siguiente:
+Digest = SHA-1(Ds_Merchant_Amount + Ds_Merchant_Order
++ Ds_Merchant_MerchantCode + Ds_Merchant_Currency + Ds_Merchant_TransactionType + CLAVE SECRETA)
+Ejemplo:
+IMPORTE=1235
+NÚMERO DE PEDIDO=29292929
+CODIGO COMERCIO=1920191 MONEDA=484
+TIPO DE OPERACIÓN = 0
+CLAVE SECRETA=1mag3npr0 
+
+20.00000001409384748401mag3npr0
+-->
+
+
+                <label for="Ds_Merchant_MerchantSignature">Firma</label><br>
+                <input id = "Dsmerchantsign" type="text" name="Ds_Merchant_MerchantSignature" placeholder="Firma"><br>
+
+                <label for="Ds_Merchant_Terminal">Número terminal</label><br>
+                <input type="text" name="Ds_Merchant_Terminal" placeholder="Número Terminal" value="1"><br>
+
+                <label for="Ds_Merchant_TransactionType">Tipo Transacción</label><br>
+                <input type="text" name="Ds_Merchant_TransactionType" placeholder="Tipo transacción" value="0"><br>
+
+            </form>
+        </div>
+        <div class="picnum">Seleccione las Opciones Adecuadas</div>
+        <hr>
+        <div class="buttoncont">
+            <a id="buttonpayment">Continuar</a>
+        </div>
+    </section>
+        <aside id="menurigth">
+            <p class="encabezado"> Tutorial</p>
+             <div class="video_med"><a onclick="ponleplay()" href="#openVideoModal"><img src="../images/tumbnail_video.jpg" width="140px"></a></div>
+            <hr>
+            <p class="encabezado"> FAQs</p>
+            <p><a class="texto_plano">1. ¿Están seguros mis datos?</a></p>
+            <p><a class="texto_plano">2. ¿Tiempo de Entrega?</a></p>
+            <p><a class="texto_plano">3. ¿Prueba Gratis?</a></p>
+            <p><a class="texto_plano">4. ¿Cómo Pago?</a></p>
+            <div class="button1">
+            <a href="faq">Ver más</a> 
+            </div>
+        </aside>
+    </body>
+</html>

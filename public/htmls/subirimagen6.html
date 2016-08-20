@@ -9,7 +9,7 @@
     <body>
         <header class="bienvenida">
             <ul>
-                <li>Bienvenido <a id="user" class="bold"><%= user.userlongname %></a><a class="bold">!</a></li>
+                <li>Bienvenido <a id="user" class="bold">%= user.userlongname %</a><a class="bold">!</a></li>
                 <li>Órdenes en Proceso <a id="orders" class="bold">2</a></li>
                 <li><a id="salir" class="bold" href="logout">Salir</a></li>
             </ul>
@@ -32,32 +32,38 @@
         <a class="slash">/</a>
         <a class="ruta">Especificación</a>
         <a class="slash">/</a>
-        <a class="ruta_on">Tamaño</a>
+        <a class="ruta">Tamaño</a>
         <a class="slash">/</a>
         <a class="ruta">Alineación</a>
         <a class="slash">/</a>
-        <a class="ruta">Margen</a>
+        <a class="ruta_on">Margen</a>
         <a class="slash">/</a>
         <a class="ruta">Extras</a>
         
         <div class="recontenedor">
-            <form id = "sizeForm" class="col1" action="newspec" method="post">
-                
-                <input name="size" type="radio" id="cuadro1">
-                <label class="cuadro" for="cuadro1">1:1</label>
-                <input name="size" type="radio" id="cuadro2">
-                <label class="cuadro" for="cuadro2">2:3</label>
-                <input name="size" type="radio" id="cuadro3">
-                <label class="cuadro" for="cuadro3">3:2</label>
-                <input name="size" type="radio" id="cuadro4">
-                <label class="cuadro" for="cuadro4">4:3</label>
-                <input name="size" type="radio" id="cuadro5">
-                <label class="cuadro" for="cuadro5">Personalizado</label>
-                <input name="size" type="radio" id="cuadro6">
-                <label class="cuadro" for="cuadro6">Sin Cambios</label>
+            <form id= "marginForm1" class="col1" action="newspec" method="post">
+                <label>Margen en</label>
+                <select name="medida">
+                    <option value="cm">cm</option>
+                    <option value="px">px</option>
+                    <option value="%">%</option>
+                </select><br>
+                <label>Arriba</label><br>
+                <input class="margin" type="text" value="5"><br>
+                <label>Abajo</label><br>
+                <input class="margin" type="text" value="5"><br>
+                <label>Derecha</label><br>
+                <input class="margin" type="text" value="5"><br>
+                <label>Izquierda</label><br>
+                <input class="margin" type="text" value="5"><br>
             </form>
+            <div class="col2">
+                <div id=marco>
+                    <img src="../images/tenis.png">
+                </div>
+            </div>
         </div>
-        <div class="picnum">Seleccione el Tamaño Deseado</div>
+        <div class="picnum">Indica los Márgenes</div>
         <hr>
         <div class="buttonback">
             <a href="subirimagen">Regresar</a>

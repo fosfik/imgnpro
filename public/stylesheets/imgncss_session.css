@@ -600,7 +600,38 @@ input, select {
 #marco {
     width: 300px;
     height: 200px;
-    border: 2px solid #999999;  
+    border: 2px solid #999999;
+}
+
+.alignTenisHorizontalC {
+    text-align: center;
+}
+
+.alignTenisHorizontalL {
+    text-align: left;
+}
+
+.alignTenisHorizontalR {
+    text-align: right;
+}
+
+#portatenis{
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    margin-left: -4px;
+}
+
+.alignTenisVerticalM {
+    vertical-align: middle;
+}
+
+.alignTenisVerticalT {
+    vertical-align: top;
+}
+
+.alignTenisVerticalB {
+    vertical-align: bottom;
 }
 
 #marginForm1{

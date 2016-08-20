@@ -9,7 +9,7 @@
     <body>
         <header class="bienvenida">
             <ul>
-                <li>Bienvenido <a id="user" class="bold"><%= user.userlongname %></a><a class="bold">!</a></li>
+                <li>Bienvenido <a id="user" class="bold">%= user.userlongname %</a><a class="bold">!</a></li>
                 <li>Órdenes en Proceso <a id="orders" class="bold">2</a></li>
                 <li><a id="salir" class="bold" href="logout">Salir</a></li>
             </ul>
@@ -44,17 +44,19 @@
             <form id= "alignForm1" class="col1" action="newspec" method="post">
                 <label>Horizontal</label><br>
                 <input class="radio" type="radio" name="alignhor" value="left"><span class="postinput">Izquierda</span><br>
-                <input class="radio" type="radio" name="alignhor" value="center"><span class="postinput">Centrado</span><br>
+                <input class="radio" type="radio" name="alignhor" value="center" checked><span class="postinput">Centrado</span><br>
                 <input class="radio" type="radio" name="alignhor" value="right"><span class="postinput">Derecha</span><br>
                 <br>
                 <label>Vertical</label><br>
                 <input class="radio" type="radio" name="alignver" value="top"><span class="postinput">Arriba</span><br>
-                <input class="radio" type="radio" name="alignver" value="center"><span class="postinput">Centrado</span><br>
+                <input class="radio" type="radio" name="alignver" value="center" checked><span class="postinput">Centrado</span><br>
                 <input class="radio" type="radio" name="alignver" value="bottom"><span class="postinput">Abajo</span>
             </form>
             <div class="col2">
-                <div id=marco>
-                    <img src="../images/tenis.png">
+                <div id="marco" class="alignTenisHorizontalC">
+                    <div id="portatenis"></div>
+                    <img class="alignTenisVerticalM" src="../images/tenis.png">
+                    
                 </div>
             </div>
         </div>

@@ -17,10 +17,10 @@ if (app.get('env') !== 'development') {
 	// 	callbackURL: 'https://www.imgnpro.com/login/facebook/return'
 	// }
 
-	// // Prueba
 	facebook:{
-		key:'1709249819339885',
-		secret:'4894456da8d734e0aa2685d202e9d489',
+		appname:'IMGN Pro',
+		key:'1569270823378058',
+		secret:'fb521481fdae215007b136a12905ff94',
 		callbackURL: 'http://www.imgnpro.com/login/facebook/return'
 	},
 	google:{
@@ -28,7 +28,9 @@ if (app.get('env') !== 'development') {
 		secret:'7naFjeqHyO1ZG6xEV8Vw9EYI',
 		callbackURL: 'http://www.imgnpro.com/login/google/return'
 	}
-	//,
+
+
+
 	// // Prueba
 	// // facebook:{
 	// // 	key:'1709249819339885',
@@ -53,6 +55,7 @@ else{
 	
 	// // Prueba
 	facebook:{
+		appname:'Photomaker',
 		key:'1709249819339885',
 		secret:'4894456da8d734e0aa2685d202e9d489',
 		callbackURL: 'http://localhost:3000/login/facebook/return'
@@ -62,6 +65,11 @@ else{
 		secret:'7naFjeqHyO1ZG6xEV8Vw9EYI',
 		callbackURL: 'http://localhost:3000/login/google/return'
 	}
+	//,
+
+
+
+
 
 
 

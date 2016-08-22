@@ -368,6 +368,13 @@ catch(err) {
            res.render('subirimagen3', {message: req.flash('message'), user: req.user, numorder:req.params.numorder});
   });
 
+/* Maneja la pagina donde se paga el pedido o la orden de compra */
+  router.get('/payment/:numorder', 
+     require('connect-ensure-login').ensureLoggedIn('/login'),
+         function(req, res){
+           console.log(req.params);
+           res.render('payment', {message: req.flash('message'), user: req.user, numorder:req.params.numorder});
+  });
   /* Handle Login POST */
   router.post('/signin', passport.authenticate('login', {
     successRedirect: '/principal',

@@ -18,7 +18,7 @@
                                      .append($("<td>" + data[i].imagecount + "</td>"))
                                      .append($("<td>" + data[i].date + "</td>"))
                                      .append($("<td>" + data[i].status + "</td>"))
-                                     .append($("<td><a href='/payorder'>PAGAR</a>"  + "</td>"));
+                                     .append($("<td><a href='/payorder/" + data[i].numorder + "'>PAGAR</a>"  + "</td>"));
                                 $("#orderstable tbody").append(row);
                             }
                               

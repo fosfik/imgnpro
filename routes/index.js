@@ -369,7 +369,7 @@ catch(err) {
   });
 
 /* Maneja la pagina donde se paga el pedido o la orden de compra */
-  router.get('/payment/:numorder', 
+  router.get('/payorder/:numorder', 
      require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){
            console.log(req.params);

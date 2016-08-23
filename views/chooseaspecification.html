@@ -4,11 +4,11 @@
         <meta charset="utf-8">
         <title>IMGNpro, hagamos que tu producto destaque</title>
         <link rel="stylesheet" href="../stylesheets/imgncss_session.css">
-        <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico">
         <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+        <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico"/>
         <script type="text/javascript">
             $(document).ready(function(){
-                //var buttonspec = $('#buttonspec');
+                // var buttonspec = $('#buttonspec');
                 // var frm = $('#specForm');
                 // buttonspec.click(function (ev) {
                 //     $.ajax({
@@ -25,47 +25,18 @@
                 //         }
                 //     });
                 //     ev.preventDefault();
-                // }); 
-
-                if (typeof(Storage) !== "undefined") {
-                    // Code for localStorage/sessionStorage.
-                    // TODO si ya existe la variable no sobreescribirla
-                    localStorage.setItem("imagesize", "none");
-                } else {
-                    alert("Este navegador no soporta LocalStorage");
-                } 
-
-           
-    
-                // $('#cuadro1').change(function() {
-                //     if($(this).is(":checked")) {
-                //         var returnVal = confirm("Are you sure?");
-                //         $(this).attr("checked", returnVal);
-                //     }
-                //     //$('#textbox1').val($(this).is(':checked'));        
-                // });
-
-               $("#sizeForm input[name='size']").click(function(){
-                    alert('Diste clic en una opción!');
-                    localStorage.imagesize = $('input:radio[name=size]:checked').val();
-
-
-
-                // if($('input:radio[name=size]:checked').val() == "cuadro1"){
-                //         alert($('input:radio[name=size]:checked').val());
-                //         //$('#select-table > .roomNumber').attr('enabled',false);
-                //     }
-                });
-
+                // });  
             });
         </script>
-
     </head>
     <body>
         <header class="bienvenida">
             <ul>
                 <li>Bienvenido <a id="user" class="bold"><%= user.userlongname %></a><a class="bold">!</a></li>
-                <li>Órdenes en Proceso <a id="orders" class="bold">2</a></li>
+                <li>Órdenes en Proceso <a id="orders" class="bold">0</a></li>
+               <!--  <li>Pedido número:<a id="" class="bold"></a></li> -->
+
+                
                 <li><a id="salir" class="bold" href="logout">Salir</a></li>
             </ul>
         </header>
@@ -85,9 +56,9 @@
         <p class="encabezado">Subir Imágenes</p>
         <a class="ruta">Escoge una imagen</a>
         <a class="slash">/</a>
-        <a class="ruta">Especificación</a>
+        <a class="ruta_on">Especificación</a>
         <a class="slash">/</a>
-        <a class="ruta_on">Tamaño</a>
+        <a class="ruta">Tamaño</a>
         <a class="slash">/</a>
         <a class="ruta">Alineación</a>
         <a class="slash">/</a>
@@ -96,29 +67,44 @@
         <a class="ruta">Extras</a>
         
         <div class="recontenedor">
-            <form id = "sizeForm" class="col1" action="newspec" method="post">
-                
-                <input name="size" type="radio" id="cuadro1" value="1:1">
-                <label class="cuadro" for="cuadro1">1:1</label>
-                <input name="size" type="radio" id="cuadro2" value="2:3">
-                <label class="cuadro" for="cuadro2">2:3</label>
-                <input name="size" type="radio" id="cuadro3" value="3:2">
-                <label class="cuadro" for="cuadro3">3:2</label>
-                <input name="size" type="radio" id="cuadro4" value="4:3">
-                <label class="cuadro" for="cuadro4">4:3</label>
-                <input name="size" type="radio" id="cuadro5" value="customize">
-                <label class="cuadro" for="cuadro5">Personalizado</label>
-                <input name="size" type="radio" id="cuadro6" value="none">
-                <label class="cuadro" for="cuadro6">Sin Cambios</label>
+            <form id = "specForm" class="col1" action="/newspec" method="post">
+                <label for="nombre">Nombre</label><br>
+                <input type="text" name="name" placeholder="Nombra tu Especificación" value="Página Herramientas"><br>
+                <label for="formato">Formato</label><br>
+                <select name="format">
+                    <option value="jpg">JPG</option>
+                    <option value="jpg_web">JPG WEB</option>
+                    <option value="png">PNG</option>
+                    <option value="psd">PSD</option>
+                    <option value="tiff">TIFF</option>
+                </select><br>
+                <label for="modo">Modo Color</label><br>
+                <select name="colormode">
+                    <option value="rgb">RGB</option>
+                    <option value="cmyk">CMYK</option>
+                </select><br>
+                <label for="fondo">Fondo</label><br>
+                <select name="background">
+                    <option value="blanco">BLANCO</option>
+                    <option value="negro">NEGRO</option>
+                    <option value="sin_fondo">SIN FONDO</option>
+                </select><br>
+                <label for="dpi">DPI</label><br>
+                <input id="depeis" type="text" name="dpi" value="300" maxlength="5"><label for="dpi">dpi</label>
+                <input id="chkalgnnone" class="checkcheck" type="checkbox" name="nonedpi" value="none" onclick="javascript:desactAllNext();"><span class="postcheck">Sin Cambios</span>
+                <div>
+                    <h1 id="res_message"></h1>
+                </div> 
+                <!-- <input type="hidden" name="numorder" value=""> -->
             </form>
         </div>
-        <div class="picnum">Seleccione el Tamaño Deseado</div>
+        <div class="picnum">Seleccione las Opciones Adecuadas</div>
         <hr>
         <div class="buttonback">
-            <a href="/subirimagen3">Regresar</a>
+            <a href="chooseanimage">Regresar</a>
         </div>
         <div class="buttoncont">
-            <a href="subirimagen5.html">Continuar</a>
+            <a href="chooseasize.html" id="buttonspec">Continuar</a>
         </div>
     </section>
         <aside id="menurigth">
@@ -134,6 +120,12 @@
             <a href="faq">Ver más</a> 
             </div>
         </aside>
-       
+        <script>
+            function desactAllNext(){
+                var chkalgnnone = document.getElementById('chkalgnnone').checked;
+                document.getElementById("depeis").disabled = chkalgnnone; 
+            }
+         
+        </script>
     </body>
 </html>

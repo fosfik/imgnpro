@@ -347,26 +347,26 @@ catch(err) {
 
 
 /* Maneja la pagina que tiene el dropzone para subir imágenes */
-  router.get('/subirimagen2', 
+  router.get('/chooseanimage', 
      require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){
-           res.render('subirimagen2', {message: req.flash('message'), user: req.user});
+           res.render('chooseanimage', {message: req.flash('message'), user: req.user});
   });
 
 /* Maneja la pagina donde se cierra el pedido o la orden de compra */
-  router.get('/subirimagen3', 
+  router.get('/chooseaspecification', 
      require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){
-           res.render('subirimagen3', {message: req.flash('message'), user: req.user});
+           res.render('chooseaspecification', {message: req.flash('message'), user: req.user});
   });
 
 /* Maneja la pagina donde se cierra el pedido o la orden de compra */
-  router.get('/subirimagen3/:numorder', 
-     require('connect-ensure-login').ensureLoggedIn('/login'),
-         function(req, res){
-           console.log(req.params);
-           res.render('subirimagen3', {message: req.flash('message'), user: req.user, numorder:req.params.numorder});
-  });
+  // router.get('/subirimagen3/:numorder', 
+  //    require('connect-ensure-login').ensureLoggedIn('/login'),
+  //        function(req, res){
+  //          console.log(req.params);
+  //          res.render('subirimagen3', {message: req.flash('message'), user: req.user, numorder:req.params.numorder});
+  // });
 
 /* Maneja la pagina donde se paga el pedido o la orden de compra */
   router.get('/payorder/:numorder', 

@@ -29,6 +29,7 @@
 
                 if (typeof(Storage) !== "undefined") {
                     // Code for localStorage/sessionStorage.
+                    // TODO si ya existe la variable no sobreescribirla
                     localStorage.setItem("imagesize", "none");
                 } else {
                     alert("Este navegador no soporta LocalStorage");

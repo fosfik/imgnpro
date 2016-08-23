@@ -5,6 +5,40 @@
         <title>IMGNpro, hagamos que tu producto destaque</title>
         <link rel="stylesheet" href="../stylesheets/imgncss_session.css">
         <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico">
+
+        <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                if (typeof(Storage) !== "undefined") {
+                    // Code for localStorage/sessionStorage.
+                    localStorage.setItem("alignhor", "alignTenisHorizontalC");
+                    localStorage.setItem("alignver", "alignTenisVerticalM");
+                    
+                } else {
+                    alert("Este navegador no soporta LocalStorage");
+                } 
+
+
+                $("#alignForm1 input[name='alignhor']").click(function(){
+                    alert('Diste clic en una opción horizontal!');
+                    // localStorage.imagesize = $('input:radio[name=size]:checked').val();
+                    var currentClassName = $('#marco').attr('class');
+                    var newClassName = $('input:radio[name=alignhor]:checked').val();
+                    $('#marco').removeClass(currentClassName).addClass(newClassName);  
+                });
+
+                $("#alignForm1 input[name='alignver']").click(function(){
+                    alert('Diste clic en una opción vertical!');
+                    // localStorage.imagesize = $('input:radio[name=size]:checked').val();
+                    var currentClassName = $('#imgportatenis').attr('class');
+                    var newClassName = $('input:radio[name=alignver]:checked').val();
+                    $('#imgportatenis').removeClass(currentClassName).addClass(newClassName);  
+                });
+               
+
+            });
+        </script>
+
     </head>
     <body>
         <header class="bienvenida">
@@ -43,19 +77,19 @@
         <div class="recontenedor">
             <form id= "alignForm1" class="col1" action="newspec" method="post">
                 <label>Horizontal</label><br>
-                <input class="radio" type="radio" name="alignhor" value="left"><span class="postinput">Izquierda</span><br>
-                <input class="radio" type="radio" name="alignhor" value="center" checked><span class="postinput">Centrado</span><br>
-                <input class="radio" type="radio" name="alignhor" value="right"><span class="postinput">Derecha</span><br>
+                <input class="radio" type="radio" name="alignhor" value="alignTenisHorizontalL"><span class="postinput">Izquierda</span><br>
+                <input class="radio" type="radio" name="alignhor" value="alignTenisHorizontalC" checked><span class="postinput">Centrado</span><br>
+                <input class="radio" type="radio" name="alignhor" value="alignTenisHorizontalR"><span class="postinput">Derecha</span><br>
                 <br>
                 <label>Vertical</label><br>
-                <input class="radio" type="radio" name="alignver" value="top"><span class="postinput">Arriba</span><br>
-                <input class="radio" type="radio" name="alignver" value="center" checked><span class="postinput">Centrado</span><br>
-                <input class="radio" type="radio" name="alignver" value="bottom"><span class="postinput">Abajo</span>
+                <input class="radio" type="radio" name="alignver" value="alignTenisVerticalT"><span class="postinput">Arriba</span><br>
+                <input class="radio" type="radio" name="alignver" value="alignTenisVerticalM" checked><span class="postinput">Centrado</span><br>
+                <input class="radio" type="radio" name="alignver" value="alignTenisVerticalB"><span class="postinput">Abajo</span>
             </form>
             <div class="col2">
                 <div id="marco" class="alignTenisHorizontalC">
                     <div id="portatenis"></div>
-                    <img class="alignTenisVerticalM" src="../images/tenis.png">
+                    <img id="imgportatenis" class="alignTenisVerticalM" src="../images/tenis.png">
                     
                 </div>
             </div>

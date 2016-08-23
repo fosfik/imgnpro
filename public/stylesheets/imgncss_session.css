@@ -640,3 +640,42 @@ input, select {
     border-style: solid;
     border-image: linear-gradient(to top, rgba(0, 0, 0, 0), #CCCCCC, rgba(0, 0, 0, 0)) 1 100%;
 }
+
+#tenis {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.vertLine1 {
+    position: fixed;
+    width: 300px;
+    height: 200px;
+    border-left: 2px solid #00BFFF;
+    margin-left: 20px;
+}
+
+.vertLine2 {
+    position: fixed;
+    width: 300px;
+    height: 200px;
+    border-right: 2px solid #00BFFF;
+    margin-left: -20px;
+}
+
+.horLine1 {
+    position: fixed;
+    width: 300px;
+    height: 200px;
+    border-top: 2px solid #00BFFF;
+    margin-top: 20px;
+}
+
+.horLine2 {
+    position: fixed;
+    width: 300px;
+    height: 200px;
+    border-bottom: 2px solid #00BFFF;
+    margin-top: -20px;
+}

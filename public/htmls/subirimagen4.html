@@ -5,6 +5,61 @@
         <title>IMGNpro, hagamos que tu producto destaque</title>
         <link rel="stylesheet" href="../stylesheets/imgncss_session.css">
         <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico">
+        <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                //var buttonspec = $('#buttonspec');
+                // var frm = $('#specForm');
+                // buttonspec.click(function (ev) {
+                //     $.ajax({
+                //         type: frm.attr('method'),
+                //         url: frm.attr('action'),
+                //         data: frm.serialize(),
+                //         success: function (data) {
+                //             if (data.error == 1 ){
+                //                 document.getElementById('res_message').innerHTML= data.message;    
+                //             }
+                //             else{
+                //                 setTimeout(window.location='/subirimagen4.html',500);
+                //             }
+                //         }
+                //     });
+                //     ev.preventDefault();
+                // }); 
+
+                if (typeof(Storage) !== "undefined") {
+                    // Code for localStorage/sessionStorage.
+                    // TODO si ya existe la variable no sobreescribirla
+                    localStorage.setItem("imagesize", "none");
+                } else {
+                    alert("Este navegador no soporta LocalStorage");
+                } 
+
+           
+    
+                // $('#cuadro1').change(function() {
+                //     if($(this).is(":checked")) {
+                //         var returnVal = confirm("Are you sure?");
+                //         $(this).attr("checked", returnVal);
+                //     }
+                //     //$('#textbox1').val($(this).is(':checked'));        
+                // });
+
+               $("#sizeForm input[name='size']").click(function(){
+                    alert('Diste clic en una opción!');
+                    localStorage.imagesize = $('input:radio[name=size]:checked').val();
+
+
+
+                // if($('input:radio[name=size]:checked').val() == "cuadro1"){
+                //         alert($('input:radio[name=size]:checked').val());
+                //         //$('#select-table > .roomNumber').attr('enabled',false);
+                //     }
+                });
+
+            });
+        </script>
+
     </head>
     <body>
         <header class="bienvenida">
@@ -28,7 +83,7 @@
         </section>
     <section id="contenedor">
         <p class="encabezado">Subir Imágenes</p>
-        <a class="ruta">Sube tus imágenes</a>
+        <a class="ruta">Escoge una imagen</a>
         <a class="slash">/</a>
         <a class="ruta">Especificación</a>
         <a class="slash">/</a>
@@ -43,27 +98,27 @@
         <div class="recontenedor">
             <form id = "sizeForm" class="col1" action="newspec" method="post">
                 
-                <input name="size" type="radio" id="cuadro1">
+                <input name="size" type="radio" id="cuadro1" value="1:1">
                 <label class="cuadro" for="cuadro1">1:1</label>
-                <input name="size" type="radio" id="cuadro2">
+                <input name="size" type="radio" id="cuadro2" value="2:3">
                 <label class="cuadro" for="cuadro2">2:3</label>
-                <input name="size" type="radio" id="cuadro3">
+                <input name="size" type="radio" id="cuadro3" value="3:2">
                 <label class="cuadro" for="cuadro3">3:2</label>
-                <input name="size" type="radio" id="cuadro4">
+                <input name="size" type="radio" id="cuadro4" value="4:3">
                 <label class="cuadro" for="cuadro4">4:3</label>
-                <input name="size" type="radio" id="cuadro5">
+                <input name="size" type="radio" id="cuadro5" value="customize">
                 <label class="cuadro" for="cuadro5">Personalizado</label>
-                <input name="size" type="radio" id="cuadro6">
+                <input name="size" type="radio" id="cuadro6" value="none">
                 <label class="cuadro" for="cuadro6">Sin Cambios</label>
             </form>
         </div>
         <div class="picnum">Seleccione el Tamaño Deseado</div>
         <hr>
         <div class="buttonback">
-            <a href="subirimagen">Regresar</a>
+            <a href="/subirimagen3">Regresar</a>
         </div>
         <div class="buttoncont">
-            <a href="subirimagen4.html">Continuar</a>
+            <a href="subirimagen5.html">Continuar</a>
         </div>
     </section>
         <aside id="menurigth">

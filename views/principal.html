@@ -17,7 +17,9 @@
                                 row.append($("<td>" + data[i].numorder + "</td>"))
                                      .append($("<td>" + data[i].imagecount + "</td>"))
                                      .append($("<td>" + data[i].date + "</td>"))
-                                     .append($("<td>" + data[i].status + "</td>"));
+                                     .append($("<td>" + data[i].status + "</td>"))
+                                     .append($("<td><a href='/subirimagen3/" + data[i].numorder + "'>CONTINUAR</a>"  + "</td>"))
+                                     .append($("<td><a href='/payorder/" + data[i].numorder + "'>PAGAR</a>"  + "</td>"));
                                 $("#orderstable tbody").append(row);
                             }
                               
@@ -59,7 +61,7 @@
                     <li><a href="micuenta">Mi Cuenta</a></li>
                     <li><a href="historial">Historial</a></li>
                     <li><a href="especificaciones1">Especificaciones</a></li>
-                    <li><a href="subirimagen1">Subir Imagenes</a></li>
+                    <li><a href="/subirimagen1">Subir Imagenes</a></li>
                     <li><a href="contacto">Contacto</a></li>
                 </ul>
             </nav>
@@ -73,6 +75,8 @@
                     <th>Imágenes</th>
                     <th>Fecha</th>
                     <th>Estatus</th>
+                    <th></th>
+                    <th></th>
                 </tr>
                 
             </table>
@@ -91,7 +95,7 @@
         </div>
         <hr>
         <div class="button2">
-            <a href="registro.html">Subir Imágenes</a>
+            <a href="subirimagen1">Subir Imágenes</a>
         </div>
     </section>
         <aside id="menurigth">

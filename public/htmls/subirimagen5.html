@@ -11,8 +11,21 @@
             $(document).ready(function(){
                 if (typeof(Storage) !== "undefined") {
                     // Code for localStorage/sessionStorage.
-                    localStorage.setItem("alignhor", "alignTenisHorizontalC");
-                    localStorage.setItem("alignver", "alignTenisVerticalM");
+                    //localStorage.setItem("alignhor", "alignTenisHorizontalC");
+                    //localStorage.setItem("alignver", "alignTenisVerticalM");
+
+                    var currentAlignHor =  localStorage.getItem("alignhor");
+                    var currentAlignVer = localStorage.getItem("alignver");
+
+
+                    var currentClassName = $('#marco').attr('class');
+                    $('#marco').removeClass(currentClassName).addClass(currentAlignHor);  
+                    $('#' + currentAlignHor).prop("checked", true);
+
+                    currentClassName = $('#imgportatenis').attr('class');
+                    $('#imgportatenis').removeClass(currentClassName).addClass(currentAlignVer);
+                    $('#' + currentAlignVer).prop("checked", true);
+                   
                     
                 } else {
                     alert("Este navegador no soporta LocalStorage");
@@ -25,6 +38,8 @@
                     var currentClassName = $('#marco').attr('class');
                     var newClassName = $('input:radio[name=alignhor]:checked').val();
                     $('#marco').removeClass(currentClassName).addClass(newClassName);  
+                    localStorage.setItem("alignhor", newClassName);
+                    
                 });
 
                 $("#alignForm1 input[name='alignver']").click(function(){
@@ -32,7 +47,8 @@
                     // localStorage.imagesize = $('input:radio[name=size]:checked').val();
                     var currentClassName = $('#imgportatenis').attr('class');
                     var newClassName = $('input:radio[name=alignver]:checked').val();
-                    $('#imgportatenis').removeClass(currentClassName).addClass(newClassName);  
+                    $('#imgportatenis').removeClass(currentClassName).addClass(newClassName);
+                    localStorage.setItem("alignver", newClassName);  
                 });
                
 
@@ -77,14 +93,14 @@
         <div class="recontenedor">
             <form id= "alignForm1" class="col1" action="newspec" method="post">
                 <label>Horizontal</label><br>
-                <input class="radio" type="radio" name="alignhor" value="alignTenisHorizontalL"><span class="postinput">Izquierda</span><br>
-                <input class="radio" type="radio" name="alignhor" value="alignTenisHorizontalC" checked><span class="postinput">Centrado</span><br>
-                <input class="radio" type="radio" name="alignhor" value="alignTenisHorizontalR"><span class="postinput">Derecha</span><br>
+                <input id = "alignTenisHorizontalL" class="radio" type="radio" name="alignhor" value="alignTenisHorizontalL"><span class="postinput">Izquierda</span><br>
+                <input id = "alignTenisHorizontalC" class="radio" type="radio" name="alignhor" value="alignTenisHorizontalC" checked><span class="postinput">Centrado</span><br>
+                <input id = "alignTenisHorizontalR" class="radio" type="radio" name="alignhor" value="alignTenisHorizontalR"><span class="postinput">Derecha</span><br>
                 <br>
                 <label>Vertical</label><br>
-                <input class="radio" type="radio" name="alignver" value="alignTenisVerticalT"><span class="postinput">Arriba</span><br>
-                <input class="radio" type="radio" name="alignver" value="alignTenisVerticalM" checked><span class="postinput">Centrado</span><br>
-                <input class="radio" type="radio" name="alignver" value="alignTenisVerticalB"><span class="postinput">Abajo</span>
+                <input id = "alignTenisVerticalT" class="radio" type="radio" name="alignver" value="alignTenisVerticalT"><span class="postinput">Arriba</span><br>
+                <input id = "alignTenisVerticalM" class="radio" type="radio" name="alignver" value="alignTenisVerticalM" checked><span class="postinput">Centrado</span><br>
+                <input id = "alignTenisVerticalB" class="radio" type="radio" name="alignver" value="alignTenisVerticalB"><span class="postinput">Abajo</span>
             </form>
             <div class="col2">
                 <div id="marco" class="alignTenisHorizontalC">

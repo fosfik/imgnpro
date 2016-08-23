@@ -353,6 +353,13 @@ catch(err) {
            res.render('chooseanimage', {message: req.flash('message'), user: req.user});
   });
 
+/* Maneja la pagina que tiene el dropzone para subir imágenes */
+  router.get('/uploadimages', 
+     require('connect-ensure-login').ensureLoggedIn('/login'),
+         function(req, res){
+           res.render('uploadimages', {message: req.flash('message'), user: req.user});
+  });
+
 /* Maneja la pagina donde se cierra el pedido o la orden de compra */
   router.get('/chooseaspecification', 
      require('connect-ensure-login').ensureLoggedIn('/login'),

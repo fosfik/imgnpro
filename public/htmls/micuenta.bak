@@ -9,7 +9,7 @@
     <body>
         <header class="bienvenida">
             <ul>
-                <li>Bienvenido <a id="user" class="bold">Lupito Pérez</a><a class="bold">!</a></li>
+                <li>Hola <a id="user" class="bold">Lupito Pérez</a><a class="bold">!</a></li>
                 <li>Órdenes en Proceso <a id="orders" class="bold">2</a></li>
                 <li><a id="salir" class="bold" href="logout">Salir</a></li>
             </ul>

@@ -7,173 +7,176 @@
         <link rel="stylesheet" href="../stylesheets/dropzone.css">
         <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico"/>
         <script type="text/javascript" src="../js/dropzone.js"></script>
+        <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
         <script type="text/javascript">
-            Dropzone.autoDiscover = false;
-            var acceptedFileType = ".jpg, .jpeg, .png, .tif, .tiff, .psd";
-            var imageCount = 0;
-            var imageUploadInfos =[];
+            // Dropzone.autoDiscover = false;
+            // var acceptedFileType = ".jpg, .jpeg, .png, .tif, .tiff, .psd";
+            // var imageCount = 0;
+            // var imageUploadInfos =[];
             $(document).ready(function(){
-                $("div#myId").dropzone({
-                    url:"#",
-                    dictDefaultMessage: "Arrastra y suelta tus archivos aquí",
-                    dictRemoveFile: "Borrar imagen",
-
-                    // Dropzone.prototype.defaultOptions.dictDefaultMessage = "Drop files here to upload";
-                    // Dropzone.prototype.defaultOptions.dictFallbackMessage = "Your browser does not support drag'n'drop file uploads.";
-                    // Dropzone.prototype.defaultOptions.dictFallbackText = "Please use the fallback form below to upload your files like in the olden days.";
-                    // Dropzone.prototype.defaultOptions.dictFileTooBig = "File is too big ({{filesize}}MiB). Max filesize: {{maxFilesize}}MiB.";
-                    // Dropzone.prototype.defaultOptions.dictInvalidFileType = "You can't upload files of this type.";
-                    // Dropzone.prototype.defaultOptions.dictResponseError = "Server responded with {{statusCode}} code.";
-                    // Dropzone.prototype.defaultOptions.dictCancelUpload = "Cancel upload";
-                    // Dropzone.prototype.defaultOptions.dictCancelUploadConfirmation = "Are you sure you want to cancel this upload?";
-                    // Dropzone.prototype.defaultOptions.dictRemoveFile = "Remove file";
-                    // Dropzone.prototype.defaultOptions.dictMaxFilesExceeded = "You can not upload any more files.";
-
-                    method: "PUT",
-                    uploadMultiple: false,
-                    paramName: "file",
-                    maxFiles: 10,
-                    thumbnailWidth: 100,
-                    thumbnailHeight: 100,
-                    parallelUploads: 20,
-                    autoProcessQueue: true,
-                    addRemoveLinks: true,
-                    //previewTemplate: dropPreviewTemplate,
-                    //autoQueue: false, // Make sure the files aren't queued until manually added
-                    //previewsContainer: dropPreviewContainer, // Define the container to display the previews
-                    clickable: true, //".fileinput-button" // Define the element that should be used as click trigger to select files.
-                    acceptedFiles: acceptedFileType,
-                    accept: function(file, cb) {
-                    //override the file name, to use the s3 signature
-                    //console.log(file);
-                        var params = {
-                            filename: file.name,
-                            filetype: file.type,
-                        };
-                        //path to S3 signature
-                        $.getJSON('/sign-s3', params).done(function(data) {
-                            //console.log(data);
-
-                            if (!data.signedRequest) {
-                                return cb('Failed to receive an upload url');
-                            }
-
-                            file.signedRequest = data.signedRequest;
-                            file.finalURL = data.downloadURL;
-                            imageCount++;
-                            //document.forms[0].imagelist.value = imageUploadInfos;
-
-                            $("div#imageCount").html(imageCount);
-
-                            cb();
-                        }).fail(function() {
-                            
-                            imageCount++;
-                            $("div#imageCount").html(imageCount);
-                            //document.forms[0].imagelist.value = imageUploadInfos;
-
-                            return cb('Failed to receive an upload url');
-
-                        });
-                    },
-                    sending: function(file, xhr) {
-
-                        console.log('sending')
-                        var _send = xhr.send;
-                        xhr.setRequestHeader('x-amz-acl', 'public-read');
-                        xhr.send = function() {
-                            _send.call(xhr, file);
-                        }
-
-                    },
-                    processing:function(file){
-
-                        this.options.url = file.signedRequest;
-
-                    },
-                    complete:function(file){
-                        if (file.accepted && file.status == 'error' && file.retryTime > 5) {
-                            file.accepted = false;
-                            // removeStorageFile(file);
-                            // app._checkDone(this);
-
-                            // $(file.previewElement).find('.dz-remove').remove();
-                            // $(file.previewElement).find('.dz-progress').fadeOut();
-
-                            // app._showDefaultError(this, file, "Network Error!");
-                            alert("Error subiendo archivo");
-                        } else {
-                            // corregir esto para que solo agregue al array archivos completos
-                            imageUploadInfos.push({
-                                imagename: file.name,
-                                width: file.width,
-                                height: file.height,
-                                length: file.size
-                            });
-                        }
-                    },
-                    removedfile: function(file) {
-                        imageCount--;
-                        $("div#imageCount").html(imageCount);
-                        var _ref;
-                        return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
-
-                    }
-
-                });
-
-
-
-
-
-
-
-
-
-                // var frm = $('#buttoncontorder');
-                // frm.click(function (ev) {
-                //     $.ajax({
-                //         type: 'GET',
-                //         url: 'neworder',
-                //         data: '1',
-                //         success: function (data) {
-                //             if (data.error == 1 ){
-                //                 document.getElementById('res_message').innerHTML= data.message;    
-
-                //             }
-                //             else{
-                //                 setTimeout(window.location='subirimagen3',500);
-                //             }
-                //         }
-                //     });
-
-                //     ev.preventDefault();
-                // });   
-
-                var buttonspec = $('#buttoncontorder');
-                var frm = $('#orderForm');
-                buttonspec.click(function (ev) {
-                    $.ajax({
-                        type: frm.attr('method'),
-                        url: frm.attr('action'),
-                        //data: {imageUploadInfos:imageUploadInfos, numorder:0},   
-                        data: { 'imageUploadInfos': JSON.stringify(imageUploadInfos), 'imagecount': imageCount},
-                        //frm.serialize(),
-                        //contentType: "application/json",
-                        success: function (data) {
-                            if (data.error == 1 ){
-                                document.getElementById('res_message').innerHTML= data.message;    
-                            }
-                            else{
-                                setTimeout(window.location='/subirimagen3/' + data.numorder,500);
-                            }
-                        }
-                    });
-                    ev.preventDefault();
-                });  
-
-
+                localStorage.clear();
             });
+            //     $("div#myId").dropzone({
+            //         url:"#",
+            //         dictDefaultMessage: "Arrastra y suelta tus archivos aquí",
+            //         dictRemoveFile: "Borrar imagen",
+
+            //         // Dropzone.prototype.defaultOptions.dictDefaultMessage = "Drop files here to upload";
+            //         // Dropzone.prototype.defaultOptions.dictFallbackMessage = "Your browser does not support drag'n'drop file uploads.";
+            //         // Dropzone.prototype.defaultOptions.dictFallbackText = "Please use the fallback form below to upload your files like in the olden days.";
+            //         // Dropzone.prototype.defaultOptions.dictFileTooBig = "File is too big ({{filesize}}MiB). Max filesize: {{maxFilesize}}MiB.";
+            //         // Dropzone.prototype.defaultOptions.dictInvalidFileType = "You can't upload files of this type.";
+            //         // Dropzone.prototype.defaultOptions.dictResponseError = "Server responded with {{statusCode}} code.";
+            //         // Dropzone.prototype.defaultOptions.dictCancelUpload = "Cancel upload";
+            //         // Dropzone.prototype.defaultOptions.dictCancelUploadConfirmation = "Are you sure you want to cancel this upload?";
+            //         // Dropzone.prototype.defaultOptions.dictRemoveFile = "Remove file";
+            //         // Dropzone.prototype.defaultOptions.dictMaxFilesExceeded = "You can not upload any more files.";
+
+            //         method: "PUT",
+            //         uploadMultiple: false,
+            //         paramName: "file",
+            //         maxFiles: 10,
+            //         thumbnailWidth: 100,
+            //         thumbnailHeight: 100,
+            //         parallelUploads: 20,
+            //         autoProcessQueue: true,
+            //         addRemoveLinks: true,
+            //         //previewTemplate: dropPreviewTemplate,
+            //         //autoQueue: false, // Make sure the files aren't queued until manually added
+            //         //previewsContainer: dropPreviewContainer, // Define the container to display the previews
+            //         clickable: true, //".fileinput-button" // Define the element that should be used as click trigger to select files.
+            //         acceptedFiles: acceptedFileType,
+            //         accept: function(file, cb) {
+            //         //override the file name, to use the s3 signature
+            //         //console.log(file);
+            //             var params = {
+            //                 filename: file.name,
+            //                 filetype: file.type,
+            //             };
+            //             //path to S3 signature
+            //             $.getJSON('/sign-s3', params).done(function(data) {
+            //                 //console.log(data);
+
+            //                 if (!data.signedRequest) {
+            //                     return cb('Failed to receive an upload url');
+            //                 }
+
+            //                 file.signedRequest = data.signedRequest;
+            //                 file.finalURL = data.downloadURL;
+            //                 imageCount++;
+            //                 //document.forms[0].imagelist.value = imageUploadInfos;
+
+            //                 $("div#imageCount").html(imageCount);
+
+            //                 cb();
+            //             }).fail(function() {
+                            
+            //                 imageCount++;
+            //                 $("div#imageCount").html(imageCount);
+            //                 //document.forms[0].imagelist.value = imageUploadInfos;
+
+            //                 return cb('Failed to receive an upload url');
+
+            //             });
+            //         },
+            //         sending: function(file, xhr) {
+
+            //             console.log('sending')
+            //             var _send = xhr.send;
+            //             xhr.setRequestHeader('x-amz-acl', 'public-read');
+            //             xhr.send = function() {
+            //                 _send.call(xhr, file);
+            //             }
+
+            //         },
+            //         processing:function(file){
+
+            //             this.options.url = file.signedRequest;
+
+            //         },
+            //         complete:function(file){
+            //             if (file.accepted && file.status == 'error' && file.retryTime > 5) {
+            //                 file.accepted = false;
+            //                 // removeStorageFile(file);
+            //                 // app._checkDone(this);
+
+            //                 // $(file.previewElement).find('.dz-remove').remove();
+            //                 // $(file.previewElement).find('.dz-progress').fadeOut();
+
+            //                 // app._showDefaultError(this, file, "Network Error!");
+            //                 alert("Error subiendo archivo");
+            //             } else {
+            //                 // corregir esto para que solo agregue al array archivos completos
+            //                 imageUploadInfos.push({
+            //                     imagename: file.name,
+            //                     width: file.width,
+            //                     height: file.height,
+            //                     length: file.size
+            //                 });
+            //             }
+            //         },
+            //         removedfile: function(file) {
+            //             imageCount--;
+            //             $("div#imageCount").html(imageCount);
+            //             var _ref;
+            //             return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+
+            //         }
+
+            //     });
+
+
+
+
+
+
+
+
+
+            //     // var frm = $('#buttoncontorder');
+            //     // frm.click(function (ev) {
+            //     //     $.ajax({
+            //     //         type: 'GET',
+            //     //         url: 'neworder',
+            //     //         data: '1',
+            //     //         success: function (data) {
+            //     //             if (data.error == 1 ){
+            //     //                 document.getElementById('res_message').innerHTML= data.message;    
+
+            //     //             }
+            //     //             else{
+            //     //                 setTimeout(window.location='subirimagen3',500);
+            //     //             }
+            //     //         }
+            //     //     });
+
+            //     //     ev.preventDefault();
+            //     // });   
+
+            //     var buttonspec = $('#buttoncontorder');
+            //     var frm = $('#orderForm');
+            //     buttonspec.click(function (ev) {
+            //         $.ajax({
+            //             type: frm.attr('method'),
+            //             url: frm.attr('action'),
+            //             //data: {imageUploadInfos:imageUploadInfos, numorder:0},   
+            //             data: { 'imageUploadInfos': JSON.stringify(imageUploadInfos), 'imagecount': imageCount},
+            //             //frm.serialize(),
+            //             //contentType: "application/json",
+            //             success: function (data) {
+            //                 if (data.error == 1 ){
+            //                     document.getElementById('res_message').innerHTML= data.message;    
+            //                 }
+            //                 else{
+            //                     setTimeout(window.location='/subirimagen3/' + data.numorder,500);
+            //                 }
+            //             }
+            //         });
+            //         ev.preventDefault();
+            //     });  
+
+
+            
 
 
 
@@ -183,7 +186,7 @@
     <body>
         <header class="bienvenida">
             <ul>
-                <li>Bienvenido <a id="user" class="bold"><%= user.userlongname %></a><a class="bold">!</a></li>
+                <li>Hola <a id="user" class="bold"><%= user.userlongname %></a><a class="bold">!</a></li>
                 <li>Órdenes en Proceso <a id="orders" class="bold">0</a></li>
                 <li><a id="salir" class="bold" href="logout">Salir</a></li>
             </ul>
@@ -191,7 +194,7 @@
         <section id="menuver">
             <nav>
                 <ul>
-                    <li class="menulogo"><h1><a href="principal.html"><img src="../images/logo_black.png" alt="logo"></a></h1></li>
+                    <li class="menulogo"><h1><a href="principal"><img src="../images/logo_black.png" alt="logo"></a></h1></li>
                     <li><a href="micuenta">Mi Cuenta</a></li>
                     <li><a href="historial">Historial</a></li>
                     <li><a href="especificaciones1">Especificaciones</a></li>

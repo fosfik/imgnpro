@@ -33,7 +33,7 @@ router.get('/listorders', function(req, res) {
       console.log('No se encontraron pedidos');
     }
    
-  }).select('imagecount numorder status date');
+  }).select('imagecount numorder status date').sort('-date').limit(5);
 });
 
 // TODO agregar seguridad a esta ruta
@@ -75,7 +75,7 @@ router.get('/listspecs', function(req, res) {
     else {
       console.log('No se encontraron pedidos');
     }
-  }).select('name date');
+  }).select('name date').sort('-date').limit(5);
 });
 
 /* Crea un nuevo contacto. */

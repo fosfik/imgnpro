@@ -32,7 +32,7 @@
     <body>
         <header class="bienvenida">
             <ul>
-                <li>Bienvenido <a id="user" class="bold"><%= user.userlongname %></a><a class="bold">!</a></li>
+                <li>Hola <a id="user" class="bold"><%= user.userlongname %></a><a class="bold">!</a></li>
                 <li>Órdenes en Proceso <a id="orders" class="bold">0</a></li>
                <!--  <li>Pedido número:<a id="" class="bold"></a></li> -->
 
@@ -43,7 +43,7 @@
         <section id="menuver">
             <nav>
                 <ul>
-                    <li class="menulogo"><h1><a href="principal.html"><img src="../images/logo_black.png" alt="logo"></a></h1></li>
+                    <li class="menulogo"><h1><a href="principal"><img src="../images/logo_black.png" alt="logo"></a></h1></li>
                     <li><a href="micuenta">Mi Cuenta</a></li>
                     <li><a href="historial">Historial</a></li>
                     <li><a href="especificaciones1">Especificaciones</a></li>
@@ -71,7 +71,7 @@
         <div class="recontenedor">
             <form id = "specForm" class="col1" action="/newspec" method="post">
                 <label for="nombre">Nombre</label><br>
-                <input type="text" name="name" placeholder="Nombra tu Especificación" value="Página Herramientas"><br>
+                <input type="text" name="name" placeholder="Nombra tu Especificación" value=""><br>
                 <label for="formato">Formato</label><br>
                 <select name="format">
                     <option value="jpg">JPG</option>
@@ -92,8 +92,8 @@
                     <option value="sin_fondo">SIN FONDO</option>
                 </select><br>
                 <label for="dpi">DPI</label><br>
-                <input id="depeis" type="text" name="dpi" value="300" maxlength="5"><label for="dpi">dpi</label>
-                <input id="chkalgnnone" class="checkcheck" type="checkbox" name="nonedpi" value="none" onclick="javascript:desactAllNext();"><span class="postcheck">Sin Cambios</span>
+                <input id="depeis" type="text" name="DPI" value="300" maxlength="5" disabled><label for="dpi">dpi</label>
+                <input id="chkalgnnone" class="checkcheck" type="checkbox" name="nonedpi" value="none"  checked onclick="javascript:desactAllNext();"><span class="postcheck">Sin Cambios</span>
                 <div>
                     <h1 id="res_message"></h1>
                 </div> 

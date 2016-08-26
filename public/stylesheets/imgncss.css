@@ -443,6 +443,12 @@ html {
     transition: .1s;
 }
 
+.button3 a, .button4 a {
+    text-decoration: none;
+    font: 16px;
+    color: #FFFFFF;
+}
+
 .button5 {
     background-color: #0368ae;
     transition: .1s;

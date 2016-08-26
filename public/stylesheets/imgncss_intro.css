@@ -165,7 +165,65 @@ html, body {
     bottom: 0;
     right: 0;
     text-align: center;
+    transition: 1s;
 }
+
+.certificate:hover {
+    height: 40%;
+    margin-top: 60%;
+    z-index: 1000;
+    position: absolute;
+    background: rgba(0,0,0,1);
+    transition: 2s;
+    width: 100%
+}
+
+.certificate:hover div[name="about"], .certificate:hover div[name="contact"], .certificate:hover hr[name="hrfoot"] {
+    display: inline-block;
+}
+
+div[name="about"] {
+    margin: 20px;
+    margin-right: 40px;
+    display: none;
+    width: 30%;
+    text-align: right;
+    vertical-align: top;
+}
+
+div[name="contact"] {
+    margin: 20px;
+    margin-left: 40px;
+    display: none;
+    width: 30%;
+    text-align: left;
+    vertical-align: top;
+}
+
+.encabezadofoot {
+    font-size: 16px;
+    padding: 10px 5px;
+    font-weight: bold;
+    color: #FFFFFF;
+}
+
+.textoplanofoot {
+    font-size: 12px;
+    padding: 5px;
+    color: #FFFFFF;
+}
+
+hr[name="hrfoot"] {
+    display: none;
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border: 0;
+    height: 2px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), red, rgba(0, 0, 0, 0));
+    transition: 2s;
+}
+
 
 #letras li{
     display: inline-block;

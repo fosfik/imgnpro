@@ -112,7 +112,7 @@ html {
     margin-top: 60px;
     display: inline-block;
     max-width: 57%;
-    min-width: 400px;
+    min-width: 620px;
 }
 
 .encabezado {
@@ -494,6 +494,7 @@ hr {
     padding: 20px 20px;
     max-width: auto;
     height: 240px;
+    min-width: 570px;
 }
 
 .recontenedor form{
@@ -563,11 +564,12 @@ input, select {
     padding: 1px 3px;
     display: inline-block;
     text-align: center;
-    line-height:80px;
+    line-height: 80px;
     transition: .2s;
     color: #FFFFFF;
     margin: 10px;
     border: 2px solid #BBBBBB;
+    position: relative;
 }
 
 .cuadro:hover {
@@ -577,7 +579,7 @@ input, select {
     transition: .3s;
 }
 
-#cuadro1:checked + label, #cuadro2:checked + label, #cuadro3:checked + label, #cuadro4:checked + label, #cuadro5:checked + label, #cuadro6:checked + label {
+#cuadro1:checked + label, #cuadro2:checked + label, #cuadro3:checked + label, #cuadro4:checked + label, #cuadro6:checked + label {
     width: 150px;
     height: 80px;
     line-height: 80px;
@@ -586,11 +588,39 @@ input, select {
     border: 2px solid #00BFFF;
 }
 
-.radio{
+.cuadro[name="cuadrounder"] {
+    width: 150px;
+    height: 80px;
+    background: none;
+    padding: 1px 3px;
+    display: inline-block;
+    text-align: left;
+    line-height: 1px;
+    transition: .2s;
+    color: #FFFFFF;
+    margin: 10px;
+    border: 2px solid #BBBBBB;
+    position: absolute;
+}
+
+.cuadro[name="cuadrounder"] label, .cuadro[name="cuadrounder"] input {
+    font-size: 12px;
+    width: 50px;
+    color: #000;
+}
+
+#cuadro5:checked + label {
+    visibility: hidden;
+    background: none;
+    color: rgba (0,0,0,0)
+    transition: 5s;
+}
+
+.radio {
     max-width: 20px;
 }
 
-#alignForm1{
+#alignForm1 {
     padding-right: 20px;
     border-width: 0px 2px 0px 0px;
     border-style: solid;
@@ -601,10 +631,11 @@ input, select {
     width: 300px;
     height: 200px;
     border: 2px solid #999999;
+    position: relative;
 }
 
 .alignTenisHorizontalC {
-    text-align: center;
+    text-align: left;
 }
 
 .alignTenisHorizontalL {
@@ -623,7 +654,7 @@ input, select {
 }
 
 .alignTenisVerticalM {
-    vertical-align: middle;
+    vertical-align: top;
 }
 
 .alignTenisVerticalT {
@@ -642,14 +673,14 @@ input, select {
 }
 
 #tenis {
-    margin-top: 0px;
+    margin-top: 20px;
     margin-bottom: 0px;
-    margin-left: 0px;
+    margin-left: 20px;
     margin-right: 0px;
 }
 
 .vertLine1 {
-    position: fixed;
+    position: absolute;
     width: 300px;
     height: 200px;
     border-left: 2px solid #00BFFF;
@@ -657,7 +688,7 @@ input, select {
 }
 
 .vertLine2 {
-    position: fixed;
+    position: absolute;
     width: 300px;
     height: 200px;
     border-right: 2px solid #00BFFF;
@@ -665,7 +696,7 @@ input, select {
 }
 
 .horLine1 {
-    position: fixed;
+    position: absolute;
     width: 300px;
     height: 200px;
     border-top: 2px solid #00BFFF;
@@ -673,7 +704,7 @@ input, select {
 }
 
 .horLine2 {
-    position: fixed;
+    position: absolute;
     width: 300px;
     height: 200px;
     border-bottom: 2px solid #00BFFF;

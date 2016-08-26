@@ -108,8 +108,19 @@
                 <label class="cuadro" for="cuadro3">3:2</label>
                 <input name="size" type="radio" id="cuadro4" value="4:3">
                 <label class="cuadro" for="cuadro4">4:3</label>
+                <div class="cuadro" name="cuadrounder">
+                    <select name="medida">
+                    <option value="cm">cm</option>
+                    <option value="px">px</option>
+                    <option value="%">%</option>
+                    </select><br>
+                    <label for="with">Ancho</label>
+                    <input type="text" value="200" placeholder="00 "><br>
+                    <label for="">Alto</label>
+                    <input type="text" value="200" placeholder="00 ">
+                </div>
                 <input name="size" type="radio" id="cuadro5" value="customize">
-                <label class="cuadro" for="cuadro5">Personalizado</label>
+                <label class="cuadro" id="custombox" for="cuadro5">Personalizado</label>
                 <input name="size" type="radio" id="cuadro6" value="none">
                 <label class="cuadro" for="cuadro6">Sin Cambios</label>
             </form>

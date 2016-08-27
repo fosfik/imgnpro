@@ -632,7 +632,7 @@ input, select {
 }
 
 .alignTenisHorizontalC {
-    text-align: left;
+    text-align: center;
 }
 
 .alignTenisHorizontalL {
@@ -651,7 +651,7 @@ input, select {
 }
 
 .alignTenisVerticalM {
-    vertical-align: top;
+    vertical-align: middle;
 }
 
 .alignTenisVerticalT {

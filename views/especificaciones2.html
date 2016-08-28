@@ -12,6 +12,7 @@
             $(document).ready(function(){
                 //Se desactivan los botones de opcion de alineación
                 desactAllNext();
+                desactSizeAllNext();
                 var newbuttonspec = $('#savebuttonspec');
                 var frm = $('#specForm');
                 newbuttonspec.click(function (ev) {
@@ -64,7 +65,30 @@
                 $("#chkalgnnone").change(function(){
                     desactAllNext();
                 }); 
+
+                $("#chksizenone").change(function(){
+                    desactSizeAllNext();
+                }); 
                 
+                $("input[name=imagesize]").change(function(){
+                    if ($("input[name=imagesize]:checked").val() === 'customize'){
+                        $('select[name=measuresize]').prop('disabled', false);
+                        $('input[name=widthsize]').prop('disabled', false);
+                        $('input[name=heightsize]').prop('disabled', false);
+
+                        
+                    }
+                    else{
+                        $('select[name=measuresize]').prop('disabled', true);
+                        $('input[name=widthsize]').prop('disabled', true);
+                        $('input[name=heightsize]').prop('disabled', true);
+                    }
+
+                    
+                }); 
+                
+
+
                 function sumallextras(){
                    
                     var ntotal = <%= config.prices.cutandremove%>; 
@@ -110,6 +134,15 @@
                     var chkalgnnone = document.getElementById('chkalgnnone').checked;
                     $('input:radio[name=alignhor]').prop('disabled', chkalgnnone);
                     $('input:radio[name=alignver]').prop('disabled', chkalgnnone);
+                }
+
+                function desactSizeAllNext(){
+                    var chksizenone = document.getElementById('chksizenone').checked;
+                    
+                    $('input:radio[name=imagesize]').prop('disabled', chksizenone);
+                    $('select[name=measuresize]').prop('disabled', true);
+                    $('input[name=widthsize]').prop('disabled', true);
+                    $('input[name=heightsize]').prop('disabled', true);
                 }
 
             });
@@ -170,6 +203,31 @@
                     <option value="negro">NEGRO</option>
                     <option value="sin_fondo">SIN FONDO</option>
                 </select><br>
+
+                <label>Tamaño</label><br>
+                <input id="chksizenone" class="checks" type="checkbox" name="sizenone" value="none"  checked><span class="postinput">Sin Cambios</span>
+
+                
+                <input class="radio" name="imagesize" type="radio" value="1:1">
+                <span class="postinput">1:1</span>
+                <input name="imagesize" type="radio" value="2:3">
+                <span class="postinput">2:3</span>
+                <input name="imagesize" type="radio" value="3:2">
+                <span class="postinput">3:2</span>
+                <input name="imagesize" type="radio" value="4:3">
+                <span class="postinput">4:3</span>
+                <input id="optcustomsize" name="imagesize" type="radio" value="customize">
+                <span class="postinput">Personalizado</span>
+                <select name="measuresize" disabled>
+                <option value="cm">cm</option>
+                <option value="px">px</option>
+                <option value="%">%</option>
+                </select>
+                <label for="with">Ancho</label>
+                <input type="text" name= "widthsize" value="200" size="4" placeholder="00 " disabled>
+                <label for="">Alto</label>
+                <input type="text" name= "heightsize" value="200" size="4" placeholder="00 " disabled>
+                <br>
                 <label>Alineación</label><br>
                 <input id="chkalgnnone" class="checks" type="checkbox" name="alignnone" value="none"  checked><span class="postinput">Sin Cambios</span><br>
 <!-- <input id="chkalgnnone" class="checks" type="checkbox" name="alignnone" value="none" onclick="javascript:desactAllNext();" checked><span class="postinput">Sin Cambios</span>          
@@ -179,13 +237,13 @@
 
 
                 <label>Horizontal</label><br>
-                <input id = "alignHorizontalL" class="radio" type="radio" name="alignhor" value="alignHorizontalL"><span class="postinput">Izquierda</span><br>
-                <input id = "alignHorizontalC" class="radio" type="radio" name="alignhor" value="alignHorizontalC" checked><span class="postinput">Centrado</span><br>
+                <input id = "alignHorizontalL" class="radio" type="radio" name="alignhor" value="alignHorizontalL"><span class="postinput">Izquierda</span>
+                <input id = "alignHorizontalC" class="radio" type="radio" name="alignhor" value="alignHorizontalC" checked><span class="postinput">Centrado</span>
                 <input id = "alignHorizontalR" class="radio" type="radio" name="alignhor" value="alignHorizontalR"><span class="postinput">Derecha</span><br>
                 <br>
                 <label>Vertical</label><br>
-                <input id = "alignVerticalT" class="radio" type="radio" name="alignver" value="alignVerticalT"><span class="postinput">Arriba</span><br>
-                <input id = "alignVerticalM" class="radio" type="radio" name="alignver" value="alignVerticalM" checked><span class="postinput">Centrado</span><br>
+                <input id = "alignVerticalT" class="radio" type="radio" name="alignver" value="alignVerticalT"><span class="postinput">Arriba</span>
+                <input id = "alignVerticalM" class="radio" type="radio" name="alignver" value="alignVerticalM" checked><span class="postinput">Centrado</span>
                 <input id = "alignVerticalB" class="radio" type="radio" name="alignver" value="alignVerticalB"><span class="postinput">Abajo</span>
 
 

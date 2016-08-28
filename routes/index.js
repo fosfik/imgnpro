@@ -317,7 +317,7 @@ catch(err) {
   router.get('/especificaciones2', 
      require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){
-           res.render('especificaciones2', {message: req.flash('message'), user: req.user});
+           res.render('especificaciones2', {message: req.flash('message'), user: req.user, config:config});
   });
 
   /* Maneja la aplicación principal */
@@ -433,26 +433,44 @@ catch(err) {
  /* Handle new specification POST */
   router.post('/newspec', function (req,res) {
     // body...
-    //console.log(req);
-    console.log(req.param('background'));
-    console.log(req.param('name'));
-    console.log(req.param('colormode'));
-    console.log(req.param('format'));
-    console.log(req.param('dpi'));
-    console.log(req.param('numorder'));
+    console.log(req.body);
 
     console.log(req.user._id);
+    
+      var newSpec = new Spec();
+      // set the user's local credentials
+      newSpec.name = req.body.name;
+      newSpec.format = req.body.format;
+      newSpec.colormode = req.body.colormode;
+      newSpec.background = req.body.background;
+      newSpec.dpi = req.body.DPI;
+      newSpec.nonedpi = req.body.nonedpi;
+      newSpec.userid = req.user._id;  
+      newSpec.alignnone = req.body.alignnone;
+      newSpec.alignhor = req.body.alignhor;
+      newSpec.alignver = req.body.alignver;
+      newSpec.measure = req.body.measure;
+      newSpec.margintop = req.body.margintop;
+      newSpec.marginbottom = req.body.marginbottom;
+      newSpec.marginright = req.body.marginright;
+      newSpec.marginleft = req.body.marginleft;
+      newSpec.naturalshadow = req.body.naturalshadow;
+      newSpec.dropshadow = req.body.dropshadow;
+      newSpec.correctcolor = req.body.correctcolor;
+      newSpec.clippingpath = req.body.clippingpath;
+      newSpec.basicretouch = req.body.basicretouch;
 
-     var newSpec = new Spec();
-          // set the user's local credentials
-          newSpec.name = req.param('name');
-          newSpec.format = req.param('format');
-          newSpec.colormode = req.param('colormode');
-          newSpec.background = req.param('background');
-          newSpec.dpi = req.param('dpi');
-          newSpec.userid = req.user._id; 
-          newSpec.specid = '0'; 
         
+      spectotalprice(req,function(total){
+          console.log(total);
+        //res.setHeader('Content-Type', 'application/json');
+        //res.send(JSON.stringify({ error: 0, ntotal:total , message: 'Se guardó la especificación'})); 
+          newSpec.totalprice = total;
+
+
+
+
+
           // save the user
           newSpec.save(function(err) {
             if (err){
@@ -464,16 +482,17 @@ catch(err) {
             console.log('Se guardó correctamente la especificación');
             console.log(newSpec._id);
 
-            Orderstest.findOneAndUpdate({numorder: req.param('numorder')}, {$set: { specid: newSpec._id } },{upsert:true, new: true}, function(error, Order)   {
-                if(error){
-                  //throw err;
-                  console.log(error);
-                }
-                else {
-                  console.log("Se actualizó el pedido");
-                } 
+            //El pedido se va a crear después de crear una especificación 
+            // Orderstest.findOneAndUpdate({numorder: req.param('numorder')}, {$set: { specid: newSpec._id } },{upsert:true, new: true}, function(error, Order)   {
+            //     if(error){
+            //       //throw err;
+            //       console.log(error);
+            //     }
+            //     else {
+            //       console.log("Se actualizó el pedido");
+            //     } 
                 
-            }); 
+            // }); 
 
 
 // orderSchema.pre('save', function(next) {
@@ -493,9 +512,19 @@ catch(err) {
 //         console.log(err);
 //     }    
             res.setHeader('Content-Type', 'application/json');
-            res.send(JSON.stringify({ error: 0, message: 'Se guardó la especificación'})); 
+            res.send(JSON.stringify({ error: 0, newSpecid: newSpec._id, message: 'Se guardó la especificación'})); 
               
           });
+
+
+
+
+
+
+    });
+
+
+
   });
 
 
@@ -712,7 +741,40 @@ router.post('/save-details', (req, res) => {
 
 // });
 
+    // cutandremove:1.50,
+    // naturalshadow:0.55,
+    // dropshadow:0.20,
+    // correctcolor:0.40,
+    // clippingpath:2.40,
+    // basicretouch:0.60
 
+function spectotalprice(req, cb){
+  
+  // se agrega a nTotal el costo mínimo 
+
+  //console.log(req.param('background'));
+  console.log(req.body); 
+  //console.log(parseFloat(req.body.naturalshadow));
+  // se multiplica por 100 para quitar los decimales y evitar errores de precision
+  var nTotal = (config.prices.cutandremove) * 100;
+  if (parseFloat(req.body.naturalshadow ) > 0){
+    nTotal = nTotal + (config.prices.naturalshadow * 100);
+  }
+  if (parseFloat(req.body.dropshadow) > 0){
+    nTotal = nTotal + (config.prices.dropshadow * 100);
+  }
+  if (parseFloat(req.body.correctcolor) > 0){
+    nTotal = nTotal + (config.prices.correctcolor * 100);
+  }
+  if (parseFloat(req.body.clippingpath)> 0){
+    nTotal = nTotal + (config.prices.clippingpath * 100);
+  }
+  if (parseFloat(req.body.basicretouch) >0){
+    nTotal = nTotal + (config.prices.basicretouch * 100);
+  }
+  nTotal = nTotal / 100;
+  cb(nTotal);
+}
 
 
 

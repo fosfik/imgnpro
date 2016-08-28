@@ -2,6 +2,9 @@ var express = require('express');
 var app = express();
 var config;
 
+// se puede configurar npm el proxy
+// npm config set proxy http://proxy.company:8080
+
 if (app.get('env') !== 'development') {
  
  config = {
@@ -27,8 +30,27 @@ if (app.get('env') !== 'development') {
 		key:'812259967962-gcvtg69gr1grfhbhi09poagqmjb1gkrl.apps.googleusercontent.com',
 		secret:'7naFjeqHyO1ZG6xEV8Vw9EYI',
 		callbackURL: 'http://www.imgnpro.com/login/google/return'
-	}
+	},
+	prices:{
 
+		// hasta el el dia de hoy:
+
+		// $1.50 Recorte / Remover Fondo a Imagen
+
+		// -Extras-
+
+		// $0.55 Sombra Natural
+		// $0.20 Drop Shadow
+		// $0.40 Correction Color
+		// $2.40 Clipping Path
+		// $0.60 Retoque Básico
+		cutandremove:1.50,
+		naturalshadow:0.55,
+		dropshadow:0.20,
+		correctcolor:0.40,
+		clippingpath:2.40,
+		basicretouch:0.60
+	}
 
 
 	// // Prueba
@@ -64,6 +86,26 @@ else{
 		key:'812259967962-gcvtg69gr1grfhbhi09poagqmjb1gkrl.apps.googleusercontent.com',
 		secret:'7naFjeqHyO1ZG6xEV8Vw9EYI',
 		callbackURL: 'http://localhost:3000/login/google/return'
+	},
+	prices:{
+
+		// hasta el el dia de hoy:
+
+		// $1.50 Recorte / Remover Fondo a Imagen
+
+		// -Extras-
+
+		// $0.55 Sombra Natural
+		// $0.20 Drop Shadow
+		// $0.40 Correction Color
+		// $2.40 Clipping Path
+		// $0.60 Retoque Básico
+		cutandremove:1.50,
+		naturalshadow:0.55,
+		dropshadow:0.20,
+		correctcolor:0.40,
+		clippingpath:2.40,
+		basicretouch:0.60
 	}
 	//,
 

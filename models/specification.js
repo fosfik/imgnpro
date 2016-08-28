@@ -6,9 +6,24 @@ var SpecSchema = new mongoose.Schema({
 	background: {type: String},
 	colormode: {type: String},
 	dpi: {type: Number, default: 0},
+	nonedpi: {type: String},
 	userid: {type: String},
 	numorder: {type: String},
-	date: { type: Date, default: Date.now }
+	date: { type: Date, default: Date.now },
+	totalprice: {type: String},
+	alignnone: {type: String},
+  	alignhor: {type: String},
+  	alignver: {type: String},
+  	measure: {type: String},
+  	margintop: {type: Number, default: 0},
+  	marginbottom: {type: Number, default: 0},
+ 	marginright: {type: Number, default: 0},
+  	marginleft: {type: Number, default: 0},
+  	naturalshadow: {type: String},
+  	dropshadow:  {type: String},
+	correctcolor: {type: String},
+	clippingpath: {type: String},
+	basicretouch: {type: String}
 
 });
 // se genera un objeto basado en el esquema contador

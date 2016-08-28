@@ -98,23 +98,27 @@
         <a class="ruta">Subir imágenes</a>
         
         <div class="recontenedor">
-            <form id = "sizeForm" class="col1" action="newspec" method="post">
-                
-                <input name="size" type="radio" id="cuadro1" value="1:1">
-                <label class="cuadro" for="cuadro1">1:1</label>
-                <input name="size" type="radio" id="cuadro2" value="2:3">
-                <label class="cuadro" for="cuadro2">2:3</label>
-                <input name="size" type="radio" id="cuadro3" value="3:2">
-                <label class="cuadro" for="cuadro3">3:2</label>
-                <input name="size" type="radio" id="cuadro4" value="4:3">
-                <label class="cuadro" for="cuadro4">4:3</label>
-                <input name="size" type="radio" id="cuadro5" value="customize">
-                <label class="cuadro" for="cuadro5">Personalizado</label>
-                <input name="size" type="radio" id="cuadro6" value="none">
-                <label class="cuadro" for="cuadro6">Sin Cambios</label>
+            <form id = "extraForm" class="col3" action="newspec" method="post">
+                <input name="sombra" type="checkbox" id="cuadroxtra1" value="1:1">
+                <a href="#openShadowModal" class="cuadroxtra" for="cuadroxtra1">Sombra</a>
+                <input name="color" type="checkbox" id="cuadroxtra2" value="2:3">
+                <a href="#openColorModal" class="cuadroxtra" for="cuadroxtra2">Corrección de color</a>
+                <input name="retoque" type="checkbox" id="cuadroxtra3" value="3:2">
+                <a href="#openRetouchModal" class="cuadroxtra" for="cuadroxtra3">Retoque Básico</a>
+                <input name="path" type="checkbox" id="cuadroxtra4" value="4:3">
+                <a href="#openPathModal" class="cuadroxtra" for="cuadroxtra4">Clipping Path</a>
             </form>
+            <hr>
+            <form id="nameSpec" class="col4">
+                <label>Nombre de Especificación</label><br>
+                <input type="text" placeholder="Nombra tu especificación" value="Mi Especificación">
+            </form>
+            <div class="labelito">
+                <p class="texto_plano4">Precio por Imagen</p>
+                <p class="texto_precio2"><span class="prefixmoney">USD</span>$9.99</p>
+            </div>
         </div>
-        <div class="picnum">Seleccione el Tamaño Deseado</div>
+        <div class="picnum">Seleccione Extras</div>
         <hr>
         <div class="buttonback">
             <a href="/chooseamargin.html">Regresar</a>
@@ -123,6 +127,135 @@
             <a href="uploadimages">Continuar</a>
         </div>
     </section>
+
+        <!--MODAL PARA SOMBRA-->
+        <div id="openShadowModal" class="modalDialog">
+            <div>
+                <a href="#close" title="Close" Class="close">X</a>
+                <h1 class="encabezado">Sombra</h1>
+                <hr class="hrmodal">
+                <form id="shadowForm1" class="shadow_form" action="/signup" method="post" name="shadow_form">
+                    
+                    <ul>
+                        <li>
+                            <input name="shadow" type="radio" checked>
+                            <label id="etiquetasxtras">Sin Sombra</label><label class="postextra"></label>
+                        </li>
+                        <li>
+                            <input name="shadow" type="radio">
+                            <label id="etiquetasxtras">Drop Shadow</label><label class="postextra">+ <span class="extreprefix">USD</span>$0.20</label>
+                        </li>
+                        <li>
+                            <input name="shadow" type="radio">
+                            <label id="etiquetasxtras">Sombra Natural</label><label class="postextra">+ <span class="extreprefix">USD</span>$0.55</label>
+                        </li>
+                    </ul>
+                    <div class="infomodal">
+                        <img src="../images/sombranat.png">
+                    </div>
+                    <div>
+                        <h1 id="res_message"></h1>
+                    </div>   
+                    <div class="buttonModal">
+                        <input type="submit" value="Aceptar">
+                    </div>                               
+                </form>
+            </div>
+        </div>
+        
+        <!--MODAL PARA COLOR-->
+        <div id="openColorModal" class="modalDialog">
+            <div>
+                <a href="#close" title="Close" Class="close">X</a>
+                <h1 class="encabezado">Corrección de Color</h1>
+                <hr class="hrmodal">
+                <form id="colorForm" action="/signup" method="post" name="color_form">
+                    
+                    <ul>
+                        <li>
+                            <input name="color" type="radio" checked>
+                            <label id="etiquetasxtras">Sin Ajustes de Color</label><label class="postextra"></label>
+                        </li>
+                        <li>
+                            <input name="color" type="radio">
+                            <label id="etiquetasxtras">Ajuste de Color</label><label class="postextra">+ <span class="extreprefix">USD</span>$0.40</label>
+                        </li>
+                    </ul>
+                    <div class="infomodal">
+                        <p class="texto_plano_modal">Corrección de brillo, contraste, niveles y saturación de color.</p>
+                    </div>
+                    <div>
+                        <h1 id="res_message"></h1>
+                    </div>   
+                    <div class="buttonModal">
+                        <input type="submit" value="Aceptar">
+                    </div>                               
+                </form>
+            </div>
+        </div>
+        
+        <!--MODAL PARA RETOQUE-->
+        <div id="openRetouchModal" class="modalDialog">
+            <div>
+                <a href="#close" title="Close" Class="close">X</a>
+                <h1 class="encabezado">Retoque Básico</h1>
+                <hr class="hrmodal">
+                <form id="retouchForm" action="/signup" method="post" name="retouch_form">
+                    
+                    <ul>
+                        <li>
+                            <input name="retouch" type="radio" checked>
+                            <label id="etiquetasxtras">Sin Retoque</label><label class="postextra"></label>
+                        </li>
+                        <li>
+                            <input name="retouch" type="radio">
+                            <label id="etiquetasxtras">Retoque Básico</label><label class="postextra">+ <span class="extreprefix">USD</span>$0.60</label>
+                        </li>
+                    </ul>
+                    <div class="infomodal">
+                        <p class="texto_plano_modal">Se corrigen imperfecciones de la imagen; como polvo, rayones, etc.</p>
+                    </div>
+                    <div>
+                        <h1 id="res_message"></h1>
+                    </div>   
+                    <div class="buttonModal">
+                        <input type="submit" value="Aceptar">
+                    </div>                               
+                </form>
+            </div>
+        </div>
+        
+        <!--MODAL PARA PATH-->
+        <div id="openPathModal" class="modalDialog">
+            <div>
+                <a href="#close" title="Close" Class="close">X</a>
+                <h1 class="encabezado">Clipping Path</h1>
+                <hr class="hrmodal">
+                <form id="pathForm" action="/signup" method="post" name="path_form">
+                    
+                    <ul>
+                        <li>
+                            <input name="path" type="radio" checked>
+                            <label id="etiquetasxtras">Sin Clipping Path</label><label class="postextra"></label>
+                        </li>
+                        <li>
+                            <input name="path" type="radio">
+                            <label id="etiquetasxtras">Clipping Path</label><label class="postextra">+ <span class="extreprefix">USD</span>$2.40</label>
+                        </li>
+                    </ul>
+                    <div class="infomodal">
+                        <p class="texto_plano_modal">Se guarda en la imagen el Clipping Path para recorte y posición de elementos fuera de la imagen.</p>
+                    </div>
+                    <div>
+                        <h1 id="res_message"></h1>
+                    </div>   
+                    <div class="buttonModal">
+                        <input type="submit" value="Aceptar">
+                    </div>                               
+                </form>
+            </div>
+        </div>
+        
         <aside id="menurigth">
             <p class="encabezado"> Tutorial</p>
              <div class="video_med"><a onclick="ponleplay()" href="#openVideoModal"><img src="../images/tumbnail_video.jpg" width="140px"></a></div>

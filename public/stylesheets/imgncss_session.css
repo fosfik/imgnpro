@@ -232,7 +232,7 @@ hr {
     
 }
 
-.col1, .col2{
+.col1, .col2, col3{
     padding: 10px;
     display: inline-block;
     float: left;
@@ -557,7 +557,7 @@ input, select {
 }
 
 .cuadro {
-    width: 150px;
+    width: 26%;
     height: 80px;
     background: #BBBBBB;
     padding: 1px 3px;
@@ -579,8 +579,6 @@ input, select {
 }
 
 #cuadro1:checked + label, #cuadro2:checked + label, #cuadro3:checked + label, #cuadro4:checked + label, #cuadro6:checked + label {
-    width: 150px;
-    height: 80px;
     line-height: 80px;
     background: none;
     color:  #00BFFF;
@@ -588,7 +586,7 @@ input, select {
 }
 
 .cuadro[name="cuadrounder"] {
-    width: 150px;
+    width: 26%;
     height: 80px;
     background: none;
     padding: 1px 3px;
@@ -634,7 +632,7 @@ input, select {
 }
 
 .alignTenisHorizontalC {
-    text-align: left;
+    text-align: center;
 }
 
 .alignTenisHorizontalL {
@@ -653,7 +651,7 @@ input, select {
 }
 
 .alignTenisVerticalM {
-    vertical-align: top;
+    vertical-align: middle;
 }
 
 .alignTenisVerticalT {
@@ -708,4 +706,252 @@ input, select {
     height: 200px;
     border-bottom: 2px solid #00BFFF;
     margin-top: -20px;
+}
+
+
+#cuadroxtra1, #cuadroxtra2, #cuadroxtra3, #cuadroxtra4 {
+    display: none;
+}
+
+#extraForm label {
+    font-size: 16px;
+}
+
+.cuadroxtra {
+    text-decoration: none;
+    width: 19%;
+    height: 80px;
+    background: #BBBBBB;
+    padding: 1px 3px;
+    display: inline-flex;
+    transition: .2s;
+    color: #FFFFFF;
+    vertical-align: top;
+    margin: 10px;
+    border: 2px solid #BBBBBB;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.cuadroxtra:hover {
+    background-color: #00BFFF;
+    border: 2px solid #00BFFF;
+    box-shadow: 2px 2px 2px rgba(20, 20, 20, 0.2);
+    transition: .3s;
+}
+
+#cuadroxtra1:checked + label, #cuadroxtra2:checked + label, #cuadroxtra3:checked + label, #cuadroxtra4:checked + label {
+    background: none;
+    color:  #00BFFF;
+    border: 2px solid #00BFFF;
+}
+
+.col3{
+    width: 100%;
+    position: relative;
+    display: inline-block;
+    text-align: center;
+}
+
+.col4 {
+    margin-top: 10px;
+    width: 400px;
+    display: inline-block;
+    margin-left: 20px;
+    vertical-align: bottom;
+    position: relative;
+    float: left;
+}
+
+.labelito {
+    margin-top: 10px;
+    margin-right: 20px;
+    display: inline-block;
+    width: 120px;
+    height: 85px;
+    position: relative;
+    background: url(../images/label.svg);
+    background-size: 120px 85px;
+    text-align: center;
+    float: right;
+}
+
+.texto_precio2 {
+    color: #FFFFFF;
+    font-size: 26px;
+    padding: 2px;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: 0px;
+    display: inline-block;
+}
+
+.prefixmoney {
+    display: inline-block;
+    color: #FFFFFF;
+    font-size: 14px;
+    padding: 2px;
+    font-weight: bold;
+}
+
+.texto_plano4{
+    color: #FFFFFF;
+    font-size: 10px;
+    font-style: italic;
+    padding: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: 5px;
+}
+
+
+/* ESTE ES EL ESTILO PARA EL MODAL */
+
+.modalDialog {
+    color: #FFFFFF;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0,0,0,0.8);
+    z-index: 99999;
+    opacity: 0;
+    -webkit-transition: opacity 400ms ease-in;
+    -moz-transition: opacity 400ms ease-in;
+    transition: opacity 400ms ease-in;
+    pointer-events: none;
+}
+
+.modalDialog:target {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modalDialog > div {
+    width: 500px;
+    height: auto;
+    position: relative;
+    margin: 10% auto;
+    padding: 5px 20px 20px 20px;
+    background: #000000;
+}
+
+.modalDialog .encabezado {
+    text-align: center;
+}
+
+.modalDialog hr {
+    width: 100%;
+    margin-top: 0px;
+    margin-bottom: 20px;
+    border: 0;
+    height: 2px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), #555555, rgba(0, 0, 0, 0));
+}
+
+.modalDialog ul {
+    width: 250px;
+    display: inline-block;
+    list-style-type: none;
+    list-style-position: outside;
+    margin: 0px;
+    padding: 0px;
+    vertical-align: top;
+}
+
+.modalDialog li {
+    padding: 12px;
+    position: relative;
+}
+
+#etiquetasxtras {
+    display: inline-block;
+    padding: 5px 8px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.postextra {
+    display: inline-block;
+    padding: 5px 8px;
+    font-size: 14px;
+}
+
+.extreprefix{
+    font-size: 8px;
+    margin-right: 4px;
+}
+
+.modalDialog :-moz-placeholder {color: #333333; font-size: 14px; font-style: italic;}
+.modalDialog ::-webkit-input-placeholder {color: #333333; font-size: 14px; font-style: italic;}
+
+.modalDialog input {
+    padding: 5px 8px;
+}
+
+.infomodal {
+    display: inline-block;
+    width: 220px;
+    height: 150px;
+    margin: 0px;
+    padding: 10px;
+    vertical-align: top;
+}
+
+.texto_plano_modal {
+    display: inline-block;
+    padding: 10px;
+    font-size: 12px;
+    width: 200px;
+    height: 130px;
+    border: 1px dashed #555;
+}
+
+.buttonModal input{
+    background-color: red;
+    color: #FFFFFF;
+    padding: 10px 10px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    float: right;
+    margin: 10px 37%;
+    cursor: pointer;
+    width: 100px;
+    height: auto;
+    position: absolute;
+}
+
+.modalDialog input:focus {
+    outline-color: #555555;
+}
+
+.close {
+    background: #000000;
+    color: #FFFFFF;
+    border: 2px solid;
+    border-color: #FFFFFF;
+    line-height: 24px;
+    position: absolute;
+    right: -10px;
+    text-align: center;
+    top: -7px;
+    width: 24px;
+    text-decoration: none;
+    font-size: 12px;
+    -webkit-border-radius: 12px;
+    -moz-border-radius: 12px;
+    border-radius: 24px;
+}
+
+#res_message {
+    color: red;
+    text-align: center;
+    font-size: 18px;
+    margin: 10px;
+    font-weight: lighter;
+    font-style: italic;
 }

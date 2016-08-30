@@ -3,11 +3,11 @@
     <head>
         <meta charset="utf-8">
         <title>IMGNpro, hagamos que tu producto destaque</title>
-        <link rel="stylesheet" href="../stylesheets/imgncss_session.css">
-        <link rel="stylesheet" href="../stylesheets/dropzone.css">
-        <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico"/>
+        <link rel="stylesheet" href="../public/stylesheets/imgncss_session.css">
+        <link rel="stylesheet" href="../public/stylesheets/dropzone.css">
+        <link rel="shortcut icon" type="image/x-icon" href="../public/images/favicon.ico"/>
         <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
-        <script type="text/javascript" src="../js/dropzone.js"></script>
+        <script type="text/javascript" src="../public/js/dropzone.js"></script>
         <script type="text/javascript">
             Dropzone.autoDiscover = false;
             var acceptedFileType = ".jpg, .jpeg, .png, .tif, .tiff, .psd";
@@ -184,7 +184,7 @@
     <body>
         <header class="bienvenida">
             <ul>
-                <li>Hola <a id="user" class="bold"><%= user.userlongname %></a><a class="bold">!</a></li>
+                <li>Hola <a id="user" class="bold">%= user.userlongname %></a><a class="bold">!</a></li>
                 <li>Órdenes en Proceso <a id="orders" class="bold">0</a></li>
                 <li><a id="salir" class="bold" href="logout">Salir</a></li>
             </ul>
@@ -192,7 +192,7 @@
         <section id="menuver">
             <nav>
                 <ul>
-                    <li class="menulogo"><h1><a href="principal"><img src="../images/logo_black.png" alt="logo"></a></h1></li>
+                    <li class="menulogo"><h1><a href="principal"><img src="../public/images/logo_black.png" alt="logo"></a></h1></li>
                     <li><a href="micuenta">Mi Cuenta</a></li>
                     <li><a href="historial">Historial</a></li>
                     <li><a href="especificaciones1">Especificaciones</a></li>
@@ -217,27 +217,39 @@
         <a class="slash">/</a>
         <a class="ruta_on">Subir imágenes</a>
         
-        <div>
-            <div id="myId" class="dropzone"> </div>
+        <div class="recontenedordrop">
+        
+            <div class="dropArea">
+                <div id="myId" class="dropzone"> </div>
+            </div>
+            <div class="picnum">Total</div>
+            <div id = "imageCount" class="picnum">0</div>
+            <div class="picnum">Imágenes</div>
+            <hr>
+            <table>
+                
+            </table>
+                <div>
+                    <label>Nombre de Especificación</label><br>
+                    <input type="text" placeholder="Nombra tu especificación" value="Mi Especificación">
+                </div>
+                <div class="labelito">
+                    <p class="texto_plano4">Precio por Imagen</p>
+                    <p class="texto_precio2"><span class="prefixmoney">USD</span>$9.99</p>
+                </div>
         </div>
-        <div class="picnum">Total</div>
-        <div id = "imageCount" class="picnum">0</div>
-        <div class="picnum">Imágenes</div>
         <hr>
+        <div class="buttonback">
+            <a class="buttonback" href="chooseanextra.html">Regresar</a>
+        </div>
         <div class="buttoncont">
             <a id="buttoncontorder">Continuar</a>
         </div>
-
-        <div>
-            <h1 id="res_message"></h1>
-        </div>  
-        <form id = "orderForm" class="" action="/neworder" method="post">
-            <input type="hidden" name="imagelist" placeholder="" value=""><br>
-        </form>
+        
     </section>
         <aside id="menurigth">
             <p class="encabezado"> Tutorial</p>
-             <div class="video_med"><a onclick="ponleplay()" href="#openVideoModal"><img src="../images/tumbnail_video.jpg" width="140px"></a></div>
+             <div class="video_med"><a onclick="ponleplay()" href="#openVideoModal"><img src="../public/images/tumbnail_video.jpg" width="140px"></a></div>
             <hr>
             <p class="encabezado"> FAQs</p>
             <p><a class="texto_plano">1. ¿Están seguros mis datos?</a></p>

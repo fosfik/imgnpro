@@ -73,9 +73,9 @@ router.get('/listspecs', function(req, res) {
       res.send(specs); 
     } 
     else {
-      console.log('No se encontraron pedidos');
+      console.log('No se encontraron especificaciones');
     }
-  }).select('name date').sort('-date').limit(5);
+  }).select('name date totalprice').sort('-date').limit(5);
 });
 
 /* Crea un nuevo contacto. */

@@ -15,6 +15,28 @@ var Contact = require('../models/contact.js');
 
 
 // TODO agregar seguridad a esta ruta
+router.get('/listorders/:limit', function(req, res) {
+  Orders.find({'userid':req.user._id},function(err, orders) {
+    // In case of any error return
+     if (err){
+       console.log('Error al consultar');
+     }
+     //console.log("prueba 2");
+   // already exists
+    if (orders) {
+      console.log('se encontraron pedidos');
+      res.setHeader('Content-Type', 'application/json');
+      res.send(orders); 
+
+    } 
+    else {
+      console.log('No se encontraron pedidos');
+    }
+   
+  }).select('imagecount numorder status date').sort('-date').limit(req.params.limit);
+});
+
+// TODO agregar seguridad a esta ruta
 router.get('/listorders', function(req, res) {
   Orders.find({'userid':req.user._id},function(err, orders) {
     // In case of any error return
@@ -33,8 +55,9 @@ router.get('/listorders', function(req, res) {
       console.log('No se encontraron pedidos');
     }
    
-  }).select('imagecount numorder status date').sort('-date').limit(5);
+  }).select('imagecount numorder status date').sort('-date');
 });
+
 
 // TODO agregar seguridad a esta ruta
 router.get('/listallorders', function(req, res) {

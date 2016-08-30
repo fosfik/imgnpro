@@ -467,7 +467,8 @@ hr {
     margin-top: 0px;
 }
 
-.buttonback a:hover, .buttoncont a:hover {
+.buttonback a:hover, .buttoncont a:hover, .button1 a:hover, .button2 a:hover, .buttonblue:hover{
+    cursor: pointer;
     box-shadow: 2px 2px 2px rgba(20, 20, 20, 0.2);
     transition: .3s;
 }

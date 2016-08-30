@@ -968,7 +968,7 @@ input, select {
     max-height: 200px;
     width: 100%;
     position: relative;
-    overflow: scroll;
+    overflow: auto;
     display: inline-block;
 }
 

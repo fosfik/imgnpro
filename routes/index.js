@@ -512,7 +512,7 @@ catch(err) {
 //         console.log(err);
 //     }    
             res.setHeader('Content-Type', 'application/json');
-            res.send(JSON.stringify({ error: 0, newSpecid: newSpec._id, message: 'Se guardó la especificación'})); 
+            res.send(JSON.stringify({ error: 0, newSpecid: newSpec._id, message: 'Se guardó correctamente la especificación'})); 
               
           });
 

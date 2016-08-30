@@ -1,7 +1,7 @@
 //var express = require('express');
 var compression = require('compression');
 var express = require('express');
-var ejs = require('ejs');
+var ejs = require('ejs'); // Render
 var flash = require('connect-flash'); // middleware para mensajes en passport
 var passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;

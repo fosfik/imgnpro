@@ -60,6 +60,7 @@ router.get('/listallorders', function(req, res) {
  
 // TODO agregar seguridad a esta ruta
 router.get('/listspecs', function(req, res) {
+  
   Spec.find({'userid':req.user._id},function(err, specs) {
     // In case of any error return
      if (err){
@@ -75,7 +76,29 @@ router.get('/listspecs', function(req, res) {
     else {
       console.log('No se encontraron especificaciones');
     }
-  }).select('name date totalprice').sort('-date').limit(5);
+  }).select('name date totalprice').sort('-date');
+});
+
+// TODO agregar seguridad a esta ruta
+// TODO usar una sola ruta para consultar especificaciones
+router.get('/listspecs/:limit', function(req, res) {
+  
+  Spec.find({'userid':req.user._id},function(err, specs) {
+    // In case of any error return
+     if (err){
+       console.log('Error al consultar');
+     }
+     //console.log("prueba 2");
+   // already exists
+    if (specs) {
+      console.log('se encontraron especificaciones');
+      res.setHeader('Content-Type', 'application/json');
+      res.send(specs); 
+    } 
+    else {
+      console.log('No se encontraron especificaciones');
+    }
+  }).select('name date totalprice').sort('-date').limit(req.params.limit);
 });
 
 /* Crea un nuevo contacto. */

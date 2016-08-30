@@ -9,14 +9,14 @@ var sha1 = require('sha1');
 //var Strategy = require('passport-facebook').Strategy;
 var config = require('../config');
 var path = require('path');
-var Orderstest = require('../models/order.js');
+var Orders = require('../models/order.js');
 var Spec = require('../models/specification.js');
 var Contact = require('../models/contact.js');
 
 
 // TODO agregar seguridad a esta ruta
 router.get('/listorders', function(req, res) {
-  Orderstest.find({'userid':req.user._id},function(err, orders) {
+  Orders.find({'userid':req.user._id},function(err, orders) {
     // In case of any error return
      if (err){
        console.log('Error al consultar');
@@ -38,7 +38,7 @@ router.get('/listorders', function(req, res) {
 
 // TODO agregar seguridad a esta ruta
 router.get('/listallorders', function(req, res) {
-  Orderstest.find({},function(err, orders) {
+  Orders.find({},function(err, orders) {
     // In case of any error return
      if (err){
        console.log('Error al consultar');
@@ -131,7 +131,7 @@ router.get('/listspecs/:limit', function(req, res) {
     console.log(req.body['imageUploadInfos']);
     //console.log(req.params);
     var numorderstr="";
-    var newOrder = new Orderstest();
+    var newOrder = new Orders();
           newOrder.name = 'orderfotos';
           newOrder.userid = req.user._id;
           newOrder.imagecount = req.body['imagecount'];
@@ -198,8 +198,6 @@ catch(err) {
           
          
     //res.set('Content-Type', 'application/javascript');
-    //res.render('ordertest', {numorder: numorderstr });
-
 
   });
  
@@ -506,7 +504,7 @@ catch(err) {
             console.log(newSpec._id);
 
             //El pedido se va a crear después de crear una especificación 
-            // Orderstest.findOneAndUpdate({numorder: req.param('numorder')}, {$set: { specid: newSpec._id } },{upsert:true, new: true}, function(error, Order)   {
+            // Orders.findOneAndUpdate({numorder: req.param('numorder')}, {$set: { specid: newSpec._id } },{upsert:true, new: true}, function(error, Order)   {
             //     if(error){
             //       //throw err;
             //       console.log(error);

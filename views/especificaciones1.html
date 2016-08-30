@@ -5,6 +5,29 @@
         <title>IMGNpro, hagamos que tu producto destaque</title>
         <link rel="stylesheet" href="../stylesheets/imgncss_session.css">
         <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico"/>
+        <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                    $.ajax({
+                        type: 'get',
+                        url: '/listspecs',
+                        success: function (data) {
+                            for (var i = 0; i < data.length; i++){
+                                var row = $("<tr>");
+                                row.append($("<td>" + data[i].name + "</td>"))
+                                     .append($("<td>" + data[i].date + "</td>"))
+                                     .append($("<td>" + data[i].totalprice + "</td>"))
+                                     .append( $('<td><a id="icontable" href="uploadimages"><img src="../images/icon_cloud.png" height="20px" width="20px"></a><a id="icontable"  href="especificaciones2"><img src="../images/icon_edit.png" height="20px" width="20px"></a></td>'));
+                                $("#specstable tbody").append(row);
+                            }
+                              
+
+                        }
+                    });
+
+            });
+
+        </script>
     </head>
     <body>
         <header class="bienvenida">
@@ -27,7 +50,7 @@
             </nav>
         </section>
     <section id="contenedor">
-        <div class="tabla">
+        <!-- <div class="tabla">
             <p class="encabezado">Especificaciones</p>
             <table>
                 <tr>
@@ -54,7 +77,22 @@
                     <td>$1.50</td>
                     <td><a id="icontable"  href="uploadimages"><img src="../images/icon_cloud.png" height="20px" width="20px"></a><a id="icontable"  href="especificaciones2"><img src="../images/icon_edit.png" height="20px" width="20px"></a></td>
                 </tr>
-            </table>
+            </table> -->
+
+
+            <div id="specstable" class="tabla">
+                <p class="encabezado">Especificaciones</p>
+                <table>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Fecha</th>
+                        <th>Costo</th>
+                        <th></th>
+                    </tr>
+                    
+                </table>
+            
+
             <section id="area_botones">
                 <div class="buttonblue">
                 <a href="especificaciones2"><img src="../images/icon_plus.png" height="15px" width="15px">Nuevo</a>

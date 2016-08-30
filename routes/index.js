@@ -9,14 +9,14 @@ var sha1 = require('sha1');
 //var Strategy = require('passport-facebook').Strategy;
 var config = require('../config');
 var path = require('path');
-var Orderstest = require('../models/order.js');
+var Orders = require('../models/order.js');
 var Spec = require('../models/specification.js');
 var Contact = require('../models/contact.js');
 
 
 // TODO agregar seguridad a esta ruta
-router.get('/listorders', function(req, res) {
-  Orderstest.find({'userid':req.user._id},function(err, orders) {
+router.get('/listorders/:limit', function(req, res) {
+  Orders.find({'userid':req.user._id},function(err, orders) {
     // In case of any error return
      if (err){
        console.log('Error al consultar');
@@ -33,12 +33,35 @@ router.get('/listorders', function(req, res) {
       console.log('No se encontraron pedidos');
     }
    
-  }).select('imagecount numorder status date').sort('-date').limit(5);
+  }).select('imagecount numorder status date').sort('-date').limit(req.params.limit);
 });
 
 // TODO agregar seguridad a esta ruta
+router.get('/listorders', function(req, res) {
+  Orders.find({'userid':req.user._id},function(err, orders) {
+    // In case of any error return
+     if (err){
+       console.log('Error al consultar');
+     }
+     //console.log("prueba 2");
+   // already exists
+    if (orders) {
+      console.log('se encontraron pedidos');
+      res.setHeader('Content-Type', 'application/json');
+      res.send(orders); 
+
+    } 
+    else {
+      console.log('No se encontraron pedidos');
+    }
+   
+  }).select('imagecount numorder status date').sort('-date');
+});
+
+
+// TODO agregar seguridad a esta ruta
 router.get('/listallorders', function(req, res) {
-  Orderstest.find({},function(err, orders) {
+  Orders.find({},function(err, orders) {
     // In case of any error return
      if (err){
        console.log('Error al consultar');
@@ -60,6 +83,7 @@ router.get('/listallorders', function(req, res) {
  
 // TODO agregar seguridad a esta ruta
 router.get('/listspecs', function(req, res) {
+  
   Spec.find({'userid':req.user._id},function(err, specs) {
     // In case of any error return
      if (err){
@@ -73,9 +97,31 @@ router.get('/listspecs', function(req, res) {
       res.send(specs); 
     } 
     else {
-      console.log('No se encontraron pedidos');
+      console.log('No se encontraron especificaciones');
     }
-  }).select('name date').sort('-date').limit(5);
+  }).select('name date totalprice').sort('-date');
+});
+
+// TODO agregar seguridad a esta ruta
+// TODO usar una sola ruta para consultar especificaciones
+router.get('/listspecs/:limit', function(req, res) {
+  
+  Spec.find({'userid':req.user._id},function(err, specs) {
+    // In case of any error return
+     if (err){
+       console.log('Error al consultar');
+     }
+     //console.log("prueba 2");
+   // already exists
+    if (specs) {
+      console.log('se encontraron especificaciones');
+      res.setHeader('Content-Type', 'application/json');
+      res.send(specs); 
+    } 
+    else {
+      console.log('No se encontraron especificaciones');
+    }
+  }).select('name date totalprice').sort('-date').limit(req.params.limit);
 });
 
 /* Crea un nuevo contacto. */
@@ -108,7 +154,7 @@ router.get('/listspecs', function(req, res) {
     console.log(req.body['imageUploadInfos']);
     //console.log(req.params);
     var numorderstr="";
-    var newOrder = new Orderstest();
+    var newOrder = new Orders();
           newOrder.name = 'orderfotos';
           newOrder.userid = req.user._id;
           newOrder.imagecount = req.body['imagecount'];
@@ -175,8 +221,6 @@ catch(err) {
           
          
     //res.set('Content-Type', 'application/javascript');
-    //res.render('ordertest', {numorder: numorderstr });
-
 
   });
  
@@ -483,7 +527,7 @@ catch(err) {
             console.log(newSpec._id);
 
             //El pedido se va a crear después de crear una especificación 
-            // Orderstest.findOneAndUpdate({numorder: req.param('numorder')}, {$set: { specid: newSpec._id } },{upsert:true, new: true}, function(error, Order)   {
+            // Orders.findOneAndUpdate({numorder: req.param('numorder')}, {$set: { specid: newSpec._id } },{upsert:true, new: true}, function(error, Order)   {
             //     if(error){
             //       //throw err;
             //       console.log(error);

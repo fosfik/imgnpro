@@ -20,4 +20,4 @@ orderSchema.pre('save', function(next) {
     }); 
 });
 
-module.exports = mongoose.model('ordertest', orderSchema);
+module.exports = mongoose.model('ordertests', orderSchema);

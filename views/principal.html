@@ -10,7 +10,7 @@
             $(document).ready(function(){
                     $.ajax({
                         type: 'get',
-                        url: '/listorders',
+                        url: '/listorders/5',
                         success: function (data) {
                             for (var i = 0; i < data.length; i++){
                                 var row = $("<tr>");
@@ -28,12 +28,13 @@
                     });
                     $.ajax({
                         type: 'get',
-                        url: '/listspecs',
+                        url: '/listspecs/5',
                         success: function (data) {
                             for (var i = 0; i < data.length; i++){
                                 var row = $("<tr>");
                                 row.append($("<td>" + data[i].name + "</td>"))
                                      .append($("<td>" + data[i].date + "</td>"))
+                                     .append($("<td>" + data[i].totalprice + "</td>"))
                                      .append( $('<td><a id="icontable" href="uploadimages"><img src="../images/icon_cloud.png" height="20px" width="20px"></a><a id="icontable"  href="especificaciones2"><img src="../images/icon_edit.png" height="20px" width="20px"></a></td>'));
                                 $("#specstable tbody").append(row);
                             }
@@ -93,6 +94,7 @@
                 <tr>
                     <th>Nombre</th>
                     <th>Fecha</th>
+                    <th>Costo</th>
                     <th></th>
                 </tr>
                 

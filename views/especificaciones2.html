@@ -29,10 +29,22 @@
                                 if (data.error == 1 ){
                                     //document.getElementById('res_message').innerHTML= data.message;    
                                     alert(data.message);
+                                     $('#specnombre').focus();
                                 }
                                 else{
                                     //setTimeout(window.location='/subirimagen4.html',500);
-                                    alert(data.ntotal);
+                                    alert(data.message);
+                                    
+                                    if(confirm("¿Quieres subir imágenes?")){
+                                        document.location.href="/uploadimages";
+                                    }
+                                    else{
+                                        document.getElementById("specForm").reset();
+                                        desactAllNext();
+                                        desactSizeAllNext();
+                                        sumallextras(); 
+                                    }    
+
                                 }
                             }
                         });
@@ -286,7 +298,7 @@
         </div>
         <hr>
         <div class="button2">
-            <a href="uploadimages">Guardar y Subir Imágenes</a>
+            <a href="/uploadimages">Guardar y Subir Imágenes</a>
         </div>
     </section>
         <aside id="menurigth">

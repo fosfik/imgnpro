@@ -3,11 +3,11 @@
     <head>
         <meta charset="utf-8">
         <title>IMGNpro, hagamos que tu producto destaque</title>
-        <link rel="stylesheet" href="../stylesheets/imgncss_session.css">
-        <link rel="stylesheet" href="../stylesheets/dropzone.css">
-        <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico"/>
+        <link rel="stylesheet" href="../public/stylesheets/imgncss_session.css">
+        <link rel="stylesheet" href="../public/stylesheets/dropzone.css">
+        <link rel="shortcut icon" type="image/x-icon" href="../public/images/favicon.ico"/>
         <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
-        <script type="text/javascript" src="../js/dropzone.js"></script>
+        <script type="text/javascript" src="../public/js/dropzone.js"></script>
         <script type="text/javascript">
             Dropzone.autoDiscover = false;
             var acceptedFileType = ".jpg, .jpeg, .png, .tif, .tiff, .psd";
@@ -192,7 +192,7 @@
         <section id="menuver">
             <nav>
                 <ul>
-                    <li class="menulogo"><h1><a href="principal"><img src="../images/logo_black.png" alt="logo"></a></h1></li>
+                    <li class="menulogo"><h1><a href="principal"><img src="../public/images/logo_black.png" alt="logo"></a></h1></li>
                     <li><a href="micuenta">Mi Cuenta</a></li>
                     <li><a href="historial">Historial</a></li>
                     <li><a href="especificaciones1">Especificaciones</a></li>
@@ -222,34 +222,35 @@
             <div class="dropArea">
                 <div id="myId" class="dropzone"> </div>
             </div>
-            <div class="picnum">Total</div>
-            <div id = "imageCount" class="picnum">0</div>
-            <div class="picnum">Imágenes</div>
             <hr>
-            <table>
-                
-            </table>
-                <div>
-                    <label>Nombre de Especificación</label><br>
-                    <input type="text" placeholder="Nombra tu especificación" value="Mi Especificación">
+            <div class="col3">
+                <div class="col5">
+                    <div class="droptable1">Nombre de Especificación</div>
+                    <div class="droptable2">Mi Especificacion</div>
                 </div>
-                <div class="labelito">
-                    <p class="texto_plano4">Precio por Imagen</p>
-                    <p class="texto_precio2"><span class="prefixmoney">USD</span>$9.99</p>
+                <div class="col5">
+                    <div class="droptable1">Imágenes</div>
+                    <div id = "imageCount" class="droptable2">0</div>
                 </div>
+                <div class="col5">
+                    <div class="droptable1">Precio por Imagen</div>
+                    <div class="droptable2">$2.50</div>
+                </div>
+                <div class="col5">
+                    <div class="droptable1">Costo Total</div>
+                    <p class="droptable2">USD<span class="droptable3">$9.99</span></p>
+                </div>
+            </div>
         </div>
         <hr>
-        <div class="buttonback">
-            <a class="buttonback" href="chooseanextra.html">Regresar</a>
-        </div>
-        <div class="buttoncont">
-            <a id="buttoncontorder">Continuar</a>
+        <div class="button2">
+            <a id="buttoncontorder">Confirmar Orden</a>
         </div>
         
     </section>
         <aside id="menurigth">
             <p class="encabezado"> Tutorial</p>
-             <div class="video_med"><a onclick="ponleplay()" href="#openVideoModal"><img src="../images/tumbnail_video.jpg" width="140px"></a></div>
+             <div class="video_med"><a onclick="ponleplay()" href="#openVideoModal"><img src="../public/images/tumbnail_video.jpg" width="140px"></a></div>
             <hr>
             <p class="encabezado"> FAQs</p>
             <p><a class="texto_plano">1. ¿Están seguros mis datos?</a></p>

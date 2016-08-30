@@ -965,6 +965,7 @@ input, select {
 
 .dropArea {
     max-height: 200px;
+    width: 100%;
     position: relative;
     overflow: scroll;
     display: inline-block;
@@ -979,30 +980,45 @@ input, select {
     position: relative;
 }
 
-.recontenedordrop form{
-    display: inline-block;
-    text-decoration: none;
-    position: relative;
-}
-
-.recontenedordrop label {
+.droptable1 {
     font-size: 10px;
     text-decoration: none;
+    text-align: left;
+    display: inline-block;
 }
 
-.recontenedordrop input {
+.droptable2 {
     text-decoration: none;
     background: none;
     font-size: 12px;
     font-weight: bold;
     width: 200px;
     margin-bottom: 10px;
+    text-align: left;
+    display: inline-block;
 }
 
-.recontenedordrop select {
-    text-decoration: none;
-    background: none;
+.droptable3 {
+    font-size: 26px;
+    vertical-align: bottom;
+}
+
+.picnumdrop {
+    display: inline-block;
     font-size: 12px;
     font-weight: bold;
-    margin-bottom: 10px;
+    float: right;
+    padding: 2px;
+    margin-right: 20px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+}
+
+.col5 {
+    width: 120px;
+    text-align: left;
+    margin-top: 10px;
+    display: inline-block;
+    margin-left: 20px;
+    vertical-align: top;
 }

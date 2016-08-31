@@ -63,17 +63,19 @@
                             file.finalURL = data.downloadURL;
                             imageCount++;
                             //document.forms[0].imagelist.value = imageUploadInfos;
-
+alert("accept");
                             $("div#imageCount").html(imageCount);
 
                             cb();
                         }).fail(function() {
                             
-                            imageCount++;
-                            $("div#imageCount").html(imageCount);
+                            alert("Fail");
+                            //imageCount++;
+                            //$("div#imageCount").html(imageCount);
                             //document.forms[0].imagelist.value = imageUploadInfos;
 
-                            return cb('Failed to receive an upload url');
+                            return cb('No se pudo un url válida');
+                            //file.fail = true;
 
                         });
                     },
@@ -93,7 +95,9 @@
 
                     },
                     complete:function(file){
-                        if (file.accepted && file.status == 'error' && file.retryTime > 5) {
+                        //if (file.accepted && file.status == 'error' && file.retryTime > 5) {
+                        if (file.accepted && file.status == 'error') {
+                        
                             file.accepted = false;
                             // removeStorageFile(file);
                             // app._checkDone(this);
@@ -105,17 +109,28 @@
                             alert("Error subiendo archivo");
                         } else {
                             // corregir esto para que solo agregue al array archivos completos
-                            imageUploadInfos.push({
-                                imagename: file.name,
-                                width: file.width,
-                                height: file.height,
-                                length: file.size
-                            });
+                            
+                            if(file.accepted===true){    
+                                 imageCount++;
+                                //document.forms[0].imagelist.value = imageUploadInfos;
+                                $("div#imageCount").html(imageCount);
+                                imageUploadInfos.push({
+                                    imagename: file.name,
+                                    width: file.width,
+                                    height: file.height,
+                                    length: file.size
+                                });
+                             }
                         }
                     },
                     removedfile: function(file) {
-                        imageCount--;
-                        $("div#imageCount").html(imageCount);
+                        if(file.status !== 'error'){
+                            alert(file.fail);
+                            imageCount--;
+                            $("div#imageCount").html(imageCount);
+                        }
+                        
+
                         var _ref;
                         return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
 

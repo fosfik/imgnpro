@@ -210,7 +210,7 @@ function caltotalpay(){
         // :2.40,
         // :0.60
                     ntotalpay = ntotalpay / 100;
-                    ntotalpay = ntotalpay.round(2);
+                    ntotalpay = ntotalpay.toFixed(2); // redondea a dos decimales
                     $("#ntotalpay").html(ntotalpay);
                 }
 

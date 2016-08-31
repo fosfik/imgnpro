@@ -64,13 +64,13 @@
                             file.finalURL = data.downloadURL;
                             //imageCount++;
                             //document.forms[0].imagelist.value = imageUploadInfos;
-alert("accept");
+                            //alert("accept");
                             //$("div#imageCount").html(imageCount);
 
                             cb();
                         }).fail(function() {
                             
-                            alert("Fail");
+                            alert("Falló al cargar la imagen");
                             //imageCount++;
                             //$("div#imageCount").html(imageCount);
                             //document.forms[0].imagelist.value = imageUploadInfos;
@@ -127,7 +127,7 @@ alert("accept");
                     },
                     removedfile: function(file) {
                         if(file.status !== 'error'){
-                            alert(file.fail);
+                            //alert(file.fail);
                             imageCount--;
                             $("div#imageCount").html(imageCount);
                             caltotalpay();
@@ -172,22 +172,31 @@ alert("accept");
                 var buttonspec = $('#buttoncontorder');
                 var frm = $('#orderForm');
                 buttonspec.click(function (ev) {
+                   if (imageCount > 0){
                     $.ajax({
                         type: frm.attr('method'),
                         url: frm.attr('action'),
                         //data: {imageUploadInfos:imageUploadInfos, numorder:0},   
-                        data: { 'imageUploadInfos': JSON.stringify(imageUploadInfos), 'imagecount': imageCount},
+                        data: { 'imageUploadInfos': JSON.stringify(imageUploadInfos), 'imagecount': imageCount, 'specid': '<%= specid %>' },
                         //frm.serialize(),
                         //contentType: "application/json",
                         success: function (data) {
                             if (data.error == 1 ){
-                                document.getElementById('res_message').innerHTML= data.message;    
+                                document.getElementById('res_message').innerHTML= data.message;
+                                alert(data.message);    
                             }
                             else{
-                                setTimeout(window.location='/subirimagen3/' + data.numorder,500);
+                                alert(data.message); 
+                                //setTimeout(window.location='/subirimagen3/' + data.numorder,500);
                             }
                         }
-                    });
+                     });
+                   } 
+                   else{
+                        alert("Favor de cargar imágenes");
+                   }
+
+                    
                     ev.preventDefault();
                 });  
 
@@ -198,7 +207,7 @@ alert("accept");
 //                 }); 
 
 
-function caltotalpay(){
+            function caltotalpay(){
                    
                     var ntotalprice = <%= totalprice %> * 100; 
                     var ntotalimages = $("div#imageCount").html();
@@ -288,6 +297,9 @@ function caltotalpay(){
         <div class="button2">
             <a id="buttoncontorder">Confirmar Orden</a>
         </div>
+        <form id = "orderForm" class="" action="/neworder" method="post">
+            <input type="hidden" name="imagelist" placeholder="" value=""><br>
+        </form>
         
     </section>
         <aside id="menurigth">

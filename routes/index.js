@@ -412,7 +412,7 @@ catch(err) {
          function(req, res){
             findaspec(req.params.newSpecid,function(error,spec){
               console.log(spec);
-              res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice });
+              res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id });
             });
   });
 

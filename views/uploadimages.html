@@ -200,11 +200,11 @@ alert("accept");
 
 function caltotalpay(){
                    
-                    var ntotalprice = <%= totalprice %>; 
+                    var ntotalprice = <%= totalprice %> * 100; 
                     var ntotalimages = $("div#imageCount").html();
-                    ntotalprice = ntotalprice * 100;
+                   // ntotalprice = ntotalprice * 100;
                     
-                    var ntotalpay = ntotalprice * (ntotalimages * 100);        
+                    var ntotalpay = ntotalprice * ntotalimages;        
         // :0.20,
         // :0.40,
         // :2.40,

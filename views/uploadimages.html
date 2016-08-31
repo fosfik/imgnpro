@@ -14,6 +14,7 @@
             var imageCount = 0;
             var imageUploadInfos =[];
             $(document).ready(function(){
+                caltotalpay();
                 $("div#myId").dropzone({
                     url:"#",
                     dictDefaultMessage: "Arrastra y suelta tus archivos aquí",
@@ -114,6 +115,7 @@ alert("accept");
                                  imageCount++;
                                 //document.forms[0].imagelist.value = imageUploadInfos;
                                 $("div#imageCount").html(imageCount);
+                                caltotalpay();
                                 imageUploadInfos.push({
                                     imagename: file.name,
                                     width: file.width,
@@ -128,6 +130,7 @@ alert("accept");
                             alert(file.fail);
                             imageCount--;
                             $("div#imageCount").html(imageCount);
+                            caltotalpay();
                         }
                         
 
@@ -188,6 +191,28 @@ alert("accept");
                     ev.preventDefault();
                 });  
 
+// $("#specForm input[name='dropshadow']").change(function(){
+//                     //if($(this).is(":checked")) {
+//                         sumallextras();
+//                     //}
+//                 }); 
+
+
+function caltotalpay(){
+                   
+                    var ntotalprice = <%= totalprice %>; 
+                    var ntotalimages = $("div#imageCount").html();
+                    ntotalprice = ntotalprice * 100;
+                    
+                    var ntotalpay = ntotalprice * ntotalimages;        
+        // :0.20,
+        // :0.40,
+        // :2.40,
+        // :0.60
+                    ntotalpay = ntotalpay / 100;
+                    $("#ntotalpay").html(ntotalpay);
+                }
+
 
             });
 
@@ -245,15 +270,16 @@ alert("accept");
                 </div>
                 <div class="col5">
                     <div class="droptable1">Imágenes</div>
-                    <div id = "imageCount" class="droptable2">0</div>
+                    <div id="imageCount" class="droptable2">0</div>
                 </div>
                 <div class="col5">
                     <div class="droptable1">Precio por Imagen</div>
                     <div class="droptable2">$ <%= totalprice %></div>
+                    <!-- <input id="ntotalprice" type="hidden" value= <%= totalprice %>> -->
                 </div>
                 <div class="col5">
                     <div class="droptable1">Costo Total</div>
-                    <p class="droptable2">USD<span class="droptable3">$9.99</span></p>
+                    <p class="droptable2">USD<span class="droptable3">$ <span id="ntotalpay" class="droptable3">9.99 </span></span></p>
                 </div>
             </div>
         </div>

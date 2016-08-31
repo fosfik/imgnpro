@@ -404,6 +404,18 @@ catch(err) {
            res.render('uploadimages', {message: req.flash('message'), user: req.user});
   });
 
+/* Maneja la pagina que tiene el dropzone para subir imágenes 
+   Cuando es llamada desde la creación de una especificación
+*/
+  router.get('/uploadimages/:newSpecid', 
+     require('connect-ensure-login').ensureLoggedIn('/login'),
+         function(req, res){
+            findaspec(req.params.newSpecid,function(error,spec){
+              console.log(spec);
+              res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice });
+            });
+  });
+
 /* Maneja la pagina donde se cierra el pedido o la orden de compra */
   router.get('/chooseaspecification', 
      require('connect-ensure-login').ensureLoggedIn('/login'),
@@ -821,6 +833,41 @@ function spectotalprice(req, cb){
 }
 
 
+function findaspec(specid, cb){
+
+  
+  console.log(specid);
+
+  Spec.find({'_id':specid},function(err, specrecord) {
+    // In case of any error return
+     if (err){
+       console.log('Error al consultar la especificación');
+
+      cb(1);
+     }
+     //console.log("prueba 2");
+   // already exists
+    if (specrecord) {
+      console.log('se encontró  la especificación');
+      console.log(specrecord);
+      //res.setHeader('Content-Type', 'application/json');
+      //res.send(orders); 
+
+      cb( 0, specrecord);
+
+    } 
+    else {
+      console.log('No se encontró la especificación');
+
+        cb(2);
+    }
+   
+  }).select('name totalprice date').limit(1);
+
+
+
+
+}
 
 
 module.exports = router;

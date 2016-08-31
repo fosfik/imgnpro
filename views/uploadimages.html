@@ -208,11 +208,11 @@ alert("accept");
             <nav>
                 <ul>
                     <li class="menulogo"><h1><a href="principal"><img src="../images/logo_black.png" alt="logo"></a></h1></li>
-                    <li><a href="micuenta">Mi Cuenta</a></li>
-                    <li><a href="historial">Historial</a></li>
-                    <li><a href="especificaciones1">Especificaciones</a></li>
-                    <li><a href="subirimagen1">Subir Imagenes</a></li>
-                    <li><a href="contacto">Contacto</a></li>
+                    <li><a href="/micuenta">Mi Cuenta</a></li>
+                    <li><a href="/historial">Historial</a></li>
+                    <li><a href="/especificaciones1">Especificaciones</a></li>
+                    <li><a href="/subirimagen1">Subir Imagenes</a></li>
+                    <li><a href="/contacto">Contacto</a></li>
                 </ul>
             </nav>
         </section>
@@ -241,7 +241,7 @@ alert("accept");
             <div class="col3">
                 <div class="col5">
                     <div class="droptable1">Nombre de Especificación</div>
-                    <div class="droptable2">Mi Especificacion</div>
+                    <div class="droptable2"><%= namespec %></div>
                 </div>
                 <div class="col5">
                     <div class="droptable1">Imágenes</div>
@@ -249,7 +249,7 @@ alert("accept");
                 </div>
                 <div class="col5">
                     <div class="droptable1">Precio por Imagen</div>
-                    <div class="droptable2">$2.50</div>
+                    <div class="droptable2">$ <%= totalprice %></div>
                 </div>
                 <div class="col5">
                     <div class="droptable1">Costo Total</div>

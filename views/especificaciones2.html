@@ -36,7 +36,7 @@
                                     alert(data.message);
                                     
                                     if(confirm("¿Quieres subir imágenes?")){
-                                        document.location.href="/uploadimages";
+                                        document.location.href="/uploadimages/" + data.newSpecid;
                                     }
                                     else{
                                         document.getElementById("specForm").reset();

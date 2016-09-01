@@ -99,7 +99,7 @@ router.get('/listspecs', function(req, res) {
     else {
       console.log('No se encontraron especificaciones');
     }
-  }).select('name date totalprice').sort('-date');
+  }).select('_id name date totalprice').sort('-date');
 });
 
 // TODO agregar seguridad a esta ruta
@@ -121,7 +121,7 @@ router.get('/listspecs/:limit', function(req, res) {
     else {
       console.log('No se encontraron especificaciones');
     }
-  }).select('name date totalprice').sort('-date').limit(req.params.limit);
+  }).select('_id name date totalprice').sort('-date').limit(req.params.limit);
 });
 
 /* Crea un nuevo contacto. */
@@ -155,9 +155,11 @@ router.get('/listspecs/:limit', function(req, res) {
     //console.log(req.params);
     var numorderstr="";
     var newOrder = new Orders();
-          newOrder.name = 'orderfotos';
+          //newOrder.name = 'orderfotos';
           newOrder.userid = req.user._id;
           newOrder.imagecount = req.body['imagecount'];
+          newOrder.specid = req.body.specid;
+          newOrder.totalpay = req.body.totalpay;
           // todo: recorrer el req.body para obtener los datos de las imagenes
           
 
@@ -178,8 +180,8 @@ router.get('/listspecs/:limit', function(req, res) {
            // save the user
           newOrder.save(function(err) {
             if (err){
-              console.log(newOrder);
-              console.log(newOrder.images);
+              //console.log(newOrder);
+              //console.log(newOrder.images);
               console.log('No se pudo guardar el pedido: '+err); 
               //res.render('como2', {message: req.flash('message')}); 
               //throw err;  
@@ -191,7 +193,7 @@ router.get('/listspecs/:limit', function(req, res) {
             else
             {
 
-              console.log(' se guardo el pedido'); 
+              console.log(' Se guardo el pedido'); 
               console.log(newOrder.numorder);
               // res.render('como2', {message: req.flash('message')});
               numorderstr = String(newOrder.numorder);
@@ -402,6 +404,18 @@ catch(err) {
      require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){
            res.render('uploadimages', {message: req.flash('message'), user: req.user});
+  });
+
+/* Maneja la pagina que tiene el dropzone para subir imágenes 
+   Cuando es llamada desde la creación de una especificación
+*/
+  router.get('/uploadimages/:newSpecid', 
+     require('connect-ensure-login').ensureLoggedIn('/login'),
+         function(req, res){
+            findaspec(req.params.newSpecid,function(error,spec){
+              console.log(spec);
+              res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id });
+            });
   });
 
 /* Maneja la pagina donde se cierra el pedido o la orden de compra */
@@ -821,6 +835,41 @@ function spectotalprice(req, cb){
 }
 
 
+function findaspec(specid, cb){
+
+  
+  console.log(specid);
+
+  Spec.find({'_id':specid},function(err, specrecord) {
+    // In case of any error return
+     if (err){
+       console.log('Error al consultar la especificación');
+
+      cb(1);
+     }
+     //console.log("prueba 2");
+   // already exists
+    if (specrecord) {
+      console.log('se encontró  la especificación');
+      console.log(specrecord);
+      //res.setHeader('Content-Type', 'application/json');
+      //res.send(orders); 
+
+      cb( 0, specrecord);
+
+    } 
+    else {
+      console.log('No se encontró la especificación');
+
+        cb(2);
+    }
+   
+  }).select('name totalprice date').limit(1);
+
+
+
+
+}
 
 
 module.exports = router;

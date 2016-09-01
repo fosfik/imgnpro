@@ -173,11 +173,12 @@
                 var frm = $('#orderForm');
                 buttonspec.click(function (ev) {
                    if (imageCount > 0){
+                    var ntotalpay = $("#ntotalpay").html();
                     $.ajax({
                         type: frm.attr('method'),
                         url: frm.attr('action'),
                         //data: {imageUploadInfos:imageUploadInfos, numorder:0},   
-                        data: { 'imageUploadInfos': JSON.stringify(imageUploadInfos), 'imagecount': imageCount, 'specid': '<%= specid %>' },
+                        data: { 'imageUploadInfos': JSON.stringify(imageUploadInfos), 'imagecount': imageCount, 'specid': '<%= specid %>', totalpay: ntotalpay },
                         //frm.serialize(),
                         //contentType: "application/json",
                         success: function (data) {

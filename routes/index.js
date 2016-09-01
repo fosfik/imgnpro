@@ -155,9 +155,11 @@ router.get('/listspecs/:limit', function(req, res) {
     //console.log(req.params);
     var numorderstr="";
     var newOrder = new Orders();
-          newOrder.name = 'orderfotos';
+          //newOrder.name = 'orderfotos';
           newOrder.userid = req.user._id;
           newOrder.imagecount = req.body['imagecount'];
+          newOrder.specid = req.body.specid;
+          newOrder.totalpay = req.body.totalpay;
           // todo: recorrer el req.body para obtener los datos de las imagenes
           
 
@@ -178,8 +180,8 @@ router.get('/listspecs/:limit', function(req, res) {
            // save the user
           newOrder.save(function(err) {
             if (err){
-              console.log(newOrder);
-              console.log(newOrder.images);
+              //console.log(newOrder);
+              //console.log(newOrder.images);
               console.log('No se pudo guardar el pedido: '+err); 
               //res.render('como2', {message: req.flash('message')}); 
               //throw err;  
@@ -191,7 +193,7 @@ router.get('/listspecs/:limit', function(req, res) {
             else
             {
 
-              console.log(' se guardo el pedido'); 
+              console.log(' Se guardo el pedido'); 
               console.log(newOrder.numorder);
               // res.render('como2', {message: req.flash('message')});
               numorderstr = String(newOrder.numorder);

@@ -99,7 +99,7 @@ router.get('/listspecs', function(req, res) {
     else {
       console.log('No se encontraron especificaciones');
     }
-  }).select('name date totalprice').sort('-date');
+  }).select('_id name date totalprice').sort('-date');
 });
 
 // TODO agregar seguridad a esta ruta
@@ -121,7 +121,7 @@ router.get('/listspecs/:limit', function(req, res) {
     else {
       console.log('No se encontraron especificaciones');
     }
-  }).select('name date totalprice').sort('-date').limit(req.params.limit);
+  }).select('_id name date totalprice').sort('-date').limit(req.params.limit);
 });
 
 /* Crea un nuevo contacto. */

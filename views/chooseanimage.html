@@ -15,6 +15,17 @@
             // var imageUploadInfos =[];
             $(document).ready(function(){
                 localStorage.clear(); // limpia el localstorage
+                   
+                $('#buttoncontorder').click(function (ev) {
+                    var imageselected = localStorage.getItem('imageselected');
+                    if (imageselected === null){
+                        alert("Favor de seleccionar una imagen");    
+                    }
+                    else{
+                          document.location.href="/chooseaspecification";
+                    }
+                    ev.preventDefault();
+                });
                 $("#imageForm input[name=image]").change(function(){
                     // if ($("input[name=imagesize]:checked").val() === 'customize'){
                     //     $('select[name=measuresize]').prop('disabled', false);
@@ -25,7 +36,6 @@
                     var imageselected = $('input:radio[name=image]:checked').val();
                     localStorage.setItem("imageselected", imageselected);
                 });
-
 
 
             });
@@ -254,15 +264,15 @@
         <div class="picnum">Seleccione una Imagen de Ejemplo</div>
         <hr>
         <div class="buttoncont">
-            <a href="chooseaspecification" id="buttoncontorder">Continuar</a>
+            <a href="" id="buttoncontorder">Continuar</a>
         </div>
 
         <div>
             <h1 id="res_message"></h1>
         </div>  
-        <form id = "orderForm" class="" action="/neworder" method="post">
+       <!--  <form id = "orderForm" class="" action="/neworder" method="post">
             <input type="hidden" name="imagelist" placeholder="" value=""><br>
-        </form>
+        </form> -->
     </section>
         <aside id="menurigth">
             <p class="encabezado"> Tutorial</p>

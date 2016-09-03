@@ -17,17 +17,25 @@
                     var currentAlignHor =  localStorage.getItem("alignhor");
                     var currentAlignVer = localStorage.getItem("alignver");
 
+                   
                     if (currentAlignHor !== null){
                         var currentClassName = $('#marco').attr('class');
                         $('#marco').removeClass(currentClassName).addClass(currentAlignHor);  
                         $('#' + currentAlignHor).prop("checked", true);
                     }
+                    else{
+                        localStorage.setItem("alignhor", 'alignTenisHorizontalC');
+                    }
+
 
                     if (currentAlignVer !== null){
                         currentClassName = $('#imgportatenis').attr('class');
                         $('#imgportatenis').removeClass(currentClassName).addClass(currentAlignVer);
                         $('#' + currentAlignVer).prop("checked", true);
                     } 
+                    else{
+                        localStorage.setItem("alignver", 'alignTenisVerticalM');
+                    }
                     
                     
                 } else {

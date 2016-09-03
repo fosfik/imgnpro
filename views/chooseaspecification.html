@@ -8,6 +8,32 @@
         <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico"/>
         <script type="text/javascript">
             $(document).ready(function(){
+
+                $('#buttonspec').click(function (ev) {
+                    var imageselected = localStorage.getItem('imageselected');
+                    if ($('#specnombre').val().trim() === ''){
+                        alert("Favor de capturar el nombre de la especificación");    
+                        $('#specnombre').focus();
+                    }
+                    else{
+
+                          localStorage.setItem("specnombre", $('input:text[name=name]').val());
+                          localStorage.setItem("format", $('select[name="format"]').val());
+                          localStorage.setItem("colormode", $('select[name="colormode"]').val());
+                          localStorage.setItem("background", $('select[name="background"]').val());
+                          localStorage.setItem("DPI", $('input:text[name=DPI]').val());
+                          localStorage.setItem("nonedpi", $('input:checkbox[name=nonedpi]').val());
+                        
+                          
+                          document.location.href="/chooseasize.html";
+                    }
+                    ev.preventDefault();
+                });
+                // $("#imageForm input[name=image]").change(function(){
+                //     var imageselected = $('input:radio[name=image]:checked').val();
+                //     localStorage.setItem("imageselected", imageselected);
+                // });
+
                 // var buttonspec = $('#buttonspec');
                 // var frm = $('#specForm');
                 // buttonspec.click(function (ev) {
@@ -71,7 +97,7 @@
         <div class="recontenedor">
             <form id = "specForm" class="col1" action="/newspec" method="post">
                 <label for="nombre">Nombre</label><br>
-                <input type="text" name="name" placeholder="Nombra tu Especificación" value=""><br>
+                <input id="specnombre" type="text" name="name" placeholder="Nombra tu Especificación" value=""><br>
                 <label for="formato">Formato</label><br>
                 <select name="format">
                     <option value="jpg">JPG</option>
@@ -106,7 +132,7 @@
             <a href="/chooseanimage">Regresar</a>
         </div>
         <div class="buttoncont">
-            <a href="/chooseasize.html" id="buttonspec">Continuar</a>
+            <a href="" id="buttonspec">Continuar</a>
         </div>
     </section>
         <aside id="menurigth">

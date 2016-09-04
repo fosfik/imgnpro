@@ -875,7 +875,7 @@ input, select {
     position: relative;
 }
 
-#etiquetasxtras {
+.etiquetasxtras {
     display: inline-block;
     padding: 5px 8px;
     font-size: 12px;
@@ -1055,4 +1055,25 @@ input[name="checkcheck"] {
     width: 180px;
     font-weight: bold;
     margin-bottom: 10px;
+}
+
+.col6 {
+    margin-top: 10px;
+    width: 50%;
+    margin-left: 0px;
+    position: relative;
+    float: left;
+}
+
+.factForm select {
+    background: none;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.factForm select {
+    background: none;
+    font-size: 12px;
+    font-weight: bold;
+    width: 160px;
 }

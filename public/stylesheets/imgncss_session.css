@@ -639,15 +639,15 @@ input, select {
     position: relative;
 }
 
-.alignTenisHorizontalC {
+.alignHorizontalC {
     text-align: center;
 }
 
-.alignTenisHorizontalL {
+.alignHorizontalL {
     text-align: left;
 }
 
-.alignTenisHorizontalR {
+.alignHorizontalR {
     text-align: right;
 }
 
@@ -658,15 +658,15 @@ input, select {
     margin-left: -4px;
 }
 
-.alignTenisVerticalM {
+.alignVerticalM {
     vertical-align: middle;
 }
 
-.alignTenisVerticalT {
+.alignVerticalT {
     vertical-align: top;
 }
 
-.alignTenisVerticalB {
+.alignVerticalB {
     vertical-align: bottom;
 }
 

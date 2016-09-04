@@ -1024,7 +1024,7 @@ input, select {
     vertical-align: top;
 }
 
-.contactForm {
+.contactForm, .factForm {
     padding: 10px;
 }
 
@@ -1058,8 +1058,9 @@ input[name="checkcheck"] {
 }
 
 .col6 {
+    padding: 10px;
     margin-top: 10px;
-    width: 50%;
+    width: 40%;
     margin-left: 0px;
     position: relative;
     float: left;
@@ -1069,11 +1070,19 @@ input[name="checkcheck"] {
     background: none;
     font-size: 12px;
     font-weight: bold;
+    width: 160px;
+    margin-bottom: 8px;
 }
 
-.factForm select {
-    background: none;
-    font-size: 12px;
-    font-weight: bold;
+.label2 {
+    margin-top: 10px;
+    margin-right: 20px;
+    display: inline-block;
     width: 160px;
+    height: 85px;
+    position: relative;
+    background: url(../images/label2.svg);
+    background-size: 160px 85px;
+    text-align: center;
+    float: right;
 }

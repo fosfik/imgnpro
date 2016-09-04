@@ -8,6 +8,78 @@
         <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
         <script type="text/javascript">
             $(document).ready(function(){
+                var newbuttonspec = $('#savebuttonspec');
+                //var frm = $('#specForm');
+                newbuttonspec.click(function (ev) {
+                    // recuperar las variables localStorage
+                    var specInfos =[];
+                    var specname = localStorage.getItem("specname");
+                    var format = localStorage.getItem("format");
+                    var colormode = localStorage.getItem("colormode");
+                    var background = localStorage.getItem("background");
+                    var nonedpi = localStorage.getItem("nonedpi");
+                    var DPI = localStorage.getItem("DPI");
+                    var measuresize = localStorage.getItem("measuresize");
+                    var imagesize = localStorage.getItem('imagesize');
+                    var measuresize = localStorage.getItem("measuresize");
+                    var widthsize = localStorage.getItem("widthsize");
+                    var heightsize = localStorage.getItem("heightsize");
+                    var naturalshadow = localStorage.getItem('naturalshadow');
+                    var dropshadow = localStorage.getItem('dropshadow');
+                    var correctcolor =  localStorage.getItem('correctcolor');
+                    var basicretouch =  localStorage.getItem('basicretouch');
+                    var clippingpath = localStorage.getItem('clippingpath');
+                    specInfos.push({
+                        specname:specname,
+                        format:format,
+                        colormode:colormode,
+                        background:background,
+                        DPI:DPI,
+                        measuresize:measuresize,
+                        imagesize:imagesize,
+                        widthsize:widthsize,
+                        heightsize:heightsize,
+                        naturalshadow:naturalshadow,
+                        dropshadow:dropshadow,
+                        correctcolor:correctcolor,
+                        basicretouch:basicretouch,
+                        clippingpath:clippingpath
+                    });
+
+                    $.ajax({
+                            type: 'post',
+                            url: '/newstepspec',
+                            data: { 'specInfos': JSON.stringify(specInfos)},
+                            success: function (data) {
+                                if (data.error == 1 ){
+                                    //document.getElementById('res_message').innerHTML= data.message;    
+                                    alert(data.message);
+                                     $('#specnombre').focus();
+                                }
+                                else{
+                                    //setTimeout(window.location='/subirimagen4.html',500);
+                                    alert(data.message);
+                                    
+                                    //if(confirm("¿Quieres subir imágenes?")){
+                                    document.location.href="/uploadimages/" + data.newSpecid;
+                                    //}
+                                    // else{
+                                    //     document.getElementById("specForm").reset();
+                                    //     desactAllNext();
+                                    //     desactSizeAllNext();
+                                    //     sumallextras(); 
+                                    // }    
+
+                                }
+                            }
+                        });
+                        
+
+                    //}
+                    ev.preventDefault();
+    
+                }); 
+
                 //var buttonspec = $('#buttonspec');
                 // var frm = $('#specForm');
                 // buttonspec.click(function (ev) {
@@ -30,7 +102,7 @@
                 if (typeof(Storage) !== "undefined") {
                     // Code for localStorage/sessionStorage.
                     // TODO si ya existe la variable no sobreescribirla
-                    localStorage.setItem("imagesize", "none");
+                    //localStorage.setItem("imagesize", "none");
                     var lblnameSpec = $('#nameSpec');
 
                     lblnameSpec.html(localStorage.getItem('specname'));
@@ -38,7 +110,6 @@
                     alert("Este navegador no soporta LocalStorage");
                 } 
 
-           
     
                 // $('#cuadro1').change(function() {
                 //     if($(this).is(":checked")) {
@@ -183,7 +254,7 @@
             </form>
             <div class="labelito">
                 <p class="texto_plano4">Precio por Imagen</p>
-                <p class="texto_precio2"><span class="prefixmoney">USD</span>$ <span id="totalprice">1.50</span></p>
+                <p class="texto_precio2"><span class="prefixmoney">USD</span>$<span id="totalprice">1.50</span></p>
             </div>
         </div>
         <div class="picnum">Seleccione Extras</div>
@@ -192,7 +263,7 @@
             <a href="/chooseamargin.html">Regresar</a>
         </div>
         <div class="buttoncont">
-            <a href="/uploadimages">Continuar</a>
+            <a id="savebuttonspec" href="">Continuar</a>
         </div>
     </section>
 

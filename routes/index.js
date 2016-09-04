@@ -496,6 +496,74 @@ catch(err) {
     }
   });
 
+
+// /newstepspec
+
+
+/* Handle new step by step specification  POST */
+  router.post('/newstepspec', function (req,res) {
+    // body...
+    //console.log(req.body);
+
+    //console.log(req.user._id);
+    
+    var specInfos = JSON.parse(req.body['specInfos']);
+    console.log(specInfos);
+    console.log(specInfos[0].specname);
+    console.log(specInfos[0].format);
+    console.log(specInfos[0].colormode);
+
+
+      var newSpec = new Spec();
+      // set the user's local credentials
+
+      // recibir el array de datos
+
+      newSpec.name = specInfos[0].specname;
+      newSpec.format = specInfos[0].format;
+      newSpec.colormode = specInfos[0].colormode;
+      newSpec.background = specInfos[0].background;
+      newSpec.dpi = specInfos[0].DPI;
+      newSpec.nonedpi = specInfos[0].nonedpi;
+      newSpec.userid = req.user._id;  
+      newSpec.alignnone = specInfos[0].alignnone;
+      newSpec.alignhor = specInfos[0].alignhor;
+      newSpec.alignver = specInfos[0].alignver;
+      newSpec.measure = specInfos[0].measure;
+      newSpec.margintop = specInfos[0].margintop; //??
+      newSpec.marginbottom = specInfos[0].marginbottom; //??
+      newSpec.marginright = specInfos[0].marginright; //??
+      newSpec.marginleft = specInfos[0].marginleft; //??
+      newSpec.naturalshadow = specInfos[0].naturalshadow;
+      newSpec.dropshadow = specInfos[0].dropshadow;
+      newSpec.correctcolor = specInfos[0].correctcolor;
+      newSpec.clippingpath = specInfos[0].clippingpath;
+      newSpec.basicretouch = specInfos[0].basicretouch;
+      console.log(newSpec.basicretouch);
+      // pasar el req specInfo
+      spectotalprice(specInfos[0],function(total){
+          console.log(total);
+        //res.setHeader('Content-Type', 'application/json');
+        //res.send(JSON.stringify({ error: 0, ntotal:total , message: 'Se guardó la especificación'})); 
+          newSpec.totalprice = total;
+          // save the user
+          newSpec.save(function(err) {
+            if (err){
+              console.log('No se pudo guardar la especificación: ' + err); 
+              res.setHeader('Content-Type', 'application/json');
+              res.send(JSON.stringify({ error: 1, message: 'No se pudo guardar la especificación'})); 
+              throw err;  
+            }
+            console.log('Se guardó correctamente la especificación');
+            console.log(newSpec._id);
+            res.setHeader('Content-Type', 'application/json');
+            res.send(JSON.stringify({ error: 0, newSpecid: newSpec._id, message: 'Se guardó correctamente la especificación'})); 
+          });
+    });
+  });
+
+
+
  /* Handle new specification POST */
   router.post('/newspec', function (req,res) {
     // body...
@@ -527,7 +595,7 @@ catch(err) {
       newSpec.basicretouch = req.body.basicretouch;
 
         
-      spectotalprice(req,function(total){
+      spectotalprice(req.body,function(total){
           console.log(total);
         //res.setHeader('Content-Type', 'application/json');
         //res.send(JSON.stringify({ error: 0, ntotal:total , message: 'Se guardó la especificación'})); 
@@ -819,23 +887,23 @@ function spectotalprice(req, cb){
   // se agrega a nTotal el costo mínimo 
 
   //console.log(req.param('background'));
-  console.log(req.body); 
+  console.log(req); 
   //console.log(parseFloat(req.body.naturalshadow));
   // se multiplica por 100 para quitar los decimales y evitar errores de precision
   var nTotal = (config.prices.cutandremove) * 100;
-  if (parseFloat(req.body.naturalshadow ) > 0){
+  if (parseFloat(req.naturalshadow ) > 0){
     nTotal = nTotal + (config.prices.naturalshadow * 100);
   }
-  if (parseFloat(req.body.dropshadow) > 0){
+  if (parseFloat(req.dropshadow) > 0){
     nTotal = nTotal + (config.prices.dropshadow * 100);
   }
-  if (parseFloat(req.body.correctcolor) > 0){
+  if (parseFloat(req.correctcolor) > 0){
     nTotal = nTotal + (config.prices.correctcolor * 100);
   }
-  if (parseFloat(req.body.clippingpath)> 0){
+  if (parseFloat(req.clippingpath)> 0){
     nTotal = nTotal + (config.prices.clippingpath * 100);
   }
-  if (parseFloat(req.body.basicretouch) >0){
+  if (parseFloat(req.basicretouch) >0){
     nTotal = nTotal + (config.prices.basicretouch * 100);
   }
   nTotal = nTotal / 100;

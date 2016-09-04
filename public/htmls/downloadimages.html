@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8">
+        <title>IMGNpro, hagamos que tu producto destaque</title>
+        <link rel="stylesheet" href="../stylesheets/imgncss_session.css">
+        <link rel="stylesheet" href="../stylesheets/dropzone.css">
+        <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico"/>
+        <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+        <script type="text/javascript" src="../js/dropzone.js"></script>
+        <script type="text/javascript">
+            Dropzone.autoDiscover = false;
+            var acceptedFileType = ".jpg, .jpeg, .png, .tif, .tiff, .psd";
+            var imageCount = 0;
+            var imageUploadInfos =[];
+            $(document).ready(function(){
+                caltotalpay();
+                $("div#myId").dropzone({
+                    url:"#",
+                    dictDefaultMessage: "Arrastra y suelta tus archivos aquí",
+                    dictRemoveFile: "Borrar imagen",
+
+                    // Dropzone.prototype.defaultOptions.dictDefaultMessage = "Drop files here to upload";
+                    // Dropzone.prototype.defaultOptions.dictFallbackMessage = "Your browser does not support drag'n'drop file uploads.";
+                    // Dropzone.prototype.defaultOptions.dictFallbackText = "Please use the fallback form below to upload your files like in the olden days.";
+                    // Dropzone.prototype.defaultOptions.dictFileTooBig = "File is too big ({{filesize}}MiB). Max filesize: {{maxFilesize}}MiB.";
+                    // Dropzone.prototype.defaultOptions.dictInvalidFileType = "You can't upload files of this type.";
+                    // Dropzone.prototype.defaultOptions.dictResponseError = "Server responded with {{statusCode}} code.";
+                    // Dropzone.prototype.defaultOptions.dictCancelUpload = "Cancel upload";
+                    // Dropzone.prototype.defaultOptions.dictCancelUploadConfirmation = "Are you sure you want to cancel this upload?";
+                    // Dropzone.prototype.defaultOptions.dictRemoveFile = "Remove file";
+                    // Dropzone.prototype.defaultOptions.dictMaxFilesExceeded = "You can not upload any more files.";
+
+                    method: "PUT",
+                    uploadMultiple: false,
+                    paramName: "file",
+                    maxFiles: 10,
+                    thumbnailWidth: 100,
+                    thumbnailHeight: 100,
+                    parallelUploads: 20,
+                    autoProcessQueue: true,
+                    addRemoveLinks: true,
+                    //previewTemplate: dropPreviewTemplate,
+                    //autoQueue: false, // Make sure the files aren't queued until manually added
+                    //previewsContainer: dropPreviewContainer, // Define the container to display the previews
+                    clickable: true, //".fileinput-button" // Define the element that should be used as click trigger to select files.
+                    acceptedFiles: acceptedFileType,
+                    accept: function(file, cb) {
+                    //override the file name, to use the s3 signature
+                    //console.log(file);
+                        var params = {
+                            filename: file.name,
+                            filetype: file.type,
+                        };
+                        //path to S3 signature
+                        $.getJSON('/sign-s3', params).done(function(data) {
+                            //console.log(data);
+
+                            if (!data.signedRequest) {
+                                return cb('Failed to receive an upload url');
+                            }
+
+                            file.signedRequest = data.signedRequest;
+                            file.finalURL = data.downloadURL;
+                            //imageCount++;
+                            //document.forms[0].imagelist.value = imageUploadInfos;
+                            //alert("accept");
+                            //$("div#imageCount").html(imageCount);
+
+                            cb();
+                        }).fail(function() {
+                            
+                            alert("Falló al cargar la imagen");
+                            //imageCount++;
+                            //$("div#imageCount").html(imageCount);
+                            //document.forms[0].imagelist.value = imageUploadInfos;
+
+                            return cb('No se pudo un url válida');
+                            //file.fail = true;
+
+                        });
+                    },
+                    sending: function(file, xhr) {
+
+                        console.log('sending')
+                        var _send = xhr.send;
+                        xhr.setRequestHeader('x-amz-acl', 'public-read');
+                        xhr.send = function() {
+                            _send.call(xhr, file);
+                        }
+
+                    },
+                    processing:function(file){
+
+                        this.options.url = file.signedRequest;
+
+                    },
+                    complete:function(file){
+                        //if (file.accepted && file.status == 'error' && file.retryTime > 5) {
+                        if (file.accepted && file.status == 'error') {
+                        
+                            file.accepted = false;
+                            // removeStorageFile(file);
+                            // app._checkDone(this);
+
+                            // $(file.previewElement).find('.dz-remove').remove();
+                            // $(file.previewElement).find('.dz-progress').fadeOut();
+
+                            // app._showDefaultError(this, file, "Network Error!");
+                            alert("Error subiendo archivo");
+                        } else {
+                            // corregir esto para que solo agregue al array archivos completos
+                            
+                            if(file.accepted===true){    
+                                 imageCount++;
+                                //document.forms[0].imagelist.value = imageUploadInfos;
+                                $("div#imageCount").html(imageCount);
+                                caltotalpay();
+                                imageUploadInfos.push({
+                                    imagename: file.name,
+                                    width: file.width,
+                                    height: file.height,
+                                    length: file.size
+                                });
+                             }
+                        }
+                    },
+                    removedfile: function(file) {
+                        if(file.status !== 'error'){
+                            //alert(file.fail);
+                            imageCount--;
+                            $("div#imageCount").html(imageCount);
+                            caltotalpay();
+                        }
+                        
+
+                        var _ref;
+                        return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+
+                    }
+
+                });
+
+
+
+
+
+
+
+
+
+                // var frm = $('#buttoncontorder');
+                // frm.click(function (ev) {
+                //     $.ajax({
+                //         type: 'GET',
+                //         url: 'neworder',
+                //         data: '1',
+                //         success: function (data) {
+                //             if (data.error == 1 ){
+                //                 document.getElementById('res_message').innerHTML= data.message;    
+
+                //             }
+                //             else{
+                //                 setTimeout(window.location='subirimagen3',500);
+                //             }
+                //         }
+                //     });
+
+                //     ev.preventDefault();
+                // });   
+
+                var buttonspec = $('#buttoncontorder');
+                var frm = $('#orderForm');
+                buttonspec.click(function (ev) {
+                   if (imageCount > 0){
+                    var ntotalpay = $("#ntotalpay").html();
+                    $.ajax({
+                        type: frm.attr('method'),
+                        url: frm.attr('action'),
+                        //data: {imageUploadInfos:imageUploadInfos, numorder:0},   
+                        data: { 'imageUploadInfos': JSON.stringify(imageUploadInfos), 'imagecount': imageCount, 'specid': '<%= specid %>', totalpay: ntotalpay },
+                        //frm.serialize(),
+                        //contentType: "application/json",
+                        success: function (data) {
+                            if (data.error == 1 ){
+                                document.getElementById('res_message').innerHTML= data.message;
+                                alert(data.message);    
+                            }
+                            else{
+                                alert(data.message); 
+                                //setTimeout(window.location='/subirimagen3/' + data.numorder,500);
+                            }
+                        }
+                     });
+                   } 
+                   else{
+                        alert("Favor de cargar imágenes");
+                   }
+
+                    
+                    ev.preventDefault();
+                });  
+
+// $("#specForm input[name='dropshadow']").change(function(){
+//                     //if($(this).is(":checked")) {
+//                         sumallextras();
+//                     //}
+//                 }); 
+
+
+            function caltotalpay(){
+                   
+                    var ntotalprice = <%= totalprice %> * 100; 
+                    var ntotalimages = $("div#imageCount").html();
+                   // ntotalprice = ntotalprice * 100;
+                    
+                    var ntotalpay = ntotalprice * ntotalimages;        
+        // :0.20,
+        // :0.40,
+        // :2.40,
+        // :0.60
+                    ntotalpay = ntotalpay / 100;
+                    ntotalpay = ntotalpay.toFixed(2); // redondea a dos decimales
+                    $("#ntotalpay").html(ntotalpay);
+                }
+
+
+            });
+
+
+
+        </script>
+
+    </head>
+    <body>
+        <header class="bienvenida">
+            <ul>
+                <li>Hola <a id="user" class="bold">%= user.userlongname %></a><a class="bold">!</a></li>
+                <li>Órdenes en Proceso <a id="orders" class="bold">0</a></li>
+                <li><a id="salir" class="bold" href="logout">Salir</a></li>
+            </ul>
+        </header>
+        <section id="menuver">
+            <nav>
+                <ul>
+                    <li class="menulogo"><h1><a href="/principal"><img src="../images/logo_black.png" alt="logo"></a></h1></li>
+                    <li><a href="/micuenta">Mi Cuenta</a></li>
+                    <li><a href="/historial">Historial</a></li>
+                    <li><a href="/especificaciones1">Especificaciones</a></li>
+                    <li><a href="/subirimagen1">Subir Imagenes</a></li>
+                    <li><a href="/contacto">Contacto</a></li>
+                </ul>
+            </nav>
+        </section>
+    <section id="contenedor">
+        <p class="encabezado">Descargar Imágenes</p>
+        <br>
+        <div class="recontenedordownload">
+        
+            <div class="imageArea">
+            </div>
+            <hr>
+            <div class="col3">
+                <div class="col5">
+                    <div class="droptable1">Número de Orden</div>
+                    <div class="droptable2">%= namespec %></div>
+                </div>
+                <div class="col5">
+                    <div class="droptable1">Imágenes</div>
+                    <div id="imageCount" class="droptable2">0</div>
+                </div>
+                <div class="col5">
+                    <div class="buttonblue2"><a href="#openQualityModal">Control de Calidad</a></div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="button2">
+            <a id="buttoncontorder">Descargar</a>
+        </div>
+        <form id = "orderForm" class="" action="/neworder" method="post">
+            <input type="hidden" name="imagelist" placeholder="" value=""><br>
+        </form>
+        
+    </section>
+        <aside id="menurigth">
+            <p class="encabezado"> Tutorial</p>
+             <div class="video_med"><a onclick="ponleplay()" href="#openVideoModal"><img src="../images/tumbnail_video.jpg" width="140px"></a></div>
+            <hr>
+            <p class="encabezado"> FAQs</p>
+            <p><a class="texto_plano">1. ¿Están seguros mis datos?</a></p>
+            <p><a class="texto_plano">2. ¿Tiempo de Entrega?</a></p>
+            <p><a class="texto_plano">3. ¿Prueba Gratis?</a></p>
+            <p><a class="texto_plano">4. ¿Cómo Pago?</a></p>
+            <div class="button1">
+            <a href="faq">Ver más</a> 
+            </div>
+        </aside>
+        <div id="openQualityModal" class="modalDialog">
+            <div>
+                <a href="#close" title="Close" Class="close">X</a>
+                <h1 class="encabezado">Control de Calidad</h1>
+                <hr class="hrmodal">
+                <form id="shadowForm1" class="shadow_form" action="/signup" method="post" name="shadow_form">
+                    
+                    <div>
+                        <h1 id="res_message"></h1>
+                    </div>   
+                    <div class="buttonModal">
+                        <input type="submit" value="Aceptar">
+                    </div>                               
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

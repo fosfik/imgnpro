@@ -467,7 +467,7 @@ hr {
     margin-top: 0px;
 }
 
-.buttonback a:hover, .buttoncont a:hover, .button1 a:hover, .button2 a:hover, .buttonblue:hover, .button4 a:hover{
+.buttonback a:hover, .buttoncont a:hover, .button1 a:hover, .button2 a:hover, .buttonblue:hover, .button4 a:hover, .buttonblue2 a:hover{
     cursor: pointer;
     box-shadow: 2px 2px 2px rgba(20, 20, 20, 0.2);
     transition: .3s;
@@ -1126,4 +1126,35 @@ input[name="checkcheck"] {
     width: 60px;
     margin: 20px;
     display: inline-block;
+}
+
+.recontenedordownload {
+    min-height: 150px;
+    border: 3px solid #000;
+    padding: 2px 2px;
+    max-width: auto;
+    min-width: 570px;
+    position: relative;
+}
+
+.imageArea {
+    max-height: 200px;
+    width: 100%;
+    position: relative;
+    overflow: auto;
+    display: inline-block;
+    height: 200px;
+}
+
+
+.buttonblue2 a{
+    height: 20px;
+    background-color: #00A0FF;
+    color: #FFFFFF;
+    padding: 6px 10px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 12px;
+    cursor: pointer;
+    transition: .1s;
 }

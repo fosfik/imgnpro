@@ -399,6 +399,14 @@ catch(err) {
            res.render('chooseanimage', {message: req.flash('message'), user: req.user});
   });
 
+/* Maneja la pagina que permite elegir un extra de la especificación */
+  router.get('/chooseanextra', 
+     require('connect-ensure-login').ensureLoggedIn('/login'),
+         function(req, res){
+           res.render('chooseanextra', {message: req.flash('message'), user: req.user, config:config});
+  });
+
+
 /* Maneja la pagina que tiene el dropzone para subir imágenes */
   router.get('/uploadimages', 
      require('connect-ensure-login').ensureLoggedIn('/login'),

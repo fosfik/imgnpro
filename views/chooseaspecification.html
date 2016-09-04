@@ -11,13 +11,13 @@
 
                 $('#buttonspec').click(function (ev) {
                     var imageselected = localStorage.getItem('imageselected');
-                    if ($('#specnombre').val().trim() === ''){
+                    if ($('#specname').val().trim() === ''){
                         alert("Favor de capturar el nombre de la especificación");    
-                        $('#specnombre').focus();
+                        $('#specname').focus();
                     }
                     else{
 
-                          localStorage.setItem("specnombre", $('input:text[name=name]').val());
+                          localStorage.setItem("specname", $('input:text[name=name]').val());
                           localStorage.setItem("format", $('select[name="format"]').val());
                           localStorage.setItem("colormode", $('select[name="colormode"]').val());
                           localStorage.setItem("background", $('select[name="background"]').val());
@@ -97,7 +97,7 @@
         <div class="recontenedor">
             <form id = "specForm" class="col1" action="/newspec" method="post">
                 <label for="nombre">Nombre</label><br>
-                <input id="specnombre" type="text" name="name" placeholder="Nombra tu Especificación" value=""><br>
+                <input id="specname" type="text" name="name" placeholder="Nombra tu Especificación" value=""><br>
                 <label for="formato">Formato</label><br>
                 <select name="format">
                     <option value="jpg">JPG</option>

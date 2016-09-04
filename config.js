@@ -44,12 +44,12 @@ if (app.get('env') !== 'development') {
 		// $0.40 Correction Color
 		// $2.40 Clipping Path
 		// $0.60 Retoque Básico
-		cutandremove:1.50,
-		naturalshadow:0.55,
-		dropshadow:0.20,
-		correctcolor:0.40,
-		clippingpath:2.40,
-		basicretouch:0.60
+		cutandremove:'1.50',
+		naturalshadow:'0.55',
+		dropshadow:'0.20',
+		correctcolor:'0.40',
+		clippingpath:'2.40',
+		basicretouch:'0.60'
 	}
 
 
@@ -100,12 +100,12 @@ else{
 		// $0.40 Correction Color
 		// $2.40 Clipping Path
 		// $0.60 Retoque Básico
-		cutandremove:1.50,
-		naturalshadow:0.55,
-		dropshadow:0.20,
-		correctcolor:0.40,
-		clippingpath:2.40,
-		basicretouch:0.60
+		cutandremove:'1.50',
+		naturalshadow:'0.55',
+		dropshadow:'0.20',
+		correctcolor:'0.40',
+		clippingpath:'2.40',
+		basicretouch:'0.60'
 	}
 	//,
 

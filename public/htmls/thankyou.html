@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8">
+        <title>IMGNpro, hagamos que tu producto destaque</title>
+        <link rel="stylesheet" href="../stylesheets/imgncss_session.css">
+        <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico"/>
+    </head>
+    <body>
+        <header class="bienvenida">
+            <ul>
+                <li>Hola <a id="user" class="bold"><%= user.userlongname %></a><a class="bold">!</a></li>
+                <li>Órdenes en Proceso <a id="orders" class="bold">2</a></li>
+                <li><a id="salir" class="bold" href="logout">Salir</a></li>
+            </ul>
+        </header>
+        <section id="menuver">
+            <nav>
+                <ul>
+                    <li class="menulogo"><h1><a href="principal"><img src="../images/logo_black.png" alt="logo"></a></h1></li>
+                    <li><a href="micuenta">Mi Cuenta</a></li>
+                    <li><a href="historial">Historial</a></li>
+                    <li><a href="especificaciones1">Especificaciones</a></li>
+                    <li><a href="subirimagen1">Subir Imagenes</a></li>
+                    <li><a href="contacto">Contacto</a></li>
+                </ul>
+            </nav>
+        </section>
+    <section id="contenedor">
+        <section id="thankyou">
+            <p class="encabezado">Muchas Gracias</p>
+            <p class="texto_plano">Número de Pedido</p>
+            <p class="numeroorden">ASD123456</p>
+            <br>
+            <br>
+            <div class="saludo">
+                <p class="textobold">Pronto recibirás un correo electrónico para confirmar que tus imágenes están listas.</p><br>
+                <p class="textobold">Recibe un cordial saludo.</p>
+            </div>
+            <br>
+            <img id="logomini" src="../images/logo_black.png" alt="logo">
+            <hr>
+            <div class="button4">
+            <a href="payment">Nueva Orden</a>
+            </div>
+        </section>
+    </section>
+        <aside id="menurigth">
+            <p class="encabezado"> Tutorial</p>
+             <div class="video_med"><a onclick="ponleplay()" href="#openVideoModal"><img src="../images/tumbnail_video.jpg" width="140px"></a></div>
+            <hr>
+            <p class="encabezado"> FAQs</p>
+            <p><a class="texto_plano">1. ¿Están seguros mis datos?</a></p>
+            <p><a class="texto_plano">2. ¿Tiempo de Entrega?</a></p>
+            <p><a class="texto_plano">3. ¿Prueba Gratis?</a></p>
+            <p><a class="texto_plano">4. ¿Cómo Pago?</a></p>
+            <div class="button1">
+            <a href="faq">Ver más</a> 
+            </div>
+        </aside>
+    </body>
+</html>

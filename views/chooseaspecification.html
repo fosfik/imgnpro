@@ -21,10 +21,16 @@
                           localStorage.setItem("format", $('select[name="format"]').val());
                           localStorage.setItem("colormode", $('select[name="colormode"]').val());
                           localStorage.setItem("background", $('select[name="background"]').val());
-                          localStorage.setItem("DPI", $('input:text[name=DPI]').val());
-                          localStorage.setItem("nonedpi", $('input:checkbox[name=nonedpi]').val());
-                        
-                          
+                          localStorage.removeItem("nonedpi");
+                          localStorage.removeItem("DPI");
+
+                          if($('input:checkbox[name=nonedpi]').is(":checked")) {
+                            localStorage.setItem("nonedpi", $('input:checkbox[name=nonedpi]').val());
+                          }
+                          else
+                          {
+                            localStorage.setItem("DPI", $('input:text[name=DPI]').val());
+                          }
                           document.location.href="/chooseasize.html";
                     }
                     ev.preventDefault();

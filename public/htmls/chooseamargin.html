@@ -5,6 +5,20 @@
         <title>IMGNpro, hagamos que tu producto destaque</title>
         <link rel="stylesheet" href="../stylesheets/imgncss_session.css">
         <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico">
+        <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $('#buttoncont').click(function (ev) {
+                    localStorage.setItem("marginmeasure", $('select[name="marginmeasure"]').val());
+                    localStorage.setItem("margintop", $('input:text[name=margintop]').val());
+                    localStorage.setItem("marginbottom", $('input:text[name=marginbottom]').val());
+                    localStorage.setItem("marginright", $('input:text[name=marginright]').val());
+                    localStorage.setItem("marginleft", $('input:text[name=marginleft]').val());
+                    document.location.href="/chooseanextra.html";
+                    ev.preventDefault();
+                }); 
+            });
+        </script>
     </head>
     <body>
         <header class="bienvenida">
@@ -45,19 +59,19 @@
         <div class="recontenedor">
             <form id= "marginForm1" class="col1" action="newspec" method="post">
                 <label>Margen en</label>
-                <select name="medida">
+                <select name="marginmeasure">
                     <option value="cm">cm</option>
                     <option value="px">px</option>
                     <option value="%">%</option>
                 </select><br>
                 <label>Arriba</label><br>
-                <input class="margin" type="text" value="5"><br>
+                <input class="margin" name="margintop" type="text" value="5"><br>
                 <label>Abajo</label><br>
-                <input class="margin" type="text" value="5"><br>
+                <input class="margin" name="marginbottom" type="text" value="5"><br>
                 <label>Derecha</label><br>
-                <input class="margin" type="text" value="5"><br>
+                <input class="margin" name="marginright" type="text" value="5"><br>
                 <label>Izquierda</label><br>
-                <input class="margin" type="text" value="5"><br>
+                <input class="margin" name="marginleft" type="text" value="5"><br>
             </form>
             <div class="col2">
                 <div id="marco" class="alignTenisHorizontalC">
@@ -76,7 +90,7 @@
             <a href="chooseanalignment.html">Regresar</a>
         </div>
         <div class="buttoncont">
-            <a href="chooseanextra.html">Continuar</a>
+            <a id="buttoncont" href="">Continuar</a>
         </div>
     </section>
         <aside id="menurigth">

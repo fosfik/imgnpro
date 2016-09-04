@@ -8,6 +8,26 @@
         <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
         <script type="text/javascript">
             $(document).ready(function(){
+
+                $('#buttoncont').click(function (ev) {
+                    var imagesize = localStorage.getItem('imagesize');
+                    // if ($('#specnombre').val().trim() === ''){
+                    //     alert("Favor de capturar el nombre de la especificación");    
+                    //     $('#specnombre').focus();
+                    // }
+                    // else{
+                    if (imagesize==='customize'){
+                        localStorage.setItem("measuresize", $('select[name="measuresize"]').val());
+                        localStorage.setItem("widthsize", $('input:text[name=widthsize]').val());
+                        localStorage.setItem("heightsize", $('input:text[name=heightsize]').val());
+                    }
+                          
+                          
+                          document.location.href="/chooseanalignment.html";
+                   // }
+                    ev.preventDefault();
+                });
+            
                 //var buttonspec = $('#buttonspec');
                 // var frm = $('#specForm');
                 // buttonspec.click(function (ev) {
@@ -111,15 +131,15 @@
                 <input name="size" type="radio" id="cuadro4" value="4:3">
                 <label class="cuadro" for="cuadro4">4:3</label>
                 <div class="cuadro" name="cuadrounder">
-                    <select name="medida">
+                    <select name="measuresize">
                     <option value="cm">cm</option>
                     <option value="px">px</option>
                     <option value="%">%</option>
                     </select><br>
                     <label for="with">Ancho</label>
-                    <input type="text" value="200" placeholder="00 "><br>
+                    <input type="text" name="widthsize" value="200" placeholder="00 "><br>
                     <label for="">Alto</label>
-                    <input type="text" value="200" placeholder="00 ">
+                    <input type="text" name="heightsize" value="200" placeholder="00 ">
                 </div>
                 <input name="size" type="radio" id="cuadro5" value="customize">
                 <label class="cuadro" id="custombox" for="cuadro5">Personalizado</label>
@@ -134,7 +154,7 @@
             <a href="/chooseaspecification">Regresar</a>
         </div>
         <div class="buttoncont">
-            <a href="chooseanalignment.html">Continuar</a>
+            <a id= "buttoncont" href="">Continuar</a>
         </div>
     </section>
         <aside id="menurigth">

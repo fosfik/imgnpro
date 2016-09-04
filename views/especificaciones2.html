@@ -56,10 +56,12 @@
                 }); 
            
                 $("#specForm input[name='naturalshadow']").change(function(){
+                        $("#specForm input[name='dropshadow']").prop( "checked", false );
                         sumallextras();
                 }); 
                 $("#specForm input[name='dropshadow']").change(function(){
                     //if($(this).is(":checked")) {
+                        $("#specForm input[name='naturalshadow']").prop( "checked", false );
                         sumallextras();
                     //}
                 }); 

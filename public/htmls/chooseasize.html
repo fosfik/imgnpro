@@ -11,6 +11,9 @@
 
                 $('#buttoncont').click(function (ev) {
                     var imagesize = localStorage.getItem('imagesize');
+                    if (imagesize=== null){
+                        localStorage.setItem("measuresize", 'none');
+                    }
                     // if ($('#specnombre').val().trim() === ''){
                     //     alert("Favor de capturar el nombre de la especificación");    
                     //     $('#specnombre').focus();
@@ -22,8 +25,7 @@
                         localStorage.setItem("heightsize", $('input:text[name=heightsize]').val());
                     }
                           
-                          
-                          document.location.href="/chooseanalignment.html";
+                    document.location.href="/chooseanalignment.html";
                    // }
                     ev.preventDefault();
                 });

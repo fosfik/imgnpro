@@ -16,8 +16,9 @@
 
                     var currentAlignHor =  localStorage.getItem("alignhor");
                     var currentAlignVer = localStorage.getItem("alignver");
+                    var imageselected = localStorage.getItem("imageselected");
+                    $("#imgportatenis").attr("src",imageselected);
 
-                   
                     if (currentAlignHor !== null){
                         var currentClassName = $('#marco').attr('class');
                         $('#marco').removeClass(currentClassName).addClass(currentAlignHor);  
@@ -78,7 +79,8 @@
         <section id="menuver">
             <nav>
                 <ul>
-                    <li class="menulogo"><h1><a href="principal"><img src="../images/logo_black.png" alt="logo"></a></h1></li>
+                    <li class="menulogo"><h1><a href="principal">
+                    <img src="../images/logo_black.png" alt="logo"></a></h1></li>
                     <li><a href="micuenta">Mi Cuenta</a></li>
                     <li><a href="historial">Historial</a></li>
                     <li><a href="especificaciones1">Especificaciones</a></li>

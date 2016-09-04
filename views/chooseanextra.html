@@ -50,52 +50,79 @@
 
                $("#buttonshadow").click(function(){
                     var shadowsel = $('input:radio[name="shadow"]:checked');
-                    alert(shadowsel.prop('id'));
                     localStorage.removeItem("naturalshadow");
                     localStorage.removeItem("dropshadow");
-
-                    alert(shadowsel.val());
-
                     if ( shadowsel.prop('id') ==='naturalshadow'){
                         localStorage.setItem('naturalshadow',shadowsel.val());
                     }
                     if ( shadowsel.prop('id') ==='dropshadow'){
                         localStorage.setItem('dropshadow',shadowsel.val());
                     }
-
-                    window.location='#close';
+                    //ev.preventDefault();
+                    //window.location='#close';
+                    sumallextras();
                 });
 
                $("#buttoncolor").click(function(){
                     var correctcolor = $('input:radio[name="color"]:checked');
-                    alert(correctcolor.prop('id'));
                     localStorage.removeItem("correctcolor");
-                    alert(correctcolor.val());
                     if ( correctcolor.prop('id') ==='correctcolor'){
                         localStorage.setItem('correctcolor',correctcolor.val());
                     }
-                    window.location='#close';
+                    //window.location='#close';
+                    sumallextras();
                 });
                $("#buttonretouch").click(function(){
                     var basicretouch = $('input:radio[name="retouch"]:checked');
-                    alert(basicretouch.prop('id'));
                     localStorage.removeItem("basicretouch");
-                    alert(basicretouch.val());
                     if ( basicretouch.prop('id') ==='basicretouch'){
                         localStorage.setItem('basicretouch',basicretouch.val());
                     }
-                    window.location='#close';
+                    //window.location='#close';
+                    sumallextras();
                 });
                $("#buttonpath").click(function(){
                     var clippingpath = $('input:radio[name="path"]:checked');
-                    alert(clippingpath.prop('id'));
                     localStorage.removeItem("clippingpath");
-                    alert(clippingpath.val());
                     if ( clippingpath.prop('id') ==='clippingpath'){
                         localStorage.setItem('clippingpath',clippingpath.val());
                     }
-                    window.location='#close';
+                    
+                    //window.location='#close';
+                    sumallextras();
                 });
+
+
+                  function sumallextras(){
+                   
+                    var ntotal = <%= config.prices.cutandremove%>; 
+                    ntotal = ntotal * 100;
+
+                    
+                    if(localStorage.getItem('naturalshadow')!== null){
+                        alert("naturalshadow");  
+                         ntotal = ntotal + (localStorage.getItem('naturalshadow') * 100);
+                    }
+
+                    if(localStorage.getItem('dropshadow')!== null){
+                         ntotal = ntotal + (localStorage.getItem('dropshadow') * 100);
+                    }
+
+                    if(localStorage.getItem('correctcolor')!== null){
+                         ntotal = ntotal + (localStorage.getItem('correctcolor') * 100);
+                    }
+                    
+                    if(localStorage.getItem('clippingpath')!== null){
+                         ntotal = ntotal + (localStorage.getItem('clippingpath') * 100);
+                    }
+
+                    if(localStorage.getItem('basicretouch')!== null){
+                         ntotal = ntotal + (localStorage.getItem('basicretouch') * 100);
+                    }
+                                
+                    ntotal = ntotal / 100;
+                    $("#totalprice").html(ntotal);
+                }
 
             });
         </script>
@@ -138,7 +165,7 @@
         <a class="ruta">Subir imágenes</a>
         
         <div class="recontenedor">
-            <form id = "extraForm" class="col3" action="newspec" method="post">
+            <form id = "extraForm" class="col3" action="" method="">
                 <input name="sombra" type="checkbox" id="cuadroxtra1" value="1:1">
                 <a href="#openShadowModal" class="cuadroxtra" for="cuadroxtra1">Sombra</a>
                 <input name="color" type="checkbox" id="cuadroxtra2" value="2:3">
@@ -156,7 +183,7 @@
             </form>
             <div class="labelito">
                 <p class="texto_plano4">Precio por Imagen</p>
-                <p class="texto_precio2"><span class="prefixmoney">USD</span>$9.99</p>
+                <p class="texto_precio2"><span class="prefixmoney">USD</span>$ <span id="totalprice">1.50</span></p>
             </div>
         </div>
         <div class="picnum">Seleccione Extras</div>
@@ -168,6 +195,12 @@
             <a href="/uploadimages">Continuar</a>
         </div>
     </section>
+
+<!-- <input class="checks" type="checkbox" name="correctcolor" value=<%= config.prices.correctcolor %>><span class="postinput">Corrección de Color</span>
+                <input  class="checks" type="checkbox" name="clippingpath" value=<%= config.prices.clippingpath %>><span class="postinput">Clipping Path</span>
+                <input  class="checks" type="checkbox" name="basicretouch" value=<%= config.prices.basicretouch %>><span class="postinput"> Retoque Básico</span>
+                <br> -->
+
 
         <!--MODAL PARA SOMBRA-->
         <div id="openShadowModal" class="modalDialog">
@@ -183,12 +216,12 @@
                             <label class="etiquetasxtras">Sin Sombra</label><label class="postextra"></label>
                         </li>
                         <li>
-                            <input id="dropshadow" name="shadow" type="radio" value ="0.20">
-                            <label class="etiquetasxtras">Drop Shadow</label><label class="postextra">+ <span class="extreprefix">USD</span>$0.20</label>
+                            <input id="dropshadow" name="shadow" type="radio" value = <%= config.prices.dropshadow %>>
+                            <label class="etiquetasxtras">Drop Shadow</label><label class="postextra">+ <span class="extreprefix">USD</span>$<%= config.prices.dropshadow %></label>
                         </li>
                         <li>
-                            <input id="naturalshadow" name="shadow" type="radio" value = "0.55">
-                            <label class="etiquetasxtras">Sombra Natural</label><label class="postextra">+ <span class="extreprefix">USD</span>$0.55</label>
+                            <input id="naturalshadow" name="shadow" type="radio" value = <%= config.prices.naturalshadow %>>
+                            <label class="etiquetasxtras">Sombra Natural</label><label class="postextra">+ <span class="extreprefix">USD</span>$<%= config.prices.naturalshadow %></label>
                         </li>
                     </ul>
                     <div class="infomodal">
@@ -198,7 +231,7 @@
                         <h1 id="res_message"></h1>
                     </div>   
                     <div class="buttonModal">
-                        <input id="buttonshadow" type="submit" value="Aceptar">
+                        <a id="buttonshadow" href="#close">Aceptar</a>
                     </div>                               
                 </form>
             </div>
@@ -218,8 +251,8 @@
                             <label class="etiquetasxtras">Sin Ajustes de Color</label><label class="postextra"></label>
                         </li>
                         <li>
-                            <input id="correctcolor" name="color" type="radio" value="0.40">
-                            <label class="etiquetasxtras">Ajuste de Color</label><label class="postextra">+ <span class="extreprefix">USD</span>$0.40</label>
+                            <input id="correctcolor" name="color" type="radio" value=<%= config.prices.correctcolor %>>
+                            <label class="etiquetasxtras">Ajuste de Color</label><label class="postextra">+ <span class="extreprefix">USD</span>$<%= config.prices.correctcolor %></label>
                         </li>
                     </ul>
                     <div class="infomodal">
@@ -229,7 +262,7 @@
                         <h1 id="res_message"></h1>
                     </div>   
                     <div class="buttonModal">
-                        <input id="buttoncolor" type="submit" value="Aceptar">
+                        <a id="buttoncolor" href="#close">Aceptar</a>
                     </div>                               
                 </form>
             </div>
@@ -249,8 +282,8 @@
                             <label class="etiquetasxtras">Sin Retoque</label><label class="postextra"></label>
                         </li>
                         <li>
-                            <input id="basicretouch" name="retouch" type="radio" value="0.60">
-                            <label class="etiquetasxtras">Retoque Básico</label><label class="postextra">+ <span class="extreprefix">USD</span>$0.60</label>
+                            <input id="basicretouch" name="retouch" type="radio" value=<%= config.prices.basicretouch %>>
+                            <label class="etiquetasxtras">Retoque Básico</label><label class="postextra">+ <span class="extreprefix">USD</span>$<%= config.prices.basicretouch %></label>
                         </li>
                     </ul>
                     <div class="infomodal">
@@ -260,7 +293,7 @@
                         <h1 id="res_message"></h1>
                     </div>   
                     <div class="buttonModal">
-                        <input id="buttonretouch" type="submit" value="Aceptar">
+                        <a id="buttonretouch" href="#close">Aceptar</a>
                     </div>                               
                 </form>
             </div>
@@ -280,8 +313,8 @@
                             <label class="etiquetasxtras">Sin Clipping Path</label><label class="postextra"></label>
                         </li>
                         <li>
-                            <input id="clippingpath" name="path" type="radio" value="2.40">
-                            <label class="etiquetasxtras">Clipping Path</label><label class="postextra">+ <span class="extreprefix">USD</span>$2.40</label>
+                            <input id="clippingpath" name="path" type="radio" value=<%= config.prices.clippingpath %>>
+                            <label class="etiquetasxtras">Clipping Path</label><label class="postextra">+ <span class="extreprefix">USD</span>$<%= config.prices.clippingpath %></label>
                         </li>
                     </ul>
                     <div class="infomodal">
@@ -291,7 +324,7 @@
                         <h1 id="res_message"></h1>
                     </div>   
                     <div class="buttonModal">
-                        <input id="buttonpath" type="submit" value="Aceptar">
+                        <a id="buttonpath" href="#close">Aceptar</a>
                     </div>                               
                 </form>
             </div>

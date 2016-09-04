@@ -918,7 +918,7 @@ input, select {
     border: 1px dashed #555;
 }
 
-.buttonModal input{
+.buttonModal a{
     background-color: red;
     color: #FFFFFF;
     padding: 10px 10px;

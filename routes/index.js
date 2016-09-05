@@ -529,7 +529,9 @@ catch(err) {
       newSpec.alignnone = specInfos[0].alignnone;
       newSpec.alignhor = specInfos[0].alignhor;
       newSpec.alignver = specInfos[0].alignver;
-      newSpec.measure = specInfos[0].measure;
+      newSpec.imagesize = specInfos[0].imagesize;
+      newSpec.measuresize = specInfos[0].measuresize;
+      newSpec.marginmeasure = specInfos[0].marginmeasure;
       newSpec.margintop = specInfos[0].margintop; //??
       newSpec.marginbottom = specInfos[0].marginbottom; //??
       newSpec.marginright = specInfos[0].marginright; //??
@@ -583,7 +585,9 @@ catch(err) {
       newSpec.alignnone = req.body.alignnone;
       newSpec.alignhor = req.body.alignhor;
       newSpec.alignver = req.body.alignver;
-      newSpec.measure = req.body.measure;
+      newSpec.imagesize = req.body.imagesize;
+      newSpec.marginmeasure = req.body.marginmeasure;
+      newSpec.measuresize = req.body.measuresize;
       newSpec.margintop = req.body.margintop;
       newSpec.marginbottom = req.body.marginbottom;
       newSpec.marginright = req.body.marginright;

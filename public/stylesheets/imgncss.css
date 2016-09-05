@@ -833,3 +833,50 @@ hr[name="hrfoot"] {
 span {
     margin-left: 20px;
 }
+
+#paraabrirmodal2 {
+    font-size: 12px;
+    text-decoration: none;
+    cursor: pointer;
+    color: red;
+    transition: .1s;
+}
+
+#paraabrirmodal2:hover {
+    color: #CCCCCC;
+    transition: .2s;
+}
+
+.modalDialogPass {
+    color: #FFFFFF;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0,0,0,0.8);
+    z-index: 99999;
+    opacity: 0;
+    -webkit-transition: opacity 400ms ease-in;
+    -moz-transition: opacity 400ms ease-in;
+    transition: opacity 400ms ease-in;
+    pointer-events: none;
+}
+
+.modalDialogPass:target {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modalDialogPass > div {
+    width: 500px;
+    height: auto;
+    position: relative;
+    margin: 10% auto;
+    padding: 5px 20px 20px 20px;
+    background: #000000;
+}
+
+#openPassModal .encabezado {
+    text-align: center;
+}

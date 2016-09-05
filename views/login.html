@@ -40,6 +40,9 @@
                         <label class="texto_plano">Contraseña</label>
                         <input type="password" name="password" required>
                     </li>
+                    <li>
+                        <a id="paraabrirmodal2" href="#openPassModal">Olvide mi Contraseña</a>
+                    </li>
                 </ul>
                 <div class="button2">
                     <input type="submit" value="Aceptar">
@@ -54,5 +57,30 @@
         <footer class="certificate">
              <% include partials/footer.html %>
         </footer>
+        <div id="openPassModal" class="modalDialogPass">
+            <div>
+                <a href="#close" title="Close" Class="close">X</a>
+                <h1 class="encabezado">Recupera tu Contraseña</h1>
+                <form id="contactForm1" class="registro_form" action="/signup" method="post" name="registro_form">
+                    <ul>
+                        <li>
+                            <label id="etiquetas">Nombre de Usuario</label>
+                            <input type="text" name="userlongname" placeholder="Lupito Pérez" maxlength="20" required>
+                        </li>
+                        <li>
+                            <label id="etiquetas">eMail</label>
+                            <input type="email" name="email" placeholder="lupito@industriaspatito.com" maxlength="50" required>
+                        </li>
+                    </ul>
+                    <div>
+                        <h1 id="res_message"></h1>
+                    </div>   
+                    <div class="button2">
+                        <input type="submit" value="Aceptar">
+                    </div>             
+                </form>
+            </div>
+        </div>
+            
     </body>
 </html>

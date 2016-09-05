@@ -653,12 +653,10 @@ html, body {
 
 .certificate:hover {
     height: 40%;
-    margin-top: 60%;
     z-index: 1000;
     position: absolute;
     background: rgba(0,0,0,1);
     transition: 2s;
-    width: 100%
 }
 
 .certificate:hover div[name="about"], .certificate:hover div[name="contact"], .certificate:hover hr[name="hrfoot"] {

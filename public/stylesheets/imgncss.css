@@ -92,8 +92,16 @@ html {
 .texto_plano {
     font-size: 14px;
     padding: 5px;
+    text-decoration: none;
 }
 
+.texto_plano a{
+    color: #000000;
+}
+
+.texto_plano a:hover{
+    color: #999999;
+}
 
 #texto_como2 {
     text-decoration: none;

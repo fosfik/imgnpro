@@ -74,6 +74,10 @@
                         $('#sin_fondo').prop("disabled", true);
                         $('#background').prop("value", 'blanco');
                       }
+
+                      if($("#format option:selected").text() ==='JPG WEB' || $("#format option:selected").text() ==='PNG' ){
+                        localStorage.removeItem('clippingpath');
+                       }
                   
                 });
             });

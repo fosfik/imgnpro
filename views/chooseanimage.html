@@ -24,6 +24,7 @@
                 });
                 $("#imageForm input[name=image]").change(function(){
                     var imageselected = $('input:radio[name=image]:checked').val();
+                    //var imageselected = $('input:radio[name=image]:checked').attr('src');
                     localStorage.setItem("imageselected", imageselected);
                 });
 
@@ -71,7 +72,7 @@
         <div class="recontenedor">
             <form id = "imageForm" class="" action="newspec" method="post">
                 <div class="col3">
-                <input name="image" type="radio" id="cuadro1" value="../image/pizza.png">
+                <input name="image" type="radio" id="cuadro1" value="../images/pizza.png">
                 <label class="cuadro" for="cuadro1"><img class="imagebox" src="../images/pizza.png"></label>
                 <input name="image" type="radio" id="cuadro2" value="../images/mueble.png">
                 <label class="cuadro" for="cuadro2"><img class="imagebox" src="../images/mueble.png"></label>

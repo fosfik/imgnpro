@@ -8,12 +8,17 @@
         <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
         <script type="text/javascript">
             $(document).ready(function(){
+                var imageselected = localStorage.getItem("imageselected");
+                $("#imgportaimage").attr("src",imageselected);
                 $('#buttoncont').click(function (ev) {
                     localStorage.setItem("marginmeasure", $('select[name="marginmeasure"]').val());
                     localStorage.setItem("margintop", $('input:text[name=margintop]').val());
                     localStorage.setItem("marginbottom", $('input:text[name=marginbottom]').val());
                     localStorage.setItem("marginright", $('input:text[name=marginright]').val());
                     localStorage.setItem("marginleft", $('input:text[name=marginleft]').val());
+
+                    
+
                     document.location.href="/chooseanextra";
                     ev.preventDefault();
                 }); 
@@ -80,7 +85,7 @@
                     <div class="horLine1"></div>
                     <div class="horLine2"></div>
                     <div id="portatenis"></div>
-                    <img id="tenis" class="alignVerticalM" src="../images/tenis.png">
+                    <img id="imgportaimage" class="alignVerticalM" src="">
                 </div>
             </div>
         </div>

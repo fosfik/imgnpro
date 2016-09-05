@@ -11,12 +11,12 @@
             $(document).ready(function(){
                 if (typeof(Storage) !== "undefined") {
                     // Code for localStorage/sessionStorage.
-                    
+                    var imageselected = localStorage.getItem("imageselected");
+                    $("#imgportaimage").attr("src",imageselected);
+
                     var currentAlignHor =  localStorage.getItem("alignhor");
                     var currentAlignVer = localStorage.getItem("alignver");
-                    var imageselected = localStorage.getItem("imageselected");
-                    $("#imgportatenis").attr("src",imageselected);
-
+                    
                     if (currentAlignHor !== null){
                         var currentClassName = $('#marco').attr('class');
                         $('#marco').removeClass(currentClassName).addClass(currentAlignHor);  
@@ -28,8 +28,8 @@
 
 
                     if (currentAlignVer !== null){
-                        currentClassName = $('#imgportatenis').attr('class');
-                        $('#imgportatenis').removeClass(currentClassName).addClass(currentAlignVer);
+                        currentClassName = $('#imgportaimage').attr('class');
+                        $('#imgportaimage').removeClass(currentClassName).addClass(currentAlignVer);
                         $('#' + currentAlignVer).prop("checked", true);
                     } 
                     else{
@@ -55,9 +55,9 @@
                 $("#alignForm1 input[name='alignver']").click(function(){
                     //alert('Diste clic en una opción vertical!');
                     // localStorage.imagesize = $('input:radio[name=size]:checked').val();
-                    var currentClassName = $('#imgportatenis').attr('class');
+                    var currentClassName = $('#imgportaimage').attr('class');
                     var newClassName = $('input:radio[name=alignver]:checked').val();
-                    $('#imgportatenis').removeClass(currentClassName).addClass(newClassName);
+                    $('#imgportaimage').removeClass(currentClassName).addClass(newClassName);
                     localStorage.setItem("alignver", newClassName);  
                 });
                
@@ -117,7 +117,7 @@
             <div class="col2">
                 <div id="marco" class="alignHorizontalC">
                     <div id="portatenis"></div>
-                    <img id="imgportatenis" class="alignVerticalM" src="../images/tenis.png">
+                    <img id="imgportaimage" class="alignVerticalM" src="">
                     
                 </div>
             </div>

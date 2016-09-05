@@ -9,6 +9,29 @@
         <script type="text/javascript">
             $(document).ready(function(){
                 var newbuttonspec = $('#savebuttonspec');
+
+                var iniformat = localStorage.getItem("format");
+                if(iniformat ==='jpg_web' || iniformat ==='png'){
+                    //$('#cuadroxtra4').prop('disabled',true);
+                    $('#a_cuadroxtra4').prop('href','#');
+                    $('#a_cuadroxtra4').click(function(){
+                        alert('Las imágenes JPG WEB ó PNG no permiten la opción de Clipping Path');
+                    });
+                }
+
+               
+
+                // $("#format").change(function() {
+
+                // //alert( $("#format option:selected").text());
+                //   $('#sin_fondo').prop("disabled", false);
+                //   $('#background').prop("value", 'blanco');
+                //   if($("#format option:selected").text() ==='JPG' || $("#format option:selected").text() ==='JPG WEB' ){
+                //     $('#sin_fondo').prop("disabled", true);
+                //   }
+                  
+                // });
+
                 //var frm = $('#specForm');
                 newbuttonspec.click(function (ev) {
                     // recuperar las variables localStorage
@@ -253,7 +276,7 @@
                 <input name="retoque" type="checkbox" id="cuadroxtra3" value="3:2">
                 <a href="#openRetouchModal" class="cuadroxtra" for="cuadroxtra3">Retoque Básico</a>
                 <input name="path" type="checkbox" id="cuadroxtra4" value="4:3">
-                <a href="#openPathModal" class="cuadroxtra" for="cuadroxtra4">Clipping Path</a>
+                <a id="a_cuadroxtra4" href="#openPathModal" class="cuadroxtra" for="cuadroxtra4">Clipping Path</a>
             </form>
             <hr>
             <form class="col4">

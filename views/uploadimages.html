@@ -71,10 +71,11 @@
                         }).fail(function() {
                             
                             alert("Falló al cargar la imagen");
-                            //imageCount++;
-                            //$("div#imageCount").html(imageCount);
-                            //document.forms[0].imagelist.value = imageUploadInfos;
-
+                            // temporal
+                            // imageCount++;
+                            // $("div#imageCount").html(imageCount);
+                            // caltotalpay();
+                            
                             return cb('No se pudo un url válida');
                             //file.fail = true;
 
@@ -107,7 +108,9 @@
                             // $(file.previewElement).find('.dz-progress').fadeOut();
 
                             // app._showDefaultError(this, file, "Network Error!");
+                            
                             alert("Error subiendo archivo");
+                            
                         } else {
                             // corregir esto para que solo agregue al array archivos completos
                             
@@ -188,7 +191,7 @@
                             }
                             else{
                                 alert(data.message); 
-                                setTimeout(window.location='/confirmpayorder.html', 500 );
+                                setTimeout(window.location='/confirmpayorder/' + data.numorder, 500 );
                                     //+ data.numorder,500);
                             }
                         }

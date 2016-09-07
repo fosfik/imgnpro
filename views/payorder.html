@@ -8,9 +8,9 @@
         <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico"/>
         <script type="text/javascript">
             $(document).ready(function(){
-                var buttonspec = $('#buttonpayment');
+                //var buttonspec = $('#buttonpayment');
                 var frm = $('#paymentForm');
-                buttonspec.click(function (ev) {
+                //buttonspec.click(function (ev) {
                     $.ajax({
                         type: frm.attr('method'),
                         url: '/getpaymentsign', //frm.attr('action'),
@@ -51,8 +51,8 @@
                         }
 
                     });
-                    ev.preventDefault();
-                });  
+                    //ev.preventDefault();
+               // });  
             });
         </script>
     </head>

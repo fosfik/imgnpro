@@ -421,7 +421,7 @@ catch(err) {
      require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){
             findaspec(req.params.newSpecid,function(error,spec){
-              console.log(spec);
+              //console.log(spec);
               res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id });
             });
   });
@@ -442,12 +442,33 @@ catch(err) {
   // });
 
 /* Maneja la pagina donde se paga el pedido o la orden de compra */
-  router.get('/payorder/:numorder', 
+  router.get('/confirmpayorder/:numorder', 
      require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){
-           console.log(req.params);
-           res.render('payment', {message: req.flash('message'), user: req.user, numorder:req.params.numorder});
+          findaorder(req.params.numorder,function(error,order){
+               console.log(order);
+               //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id });
+               res.render('confirmpayorder', {message: req.flash('message'), user: req.user, numorder:req.params.numorder, order:order[0]});             
+          });
   });
+
+ router.get('/payorder/:numorder', 
+     require('connect-ensure-login').ensureLoggedIn('/login'),
+         function(req, res){
+          
+               //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id });
+               res.render('payorder', {message: req.flash('message'), user: req.user, numorder:req.params.numorder});             
+         
+  });
+// router.get('/uploadimages/:newSpecid', 
+//      require('connect-ensure-login').ensureLoggedIn('/login'),
+//          function(req, res){
+//             findaspec(req.params.newSpecid,function(error,spec){
+//               //console.log(spec);
+//               res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id });
+//             });
+//   });
+
   /* Handle Login POST */
   router.post('/signin', passport.authenticate('login', {
     successRedirect: '/principal',
@@ -916,10 +937,6 @@ function spectotalprice(req, cb){
 
 
 function findaspec(specid, cb){
-
-  
-  console.log(specid);
-
   Spec.find({'_id':specid},function(err, specrecord) {
     // In case of any error return
      if (err){
@@ -927,29 +944,46 @@ function findaspec(specid, cb){
 
       cb(1);
      }
-     //console.log("prueba 2");
    // already exists
     if (specrecord) {
       console.log('se encontró  la especificación');
-      console.log(specrecord);
-      //res.setHeader('Content-Type', 'application/json');
-      //res.send(orders); 
-
       cb( 0, specrecord);
-
     } 
     else {
       console.log('No se encontró la especificación');
-
         cb(2);
     }
    
   }).select('name totalprice date').limit(1);
-
-
-
-
 }
 
+
+function findaorder(orderid, cb){
+  console.log(orderid);
+  Orders.find({'numorder':orderid},function(err, orderrecord) {
+    // In case of any error return
+     if (err){
+       console.log('Error al consultar el pedido');
+
+      cb(1);
+     }
+     //console.log("prueba 2");
+   // already exists
+    if (orderrecord) {
+      console.log('Se encontró  el pedido');
+      console.log(orderrecord);
+      //res.setHeader('Content-Type', 'application/json');
+      //res.send(orders); 
+
+      cb( 0, orderrecord);
+
+    } 
+    else {
+      console.log('No se encontró el pedido');
+
+        cb(2);
+    }
+  }).select('date status totalpay').limit(1);
+}
 
 module.exports = router;

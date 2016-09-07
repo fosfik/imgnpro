@@ -28,10 +28,10 @@
         </section>
     <section id="contenedor">
         <section id="confirmOrder">
-            <p class="encabezado">Confirmar Orden</p>
+            <p class="encabezado">Confirmar Pedido <span><%= numorder %></span></p>
             <div class="label2">
                 <p class="texto_plano4">Costo total</p>
-                <p class="texto_precio2"><span class="prefixmoney">USD</span>$99.99</p>
+                <p class="texto_precio2"><span class="prefixmoney">USD</span>$ <span><%= order.totalpay %></span></p>
             </div>
             <section class="col1">
                 <form class="contactForm">
@@ -562,7 +562,7 @@
         </section>
         <hr>
         <div class="button2">
-            <a href="payment">Pagar Ahora</a>
+            <a href="/payorder/<%= numorder %>">Pagar Ahora</a>
         </div>
     </section>
         <aside id="menurigth">

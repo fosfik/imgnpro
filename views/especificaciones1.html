@@ -6,8 +6,31 @@
         <link rel="stylesheet" href="../stylesheets/imgncss_session.css">
         <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico"/>
         <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+        <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
         <script type="text/javascript">
+            
+
+
             $(document).ready(function(){
+
+
+
+  //               $("#divload").dialog({
+  //         modal: true,
+  //         height: 50,
+  //         width: 200,
+  //         zIndex: 999,
+  //         resizable: false,
+  //         title: "Please wait..."
+  // });
+  
+                $(document).ajaxStart(function(){
+                    //$('#divload').show();
+                    window.location="#divload";
+                });
+                $( document ).ajaxStop(function() {
+                    $('#divload').hide();
+                });
                     $.ajax({
                         type: 'get',
                         url: '/listspecs',
@@ -30,6 +53,10 @@
         </script>
     </head>
     <body>
+    <div id="divload" class="modalDialog">
+            <img src="../images/icon_plus.png">
+            Cargando....
+        </div>
         <header class="bienvenida">
             <ul>
                 <li>Hola <a id="user" class="bold"><%= user.userlongname %></a><a class="bold">!</a></li>
@@ -103,6 +130,7 @@
         <div class="button2">
             <a href="/subirimagen1">Subir Imágenes</a>
         </div>
+
     </section>
         <aside id="menurigth">
             <p class="encabezado"> Tutorial</p>

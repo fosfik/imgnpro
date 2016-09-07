@@ -616,7 +616,7 @@ input, select {
 }
 
 .imagebox {
-    width: 85%;
+    height: 65%;
     vertical-align: middle;
     padding: 10px;    
 }

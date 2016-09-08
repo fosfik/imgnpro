@@ -1,0 +1,282 @@
+* {
+    border: 0px;
+    margin: 0px;
+    padding: 0px;
+    font-family: helvetica, arial, sans-serif;
+}
+
+html {
+    background: #E5E5E5 no-repeat center center fixed;
+    background-size: cover;
+    min-width: 850px;
+    height: 100%;
+}
+
+#menuver {
+    padding: 0;
+    margin-top: 0px;
+    width: 160px;
+    height: 100%;
+    margin-bottom: 0px;
+}
+
+
+#menuver ul{
+    height: 100%;
+    position: fixed;
+    width: 160px;
+    background-color: #000;
+    margin-top: 0px;
+    z-index: 88888;
+}
+
+#menuver ul li:first-child {
+    height: 110px;
+    width: 160px;
+    border-bottom: solid red 2px;
+}
+
+#menuver ul li:first-child:hover {
+    background-color: red;
+    padding-left: 0px;
+    text-align: center;
+}
+
+#menuver h1 {
+    text-align: center;
+    transition: .2s;
+}
+
+#menuver li a {
+    text-decoration: none;
+    font-size: 12px;
+    color: #FFFFFF;
+    display: block;
+    padding: 10px;
+    transition: .2s;
+}
+
+#menuver li:hover{
+    background-color: red;
+    padding-left: 20px;
+    transition: .2s;
+}
+
+.bienvenida {
+    position: fixed;
+    float: right;
+    text-align: right;
+    font-size: 12px;
+    width: 100%;
+    min-width: 400px;
+    height: 40px;
+    padding-top: 20px;
+    margin-top: 0px;
+    margin-right: 10px;
+    display: inline-block;
+    background: #E5E5E5;
+    border-bottom: 2px #CCC solid;
+    -webkit-border-image: 
+      -webinear-gradient(to left, rgba(0, 0, 0, 0), #CCCCCC, rgba(0, 0, 0, 0)) 0 0 100%;
+    -moz-border-image:
+      -moz-linear-gradient(to left, rgba(0, 0, 0, 0), #CCCCCC, rgba(0, 0, 0, 0)) 0 0 100%;
+    border-image:
+        linear-gradient(to left, rgba(0, 0, 0, 0), #CCCCCC, rgba(0, 0, 0, 0)) 0 0 100%;
+}
+
+.bienvenida ul{
+    list-style: none;
+    height: 40px;
+    
+}
+
+.bienvenida li{
+    display: inline-block;
+    padding: 5px;
+    text-decoration: none;
+    margin-left: 5px;
+}
+
+.bold{
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.bienvenida li {
+    color: #000000;
+}
+
+#salir:hover {
+    color: #999999;
+}
+
+#menurigth {
+    width: 180px;
+    margin-top: 100px;
+    float: right;
+    display: inline-block;
+    height: 100%;
+    padding-left: 20px;
+    border-width: 2px 2px 2px 2px;
+    border-style: solid;
+    border-image: linear-gradient(to top, rgba(0, 0, 0, 0), #CCCCCC, rgba(0, 0, 0, 0)) 1 100%;
+}
+
+#contenedor{
+    float: left;
+    margin-left: 200px;
+    margin-top: 60px;
+    display: inline-block;
+    max-width: 57%;
+    min-width: 620px;
+}
+
+.encabezado {
+    font-size: 28px;
+    padding: 10px 5px;
+}
+
+.texto_plano {
+    font-size: 12px;
+}
+
+.button1 a{
+    border: 2px solid;
+    border-color: #000000;
+    color: #000000;
+    padding: 10px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    transition: .1s;
+    margin-top: 30px;
+}
+
+.button2 a{
+    background-color: red;
+    color: #FFFFFF;
+    padding: 10px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    transition: .1s;
+    float: right;
+}
+
+.button3 a{
+    text-decoration: none;
+    color: #FFFFFF;
+}
+
+.button3 {
+    background-color: red;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    cursor: pointer;
+    transition: .2s;
+    margin-right: 20px;
+}
+
+.button1 a:hover, .button2 a:hover, .button3:hover {
+    transition: .3s;
+    box-shadow: 2px 2px 2px rgba(20, 20, 20, 0.5);
+}
+
+/* ESTILO PARA EL BILBOARD */
+
+#bilboard {
+    margin-top: 20px;
+    color: #FF0000;
+    background: #500000;
+    border: solid #990000 2px;
+    height: 30px;	
+    overflow: hidden;
+    position: relative;
+    box-shadow: 4px 4px 6px rgba(20, 20, 20, .5);
+}
+
+#bilboard span {
+     position: absolute;
+     width: 100%;
+     height: 100%;
+     margin: 0;
+     line-height: 30px;
+     text-align: center;
+     /* Starting position */
+     -moz-transform:translateX(100%);
+     -webkit-transform:translateX(100%);	
+     transform:translateX(100%);
+     /* Apply animation to this element */	
+     -moz-animation: example1 15s linear infinite;
+     -webkit-animation: example1 15s linear infinite;
+     animation: example1 15s linear infinite;
+}
+    /* Move it (define the animation) */
+    @-moz-keyframes example1 {
+     0%   { -moz-transform: translateX(100%); }
+     100% { -moz-transform: translateX(-100%); }
+    }
+    @-webkit-keyframes example1 {
+     0%   { -webkit-transform: translateX(100%); }
+     100% { -webkit-transform: translateX(-100%); }
+    }
+    @keyframes example1 {
+     0%   { 
+     -moz-transform: translateX(100%); /* Firefox bug fix */
+     -webkit-transform: translateX(100%); /* Firefox bug fix */
+     transform: translateX(100%); 		
+     }
+     100% { 
+     -moz-transform: translateX(-100%); /* Firefox bug fix */
+     -webkit-transform: translateX(-100%); /* Firefox bug fix */
+     transform: translateX(-100%); 
+     }
+}
+
+.recontenedor {
+    min-height: 150px;
+    border: 3px solid #000;
+    padding: 10px 10px;
+    max-width: auto;
+    height: 240px;
+    min-width: 570px;
+}
+
+.miniBox {
+    margin: 2px;
+    width: 50px;
+    height: 50px;
+    background: #000;
+    border-radius: 10px;
+    color: #FFF;
+    text-align: center;
+    display: inline-block;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.miniBox:hover {
+    background: #00A0FF;
+    transition: .3s;
+    box-shadow: 2px 2px 2px rgba(20, 20, 20, 0.5);
+}
+
+.bigNumber {
+    display: block;
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.miniText {
+    display: block;
+    font-size: 8px;
+}

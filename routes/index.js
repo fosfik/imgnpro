@@ -399,6 +399,27 @@ catch(err) {
            res.render('chooseanimage', {message: req.flash('message'), user: req.user});
   });
 
+/* Maneja la pagina para seleccionar el tamaño de las imágenes */
+  router.get('/chooseasize', 
+     require('connect-ensure-login').ensureLoggedIn('/login'),
+         function(req, res){
+           res.render('chooseasize', {message: req.flash('message'), user: req.user});
+  });
+
+/* Maneja la pagina para seleccionar el margen las imágenes */
+  router.get('/chooseamargin', 
+     require('connect-ensure-login').ensureLoggedIn('/login'),
+         function(req, res){
+           res.render('chooseamargin', {message: req.flash('message'), user: req.user});
+  });
+
+  /* Maneja la pagina para seleccionar la alineación de las imágenes */
+  router.get('/chooseanalignment', 
+     require('connect-ensure-login').ensureLoggedIn('/login'),
+         function(req, res){
+           res.render('chooseanalignment', {message: req.flash('message'), user: req.user});
+  });
+
 /* Maneja la pagina que permite elegir un extra de la especificación */
   router.get('/chooseanextra', 
      require('connect-ensure-login').ensureLoggedIn('/login'),

@@ -975,10 +975,13 @@ input, select {
 .recontenedordrop {
     min-height: 150px;
     border: 3px solid #000;
-    padding: 2px 2px;
     max-width: auto;
     min-width: 570px;
     position: relative;
+}
+
+.recontenedordrop hr {
+    margin-top: 0px;
 }
 
 .droptable1 {

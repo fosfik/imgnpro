@@ -46,7 +46,7 @@ router.get('/listorders', function(req, res) {
      //console.log("prueba 2");
    // already exists
     if (orders) {
-      console.log('se encontraron pedidos');
+      //console.log('se encontraron pedidos');
       res.setHeader('Content-Type', 'application/json');
       res.send(orders); 
 
@@ -69,7 +69,7 @@ router.get('/listallorders', function(req, res) {
      //console.log("prueba 2");
    // already exists
     if (orders) {
-      console.log('se encontraron pedidos');
+      //console.log('se encontraron pedidos');
       res.setHeader('Content-Type', 'application/json');
       res.send(orders); 
 
@@ -92,7 +92,7 @@ router.get('/listspecs', function(req, res) {
      //console.log("prueba 2");
    // already exists
     if (specs) {
-      console.log('se encontraron especificaciones');
+      //console.log('se encontraron especificaciones');
       res.setHeader('Content-Type', 'application/json');
       res.send(specs); 
     } 
@@ -114,7 +114,7 @@ router.get('/listspecs/:limit', function(req, res) {
      //console.log("prueba 2");
    // already exists
     if (specs) {
-      console.log('se encontraron especificaciones');
+      //console.log('se encontraron especificaciones');
       res.setHeader('Content-Type', 'application/json');
       res.send(specs); 
     } 
@@ -371,8 +371,16 @@ catch(err) {
      require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){
           console.log(req.user);
-           res.render('principal', {message: req.flash('message'), user: req.user});
-  });
+          
+
+          countorders(req.user._id,function(count){
+               //console.log(count);
+               //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id });
+              // res.render('confirmpayorder', {message: req.flash('message'), user: req.user, numorder:req.params.numorder, order:order[0]});             
+              res.render('principal', {message: req.flash('message'), user: req.user, countorders:count});
+ 
+          });
+ });
 
  
 
@@ -839,6 +847,7 @@ const S3_BUCKET = process.env.S3_BUCKET_NAME;
  */
 router.get('/sign-s3', (req, res) => {
   const s3 = new aws.S3();
+  const folder = '00001-0002-0002';
   const fileName = req.query['filename'];
   const fileType = req.query['filetype'];
   const s3Params = {
@@ -1005,6 +1014,18 @@ function findaorder(orderid, cb){
         cb(2);
     }
   }).select('date status totalpay').limit(1);
+}
+
+
+function countorders(userid,cb){
+
+  Orders.count({'userid':userid}, function( err, count){
+    //console.log(userid);
+    //console.log( "Número de pedidos:", count );
+    //req.countorders = count;
+    cb(count);
+  });
+
 }
 
 module.exports = router;

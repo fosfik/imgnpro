@@ -37,7 +37,7 @@
                           {
                             localStorage.setItem("DPI", $('input:text[name=DPI]').val());
                           }
-                          document.location.href="/chooseasize.html";
+                          document.location.href="/chooseasize";
                     }
                     ev.preventDefault();
                 });
@@ -69,7 +69,7 @@
 
                     //alert( $("#format option:selected").text());
                       $('#sin_fondo').prop("disabled", false);
-
+                      $('#mode_cmyk').prop("disabled", false);
                       if($("#format option:selected").text() ==='JPG' || $("#format option:selected").text() ==='JPG WEB' ){
                         $('#sin_fondo').prop("disabled", true);
                         $('#background').prop("value", 'blanco');
@@ -77,6 +77,8 @@
 
                       if($("#format option:selected").text() ==='JPG WEB' || $("#format option:selected").text() ==='PNG' ){
                         localStorage.removeItem('clippingpath');
+                        $('#mode_cmyk').prop("disabled", true);
+                        $('#colormode').prop("value", 'rgb');
                        }
                   
                 });
@@ -135,9 +137,9 @@
                     <option value="tiff">TIFF</option>
                 </select><br>
                 <label for="modo">Modo Color</label><br>
-                <select name="colormode">
+                <select id="colormode" name="colormode">
                     <option value="rgb">RGB</option>
-                    <option value="cmyk">CMYK</option>
+                    <option id="mode_cmyk" value="cmyk">CMYK</option>
                 </select><br>
                 <label for="fondo">Fondo</label><br>
                 <select id="background" name="background">

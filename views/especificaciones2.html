@@ -105,6 +105,7 @@
 
                     //alert( $("#format option:selected").text());
                       $('#sin_fondo').prop("disabled", false);
+                      $('#mode_cmyk').prop("disabled", false);
                       
                       if($("#format option:selected").text() ==='JPG' || $("#format option:selected").text() ==='JPG WEB' ){
                         $('#sin_fondo').prop("disabled", true);
@@ -115,6 +116,8 @@
                         alert('Las imágenes JPG WEB ó PNG no permiten la opción de Clipping Path');
                         $("#specForm input[name='clippingpath']").prop("checked",false);
                         $("#specForm input[name='clippingpath']").prop("disabled",true);
+                        $('#mode_cmyk').prop("disabled", true);
+                        $('#colormode').prop("value", 'rgb');
                         sumallextras();
                        }
                       else{
@@ -192,7 +195,7 @@
         <header class="bienvenida">
             <ul>
                 <li>Hola <a id="user" class="bold"><%= user.userlongname %></a><a class="bold">!</a></li>
-                <li>Órdenes en Proceso <a id="orders" class="bold">2</a></li>
+                <li>Órdenes en Proceso <a id="orders" class="bold">0</a></li>
                 <li><a id="salir" class="bold" href="logout">Salir</a></li>
             </ul>
         </header>
@@ -230,9 +233,9 @@
                     <option value="tiff">TIFF</option>
                 </select><br>
                 <label for="modo">Modo Color</label><br>
-                <select name="colormode">
+                <select id="colormode" name="colormode">
                     <option value="rgb">RGB</option>
-                    <option value="cmyk">CMYK</option>
+                    <option id="mode_cmyk" value="cmyk">CMYK</option>
                 </select><br>
                 <label for="fondo">Fondo</label><br>
                 <select id="background" name="background">

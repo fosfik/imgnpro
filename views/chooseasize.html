@@ -25,7 +25,7 @@
                         localStorage.setItem("heightsize", $('input:text[name=heightsize]').val());
                     }
                           
-                    document.location.href="/chooseanalignment.html";
+                    document.location.href="/chooseanalignment";
                    // }
                     ev.preventDefault();
                 });
@@ -87,7 +87,7 @@
         <header class="bienvenida">
             <ul>
                 <li>Hola <a id="user" class="bold"><%= user.userlongname %></a><a class="bold">!</a></li>
-                <li>Órdenes en Proceso <a id="orders" class="bold">2</a></li>
+                <li>Órdenes en Proceso <a id="orders" class="bold">0</a></li>
                 <li><a id="salir" class="bold" href="logout">Salir</a></li>
             </ul>
         </header>

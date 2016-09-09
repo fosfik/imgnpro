@@ -839,6 +839,7 @@ const S3_BUCKET = process.env.S3_BUCKET_NAME;
  */
 router.get('/sign-s3', (req, res) => {
   const s3 = new aws.S3();
+  const folder = '00001-0002-0002';
   const fileName = req.query['filename'];
   const fileType = req.query['filetype'];
   const s3Params = {
@@ -858,7 +859,7 @@ router.get('/sign-s3', (req, res) => {
     }
     const returnData = {
       signedRequest: data,
-      url: `https://${S3_BUCKET}.s3.amazonaws.com/${fileName}`
+      url: `https://${S3_BUCKET}.s3.amazonaws.com/${folder}/${fileName}`
     };
     res.write(JSON.stringify(returnData));
     res.end();

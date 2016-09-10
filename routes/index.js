@@ -883,7 +883,7 @@ if (err) {
     }
     const returnData = {
       signedRequest: data,
-      url: `https://${S3_BUCKET_NAME}.s3.amazonaws.com/${folder}/${fileName}`
+      url: `https://${S3_BUCKET_NAME}.s3.amazonaws.com/${folder}${fileName}`
     };
     res.write(JSON.stringify(returnData));
     res.end();

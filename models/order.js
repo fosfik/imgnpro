@@ -5,7 +5,7 @@ var orderSchema = mongoose.Schema({
     name: {type: String},
     userid: {type: String},
     date: { type: Date, default: Date.now },
-    status: {type: String, default:'Generado'},
+    status: {type: String, default:'Por pagar'},
     imagecount: {type:Number, default:0},
     specid: {type: String}, //id de la especificación
     totalpay: {type:String, default:'0'},

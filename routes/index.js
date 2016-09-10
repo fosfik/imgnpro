@@ -341,6 +341,8 @@ catch(err) {
               //res.render('historial', {message: req.flash('message'), user: req.user, countorders:count });
               res.render('especificaciones1', {message: req.flash('message'), user: req.user, countorders:count});
           });
+
+          
   });
 
   /* Maneja la página especificaciones2 */
@@ -841,17 +843,33 @@ router.get('/profile',
  * Upon request, return JSON containing the temporarily-signed S3 request and
  * the anticipated URL of the image.
  */
+
+router.get('/delete-s3/:filename', (req, res) => {
+  const s3 = new aws.S3();
+  console.log(req.params.filename);
+  const fileName = req.user._id +'/' + req.params.filename; 
+  var params = {
+    Bucket: S3_BUCKET_NAME, /* required */
+    Key: filename /* required */
+    //MFA: 'STRING_VALUE',
+    //RequestPayer: 'requester',
+    //VersionId: 'STRING_VALUE'
+  };
+  s3.deleteObject(params, function(err, data) {
+    if (err) console.log(err, err.stack); // an error occurred
+    else     console.log(data);           // successful response
+  });
+
+});
+
 router.get('/sign-s3', (req, res) => {
 
 //var AWS = require('aws-sdk');
-
-
-
-
    
 
-  const s3 = new aws.S3();
+const s3 = new aws.S3();
 
+// el nombre del folder llevar el id del usuario
 var folder = req.user._id +'/' ;
 
 var params = { Bucket: S3_BUCKET_NAME, Key: folder, ACL: 'public-read', Body:'body does not matter' };
@@ -863,7 +881,7 @@ if (err) {
 
     }
 });
-
+  // al fileName se le agrega el folder para que la firma lo reconozca
   const fileName = req.user._id +'/' + req.query['filename'];
   const fileType = req.query['filetype'];
   const s3Params = {
@@ -1043,6 +1061,12 @@ function countorders(userid,cb){
     cb(count);
   });
 
+}
+
+function toDateString(date,cb){
+  var dateformat = '';
+  dateformat = String('00' + date.getDate()).slice(-2) + '/' + String('00' + date.getMonth()).slice(-2)+ '/' + date.getFullYear();
+  cd(dateformat);
 }
 
 module.exports = router;

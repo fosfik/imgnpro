@@ -5,8 +5,8 @@
         <title>IMGNpro, hagamos que tu producto destaque</title>
         <link rel="stylesheet" href="../stylesheets/imgncss_session.css">
         <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico"/>
-
         <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+        <script src="../js/general.js"></script>
         <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico"/>
         <script type="text/javascript">
             $(document).ready(function(){
@@ -18,7 +18,7 @@
                                 var row = $("<tr>");
                                 row.append($("<td>" + data[i].numorder + "</td>"))
                                      .append($("<td>" + data[i].imagecount + "</td>"))
-                                     .append($("<td>" + data[i].date + "</td>"))
+                                     .append($("<td>" + toDateString(data[i].date) + "</td>"))
                                      .append($("<td>" + data[i].status + "</td>"))
                                      .append($("<td><a id='icontable' href=''><img src='../images/icon_doc.png' height='20px' width='20px'></a></td>"))
                                 $("#orderstable tbody").append(row);

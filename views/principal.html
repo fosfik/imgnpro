@@ -5,6 +5,7 @@
         <title>IMGNpro, hagamos que tu producto destaque</title>
         <link rel="stylesheet" href="../stylesheets/imgncss_session.css">
         <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+        <script src="../js/general.js"></script>
         <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico"/>
         <script type="text/javascript">
             $(document).ready(function(){
@@ -12,14 +13,23 @@
                         type: 'get',
                         url: '/listorders/5',
                         success: function (data) {
+                            var statusfinal = '';
                             for (var i = 0; i < data.length; i++){
+
+                                if (data[i].status ==='Por pagar'){
+                                    statusfinal = "<a href='/confirmpayorder/" + data[i].numorder + "'>PAGAR</a>";
+                                }
+                                else
+                                {
+                                    statusfinal =data[i].status;
+                                }
+
                                 var row = $("<tr>");
                                 row.append($("<td>" + data[i].numorder + "</td>"))
                                      .append($("<td>" + data[i].imagecount + "</td>"))
-                                     .append($("<td>" + data[i].date + "</td>"))
-                                     .append($("<td>" + data[i].status + "</td>"))
-                                     .append($("<td><a href='/subirimagen3/" + data[i].numorder + "'>CONTINUAR</a>"  + "</td>"))
-                                     .append($("<td><a href='/confirmpayorder/" + data[i].numorder + "'>PAGAR</a>"  + "</td>"));
+                                     .append($("<td>" + toDateString(data[i].date) + "</td>"))
+                                     .append($("<td>" + statusfinal + "</td>"));
+                                    // .append($("<td><a href='/confirmpayorder/" + data[i].numorder + "'>PAGAR</a>"  + "</td>"));
                                 $("#orderstable tbody").append(row);
                             }
                               
@@ -33,7 +43,7 @@
                             for (var i = 0; i < data.length; i++){
                                 var row = $("<tr>");
                                 row.append($("<td>" + data[i].name + "</td>"))
-                                     .append($("<td>" + data[i].date + "</td>"))
+                                     .append($("<td>" + toDateString(data[i].date) + "</td>"))
                                      .append($("<td>" + data[i].totalprice + "</td>"))
                                      .append( $('<td><a id="icontable" href="/uploadimages/'+ data[i]._id +'"><img src="../images/icon_cloud.png" height="20px" width="20px"></a><a id="icontable"  href="especificaciones2"><img src="../images/icon_edit.png" height="20px" width="20px"></a></td>'));
                                 $("#specstable tbody").append(row);
@@ -76,8 +86,6 @@
                     <th>Imágenes</th>
                     <th>Fecha</th>
                     <th>Estatus</th>
-                    <th></th>
-                    <th></th>
                 </tr>
                 
             </table>

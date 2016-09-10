@@ -7,6 +7,7 @@
         <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico"/>
         <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
         <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+        <script src="../js/general.js"></script>
         <script type="text/javascript">
             
 
@@ -38,7 +39,7 @@
                             for (var i = 0; i < data.length; i++){
                                 var row = $("<tr>");
                                 row.append($("<td>" + data[i].name + "</td>"))
-                                     .append($("<td>" + data[i].date + "</td>"))
+                                     .append($("<td>" + toDateString(data[i].date) + "</td>"))
                                      .append($("<td>" + data[i].totalprice + "</td>"))
                                      .append( $('<td><a id="icontable" href="/uploadimages/'+ data[i]._id +'"><img src="../images/icon_cloud.png" height="20px" width="20px"></a><a id="icontable"  href="especificaciones2"><img src="../images/icon_edit.png" height="20px" width="20px"></a></td>'));
                                 $("#specstable tbody").append(row);

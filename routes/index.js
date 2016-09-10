@@ -864,7 +864,7 @@ if (err) {
     }
 });
 
-  const fileName = req.query['filename'];
+  const fileName = req.user._id +'/' + req.query['filename'];
   const fileType = req.query['filetype'];
   const s3Params = {
     Bucket: S3_BUCKET_NAME,
@@ -883,7 +883,7 @@ if (err) {
     }
     const returnData = {
       signedRequest: data,
-      url: `https://${S3_BUCKET_NAME}.s3.amazonaws.com/${folder}${fileName}`
+      url: `https://${S3_BUCKET_NAME}.s3.amazonaws.com/${fileName}`
     };
     res.write(JSON.stringify(returnData));
     res.end();

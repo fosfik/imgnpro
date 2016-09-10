@@ -852,8 +852,9 @@ router.get('/sign-s3', (req, res) => {
 
   const s3 = new aws.S3();
 
+var folder = req.user._id +'/' ;
 
-var params = { Bucket: S3_BUCKET_NAME, Key: 'folderInBucket/', ACL: 'public-read', Body:'body does not matter' };
+var params = { Bucket: S3_BUCKET_NAME, Key: folder, ACL: 'public-read', Body:'body does not matter' };
 s3.upload(params, function (err, data) {
 if (err) {
     console.log("Error creating the folder: ", err);
@@ -882,7 +883,7 @@ if (err) {
     }
     const returnData = {
       signedRequest: data,
-      url: `https://${S3_BUCKET}.s3.amazonaws.com/${fileName}`
+      url: `https://${S3_BUCKET_NAME}.s3.amazonaws.com/${fileName}`
     };
     res.write(JSON.stringify(returnData));
     res.end();

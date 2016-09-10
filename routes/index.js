@@ -12,6 +12,11 @@ var path = require('path');
 var Orders = require('../models/order.js');
 var Spec = require('../models/specification.js');
 var Contact = require('../models/contact.js');
+var ordersinproc  = 0;
+
+aws.config.region = 'us-east-1';
+
+var S3_BUCKET_NAME = process.env.S3_BUCKET_NAME || 'imgnproprime';
 
 
 // TODO agregar seguridad a esta ruta
@@ -318,37 +323,11 @@ catch(err) {
      }, 1000);
   });
 
-
-// Passport local 
-
-
-  /* Maneja la aplicación micuenta */
-  // router.get('/micuenta', 
-  //    require('connect-ensure-login').ensureLoggedIn('/login'),
-  //        function(req, res){
-
-  //         var newOrder = new Orders();
-  //         // set the user's local credentials
-  //         newOrder.useremail = 'userlongname';
-          
-          
-  //         // save the user
-  //         newOrder.save(function(err) {
-  //           if (err){
-  //             console.log('No se pudo guardar el pedido: '+err);  
-  //             throw err;  
-  //           }
-  //           console.log('Se registró correctamente el pedido ' + newOrder.useremail );    
-  //         });
-  //          res.render('micuenta', {message: req.flash('message'), user: req.user});
-  // });
-
-
 /* Maneja la página micuenta */
   router.get('/micuenta', 
      require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){
-           res.render('micuenta', {message: req.flash('message'), user: req.user});
+           res.render('micuenta', {message: req.flash('message'), user: req.user, countorders:ordersinproc});
   });
 
 
@@ -356,14 +335,19 @@ catch(err) {
   router.get('/especificaciones1', 
      require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){
-           res.render('especificaciones1', {message: req.flash('message'), user: req.user});
+
+          countorders(req.user._id,function(count){
+               
+              //res.render('historial', {message: req.flash('message'), user: req.user, countorders:count });
+              res.render('especificaciones1', {message: req.flash('message'), user: req.user, countorders:count});
+          });
   });
 
   /* Maneja la página especificaciones2 */
   router.get('/especificaciones2', 
      require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){
-           res.render('especificaciones2', {message: req.flash('message'), user: req.user, config:config});
+           res.render('especificaciones2', {message: req.flash('message'), user: req.user, config:config, countorders:ordersinproc});
   });
 
   /* Maneja la aplicación principal */
@@ -388,7 +372,15 @@ catch(err) {
   router.get('/historial', 
      require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){
-           res.render('historial', {message: req.flash('message'), user: req.user});
+
+           countorders(req.user._id,function(count){
+               //console.log(count);
+               //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id });
+              // res.render('confirmpayorder', {message: req.flash('message'), user: req.user, numorder:req.params.numorder, order:order[0]});             
+              //res.render('principal', {message: req.flash('message'), user: req.user, countorders:count});
+              res.render('historial', {message: req.flash('message'), user: req.user, countorders:count });
+          });
+           
   });
 
 
@@ -396,7 +388,9 @@ catch(err) {
   router.get('/subirimagen1', 
      require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){
-           res.render('subirimagen1', {message: req.flash('message'), user: req.user});
+               countorders(req.user._id,function(count){
+               res.render('subirimagen1', {message: req.flash('message'), user: req.user, countorders:count });
+          });
   });
 
 
@@ -404,35 +398,37 @@ catch(err) {
   router.get('/chooseanimage', 
      require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){
-           res.render('chooseanimage', {message: req.flash('message'), user: req.user});
+            countorders(req.user._id,function(count){
+               res.render('chooseanimage', {message: req.flash('message'), user: req.user, countorders:count });
+           });
   });
 
 /* Maneja la pagina para seleccionar el tamaño de las imágenes */
   router.get('/chooseasize', 
      require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){
-           res.render('chooseasize', {message: req.flash('message'), user: req.user});
+           res.render('chooseasize', {message: req.flash('message'), user: req.user, countorders:ordersinproc});
   });
 
 /* Maneja la pagina para seleccionar el margen las imágenes */
   router.get('/chooseamargin', 
      require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){
-           res.render('chooseamargin', {message: req.flash('message'), user: req.user});
+           res.render('chooseamargin', {message: req.flash('message'), user: req.user, countorders:ordersinproc});
   });
 
   /* Maneja la pagina para seleccionar la alineación de las imágenes */
   router.get('/chooseanalignment', 
      require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){
-           res.render('chooseanalignment', {message: req.flash('message'), user: req.user});
+           res.render('chooseanalignment', {message: req.flash('message'), user: req.user,countorders:ordersinproc});
   });
 
 /* Maneja la pagina que permite elegir un extra de la especificación */
   router.get('/chooseanextra', 
      require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){
-           res.render('chooseanextra', {message: req.flash('message'), user: req.user, config:config});
+           res.render('chooseanextra', {message: req.flash('message'), user: req.user, config:config, countorders:ordersinproc});
   });
 
 
@@ -440,7 +436,7 @@ catch(err) {
   router.get('/uploadimages', 
      require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){
-           res.render('uploadimages', {message: req.flash('message'), user: req.user});
+           res.render('uploadimages', {message: req.flash('message'), user: req.user, countorders:ordersinproc});
   });
 
 /* Maneja la pagina que tiene el dropzone para subir imágenes 
@@ -451,7 +447,7 @@ catch(err) {
          function(req, res){
             findaspec(req.params.newSpecid,function(error,spec){
               //console.log(spec);
-              res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id });
+              res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id , countorders:ordersinproc});
             });
   });
 
@@ -459,7 +455,7 @@ catch(err) {
   router.get('/chooseaspecification', 
      require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){
-           res.render('chooseaspecification', {message: req.flash('message'), user: req.user});
+           res.render('chooseaspecification', {message: req.flash('message'), user: req.user, countorders:ordersinproc});
   });
 
 /* Maneja la pagina donde se cierra el pedido o la orden de compra */
@@ -477,7 +473,7 @@ catch(err) {
           findaorder(req.params.numorder,function(error,order){
                console.log(order);
                //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id });
-               res.render('confirmpayorder', {message: req.flash('message'), user: req.user, numorder:req.params.numorder, order:order[0]});             
+               res.render('confirmpayorder', {message: req.flash('message'), user: req.user, numorder:req.params.numorder, order:order[0], countorders:ordersinproc});             
           });
   });
 
@@ -486,7 +482,7 @@ catch(err) {
          function(req, res){
           
                //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id });
-               res.render('payorder', {message: req.flash('message'), user: req.user, numorder:req.params.numorder});             
+               res.render('payorder', {message: req.flash('message'), user: req.user, numorder:req.params.numorder, countorders:ordersinproc});             
          
   });
 // router.get('/uploadimages/:newSpecid', 
@@ -550,6 +546,7 @@ catch(err) {
 // /newstepspec
 
 
+// CRUD
 /* Handle new step by step specification  POST */
   router.post('/newstepspec', function (req,res) {
     // body...
@@ -836,7 +833,6 @@ router.get('/profile',
 
 
 
-const S3_BUCKET = process.env.S3_BUCKET_NAME;
 
 
 
@@ -846,12 +842,31 @@ const S3_BUCKET = process.env.S3_BUCKET_NAME;
  * the anticipated URL of the image.
  */
 router.get('/sign-s3', (req, res) => {
+
+//var AWS = require('aws-sdk');
+
+
+
+
+   
+
   const s3 = new aws.S3();
-  const folder = '00001-0002-0002';
+
+
+var params = { Bucket: S3_BUCKET_NAME, Key: 'folderInBucket/', ACL: 'public-read', Body:'body does not matter' };
+s3.upload(params, function (err, data) {
+if (err) {
+    console.log("Error creating the folder: ", err);
+    } else {
+    console.log("Successfully created a folder on S3");
+
+    }
+});
+
   const fileName = req.query['filename'];
   const fileType = req.query['filetype'];
   const s3Params = {
-    Bucket: S3_BUCKET,
+    Bucket: S3_BUCKET_NAME,
     Key: fileName,
     Expires: 10000,
     ContentType: fileType,
@@ -1019,10 +1034,11 @@ function findaorder(orderid, cb){
 
 function countorders(userid,cb){
 
-  Orders.count({'userid':userid}, function( err, count){
+  Orders.count({'userid':userid, 'status':'En proceso'}, function( err, count){
     //console.log(userid);
     //console.log( "Número de pedidos:", count );
     //req.countorders = count;
+    ordersinproc = count;
     cb(count);
   });
 

@@ -5,8 +5,8 @@ var config;
 // se puede configurar npm el proxy
 // npm config set proxy http://proxy.company:8080
 
-if (app.get('env') !== 'development' || app.get('env') !== 'test') {
- 
+if ( app.get('env') === 'production') {
+ console.log("Cuidado Vato, estás en producción");
  config = {
 	// Produccion
 
@@ -59,7 +59,7 @@ if (app.get('env') !== 'development' || app.get('env') !== 'test') {
 }
 else{
 
-	if (app.get("env")!=='test'){
+	if (app.get("env")==='development'){
 		config = {
 		// Desarrollo
 		

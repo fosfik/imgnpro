@@ -552,7 +552,8 @@ passport.use('signup', new LocalStrategy({
           // );
           
 console.log('Environment: ' + app.get('env'));
-    
+console.log(config.facebook.appname);
+
 
 var isValidPassword = function(user, password){
   return bCrypt.compareSync(password, user.password);

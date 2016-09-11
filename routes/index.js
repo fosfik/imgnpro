@@ -18,6 +18,8 @@ aws.config.region = 'us-east-1';
 
 var S3_BUCKET_NAME = process.env.S3_BUCKET_NAME || 'imgnproprime';
 
+// console.log(process.env.AWS_ACCESS_KEY_ID);
+// console.log(process.env.AWS_SECRET_ACCESS_KEY);
 
 // TODO agregar seguridad a esta ruta
 router.get('/listorders/:limit', function(req, res) {
@@ -844,21 +846,41 @@ router.get('/profile',
  * the anticipated URL of the image.
  */
 
-router.get('/delete-s3/:filename', (req, res) => {
+router.get('/delete-s3', (req, res) => {
   const s3 = new aws.S3();
-  console.log(req.params.filename);
-  const fileName = req.user._id +'/' + req.params.filename; 
+  console.log(req.query['filename']);
+  const fileName = req.user._id +'/' + req.query['filename']; 
   var params = {
     Bucket: S3_BUCKET_NAME, /* required */
-    Key: filename /* required */
+    Key: fileName /* required */
     //MFA: 'STRING_VALUE',
     //RequestPayer: 'requester',
     //VersionId: 'STRING_VALUE'
   };
   s3.deleteObject(params, function(err, data) {
-    if (err) console.log(err, err.stack); // an error occurred
-    else     console.log(data);           // successful response
-  });
+    if (err) {
+      console.log(err, err.stack); 
+      var returnData = {
+        error: 1,
+        message: `Error al borrar`
+      };
+      res.write(JSON.stringify(returnData));
+      res.end();
+    
+    }// an error occurred
+    else{     
+      console.log(data);           // successful response
+      var returnData = {
+          error: 0,
+          message: `se borró`
+        };
+        res.write(JSON.stringify(returnData));
+        res.end();
+        }
+      });
+
+
+
 
 });
 

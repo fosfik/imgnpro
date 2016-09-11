@@ -19,7 +19,7 @@
                     url:"#",
                     dictDefaultMessage: "<b>Suelta tus archivos aquí</b><br> <p class='texto_plano'> (o haz click)<p>",
                     dictRemoveFile: "Borrar imagen",
-
+                                    //{ "My-Awesome-Header": "header value" }
                     // Dropzone.prototype.defaultOptions.dictDefaultMessage = "Drop files here to upload";
                     // Dropzone.prototype.defaultOptions.dictFallbackMessage = "Your browser does not support drag'n'drop file uploads.";
                     // Dropzone.prototype.defaultOptions.dictFallbackText = "Please use the fallback form below to upload your files like in the olden days.";
@@ -135,20 +135,30 @@
                             $("div#imageCount").html(imageCount);
                             caltotalpay();
                         }
-                        
-
-                        var _ref;
-                        return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
-
+                       
+                        if (file.previewElement != null){
+                            var _ref = file.previewElement;
+                            var params = {
+                                filename: file.name
+                             };
+                            if ( file.upload.progress === 100 ) { // se evalua si se completó la carga
+                                $.getJSON('/delete-s3', params).done(function(data) {
+                                    if (data.error ===1) {
+                                        //return cb('Falló al borrar el archivo');
+                                        alert('Falló al borrar el archivo');
+                                    }
+                                }).fail(function() {
+                                    alert("Falló al borrar la imagen");
+                                });
+                            }  
+                            return(_ref.parentNode.removeChild(file.previewElement));
+                        }
+                        else{
+                            return 0;
+                        }
                     }
 
                 });
-
-
-
-
-
-
 
 
 

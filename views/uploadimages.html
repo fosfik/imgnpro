@@ -34,7 +34,7 @@
                     method: "PUT",
                     uploadMultiple: false,
                     paramName: "file",
-                    maxFiles: 10,
+                    //maxFiles: 10000,
                     thumbnailWidth: 100,
                     thumbnailHeight: 100,
                     parallelUploads: 20,
@@ -45,6 +45,18 @@
                     //previewsContainer: dropPreviewContainer, // Define the container to display the previews
                     clickable: true, //".fileinput-button" // Define the element that should be used as click trigger to select files.
                     acceptedFiles: acceptedFileType,
+                    // addedfile: function (file) {
+                    //     if (this.files.length) {
+                    //         var i, len, pre;
+                    //         for (i = 0, len = this.files.length; i < len - 1; i++) {
+                    //             if (this.files[i].name == file.name) {
+                    //                 alert("The Doc.: " + file.name + " is already registered.")
+                    //                 return (pre = file.previewElement) != null ? pre.parentNode.removeChild(file.previewElement) : void 0;
+                    //             }
+                    //         }
+                    //     }
+                    //     return 0;
+                    // },
                     accept: function(file, cb) {
                     //override the file name, to use the s3 signature
                     //console.log(file);
@@ -52,6 +64,19 @@
                             filename: file.name,
                             filetype: file.type,
                         };
+                        if (this.files.length) {
+                            var i, len, pre;
+                            for (i = 0, len = this.files.length; i < len - 1; i++) {
+                                if (this.files[i].name == file.name) {
+                                    //alert("El archivo: " + file.name + " ya está agregado al pedido.")
+                                    //this.files.splice(i,1);
+                                    //cb();
+                                    return (pre = file.previewElement) != null ? pre.parentNode.removeChild(file.previewElement) : void 0;
+                                }
+                            }
+                        }
+
+
                         //path to S3 signature
                         $.getJSON('/sign-s3', params).done(function(data) {
                             //console.log(data);
@@ -151,6 +176,8 @@
                                     alert("Falló al borrar la imagen");
                                 });
                             }  
+
+                           console.log(this.files);
                             return(_ref.parentNode.removeChild(file.previewElement));
                         }
                         else{
@@ -221,6 +248,24 @@
 //                     //}
 //                 }); 
 
+function deleteitemfile(imageUploadInfos,filename){
+
+    for (i = 0, len = imageUploadInfos.length; i < len - 1; i++) {
+        if (imageUploadInfos[i].name == filename) {
+            alert("El archivo: " + filename + " se va a borrar");
+           // return (pre = file.previewElement) != null ? pre.parentNode.removeChild(file.previewElement) : void 0;
+        }
+    }
+
+    // for (var i=0; i < imageUploadInfos.length; i++){
+    //           //i === 0: arr[0] === undefined;
+    //           //i === 1: arr[1] === 'hola';
+    //           //i === 2: arr[2] === 'chau';
+    //           console.log(imageUploadInfos[i]);
+            
+
+    //       }
+}
 
             function caltotalpay(){
                    

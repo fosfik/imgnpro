@@ -14,6 +14,13 @@
                     if (imagesize=== null){
                         localStorage.setItem("measuresize", 'none');
                     }
+                    if (imagesize === 'none'){
+                        localStorage.setItem("sizenone", 'none');
+                    }
+                    else{
+                        localStorage.removeItem("sizenone");
+                    }
+
                     // if ($('#specnombre').val().trim() === ''){
                     //     alert("Favor de capturar el nombre de la especificación");    
                     //     $('#specnombre').focus();

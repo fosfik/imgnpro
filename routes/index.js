@@ -609,6 +609,7 @@ catch(err) {
       newSpec.alignhor = specInfos[0].alignhor;
       newSpec.alignver = specInfos[0].alignver;
       newSpec.imagesize = specInfos[0].imagesize;
+      newSpec.sizenone = specInfos[0].sizenone;
       newSpec.measuresize = specInfos[0].measuresize;
       newSpec.marginmeasure = specInfos[0].marginmeasure;
       newSpec.margintop = specInfos[0].margintop; //??
@@ -664,6 +665,7 @@ catch(err) {
       newSpec.alignnone = req.body.alignnone;
       newSpec.alignhor = req.body.alignhor;
       newSpec.alignver = req.body.alignver;
+      newSpec.sizenone = req.body.sizenone;
       newSpec.imagesize = req.body.imagesize;
       newSpec.marginmeasure = req.body.marginmeasure;
       newSpec.measuresize = req.body.measuresize;

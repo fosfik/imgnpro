@@ -14,14 +14,44 @@
                 var strspecid= $('#specid').val();
                 // alert(strspecid.length);
                 
-                if (strspecid.length > 0){
-                    console.log($('#specid').val());
 
-                }
                 desactAllNext();
                 desactSizeAllNext();
                 var newbuttonspec = $('#savebuttonspec');
                 var frm = $('#specForm');
+
+
+                if (strspecid.length > 0){
+                    console.log($('#specid').val());
+                    $.ajax({
+                            type: 'get',
+                            url: '/getSpec/<%= specid %>',
+                            //data: frm.serialize(),
+                            success: function (data) {
+                                if (data.error == 1 ){
+                                    //document.getElementById('res_message').innerHTML= data.message;    
+                                    alert(data.message);
+                                     //$('#specnombre').focus();
+                                }
+                                else{
+                                    //setTimeout(window.location='/subirimagen4.html',500);
+                                    //alert(data.spec.sizenone);
+                                    $('#specnombre').prop("value", data.spec.name);
+                                    $('#specnombre').focus();
+                                    $('#format').prop("value", data.spec.format);
+                                    $('#colormode').prop("value", data.spec.colormode);
+                                    $('#background').prop("value", data.spec.background);
+
+                                    if (data.spec.sizenone==null){
+                                        $('#chksizenone').prop('checked', false);
+                                    }
+
+                                }
+                            }
+                        });
+
+                }
+
                 newbuttonspec.click(function (ev) {
                     if ($('#specnombre').val().trim() === ''){
                         alert("Favor de capturar el nombre de la especificación");    

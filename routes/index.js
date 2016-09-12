@@ -1072,31 +1072,31 @@ function findaspec(specid, cb){
 }
 
 function findaspecfull(specid, cb){
-
-  if (specid.length <=0){
+  if (specid.length === 0){
     cb(1, 'Error al consultar la especificación, longitud 0');
   }
-  Spec.find({'_id':specid},function(err, specrecord) {
-    // In case of any error return
-     if (err){
-       console.log('Error al consultar la especificación');
+  else{
+      Spec.find({'_id':specid},function(err, specrecord) {
+      // In case of any error return
+       if (err){
+         console.log('Error al consultar la especificación');
 
-      cb(1, 'Error al consultar la especificación');
-     }
-   // already exists
-    if (specrecord) {
-      console.log('Se encontró  la especificación');
-      console.log(specrecord);
-      cb( 0,'Se encontró  la especificación', specrecord);
-    } 
-    else {
-      console.log('No se encontró la especificación');
-        cb(2,'No se encontró  la especificación' );
-    }
-   
-  }).limit(1);
-
-
+        cb(1, 'Error al consultar la especificación');
+       }
+       else{
+    // already exists
+          if (specrecord) {
+            console.log('Se encontró  la especificación');
+            console.log(specrecord);
+            cb( 0,'Se encontró  la especificación', specrecord);
+          } 
+          else {
+            console.log('No se encontró la especificación');
+              cb(2,'No se encontró  la especificación' );
+          }
+       }
+    }).limit(1);
+  }
 }
 
 

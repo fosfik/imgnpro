@@ -351,9 +351,15 @@ catch(err) {
   router.get('/especificaciones2', 
      require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){
-           res.render('especificaciones2', {message: req.flash('message'), user: req.user, config:config, countorders:ordersinproc});
+           res.render('especificaciones2', {message: req.flash('message'), user: req.user, config:config, countorders:ordersinproc, specid:''});
   });
 
+/* Maneja la página especificaciones2 cuando se va a editar una especificación */
+  router.get('/especificaciones2/:specid', 
+     require('connect-ensure-login').ensureLoggedIn('/login'),
+         function(req, res){
+           res.render('especificaciones2', {message: req.flash('message'), user: req.user, config:config, countorders:ordersinproc, specid:req.params.specid});
+  });
   /* Maneja la aplicación principal */
   router.get('/principal', 
      require('connect-ensure-login').ensureLoggedIn('/login'),
@@ -452,6 +458,28 @@ catch(err) {
             findaspec(req.params.newSpecid,function(error,spec){
               //console.log(spec);
               res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id , countorders:ordersinproc});
+            });
+  });
+
+  /* Maneja la pagina que tiene el dropzone para subir imágenes 
+   Cuando es llamada desde la creación de una especificación
+*/
+  router.get('/getSpec/:specid', 
+     require('connect-ensure-login').ensureLoggedIn('/login'),
+         function(req, res){
+            findaspecfull(req.params.specid,function(error,message,spec){
+              //console.log(spec);
+              //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id , countorders:ordersinproc});
+              
+              if (error===0){
+                res.setHeader('Content-Type', 'application/json');
+                res.send(JSON.stringify({ error: error, message: message, spec: spec[0]})); 
+              }
+              else{
+                res.setHeader('Content-Type', 'application/json');
+                res.send(JSON.stringify({ error: error, message: message})); 
+              }
+              
             });
   });
 
@@ -1041,6 +1069,34 @@ function findaspec(specid, cb){
     }
    
   }).select('name totalprice date').limit(1);
+}
+
+function findaspecfull(specid, cb){
+
+  if (specid.length <=0){
+    cb(1, 'Error al consultar la especificación, longitud 0');
+  }
+  Spec.find({'_id':specid},function(err, specrecord) {
+    // In case of any error return
+     if (err){
+       console.log('Error al consultar la especificación');
+
+      cb(1, 'Error al consultar la especificación');
+     }
+   // already exists
+    if (specrecord) {
+      console.log('Se encontró  la especificación');
+      console.log(specrecord);
+      cb( 0,'Se encontró  la especificación', specrecord);
+    } 
+    else {
+      console.log('No se encontró la especificación');
+        cb(2,'No se encontró  la especificación' );
+    }
+   
+  }).limit(1);
+
+
 }
 
 

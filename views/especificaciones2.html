@@ -11,6 +11,13 @@
            
             $(document).ready(function(){
                 //Se desactivan los botones de opcion de alineación
+                var strspecid= $('#specid').val();
+                // alert(strspecid.length);
+                
+                if (strspecid.length > 0){
+                    console.log($('#specid').val());
+
+                }
                 desactAllNext();
                 desactSizeAllNext();
                 var newbuttonspec = $('#savebuttonspec');
@@ -196,18 +203,18 @@
             <ul>
                 <li>Hola <a id="user" class="bold"><%= user.userlongname %></a><a class="bold">!</a></li>
                 <li>Órdenes en Proceso <a id="orders" class="bold"><%= countorders %></a></li>
-                <li><a id="salir" class="bold" href="logout">Salir</a></li>
+                <li><a id="salir" class="bold" href="/logout">Salir</a></li>
             </ul>
         </header>
         <section id="menuver">
             <nav>
                 <ul>
-                    <li class="menulogo"><h1><a href="principal"><img src="../images/logo_black.png" alt="logo"></a></h1></li>
-                    <li><a href="micuenta">Mi Cuenta</a></li>
-                    <li><a href="historial">Historial</a></li>
-                    <li><a href="especificaciones1">Especificaciones</a></li>
-                    <li><a href="subirimagen1">Subir Imagenes</a></li>
-                    <li><a href="contacto">Contacto</a></li>
+                    <li class="menulogo"><h1><a href="/principal"><img src="../images/logo_black.png" alt="logo"></a></h1></li>
+                    <li><a href="/micuenta">Mi Cuenta</a></li>
+                    <li><a href="/historial">Historial</a></li>
+                    <li><a href="/especificaciones1">Especificaciones</a></li>
+                    <li><a href="/subirimagen1">Subir Imagenes</a></li>
+                    <li><a href="/contacto">Contacto</a></li>
                 </ul>
             </nav>
         </section>
@@ -312,6 +319,7 @@
                 <label for="dpi">DPI</label><br>
                 <input id="depeis" type="text" name="DPI" value="300" maxlength="5" disabled><label for="dpi">dpi</label>
                 <input id="chkDPInone" class="checkcheck" type="checkbox" name="nonedpi" value="none"  checked onclick="javascript:desactDPI();"><span class="postcheck">Sin Cambios</span>
+                <input id="specid" type="hidden" name="specid" value=<%= specid %>>
 
             </form>
             <section id="area_botones">
@@ -338,7 +346,7 @@
             <p><a class="texto_plano">3. ¿Prueba Gratis?</a></p>
             <p><a class="texto_plano">4. ¿Cómo Pago?</a></p>
             <div class="button1">
-            <a href="faq">Ver más</a> 
+            <a href="/faq">Ver más</a> 
             </div>
         </aside>
         <script>

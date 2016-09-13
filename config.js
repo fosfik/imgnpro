@@ -107,12 +107,12 @@ else{
 			appname:'IMGP Pro test',
 			key:'1095931290497105',
 			secret:'8d6cd07ca8b1fb2dbadb1750f5ec8bf1',
-			callbackURL: 'http://imgnprotest.herokuapp.com/login/facebook/return'
+			callbackURL: 'https://imgnprotest.herokuapp.com/login/facebook/return'
 		},
 		google:{
 			key:'812259967962-gcvtg69gr1grfhbhi09poagqmjb1gkrl.apps.googleusercontent.com',
 			secret:'7naFjeqHyO1ZG6xEV8Vw9EYI',
-			callbackURL: 'http://imgnprotest.herokuapp.com/login/google/return'
+			callbackURL: 'https://imgnprotest.herokuapp.com/login/google/return'
 		},
 		prices:{
 

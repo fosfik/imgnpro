@@ -5,6 +5,7 @@
         <title>IMGNpro, hagamos que tu producto destaque</title>
         <link rel="stylesheet" href="../stylesheets/imgncss_session.css">
         <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+        <script src="../js/general.js"></script>
         <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico"/>
 
         <script type="text/javascript">
@@ -202,7 +203,7 @@
         // :2.40,
         // :0.60
                     ntotal = ntotal / 100;
-                    $("#totalprice").html(ntotal);
+                    $("#totalprice").html(setDecimals(ntotal,2));
                 }
 
                 function desactAllNext(){

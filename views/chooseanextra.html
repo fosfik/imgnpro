@@ -6,6 +6,7 @@
         <link rel="stylesheet" href="../stylesheets/imgncss_session.css">
         <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico">
         <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+        <script src="../js/general.js"></script>
         <script type="text/javascript">
             $(document).ready(function(){
                 var newbuttonspec = $('#savebuttonspec');
@@ -228,7 +229,7 @@
                     }
                                 
                     ntotal = ntotal / 100;
-                    $("#totalprice").html(ntotal);
+                    $("#totalprice").html(setDecimals(ntotal,2));
                 }
 
             });

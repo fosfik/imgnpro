@@ -20,6 +20,18 @@
                                 if (data[i].status ==='Por pagar'){
                                     statusfinal = "<a class='porpagar' href='/confirmpayorder/" + data[i].numorder + "'>Por Pagar</a>";
                                 }
+                                else if (data[i].status ==='En Proceso')
+                                {
+                                    statusfinal ="<a class='enproceso' href=''>En Proceso</a>";
+                                }
+                                else if (data[i].status ==='Terminado')
+                                {
+                                    statusfinal ="<a class='terminado' href=''>Terminado</a>";
+                                }
+                                else if (data[i].status ==='Entregado')
+                                {
+                                    statusfinal ="<a class='entregado' href=''>Entregado</a>";
+                                }
                                 else
                                 {
                                     statusfinal =data[i].status;
@@ -45,7 +57,7 @@
                                 var row = $("<tr>");
                                 row.append($("<td>" + data[i].name + "</td>"))
                                      .append($("<td>" + toDateString(data[i].date) + "</td>"))
-                                     .append($("<td>" + data[i].totalprice + "</td>"))
+                                     .append($("<td>" + setDecimals(data[i].totalprice,2) + "</td>"))
                                      .append( $('<td><a id="icontable" href="/uploadimages/'+ data[i]._id +'"><img src="../images/icon_cloud.png" height="20px" width="20px"></a><a id="icontable"  href="especificaciones2/'+ data[i]._id + '"><img src="../images/icon_edit.png" height="20px" width="20px"></a></td>'));
                                 $("#specstable tbody").append(row);
                             }
@@ -57,6 +69,19 @@
             });
 
         </script>
+        <script> 
+           function setDecimals(sVal, nDec){ 
+            var n = parseFloat(sVal); 
+            var s = "0.00"; 
+            if (!isNaN(n)){ 
+             n = Math.round(n * Math.pow(10, nDec)) / Math.pow(10, nDec); 
+             s = String(n); 
+             s += (s.indexOf(".") == -1? ".": "") + String(Math.pow(10, nDec)).substr(1); 
+             s = s.substr(0, s.indexOf(".") + nDec + 1); 
+            } 
+            return s; 
+           } 
+      </script> 
     </head>
     <body>
         <header class="bienvenida">

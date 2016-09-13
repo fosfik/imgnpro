@@ -43,9 +43,86 @@
                                     $('#colormode').prop("value", data.spec.colormode);
                                     $('#background').prop("value", data.spec.background);
 
-                                    if (data.spec.sizenone==null){
-                                        $('#chksizenone').prop('checked', false);
+
+
+
+                                    // if (data.spec.sizenone==null){
+                                    //     $('#chksizenone').prop('checked', false);
+                                    // }
+
+
+                                    if (data.spec.sizenone !== null){
+                                        if (data.spec.sizenone === 'none'){
+                                            $('#chksizenone').prop('checked',true);
+                                        }
+                                        else{
+                                            $('#chksizenone').prop('checked',false);
+                                        }
+                                        //desactAllNext();
+                                        //$('#marco').removeClass(currentClassName).addClass(currentAlignHor);  
+                                        //$('#' + currentAlignHor).prop("checked", true);
                                     }
+                                    else{
+                                        $('#chksizenone').prop('checked',false);
+                                    }
+                                    
+
+                                     if (data.spec.alignnone !== null){
+                                        if (data.spec.alignnone === 'none'){
+                                            $('#chkalgnnone').prop('checked',true);
+                                        }
+                                        else{
+                                            $('#chkalgnnone').prop('checked',false);
+                                        }
+                                        
+                                        //$('#marco').removeClass(currentClassName).addClass(currentAlignHor);  
+                                        //$('#' + currentAlignHor).prop("checked", true);
+                                    }
+                                    else{
+                                        $('#chkalgnnone').prop('checked',false);
+                                    }
+                                    
+
+                                    if (data.spec.marginmeasure !== null){
+                                       $('#marginmeasure').prop('value', data.spec.marginmeasure);
+                                    }
+                                    
+                                    if (data.spec.margintop !== null){
+                                       $("#specForm input[name='margintop']").prop('value', data.spec.margintop);
+                                    }
+                                    if (data.spec.marginbottom !== null){
+                                       $("#specForm input[name='marginbottom']").prop('value', data.spec.marginbottom);
+                                    }
+                                    if (data.spec.marginleft !== null){
+                                       $("#specForm input[name='marginleft']").prop('value', data.spec.marginleft);
+                                    }
+                                    if (data.spec.marginright !== null){
+                                       $("#specForm input[name='marginright']").prop('value', data.spec.marginright);
+                                    }
+
+                                    if (data.spec.naturalshadow !== null){  
+                                        $("#specForm input[name='naturalshadow']").prop( "checked", true );
+                                        $("#specForm input[name='dropshadow']").prop( "checked", false );
+                                              
+                                    }  
+                                    if (data.spec.dropshadow !== null){  
+                                        $("#specForm input[name='naturalshadow']").prop( "checked", false );
+                                        $("#specForm input[name='dropshadow']").prop( "checked", true );
+                                    }  
+                                    if (data.spec.correctcolor !== null){  
+                                        $("#specForm input[name='correctcolor']").prop( "checked", true );
+                                    }  
+
+                                    if (data.spec.clippingpath !== null){  
+                                        $("#specForm input[name='clippingpath']").prop( "checked", true );
+                                    }  
+
+                                    if (data.spec.basicretouch !== null){  
+                                        $("#specForm input[name='basicretouch']").prop( "checked", true );
+                                    }  
+                                    sumallextras();
+                                    desactAllNext();
+                                    desactSizeAllNext();
 
                                 }
                             }
@@ -215,6 +292,26 @@
                 function desactSizeAllNext(){
                     var chksizenone = document.getElementById('chksizenone').checked;
                     
+
+                    if(chksizenone==false && $('input:radio[name=imagesize]:checked').val() == null){
+                        $('#radio11').prop('checked', 'true');
+                    } 
+                    if(chksizenone==false && $('input:radio[name=imagesize]:checked').val() ==='1:1'){
+                        $('#radio11').prop('checked', 'true');
+                    } 
+                    if(chksizenone==false && $('input:radio[name=imagesize]:checked').val() ==='2:3'){
+                        $('#radio23').prop('checked', 'true');
+                    } 
+                    if(chksizenone==false && $('input:radio[name=imagesize]:checked').val() ==='3:2'){
+                        $('#radio32').prop('checked', 'true');
+                    } 
+                    if(chksizenone==false && $('input:radio[name=imagesize]:checked').val() ==='4:3'){
+                        $('#radio43').prop('checked', 'true');
+                    } 
+                    if(chksizenone==false && $('input:radio[name=imagesize]:checked').val() ==='customize'){
+                        $('#customize').prop('checked', 'true');
+                    } 
+                    
                     $('input:radio[name=imagesize]').prop('disabled', chksizenone);
                     $('select[name=measuresize]').prop('disabled', true);
                     $('input[name=widthsize]').prop('disabled', true);
@@ -286,13 +383,13 @@
                 <input id="chksizenone" class="checks" type="checkbox" name="sizenone" value="none"  checked><span class="postinput">Sin Cambios</span>
 
                 
-                <input class="radio" name="imagesize" type="radio" value="1:1">
+                <input id="radio11" class="radio" name="imagesize" type="radio" value="1:1">
                 <span class="postinput">1:1</span>
-                <input name="imagesize" type="radio" value="2:3">
+                <input id="radio23" name="imagesize" type="radio" value="2:3">
                 <span class="postinput">2:3</span>
-                <input name="imagesize" type="radio" value="3:2">
+                <input id="radio32" name="imagesize" type="radio" value="3:2">
                 <span class="postinput">3:2</span>
-                <input name="imagesize" type="radio" value="4:3">
+                <input id="radio43" name="imagesize" type="radio" value="4:3">
                 <span class="postinput">4:3</span>
                 <input id="optcustomsize" name="imagesize" type="radio" value="customize">
                 <span class="postinput">Personalizado</span>
@@ -331,7 +428,7 @@
                  -->
                 <br>
                 <label>Márgenes</label><br>
-                <select name="marginmeasure">
+                <select id= "marginmeasure" name="marginmeasure">
                     <option value="%">%</option>
                     <option value="px">px</option>
                     <option value="cm">cm</option>

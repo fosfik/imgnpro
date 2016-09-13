@@ -48,9 +48,9 @@
                     var sizenone = localStorage.getItem("sizenone");
                     // si se chekeo sin cambios en tamaño
                     if (sizenone === 'none'){
-                        localStorage.setItem('measuresize','');
-                        localStorage.setItem('widthsize','');
-                        localStorage.setItem('heightsize','');
+                        localStorage.removeItem('measuresize');
+                        localStorage.removeItem('widthsize');
+                        localStorage.removeItem('heightsize');
                     }
                     // var measuresize = localStorage.getItem("measuresize");
                     // var widthsize = localStorage.getItem("widthsize");

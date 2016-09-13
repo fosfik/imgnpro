@@ -41,13 +41,19 @@
                     var format = localStorage.getItem("format");
                     var colormode = localStorage.getItem("colormode");
                     var background = localStorage.getItem("background");
-                    var nonedpi = localStorage.getItem("nonedpi");
+                    var dpinone = localStorage.getItem("dpinone");
                     var DPI = localStorage.getItem("DPI");
                     var measuresize = localStorage.getItem("measuresize");
                     
                     var imagesize = localStorage.getItem('imagesize');
-                    var measuresize = localStorage.getItem("measuresize");
                     var sizenone = localStorage.getItem("sizenone");
+                    // si se chekeo sin cambios en tamaño
+                    if (sizenone === 'none'){
+                        localStorage.removeItem('measuresize');
+                        localStorage.removeItem('widthsize');
+                        localStorage.removeItem('heightsize');
+                    }
+                    var measuresize = localStorage.getItem("measuresize");
                     var widthsize = localStorage.getItem("widthsize");
                     var heightsize = localStorage.getItem("heightsize");
                     var naturalshadow = localStorage.getItem('naturalshadow');
@@ -56,6 +62,11 @@
                     var basicretouch =  localStorage.getItem('basicretouch');
                     var clippingpath = localStorage.getItem('clippingpath');
                     var alignnone = localStorage.getItem('alignnone');
+                    // Si se chekeo sin cambios en alineación
+                    if (alignnone === 'none'){
+                        localStorage.removeItem('alignhor');
+                        localStorage.removeItem('alignver');
+                    }
                     var alignhor = localStorage.getItem('alignhor');
                     var alignver = localStorage.getItem('alignver');
                     var marginmeasure = localStorage.getItem('marginmeasure');

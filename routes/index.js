@@ -603,7 +603,7 @@ catch(err) {
       newSpec.colormode = specInfos[0].colormode;
       newSpec.background = specInfos[0].background;
       newSpec.dpi = specInfos[0].DPI;
-      newSpec.nonedpi = specInfos[0].nonedpi;
+      newSpec.dpinone = specInfos[0].dpinone;
       newSpec.userid = req.user._id;  
       newSpec.alignnone = specInfos[0].alignnone;
       newSpec.alignhor = specInfos[0].alignhor;
@@ -660,7 +660,7 @@ catch(err) {
       newSpec.colormode = req.body.colormode;
       newSpec.background = req.body.background;
       newSpec.dpi = req.body.DPI;
-      newSpec.nonedpi = req.body.nonedpi;
+      newSpec.dpinone = req.body.dpinone;
       newSpec.userid = req.user._id;  
       newSpec.alignnone = req.body.alignnone;
       newSpec.alignhor = req.body.alignhor;

@@ -8,7 +8,7 @@ module.exports = mongoose.model('User',{
     accept_terms: Boolean,
     name: String,
     provider: String,
-    provider_id: {type:String, unique:true},
+    provider_id: {type:String},
     photo: String,
     googletoken: String,
     createdAt: {type:Date, default: Date.now}

@@ -331,9 +331,9 @@
                 <br>
                 <label>Márgenes</label><br>
                 <select name="marginmeasure">
-                    <option value="cm">cm</option>
-                    <option value="px">px</option>
                     <option value="%">%</option>
+                    <option value="px">px</option>
+                    <option value="cm">cm</option>
                 </select>
                 <span class="postinput">Arriba</span><input class="margin" type="text" value="0" name="margintop">
                 <span class="postinput">Abajo</span><input class="margin" type="text" value="0" name="marginbottom">
@@ -347,7 +347,7 @@
                 <input  class="checks" type="checkbox" name="basicretouch" value=<%= config.prices.basicretouch %>><span class="postinput"> Retoque Básico</span>
                 <br>
                 <label for="dpi">DPI</label><br>
-                <input id="depeis" type="text" name="DPI" value="300" maxlength="5" disabled><label for="dpi">dpi</label>
+                <input id="depeis" type="text" name="DPI" value="72" maxlength="5" disabled><label for="dpi">dpi</label>
                 <input id="chkDPInone" class="checkcheck" type="checkbox" name="nonedpi" value="none"  checked onclick="javascript:desactDPI();"><span class="postcheck">Sin Cambios</span>
                 <input id="specid" type="hidden" name="specid" value=<%= specid %>>
 

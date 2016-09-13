@@ -23,7 +23,8 @@
 
                     var currentAlignHor =  localStorage.getItem("alignhor");
                     var currentAlignVer = localStorage.getItem("alignver");
-                    
+                    var currentAlignnone =  localStorage.getItem("alignnone");
+
                     if (currentAlignHor !== null){
                         var currentClassName = $('#marco').attr('class');
                         $('#marco').removeClass(currentClassName).addClass(currentAlignHor);  
@@ -41,6 +42,21 @@
                     } 
                     else{
                         localStorage.setItem("alignver", 'alignVerticalM');
+                    }
+
+                    if (currentAlignnone !== null){
+                        if (currentAlignnone === 'none'){
+                            $('#chkalgnnone').prop('checked',true);
+                        }
+                        else{
+                            $('#chkalgnnone').prop('checked',false);
+                        }
+                        desactAllNext();
+                        //$('#marco').removeClass(currentClassName).addClass(currentAlignHor);  
+                        //$('#' + currentAlignHor).prop("checked", true);
+                    }
+                    else{
+                        localStorage.setItem("alignnone", 'none');
                     }
                     
                     
@@ -69,6 +85,13 @@
                 });
             
                 $("#chkalgnnone").change(function(){
+                    var chkalgnnone = document.getElementById('chkalgnnone').checked;
+                    if (chkalgnnone == false){
+                        localStorage.setItem('alignnone','');            
+                    }
+                    else{
+                        localStorage.setItem('alignnone','none'); 
+                    }
                     desactAllNext();
                 }); 
                 function desactAllNext(){

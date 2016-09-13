@@ -1181,3 +1181,41 @@ input[name="checkcheck"] {
     padding: 20px;
     text-align: center;
 }
+/*clases para status*/
+
+.porpagar{
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: bold;
+    color: red;
+    transition: .3s
+}
+
+.entregado{
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: bold;
+    color: #000;
+    transition: .3s
+}
+
+.enproceso{
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: bold;
+    color: #00A0FF;
+    transition: .3s
+}
+
+.terminado{
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: bold;
+    color: #40FF00;
+    transition: .3s
+}
+
+.porpagar:hover, .entregado:hover, .enproceso:hover, .terminado:hover {
+    color: #999;
+    transition: .3s
+}

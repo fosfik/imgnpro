@@ -41,7 +41,6 @@
                     var format = localStorage.getItem("format");
                     var colormode = localStorage.getItem("colormode");
                     var background = localStorage.getItem("background");
-                    var dpinone = localStorage.getItem("dpinone");
                     var DPI = localStorage.getItem("DPI");
                     var measuresize = localStorage.getItem("measuresize");
                     
@@ -49,13 +48,13 @@
                     var sizenone = localStorage.getItem("sizenone");
                     // si se chekeo sin cambios en tamaño
                     if (sizenone === 'none'){
-                        localStorage.removeItem('measuresize');
-                        localStorage.removeItem('widthsize');
-                        localStorage.removeItem('heightsize');
+                        localStorage.setItem('measuresize','');
+                        localStorage.setItem('widthsize','');
+                        localStorage.setItem('heightsize','');
                     }
-                    var measuresize = localStorage.getItem("measuresize");
-                    var widthsize = localStorage.getItem("widthsize");
-                    var heightsize = localStorage.getItem("heightsize");
+                    // var measuresize = localStorage.getItem("measuresize");
+                    // var widthsize = localStorage.getItem("widthsize");
+                    // var heightsize = localStorage.getItem("heightsize");
                     var naturalshadow = localStorage.getItem('naturalshadow');
                     var dropshadow = localStorage.getItem('dropshadow');
                     var correctcolor =  localStorage.getItem('correctcolor');
@@ -69,31 +68,42 @@
                     }
                     var alignhor = localStorage.getItem('alignhor');
                     var alignver = localStorage.getItem('alignver');
-                    var marginmeasure = localStorage.getItem('marginmeasure');
-                    var margintop = localStorage.getItem('margintop');
-                    var marginbottom = localStorage.getItem('marginbottom');
-                    var marginright = localStorage.getItem('marginright');
-                    var marginleft = localStorage.getItem('marginleft');
+                    // var marginmeasure = localStorage.getItem('marginmeasure');
+                    // var margintop = localStorage.getItem('margintop');
+                    // var marginbottom = localStorage.getItem('marginbottom');
+                    // var marginright = localStorage.getItem('marginright');
+                    // var marginleft = localStorage.getItem('marginleft');
+                    
+                    
                     specInfos.push({
                         specname:specname,
                         format:format,
                         colormode:colormode,
                         background:background,
                         DPI:DPI,
-                        measuresize:measuresize,
+                        dpinone:localStorage.getItem("dpinone"),
+                        alignnone:localStorage.getItem('alignnone'),
+                        totalprice:localStorage.getItem("totalprice"),
+                        measuresize:localStorage.getItem("measuresize"),
                         sizenone:sizenone,
                         imagesize:imagesize,
-                        widthsize:widthsize,
-                        heightsize:heightsize,
+                        widthsize:localStorage.getItem("widthsize"),
+                        heightsize:localStorage.getItem("heightsize"),
                         alignver:alignver,
                         alignhor:alignhor,
                         naturalshadow:naturalshadow,
                         dropshadow:dropshadow,
                         correctcolor:correctcolor,
                         basicretouch:basicretouch,
-                        clippingpath:clippingpath
+                        clippingpath:clippingpath,
+                        marginmeasure: localStorage.getItem('marginmeasure'),
+                        margintop:localStorage.getItem('margintop'),
+                        marginbottom:localStorage.getItem('marginbottom'),
+                        marginright:localStorage.getItem('marginright'),
+                        marginleft:localStorage.getItem('marginleft'),
+                        date:Date.now(),
+                        spectype:'stepbystep'
                     });
-
                     $.ajax({
                             type: 'post',
                             url: '/newstepspec',
@@ -241,6 +251,7 @@
                                 
                     ntotal = ntotal / 100;
                     $("#totalprice").html(setDecimals(ntotal,2));
+                    localStorage.setItem('totalprice',setDecimals(ntotal,2));
                 }
 
             });

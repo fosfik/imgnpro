@@ -13,9 +13,7 @@ var Orders = require('../models/order.js');
 var Spec = require('../models/specification.js');
 var Contact = require('../models/contact.js');
 var ordersinproc  = 0;
-
 aws.config.region = 'us-east-1';
-
 var S3_BUCKET_NAME = process.env.S3_BUCKET_NAME || 'imgnproprime';
 
 // console.log(process.env.AWS_ACCESS_KEY_ID);
@@ -582,22 +580,10 @@ catch(err) {
 /* Handle new step by step specification  POST */
   router.post('/newstepspec', function (req,res) {
     // body...
-    //console.log(req.body);
-
-    //console.log(req.user._id);
-    
-    var specInfos = JSON.parse(req.body['specInfos']);
-    console.log(specInfos);
-    console.log(specInfos[0].specname);
-    console.log(specInfos[0].format);
-    console.log(specInfos[0].colormode);
-
-
+      var specInfos = JSON.parse(req.body['specInfos']);
       var newSpec = new Spec();
       // set the user's local credentials
-
       // recibir el array de datos
-
       newSpec.name = specInfos[0].specname;
       newSpec.format = specInfos[0].format;
       newSpec.colormode = specInfos[0].colormode;
@@ -621,7 +607,10 @@ catch(err) {
       newSpec.correctcolor = specInfos[0].correctcolor;
       newSpec.clippingpath = specInfos[0].clippingpath;
       newSpec.basicretouch = specInfos[0].basicretouch;
-      console.log(newSpec.basicretouch);
+      newSpec.widthsize = specInfos[0].widthsize;
+      newSpec.heightsize = specInfos[0].heightsize;
+      newSpec.spectype = specInfos[0].spectype;
+      newSpec.date = specInfos[0].date;
       // pasar el req specInfo
       spectotalprice(specInfos[0],function(total){
           console.log(total);
@@ -678,18 +667,14 @@ catch(err) {
       newSpec.correctcolor = req.body.correctcolor;
       newSpec.clippingpath = req.body.clippingpath;
       newSpec.basicretouch = req.body.basicretouch;
-
-        
+      newSpec.widthsize = req.body.widthsize;
+      newSpec.heightsize = req.body.heightsize;
+      newSpec.spectype = req.body.spectype;
+      newSpec.date = req.body.date;
       spectotalprice(req.body,function(total){
-          console.log(total);
         //res.setHeader('Content-Type', 'application/json');
         //res.send(JSON.stringify({ error: 0, ntotal:total , message: 'Se guardó la especificación'})); 
           newSpec.totalprice = total;
-
-
-
-
-
           // save the user
           newSpec.save(function(err) {
             if (err){
@@ -734,18 +719,8 @@ catch(err) {
             res.send(JSON.stringify({ error: 0, newSpecid: newSpec._id, message: 'Se guardó correctamente la especificación'})); 
               
           });
-
-
-
-
-
-
     });
-
-
-
   });
-
 
 /* Handle get payment sign POST */
   router.post('/getpaymentsign', function (req,res) {
@@ -865,11 +840,6 @@ router.get('/profile',
 
 //var upload = multer({ dest: 'uploads/' });
 
-
-
-
-
-
 /*
  * Respond to GET requests to /sign-s3.
  * Upon request, return JSON containing the temporarily-signed S3 request and
@@ -960,9 +930,6 @@ if (err) {
   });
 });
 
-
-
-
 /*
  * Respond to POST requests to /submit_form.
  * This function needs to be completed to handle the information in
@@ -971,9 +938,6 @@ if (err) {
 router.post('/save-details', (req, res) => {
   // TODO: Read POSTed form data and do something useful
 });
-
-
-
 
 // app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({extended:true}));

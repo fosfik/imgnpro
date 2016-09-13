@@ -15,7 +15,7 @@
                 var strspecid= $('#specid').val();
                 // alert(strspecid.length);
                 
-
+                $('#datespec').prop('value', Date.now);
                 desactAllNext();
                 desactSizeAllNext();
                 var newbuttonspec = $('#savebuttonspec');
@@ -351,6 +351,7 @@
                 <input id="depeis" type="text" name="DPI" value="72" maxlength="5" disabled><label for="dpi">dpi</label>
                 <input id="chkDPInone" class="checkcheck" type="checkbox" name="dpinone" value="none"  checked onclick="javascript:desactDPI();"><span class="postcheck">Sin Cambios</span>
                 <input id="specid" type="hidden" name="specid" value=<%= specid %>>
+                <input id="datespec" type="hidden" name="date" value="">
 
             </form>
             <section id="area_botones">

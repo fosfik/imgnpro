@@ -642,10 +642,11 @@ catch(err) {
 
     console.log(req.user._id);
     
-    console.log(req.user.specid);
+    console.log(req.body.specid);
 
       var newSpec = new Spec();
       // set the user's local credentials
+      newSpec.specid = req.body.specid;
       newSpec.name = req.body.name;
       newSpec.format = req.body.format;
       newSpec.colormode = req.body.colormode;
@@ -677,50 +678,89 @@ catch(err) {
         //res.setHeader('Content-Type', 'application/json');
         //res.send(JSON.stringify({ error: 0, ntotal:total , message: 'Se guardó la especificación'})); 
           newSpec.totalprice = total;
-          // save the user
-          newSpec.save(function(err) {
-            if (err){
-              console.log('No se pudo guardar la especificación: ' + err); 
-              res.setHeader('Content-Type', 'application/json');
-              res.send(JSON.stringify({ error: 1, message: 'No se pudo guardar la especificación'})); 
-              throw err;  
-            }
-            console.log('Se guardó correctamente la especificación');
-            console.log(newSpec._id);
+          // guarda los cambios de una especificacion
+          if (req.user.specid !==null && req.user.specid !== '' ){
+            console.log('Update');
+            console.log(newSpec.specid);
+            Spec.findOne({ _id: newSpec.specid  }, function (err, doc){
+              console.log(req.body.name);
+              console.log(err);
 
-            //El pedido se va a crear después de crear una especificación 
-            // Orders.findOneAndUpdate({numorder: req.param('numorder')}, {$set: { specid: newSpec._id } },{upsert:true, new: true}, function(error, Order)   {
-            //     if(error){
-            //       //throw err;
-            //       console.log(error);
-            //     }
-            //     else {
-            //       console.log("Se actualizó el pedido");
-            //     } 
-                
-            // }); 
+              if (err){
+                  console.log('Error al guardar la especificación: '+err);
+                  res.setHeader('Content-Type', 'application/json');
+                  res.send(JSON.stringify({ error: 1, newSpecid: newSpec._id, message: 'No se guardaron los cambios, favor de contactar al administrador'})); 
+              }
+              else{
+                if (doc) {
+                  doc.name = req.body.name;
+                  doc.format = req.body.format;
+                  doc.colormode = req.body.colormode;
+                  doc.background = req.body.background;
+                  doc.dpi = req.body.DPI;
+                  doc.dpinone = req.body.dpinone;
+                  //doc.userid = req.user._id;  
+                  doc.alignnone = req.body.alignnone;
+                  doc.alignhor = req.body.alignhor;
+                  doc.alignver = req.body.alignver;
+                  doc.sizenone = req.body.sizenone;
+                  doc.imagesize = req.body.imagesize;
+                  doc.marginmeasure = req.body.marginmeasure;
+                  doc.measuresize = req.body.measuresize;
+                  doc.margintop = req.body.margintop;
+                  doc.marginbottom = req.body.marginbottom;
+                  doc.marginright = req.body.marginright;
+                  doc.marginleft = req.body.marginleft;
+                  doc.naturalshadow = req.body.naturalshadow;
+                  doc.dropshadow = req.body.dropshadow;
+                  doc.correctcolor = req.body.correctcolor;
+                  doc.clippingpath = req.body.clippingpath;
+                  doc.basicretouch = req.body.basicretouch;
+                  doc.widthsize = req.body.widthsize;
+                  doc.heightsize = req.body.heightsize;
+                  doc.spectype = req.body.spectype;
+                  doc.date = req.body.date;
+                  doc.totalprice = newSpec.totalprice;
+                  //doc.specid = req.user.specid;
+                  console.log(doc);
 
+                  doc.save();
+                  
+                  //newSpec.save();
+                  res.setHeader('Content-Type', 'application/json');
+                  res.send(JSON.stringify({ error: 0, newSpecid: newSpec._id, message: 'Se guardaron correctamente los cambios a la especificación'})); 
+                } 
+                else {
+                  res.setHeader('Content-Type', 'application/json');
+                  res.send(JSON.stringify({ error: 1, newSpecid: newSpec._id, message: 'No se encontró la especificación, los cambios no fueron almacenados'})); 
+                }
 
-// orderSchema.pre('save', function(next) {
-//     var doc = this;
-//     counter.findByIdAndUpdate({_id: 'entityId'}, {$inc: { seq: 1} },{upsert:true, new: true}, function(error, counter)   {
-//         if(error)
-//             return next(error);
-//         doc.numorder = counter.seq;
-//         next();
-//     }); 
-// });
-//             findOneAndUpdate(
-//     {_id: req.query.id},
-//     {$push: {items: item}},
-//     {safe: true, upsert: true},
-//     function(err, model) {
-//         console.log(err);
-//     }    
-            res.setHeader('Content-Type', 'application/json');
-            res.send(JSON.stringify({ error: 0, newSpecid: newSpec._id, message: 'Se guardó correctamente la especificación'})); 
+              }
+           
+          
+
               
-          });
+            });  
+
+          }else{
+            // crea una nueva especificacion
+            newSpec.save(function(err) {
+                if (err){
+                  console.log('No se pudo guardar la especificación: ' + err); 
+                  res.setHeader('Content-Type', 'application/json');
+                  res.send(JSON.stringify({ error: 1, message: 'No se pudo guardar la especificación'})); 
+                  throw err;  
+                }
+                res.setHeader('Content-Type', 'application/json');
+                res.send(JSON.stringify({ error: 0, newSpecid: newSpec._id, message: 'Se generó correctamente la especificación'})); 
+                  
+              });
+
+          }
+
+
+
+          
     });
   });
 

@@ -10,11 +10,25 @@
             $(document).ready(function(){
 
                 var strspecname = localStorage.getItem("specname");
+                var nDPI = localStorage.getItem("DPI");
+                var currentdpinone = localStorage.getItem("dpinone");
                 if(strspecname !== null){
                     $("#specname").attr("value",strspecname);
                 }
-                
-
+                if(nDPI !== null){
+                    $("#depeis").attr("value",nDPI);
+                }
+                if (currentdpinone !== null){
+                    if (currentdpinone === 'none'){
+                        $('input:checkbox[name=dpinone]').prop('checked',true);
+                    }
+                    else{
+                        $('input:checkbox[name=dpinone]').prop('checked',false);
+                    }
+                    desactAllNext();
+                    //$('#marco').removeClass(currentClassName).addClass(currentAlignHor);  
+                    //$('#' + currentAlignHor).prop("checked", true);
+                }
                 $('#buttonspec').click(function (ev) {
                     var imageselected = localStorage.getItem('imageselected');
                     if ($('#specname').val().trim() === ''){
@@ -27,11 +41,12 @@
                           localStorage.setItem("format", $('select[name="format"]').val());
                           localStorage.setItem("colormode", $('select[name="colormode"]').val());
                           localStorage.setItem("background", $('select[name="background"]').val());
-                          localStorage.removeItem("nonedpi");
+                          localStorage.setItem("dpinone","");
                           localStorage.removeItem("DPI");
 
-                          if($('input:checkbox[name=nonedpi]').is(":checked")) {
-                            localStorage.setItem("nonedpi", $('input:checkbox[name=nonedpi]').val());
+                        
+                          if($('input:checkbox[name=dpinone]').is(":checked")) {
+                            localStorage.setItem("dpinone", $('input:checkbox[name=dpinone]').val());
                           }
                           else
                           {
@@ -149,7 +164,7 @@
                 </select><br>
                 <label for="dpi">DPI</label><br>
                 <input id="depeis" type="text" name="DPI" value="72" maxlength="5" disabled><label for="dpi">dpi</label>
-                <input id="chkalgnnone" class="checkcheck" type="checkbox" name="nonedpi" value="none"  checked onclick="javascript:desactAllNext();"><span class="postcheck">Sin Cambios</span>
+                <input id="chkalgnnone" class="checkcheck" type="checkbox" name="dpinone" value="none"  checked onclick="javascript:desactAllNext();"><span class="postcheck">Sin Cambios</span>
                 <div>
                     <h1 id="res_message"></h1>
                 </div> 

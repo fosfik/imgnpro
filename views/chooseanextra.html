@@ -319,7 +319,7 @@
                     
                     <ul>
                         <li>
-                            <input name="shadow" type="radio" value="none" checked>
+                            <input id="noshadow" name="shadow" type="radio" value="none" checked>
                             <label class="etiquetasxtras">Sin Sombra</label><label class="postextra"></label>
                         </li>
                         <li>
@@ -331,8 +331,41 @@
                             <label class="etiquetasxtras">Sombra Natural</label><label class="postextra">+ <span class="extreprefix">USD</span>$<%= config.prices.naturalshadow %></label>
                         </li>
                     </ul>
+                    <script>
+//                        function changeShadowImg () {
+//                            laimagen = document.getElementById("shadowImage");
+//                            dropshadow = document.getElementById("dropshadow");
+//                            if (dropshadow.checked) {
+//                                laimagen.style.display='block';
+//                            }
+//                            else {
+//                                laimagen.style.display='none';
+//                            }
+//                        }
+                        
+                        
+                         document.getElementById('noshadow').onclick=function() {
+                            if(this.checked) {
+                                document.getElementById("shadowImage").src = "../images/sombranone.png";
+                            }
+                        }
+                        
+                        document.getElementById('dropshadow').onclick=function() {
+                            if(this.checked) {
+                                document.getElementById("shadowImage").src = "../images/sombradrop.png";
+                            }
+                        }
+                        
+                         document.getElementById('naturalshadow').onclick=function() {
+                            if(this.checked) {
+                                document.getElementById("shadowImage").src = "../images/sombranat.png";
+                            }
+                        }
+                        
+                    
+                    </script>
                     <div class="infomodal">
-                        <img src="../images/sombranat.png">
+                        <img id="shadowImage" src="../images/sombranone.png">
                     </div>
                     <div>
                         <h1 id="res_message"></h1>

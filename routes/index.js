@@ -642,6 +642,8 @@ catch(err) {
 
     console.log(req.user._id);
     
+    console.log(req.user.specid);
+
       var newSpec = new Spec();
       // set the user's local credentials
       newSpec.name = req.body.name;

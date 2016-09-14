@@ -16,4 +16,10 @@ function setDecimals(sVal, nDec){
 	} 
 	return s; 
 } 
-   
+function isNotNullUndefined(param){
+	// var bResult = false;
+	// if (param !== null && param !== undefined){
+	// 	bResult =
+	// }
+	return ( (param !== null && param !== undefined) ? true:false);
+}

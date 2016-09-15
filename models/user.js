@@ -9,7 +9,7 @@ module.exports = mongoose.model('User',{
     name: String,
     provider: String,
     provider_id: {type:String},
-    photo: String,
+    //photo: String,
     googletoken: String,
     createdAt: {type:Date, default: Date.now}
 });

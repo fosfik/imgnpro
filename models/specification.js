@@ -17,6 +17,7 @@ var SpecSchema = new mongoose.Schema({
   sizenone:{type: String},
   imagesize: {type: String},
   measuresize: {type: String},
+  marginnone:{type: String},
   marginmeasure: {type: String},
   margintop: {type: Number, default: 0},
   marginbottom: {type: Number, default: 0},

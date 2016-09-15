@@ -18,7 +18,8 @@
                 $('#datespec').prop('value', Date.now);
                 desactAllNext();
                 desactSizeAllNext();
-                var newbuttonspec = $('#savebuttonspec');
+                //var newbuttonspec = $('#savebuttonspec');
+                //var newbuttonspec = $('#savebuttonspec');
                 var frm = $('#specForm');
 
 
@@ -178,46 +179,17 @@
 
                 }
 
-                newbuttonspec.click(function (ev) { // Botón Guardar Cambios
-                    if ($('#specnombre').val().trim() === ''){
-                        alert("Favor de capturar el nombre de la especificación");    
-                        $('#specnombre').focus();
-                    }
-                    else{
-                        $.ajax({
-                            type: frm.attr('method'),
-                            url: frm.attr('action'),
-                            data: frm.serialize(),
-                            success: function (data) {
-                                if (data.error == 1 ){
-                                    //document.getElementById('res_message').innerHTML= data.message;    
-                                    alert(data.message);
-                                     $('#specnombre').focus();
-                                }
-                                else{
-                                    //setTimeout(window.location='/subirimagen4.html',500);
-                                    alert(data.message);
-                                    
-                                    if(confirm("¿Quieres subir imágenes?")){
-                                        document.location.href="/uploadimages/" + data.newSpecid;
-                                    }
-                                    else{
-                                        document.getElementById("specForm").reset();
-                                        desactAllNext();
-                                        desactSizeAllNext();
-                                        sumallextras(); 
-                                    }    
-
-                                }
-                            }
-                        });
-                        
-
-                    }
+                $('#savebuttonspec').click(function (ev) { // Botón Guardar Cambios
+                    saveSpec(true);
                     ev.preventDefault();
     
                 }); 
-           
+
+                $('#saveploadbuttonspec').click(function (ev) { // Botón Guardar Cambios
+                    saveSpec(false);
+                    ev.preventDefault();
+    
+                });
                 $("#specForm input[name='naturalshadow']").change(function(){
                         $("#specForm input[name='dropshadow']").prop( "checked", false );
                         sumallextras();
@@ -245,6 +217,10 @@
 
                 $("#chksizenone").change(function(){
                     desactSizeAllNext();
+                }); 
+
+                $("#chkmarginone").change(function(){
+                    desactMarginAllNext();
                 }); 
                 
                 $("input[name=imagesize]").change(function(){
@@ -276,6 +252,46 @@
                       
                 });
 
+                function saveSpec(uploadimages){
+                    if ($('#specnombre').val().trim() === ''){
+                        alert("Favor de capturar el nombre de la especificación");    
+                        $('#specnombre').focus();
+                    }
+                    else{
+                        $.ajax({
+                            type: frm.attr('method'),
+                            url: frm.attr('action'),
+                            data: frm.serialize(),
+                            success: function (data) {
+                                if (data.error == 1 ){
+                                    //document.getElementById('res_message').innerHTML= data.message;    
+                                    alert(data.message);
+                                     $('#specnombre').focus();
+                                }
+                                else{
+                                    //setTimeout(window.location='/subirimagen4.html',500);
+                                    alert(data.message);
+                                    $('#specid').prop('value','');
+                                    document.getElementById("specForm").reset();
+                                    desactAllNext();
+                                    desactSizeAllNext();
+                                    sumallextras(); 
+                                    if (uploadimages==true){
+                                        if(confirm("¿Quieres subir imágenes?")){
+                                            document.location.href="/uploadimages/" + data.newSpecid;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        document.location.href="/uploadimages/" + data.newSpecid;
+                                    }
+                                    
+                                }
+                            }
+                        });
+                    }
+
+                }
 
                 function sumallextras(){
                    
@@ -310,15 +326,19 @@
                     var chkalgnnone = document.getElementById('chkalgnnone').checked;
                     $('input:radio[name=alignhor]').prop('disabled', chkalgnnone);
                     $('input:radio[name=alignver]').prop('disabled', chkalgnnone);
+                }
 
-
-
+                 function desactMarginAllNext(){
+                    var chkmarginone = document.getElementById('chkmarginone').checked;
+                    $('#marginmeasure').prop('disabled', chkmarginone);
+                    $('input[name=margintop]').prop('disabled', chkmarginone);
+                    $('input[name=marginbottom]').prop('disabled', chkmarginone);
+                    $('input[name=marginleft]').prop('disabled', chkmarginone);
+                    $('input[name=marginright]').prop('disabled', chkmarginone);
                 }
 
                 function desactSizeAllNext(){
                     var chksizenone = document.getElementById('chksizenone').checked;
-                    
-
                     if(chksizenone==false && $('input:radio[name=imagesize]:checked').val() == null){
                         $('#radio11').prop('checked', 'true');
                     } 
@@ -444,13 +464,7 @@
                 <input type="text" name= "heightsize" value="200" size="4" placeholder="00 " disabled>
                 <br>
                 <label>Alineación</label><br>
-                <input id="chkalgnnone" class="checks" type="checkbox" name="alignnone" value="none"  checked><span class="postinput">Sin Cambios</span><br>
-<!-- <input id="chkalgnnone" class="checks" type="checkbox" name="alignnone" value="none" onclick="javascript:desactAllNext();" checked><span class="postinput">Sin Cambios</span>          
-
-                <input id="chkalgn" class="checks" type="checkbox" name="aligncent" value="centrado" onclick="javascript:desactRadioAlign();"><span class="postinput">Centrado</span>
- -->          
-
-
+                <input id="chkalgnnone" class="checks" type="checkbox" name="alignnone" value="none"  checked><span class="postinput">Sin Cambios</span><br>        
                 <label>Horizontal</label><br>
                 <input id = "alignHorizontalL" class="radio" type="radio" name="alignhor" value="alignHorizontalL"><span class="postinput">Izquierda</span>
                 <input id = "alignHorizontalC" class="radio" type="radio" name="alignhor" value="alignHorizontalC" checked><span class="postinput">Centrado</span>
@@ -460,25 +474,19 @@
                 <input id = "alignVerticalT" class="radio" type="radio" name="alignver" value="alignVerticalT"><span class="postinput">Arriba</span>
                 <input id = "alignVerticalM" class="radio" type="radio" name="alignver" value="alignVerticalM" checked><span class="postinput">Centrado</span>
                 <input id = "alignVerticalB" class="radio" type="radio" name="alignver" value="alignVerticalB"><span class="postinput">Abajo</span>
-
-
-                <!-- <input id="radioup" class="radio" type="radio" name="alignverup" value="arriba"><span class="postinput">Arriba</span>
-                <input id="radiodown" class="radio" type="radio" name="alignverdown" value="abajo"><span class="postinput">Abajo</span>
-                <input id="radioright" class="radio" type="radio" name="alignhorright" value="derecha"><span class="postinput">Derecha</span>
-                <input id="radioleft" class="radio" type="radio" name="alignhorleft" value="izquierda"><span class="postinput">Izquierda</span>
-                 -->
                 <br>
                 <label>Márgenes</label><br>
-                <input id="chkMarginnone" class="checkcheck" type="checkbox" name="dpinone" value="none"  checked onclick="javascript:desactDPI();"><span class="postinput">Sin Cambios</span>
-                <select id= "marginmeasure" name="marginmeasure">
+                <input id="chkmarginone" class="checkcheck" type="checkbox" name="marginnone" value="none" checked><span class="postinput">Sin Cambios</span>
+                <select id= "marginmeasure" name="marginmeasure" disabled>
                     <option value="%">%</option>
                     <option value="px">px</option>
                     <option value="cm">cm</option>
                 </select>
-                <span class="postinput">Arriba</span><input class="margin" type="text" value="0" name="margintop">
-                <span class="postinput">Abajo</span><input class="margin" type="text" value="0" name="marginbottom">
-                <span class="postinput">Derecha</span><input class="margin" type="text" value="0" name="marginright">
-                <span class="postinput">Izquierda</span><input class="margin" type="text" value="0" name="marginleft"><br>
+                <span class="postinput">Arriba</span><input class="margin" type="text" value="0" name="margintop" disabled>
+                <span class="postinput">Abajo</span><input class="margin" type="text" value="0" name="marginbottom" disabled>
+                <span class="postinput">Derecha</span><input class="margin" type="text" value="0" name="marginright" disabled>
+                <span class="postinput">Izquierda</span><input class="margin" type="text" value="0" name="marginleft" disabled>
+                <br>
                 <label>Extras</label><br>
                 <input  class="checks" type="checkbox" name="naturalshadow" value=<%= config.prices.naturalshadow %>><span class="postinput">Sombra Natural</span>
                 <input class="checks" type="checkbox" name="dropshadow" value=<%= config.prices.dropshadow %>><span class="postinput">Drop Shadow</span>
@@ -503,8 +511,8 @@
             </section>
         </div>
         <hr>
-        <div class="button2">
-            <a href="/uploadimages">Guardar y Subir Imágenes</a>
+        <div id="saveploadbuttonspec" class="button2">
+            <a href="">Guardar y Subir Imágenes</a>
         </div>
     </section>
         <aside id="menurigth">

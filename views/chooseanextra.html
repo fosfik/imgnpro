@@ -6,6 +6,7 @@
         <link rel="stylesheet" href="../stylesheets/imgncss_session.css">
         <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico">
         <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+        <script src="../js/general.js"></script>
         <script type="text/javascript">
             $(document).ready(function(){
                 var newbuttonspec = $('#savebuttonspec');
@@ -18,21 +19,6 @@
                         alert('Las imágenes JPG WEB ó PNG no permiten la opción de Clipping Path');
                     });
                 }
-
-               
-
-                // $("#format").change(function() {
-
-                // //alert( $("#format option:selected").text());
-                //   $('#sin_fondo').prop("disabled", false);
-                //   $('#background').prop("value", 'blanco');
-                //   if($("#format option:selected").text() ==='JPG' || $("#format option:selected").text() ==='JPG WEB' ){
-                //     $('#sin_fondo').prop("disabled", true);
-                //   }
-                  
-                // });
-
-                //var frm = $('#specForm');
                 newbuttonspec.click(function (ev) {
                     // recuperar las variables localStorage
                     var specInfos =[];
@@ -40,48 +26,68 @@
                     var format = localStorage.getItem("format");
                     var colormode = localStorage.getItem("colormode");
                     var background = localStorage.getItem("background");
-                    var nonedpi = localStorage.getItem("nonedpi");
                     var DPI = localStorage.getItem("DPI");
                     var measuresize = localStorage.getItem("measuresize");
                     
                     var imagesize = localStorage.getItem('imagesize');
-                    var measuresize = localStorage.getItem("measuresize");
                     var sizenone = localStorage.getItem("sizenone");
-                    var widthsize = localStorage.getItem("widthsize");
-                    var heightsize = localStorage.getItem("heightsize");
+                    // si se chekeo sin cambios en tamaño
+                    if (sizenone === 'none'){
+                        localStorage.removeItem('measuresize');
+                        localStorage.removeItem('widthsize');
+                        localStorage.removeItem('heightsize');
+                    }
                     var naturalshadow = localStorage.getItem('naturalshadow');
                     var dropshadow = localStorage.getItem('dropshadow');
                     var correctcolor =  localStorage.getItem('correctcolor');
                     var basicretouch =  localStorage.getItem('basicretouch');
                     var clippingpath = localStorage.getItem('clippingpath');
                     var alignnone = localStorage.getItem('alignnone');
+                    // Si se chekeo sin cambios en alineación
+                    if (alignnone === 'none'){
+                        localStorage.removeItem('alignhor');
+                        localStorage.removeItem('alignver');
+                    }
                     var alignhor = localStorage.getItem('alignhor');
                     var alignver = localStorage.getItem('alignver');
-                    var marginmeasure = localStorage.getItem('marginmeasure');
-                    var margintop = localStorage.getItem('margintop');
-                    var marginbottom = localStorage.getItem('marginbottom');
-                    var marginright = localStorage.getItem('marginright');
-                    var marginleft = localStorage.getItem('marginleft');
+                    //var alignnone = localStorage.getItem('alignnone');
+                    if (localStorage.getItem('marginnone') === 'none'){
+                        localStorage.removeItem('marginmeasure');
+                        localStorage.removeItem('margintop');
+                        localStorage.removeItem('marginbottom');
+                        localStorage.removeItem('marginright');
+                        localStorage.removeItem('marginleft');
+                    }
                     specInfos.push({
                         specname:specname,
                         format:format,
                         colormode:colormode,
                         background:background,
                         DPI:DPI,
-                        measuresize:measuresize,
+                        dpinone:localStorage.getItem("dpinone"),
+                        alignnone:localStorage.getItem('alignnone'),
+                        totalprice:localStorage.getItem("totalprice"),
+                        measuresize:localStorage.getItem("measuresize"),
                         sizenone:sizenone,
                         imagesize:imagesize,
-                        widthsize:widthsize,
-                        heightsize:heightsize,
+                        widthsize:localStorage.getItem("widthsize"),
+                        heightsize:localStorage.getItem("heightsize"),
                         alignver:alignver,
                         alignhor:alignhor,
                         naturalshadow:naturalshadow,
                         dropshadow:dropshadow,
                         correctcolor:correctcolor,
                         basicretouch:basicretouch,
-                        clippingpath:clippingpath
+                        clippingpath:clippingpath,
+                        marginnone:localStorage.getItem('marginnone'),
+                        marginmeasure: localStorage.getItem('marginmeasure'),
+                        margintop:localStorage.getItem('margintop'),
+                        marginbottom:localStorage.getItem('marginbottom'),
+                        marginright:localStorage.getItem('marginright'),
+                        marginleft:localStorage.getItem('marginleft'),
+                        date:Date.now(),
+                        spectype:'stepbystep'
                     });
-
                     $.ajax({
                             type: 'post',
                             url: '/newstepspec',

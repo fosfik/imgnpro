@@ -597,6 +597,7 @@ catch(err) {
       newSpec.imagesize = specInfos[0].imagesize;
       newSpec.sizenone = specInfos[0].sizenone;
       newSpec.measuresize = specInfos[0].measuresize;
+      newSpec.marginnone = specInfos[0].marginnone;
       newSpec.marginmeasure = specInfos[0].marginmeasure;
       newSpec.margintop = specInfos[0].margintop; //??
       newSpec.marginbottom = specInfos[0].marginbottom; //??
@@ -643,10 +644,10 @@ catch(err) {
     console.log(req.user._id);
     
     console.log(req.body.specid);
-
+    var specid = req.body.specid;
       var newSpec = new Spec();
       // set the user's local credentials
-      newSpec.specid = req.body.specid;
+      //newSpec.specid = req.body.specid;
       newSpec.name = req.body.name;
       newSpec.format = req.body.format;
       newSpec.colormode = req.body.colormode;
@@ -659,6 +660,7 @@ catch(err) {
       newSpec.alignver = req.body.alignver;
       newSpec.sizenone = req.body.sizenone;
       newSpec.imagesize = req.body.imagesize;
+      newSpec.marginnone = req.body.marginnone;
       newSpec.marginmeasure = req.body.marginmeasure;
       newSpec.measuresize = req.body.measuresize;
       newSpec.margintop = req.body.margintop;
@@ -679,13 +681,24 @@ catch(err) {
         //res.send(JSON.stringify({ error: 0, ntotal:total , message: 'Se guardó la especificación'})); 
           newSpec.totalprice = total;
           // guarda los cambios de una especificacion
-          if (req.user.specid !==null && req.user.specid !== '' ){
+          if (specid === null || specid === ''){
+            // crea una nueva especificacion
+            newSpec.save(function(err) {
+                if (err){
+                  console.log('No se pudo guardar la especificación: ' + err); 
+                  res.setHeader('Content-Type', 'application/json');
+                  res.send(JSON.stringify({ error: 1, message: 'No se pudo guardar la especificación'})); 
+                  throw err;  
+                }
+                res.setHeader('Content-Type', 'application/json');
+                res.send(JSON.stringify({ error: 0, newSpecid: newSpec._id, message: 'Se generó correctamente la especificación'})); 
+              });
+          }else{
             console.log('Update');
-            console.log(newSpec.specid);
-            Spec.findOne({ _id: newSpec.specid  }, function (err, doc){
+            console.log(specid);
+            Spec.findOne({ _id: specid  }, function (err, doc){
               console.log(req.body.name);
               console.log(err);
-
               if (err){
                   console.log('Error al guardar la especificación: '+err);
                   res.setHeader('Content-Type', 'application/json');
@@ -705,6 +718,7 @@ catch(err) {
                   doc.alignver = req.body.alignver;
                   doc.sizenone = req.body.sizenone;
                   doc.imagesize = req.body.imagesize;
+                  doc.marginnone = req.body.marginnone;
                   doc.marginmeasure = req.body.marginmeasure;
                   doc.measuresize = req.body.measuresize;
                   doc.margintop = req.body.margintop;
@@ -734,33 +748,9 @@ catch(err) {
                   res.setHeader('Content-Type', 'application/json');
                   res.send(JSON.stringify({ error: 1, newSpecid: newSpec._id, message: 'No se encontró la especificación, los cambios no fueron almacenados'})); 
                 }
-
               }
-           
-          
-
-              
             });  
-
-          }else{
-            // crea una nueva especificacion
-            newSpec.save(function(err) {
-                if (err){
-                  console.log('No se pudo guardar la especificación: ' + err); 
-                  res.setHeader('Content-Type', 'application/json');
-                  res.send(JSON.stringify({ error: 1, message: 'No se pudo guardar la especificación'})); 
-                  throw err;  
-                }
-                res.setHeader('Content-Type', 'application/json');
-                res.send(JSON.stringify({ error: 0, newSpecid: newSpec._id, message: 'Se generó correctamente la especificación'})); 
-                  
-              });
-
           }
-
-
-
-          
     });
   });
 

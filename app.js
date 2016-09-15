@@ -211,7 +211,7 @@ passport.use(new FacebookStrategy({
     clientSecret : config.facebook.secret,
     callbackURL  : config.facebook.callbackURL,
     auth_type    : 'reauthenticate',
-    profileFields: ['id','displayName','photos']
+    profileFields: ['id','displayName']
   },
   function(accessToken, refreshToken, profile, done) {
     // In this example, the user's Facebook profile is supplied as the user
@@ -244,7 +244,7 @@ passport.use(new FacebookStrategy({
             newUser.provider_id = profile.id;
             newUser.provider = profile.provider;
             newUser.userlongname = profile.displayName;
-            newUser.photo = profile.photos[0].value;
+            //newUser.photo = profile.photos[0].value;
    
             // save the user
             newUser.save(function(err) {

@@ -19,21 +19,6 @@
                         alert('Las imágenes JPG WEB ó PNG no permiten la opción de Clipping Path');
                     });
                 }
-
-               
-
-                // $("#format").change(function() {
-
-                // //alert( $("#format option:selected").text());
-                //   $('#sin_fondo').prop("disabled", false);
-                //   $('#background').prop("value", 'blanco');
-                //   if($("#format option:selected").text() ==='JPG' || $("#format option:selected").text() ==='JPG WEB' ){
-                //     $('#sin_fondo').prop("disabled", true);
-                //   }
-                  
-                // });
-
-                //var frm = $('#specForm');
                 newbuttonspec.click(function (ev) {
                     // recuperar las variables localStorage
                     var specInfos =[];
@@ -52,9 +37,6 @@
                         localStorage.removeItem('widthsize');
                         localStorage.removeItem('heightsize');
                     }
-                    // var measuresize = localStorage.getItem("measuresize");
-                    // var widthsize = localStorage.getItem("widthsize");
-                    // var heightsize = localStorage.getItem("heightsize");
                     var naturalshadow = localStorage.getItem('naturalshadow');
                     var dropshadow = localStorage.getItem('dropshadow');
                     var correctcolor =  localStorage.getItem('correctcolor');
@@ -68,13 +50,14 @@
                     }
                     var alignhor = localStorage.getItem('alignhor');
                     var alignver = localStorage.getItem('alignver');
-                    // var marginmeasure = localStorage.getItem('marginmeasure');
-                    // var margintop = localStorage.getItem('margintop');
-                    // var marginbottom = localStorage.getItem('marginbottom');
-                    // var marginright = localStorage.getItem('marginright');
-                    // var marginleft = localStorage.getItem('marginleft');
-                    
-                    
+                    //var alignnone = localStorage.getItem('alignnone');
+                    if (localStorage.getItem('marginnone') === 'none'){
+                        localStorage.removeItem('marginmeasure');
+                        localStorage.removeItem('margintop');
+                        localStorage.removeItem('marginbottom');
+                        localStorage.removeItem('marginright');
+                        localStorage.removeItem('marginleft');
+                    }
                     specInfos.push({
                         specname:specname,
                         format:format,
@@ -96,6 +79,7 @@
                         correctcolor:correctcolor,
                         basicretouch:basicretouch,
                         clippingpath:clippingpath,
+                        marginnone:localStorage.getItem('marginnone'),
                         marginmeasure: localStorage.getItem('marginmeasure'),
                         margintop:localStorage.getItem('margintop'),
                         marginbottom:localStorage.getItem('marginbottom'),

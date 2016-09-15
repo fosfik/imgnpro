@@ -18,7 +18,8 @@
                 $('#datespec').prop('value', Date.now);
                 desactAllNext();
                 desactSizeAllNext();
-                var newbuttonspec = $('#savebuttonspec');
+                //var newbuttonspec = $('#savebuttonspec');
+                //var newbuttonspec = $('#savebuttonspec');
                 var frm = $('#specForm');
 
 
@@ -178,46 +179,17 @@
 
                 }
 
-                newbuttonspec.click(function (ev) { // Botón Guardar Cambios
-                    if ($('#specnombre').val().trim() === ''){
-                        alert("Favor de capturar el nombre de la especificación");    
-                        $('#specnombre').focus();
-                    }
-                    else{
-                        $.ajax({
-                            type: frm.attr('method'),
-                            url: frm.attr('action'),
-                            data: frm.serialize(),
-                            success: function (data) {
-                                if (data.error == 1 ){
-                                    //document.getElementById('res_message').innerHTML= data.message;    
-                                    alert(data.message);
-                                     $('#specnombre').focus();
-                                }
-                                else{
-                                    //setTimeout(window.location='/subirimagen4.html',500);
-                                    alert(data.message);
-                                    
-                                    if(confirm("¿Quieres subir imágenes?")){
-                                        document.location.href="/uploadimages/" + data.newSpecid;
-                                    }
-                                    else{
-                                        document.getElementById("specForm").reset();
-                                        desactAllNext();
-                                        desactSizeAllNext();
-                                        sumallextras(); 
-                                    }    
-
-                                }
-                            }
-                        });
-                        
-
-                    }
+                $('#savebuttonspec').click(function (ev) { // Botón Guardar Cambios
+                    saveSpec(true);
                     ev.preventDefault();
     
                 }); 
-           
+
+                $('#saveploadbuttonspec').click(function (ev) { // Botón Guardar Cambios
+                    saveSpec(false);
+                    ev.preventDefault();
+    
+                });
                 $("#specForm input[name='naturalshadow']").change(function(){
                         $("#specForm input[name='dropshadow']").prop( "checked", false );
                         sumallextras();
@@ -247,7 +219,7 @@
                     desactSizeAllNext();
                 }); 
 
-                $("#chknomargin").change(function(){
+                $("#chkmarginone").change(function(){
                     desactMarginAllNext();
                 }); 
                 
@@ -280,6 +252,46 @@
                       
                 });
 
+                function saveSpec(uploadimages){
+                    if ($('#specnombre').val().trim() === ''){
+                        alert("Favor de capturar el nombre de la especificación");    
+                        $('#specnombre').focus();
+                    }
+                    else{
+                        $.ajax({
+                            type: frm.attr('method'),
+                            url: frm.attr('action'),
+                            data: frm.serialize(),
+                            success: function (data) {
+                                if (data.error == 1 ){
+                                    //document.getElementById('res_message').innerHTML= data.message;    
+                                    alert(data.message);
+                                     $('#specnombre').focus();
+                                }
+                                else{
+                                    //setTimeout(window.location='/subirimagen4.html',500);
+                                    alert(data.message);
+                                    $('#specid').prop('value','');
+                                    document.getElementById("specForm").reset();
+                                    desactAllNext();
+                                    desactSizeAllNext();
+                                    sumallextras(); 
+                                    if (uploadimages==true){
+                                        if(confirm("¿Quieres subir imágenes?")){
+                                            document.location.href="/uploadimages/" + data.newSpecid;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        document.location.href="/uploadimages/" + data.newSpecid;
+                                    }
+                                    
+                                }
+                            }
+                        });
+                    }
+
+                }
 
                 function sumallextras(){
                    
@@ -317,12 +329,12 @@
                 }
 
                  function desactMarginAllNext(){
-                    var chknomargin = document.getElementById('chknomargin').checked;
-                    $('#marginmeasure').prop('disabled', chknomargin);
-                    $('input[name=margintop]').prop('disabled', chknomargin);
-                    $('input[name=marginbottom]').prop('disabled', chknomargin);
-                    $('input[name=marginleft]').prop('disabled', chknomargin);
-                    $('input[name=marginright]').prop('disabled', chknomargin);
+                    var chkmarginone = document.getElementById('chkmarginone').checked;
+                    $('#marginmeasure').prop('disabled', chkmarginone);
+                    $('input[name=margintop]').prop('disabled', chkmarginone);
+                    $('input[name=marginbottom]').prop('disabled', chkmarginone);
+                    $('input[name=marginleft]').prop('disabled', chkmarginone);
+                    $('input[name=marginright]').prop('disabled', chkmarginone);
                 }
 
                 function desactSizeAllNext(){
@@ -464,7 +476,7 @@
                 <input id = "alignVerticalB" class="radio" type="radio" name="alignver" value="alignVerticalB"><span class="postinput">Abajo</span>
                 <br>
                 <label>Márgenes</label><br>
-                <input id="chknomargin" class="checkcheck" type="checkbox" name="marginnone" value="none" checked><span class="postinput">Sin Cambios</span>
+                <input id="chkmarginone" class="checkcheck" type="checkbox" name="marginnone" value="none" checked><span class="postinput">Sin Cambios</span>
                 <select id= "marginmeasure" name="marginmeasure" disabled>
                     <option value="%">%</option>
                     <option value="px">px</option>
@@ -499,8 +511,8 @@
             </section>
         </div>
         <hr>
-        <div class="button2">
-            <a href="/uploadimages">Guardar y Subir Imágenes</a>
+        <div id="saveploadbuttonspec" class="button2">
+            <a href="">Guardar y Subir Imágenes</a>
         </div>
     </section>
         <aside id="menurigth">

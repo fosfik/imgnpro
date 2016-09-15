@@ -435,8 +435,8 @@
                 <input id="optcustomsize" name="imagesize" type="radio" value="customize">
                 <span class="postinput">Personalizado</span>
                 <select name="measuresize" disabled>
-                <option value="cm">cm</option>
                 <option value="px">px</option>
+                <option value="cm">cm</option>
                 </select>
                 <label for="with">Ancho</label>
                 <input type="text" name= "widthsize" value="200" size="4" placeholder="00 " disabled>
@@ -469,6 +469,7 @@
                  -->
                 <br>
                 <label>Márgenes</label><br>
+                <input id="chkMarginnone" class="checkcheck" type="checkbox" name="dpinone" value="none"  checked onclick="javascript:desactDPI();"><span class="postinput">Sin Cambios</span>
                 <select id= "marginmeasure" name="marginmeasure">
                     <option value="%">%</option>
                     <option value="px">px</option>
@@ -487,7 +488,7 @@
                 <br>
                 <label for="dpi">DPI</label><br>
                 <input id="depeis" type="text" name="DPI" value="72" maxlength="5" disabled><label for="dpi">dpi</label>
-                <input id="chkDPInone" class="checkcheck" type="checkbox" name="dpinone" value="none"  checked onclick="javascript:desactDPI();"><span class="postcheck">Sin Cambios</span>
+                <input id="chkDPInone" class="checkcheck" type="checkbox" name="dpinone" value="none"  checked onclick="javascript:desactDPI();"><span class="postinput">Sin Cambios</span>
                 <input id="specid" type="hidden" name="specid" value=<%= specid %>>
                 <input id="datespec" type="hidden" name="date" value="">
 

@@ -6,7 +6,6 @@
         <link rel="stylesheet" href="../stylesheets/imgncss_session.css">
         <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico">
         <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
-        <script src="../js/general.js"></script>
         <script type="text/javascript">
             $(document).ready(function(){
                 var newbuttonspec = $('#savebuttonspec');
@@ -41,69 +40,48 @@
                     var format = localStorage.getItem("format");
                     var colormode = localStorage.getItem("colormode");
                     var background = localStorage.getItem("background");
+                    var nonedpi = localStorage.getItem("nonedpi");
                     var DPI = localStorage.getItem("DPI");
                     var measuresize = localStorage.getItem("measuresize");
                     
                     var imagesize = localStorage.getItem('imagesize');
+                    var measuresize = localStorage.getItem("measuresize");
                     var sizenone = localStorage.getItem("sizenone");
-                    // si se chekeo sin cambios en tamaño
-                    if (sizenone === 'none'){
-                        localStorage.removeItem('measuresize');
-                        localStorage.removeItem('widthsize');
-                        localStorage.removeItem('heightsize');
-                    }
-                    // var measuresize = localStorage.getItem("measuresize");
-                    // var widthsize = localStorage.getItem("widthsize");
-                    // var heightsize = localStorage.getItem("heightsize");
+                    var widthsize = localStorage.getItem("widthsize");
+                    var heightsize = localStorage.getItem("heightsize");
                     var naturalshadow = localStorage.getItem('naturalshadow');
                     var dropshadow = localStorage.getItem('dropshadow');
                     var correctcolor =  localStorage.getItem('correctcolor');
                     var basicretouch =  localStorage.getItem('basicretouch');
                     var clippingpath = localStorage.getItem('clippingpath');
                     var alignnone = localStorage.getItem('alignnone');
-                    // Si se chekeo sin cambios en alineación
-                    if (alignnone === 'none'){
-                        localStorage.removeItem('alignhor');
-                        localStorage.removeItem('alignver');
-                    }
                     var alignhor = localStorage.getItem('alignhor');
                     var alignver = localStorage.getItem('alignver');
-                    // var marginmeasure = localStorage.getItem('marginmeasure');
-                    // var margintop = localStorage.getItem('margintop');
-                    // var marginbottom = localStorage.getItem('marginbottom');
-                    // var marginright = localStorage.getItem('marginright');
-                    // var marginleft = localStorage.getItem('marginleft');
-                    
-                    
+                    var marginmeasure = localStorage.getItem('marginmeasure');
+                    var margintop = localStorage.getItem('margintop');
+                    var marginbottom = localStorage.getItem('marginbottom');
+                    var marginright = localStorage.getItem('marginright');
+                    var marginleft = localStorage.getItem('marginleft');
                     specInfos.push({
                         specname:specname,
                         format:format,
                         colormode:colormode,
                         background:background,
                         DPI:DPI,
-                        dpinone:localStorage.getItem("dpinone"),
-                        alignnone:localStorage.getItem('alignnone'),
-                        totalprice:localStorage.getItem("totalprice"),
-                        measuresize:localStorage.getItem("measuresize"),
+                        measuresize:measuresize,
                         sizenone:sizenone,
                         imagesize:imagesize,
-                        widthsize:localStorage.getItem("widthsize"),
-                        heightsize:localStorage.getItem("heightsize"),
+                        widthsize:widthsize,
+                        heightsize:heightsize,
                         alignver:alignver,
                         alignhor:alignhor,
                         naturalshadow:naturalshadow,
                         dropshadow:dropshadow,
                         correctcolor:correctcolor,
                         basicretouch:basicretouch,
-                        clippingpath:clippingpath,
-                        marginmeasure: localStorage.getItem('marginmeasure'),
-                        margintop:localStorage.getItem('margintop'),
-                        marginbottom:localStorage.getItem('marginbottom'),
-                        marginright:localStorage.getItem('marginright'),
-                        marginleft:localStorage.getItem('marginleft'),
-                        date:Date.now(),
-                        spectype:'stepbystep'
+                        clippingpath:clippingpath
                     });
+
                     $.ajax({
                             type: 'post',
                             url: '/newstepspec',
@@ -250,8 +228,7 @@
                     }
                                 
                     ntotal = ntotal / 100;
-                    $("#totalprice").html(setDecimals(ntotal,2));
-                    localStorage.setItem('totalprice',setDecimals(ntotal,2));
+                    $("#totalprice").html(ntotal);
                 }
 
             });
@@ -354,18 +331,9 @@
                             <label class="etiquetasxtras">Sombra Natural</label><label class="postextra">+ <span class="extreprefix">USD</span>$<%= config.prices.naturalshadow %></label>
                         </li>
                     </ul>
+                    
+            <!---SCRIPT PARA CAMBIAR FOTO SEGUN LO SELECIONADO-->                    
                     <script>
-//                        function changeShadowImg () {
-//                            laimagen = document.getElementById("shadowImage");
-//                            dropshadow = document.getElementById("dropshadow");
-//                            if (dropshadow.checked) {
-//                                laimagen.style.display='block';
-//                            }
-//                            else {
-//                                laimagen.style.display='none';
-//                            }
-//                        }
-                        
                         
                          document.getElementById('noshadow').onclick=function() {
                             if(this.checked) {
@@ -385,7 +353,6 @@
                             }
                         }
                         
-                    
                     </script>
                     <div class="infomodal">
                         <img id="shadowImage" src="../images/sombranone.png">

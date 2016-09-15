@@ -63,6 +63,7 @@
         
         <div class="recontenedor">
             <form id= "marginForm1" class="col1" action="newspec" method="post">
+                <input id="chknomargin" class="checkcheck" type="checkbox" name="alignnone"  value="none"  checked ><span class="postinput">Sin Cambios</span><br>
                 <label>Margen en</label>
                 <select name="marginmeasure">
                     <option value="%">%</option>
@@ -70,14 +71,15 @@
                     <option value="cm">cm</option>
                 </select><br>
                 <label>Arriba</label><br>
-                <input class="margin" name="margintop" type="text" value="5"><br>
+                <input class="margin" name="margintop" type="text" value="0"><br>
                 <label>Abajo</label><br>
-                <input class="margin" name="marginbottom" type="text" value="5"><br>
+                <input class="margin" name="marginbottom" type="text" value="0"><br>
                 <label>Derecha</label><br>
-                <input class="margin" name="marginright" type="text" value="5"><br>
+                <input class="margin" name="marginright" type="text" value="0"><br>
                 <label>Izquierda</label><br>
-                <input class="margin" name="marginleft" type="text" value="5"><br>
+                <input class="margin" name="marginleft" type="text" value="0"><br>
             </form>
+            
             <div class="col2">
                 <div id="marco" class="alignHorizontalC">
                     <div class="vertLine1"></div>

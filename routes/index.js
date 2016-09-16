@@ -282,6 +282,12 @@ catch(err) {
     // Display the Login page with any flash message, if any
     res.render('registro', {message: req.flash('message')});
   });
+
+  router.get('/de_registro', function(req, res) {
+    // Display the Login page with any flash message, if any
+    res.render('de_registro', {message: req.flash('message')});
+  });
+
   router.get('/faq', function(req, res) {
     // Display the Login page with any flash message, if any
     res.render('faq', {message: req.flash('message')});
@@ -306,8 +312,11 @@ catch(err) {
 
 /* GET login page. */
   router.get('/login', function(req, res) {
-    // Display the Login page with any flash message, if any
     res.render('login', {message: req.flash('message')});
+  });
+//Login para diseñadores
+  router.get('/de_login', function(req, res) {
+    res.render('de_login', {message: req.flash('message')});
   });
  
   router.get('/logout',
@@ -539,6 +548,23 @@ catch(err) {
     failureFlash : true, 
     successFlash : true 
   }));
+  
+  /* Handle Designer Login POST */
+ router.post('/de_signin', passport.authenticate('de_login', {
+    successRedirect: '/de_designers1.html',
+    failureRedirect: '/de_login',
+    failureFlash : true,
+    successFlash : true 
+  }));
+ 
+   /* Handle Designer Registration POST */
+  router.post('/de_signup', passport.authenticate('de_signup', {
+    successRedirect: '/de_signup_success',
+    failureRedirect: '/de_signup_error',
+    failureFlash : true, 
+    successFlash : true 
+  }));
+
 
   /* maneja si el registro fue exitoso */
   // router.get('/signup_success', function(req, res) {
@@ -549,7 +575,7 @@ catch(err) {
 
 
 
- router.get('/signup_success', require('connect-ensure-login').ensureLoggedIn('/login'),
+ router.get('/signup_success', require('connect-ensure-login').ensureLoggedIn('/de_login'),
     function(req, res){
         var msjres = req.flash('success');
         res.setHeader('Content-Type', 'application/json');
@@ -571,6 +597,30 @@ catch(err) {
          res.redirect('/');
     }
   });
+
+  router.get('/de_signup_success', require('connect-ensure-login').ensureLoggedIn('/de_login'),
+    function(req, res){
+        var msjres = req.flash('success');
+        res.setHeader('Content-Type', 'application/json');
+        res.send(JSON.stringify({ error: 0, message: msjres[0]}));
+  });
+
+
+
+
+  // Si sucede un error al registrar un usuario se ejecuta esta ruta
+  router.get('/de_signup_error', function(req, res) {
+    var msjres = req.flash('error');
+    if (msjres[0]!= undefined){
+         console.log(msjres[0]);
+         res.setHeader('Content-Type', 'application/json');
+         res.send(JSON.stringify({ error: 1, message: msjres[0]}));
+    }
+    else {
+         res.redirect('/');
+    }
+  });
+
 
 
 // /newstepspec

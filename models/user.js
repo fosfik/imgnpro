@@ -11,7 +11,8 @@ module.exports = mongoose.model('User',{
     provider_id: {type:String},
     //photo: String,
     googletoken: String,
-    createdAt: {type:Date, default: Date.now}
+    createdAt: {type:Date, default: Date.now},
+    usertype:{type:String}
 });
 
 

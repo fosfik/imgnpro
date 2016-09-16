@@ -11,42 +11,39 @@
             <section id="logo">
             <h1><a href="/"><img src="../images/logo_black.png" alt="logo"></a></h1>
             </section>
-            <% include partials/menutop.html %>
         </header>
         <section id="registro">
             <div class="registro1">
-                <p class="encabezado" id="cabeza">Regístrate</p>
-                <p class="texto_plano">Crea tu cuenta para acceder a tus 3 primeras fotos Gratis</p>
+                <p class="encabezado" id="cabeza">Regístrate como Diseñador</p>
+                <p class="texto_plano"></p>
                 <br>
-                <p class="texto_plano">regístrate con tu cuenta de</p>
+                <!-- <p class="texto_plano">regístrate con tu cuenta de</p> -->
             </div>
         </section>
-        <section id="botones_redesReg">
+       <!--  <section id="botones_redesReg">
             <div class="button3">
                 <img class="redes_icon" src="../images/icon_f.png"><a href="/login/facebook">Facebook</a>
             </div>
             <div class="button4">
                 <img class="redes_icon" src="../images/icon_g.png"><a href="/login/google">Google</a>
             </div>
-            <!-- <div class="button5">
-                <img class="redes_icon" src="../images/icon_l.png"><a>Linkedin</a>
-            </div> -->
-        </section>
+            
+        </section> -->
         <section id="registro">
             <div class="registro1">
-            <p class="texto_plano">o bien, regístrate con <a id="paraabrirmodal2" href="#openRegistroModal">tu dirección de correo electrónico</a></p>
+            <p class="texto_plano">Regístrate con <a id="paraabrirmodal2" href="#openRegistroModal">tu dirección de correo electrónico</a></p>
             </div>
         </section>
         <section id="registro_boton">
             <div class="registro1">
                 <p class="texto_plano">¿Ya tienes cuenta?</p>
-                <div class="button6"><a href="/login">Empieza Ya!</a></div>
+                <div class="button6"><a href="/de_login">Empieza Ya!</a></div>
             </div>
         </section>
         <section id="registro_boton">
             <div class="registro1">
-                <p class="texto_plano">¿Eres una empresa?</p>
-                <div class="button7"><a href="contacto">Contáctanos</a></div>
+                <p class="texto_plano"></p>
+                
             </div>
         </section>
     </div>
@@ -55,7 +52,7 @@
         <div>
             <a href="#close" title="Close" Class="close">X</a>
             <h1 class="encabezado">Introduce tus datos</h1>
-            <form id="contactForm1" class="registro_form" action="/signup" method="post" name="registro_form">
+            <form id="contactForm1" class="registro_form" action="/de_signup" method="post" name="registro_form">
                 <ul>
                     <li>
                         <label id="etiquetas">Nombre de Usuario</label>
@@ -81,7 +78,7 @@
                     <h1 id="res_message"></h1>
                 </div>   
                 <div class="button2">
-                    <input type="submit" value="Quiero mis 3 imágenes Gratis!">
+                    <input type="submit" value="Quiero ser diseñador">
                 </div>   
                              
             </form>
@@ -98,7 +95,7 @@
                                 document.getElementById('res_message').innerHTML= data.message;    
                             }
                             else{
-                                setTimeout(window.location='principal',500);    
+                                setTimeout(window.location='/de_designers1.html',500);    
                             }
                         }
                     });

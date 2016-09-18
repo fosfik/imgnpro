@@ -489,7 +489,7 @@ passport.use('signup', new LocalStrategy({
                 subject: 'Hello', // Subject line
                 text: 'Welcome', // plaintext body
                 //html: '<a href="www.imgnpro.com/confirmuser"</a>' // html body
-                html: 'Hi '+ newUser.userlongname  +  '.<br><b>To confirm your account please click the link below</b><br><a href="www.imgnpro.com/confirmuser/' + newUser._id+'">Confirm acccount</a>' // html body
+                html: 'Hi '+ newUser.userlongname  +  '.<br><b>To confirm your account please click the link below</b><br><a href="' + req.headers.host + '/confirmuser/' + newUser._id+'">Confirm acccount</a>' // html body
             };
             console.log(mailOptions);
             //send mail with defined transport object

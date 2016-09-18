@@ -23,6 +23,46 @@ var mongoose = require('mongoose');
 var User = require('./models/user.js');
 var bCrypt = require('bcrypt');
 
+// mailer
+var nodemailer = require('nodemailer');
+
+// create reusable transporter object using the default SMTP transport
+//var transporter = nodemailer.createTransport('smtps://jerh56%40gmail.com:1J79ol4f*3@smtp.gmail.com');
+
+var transporter = require("nodemailer-smtp-transport")
+var app = express();
+
+var transporter = nodemailer.createTransport(transporter({
+    host : "imaginadores.mail-imgnpro.com",
+    ignoreTLS : true,
+    secureConnection : false,
+    port: 2525,
+    auth : {
+        user : "becomeapartner@mail-imgnpro.com",
+        pass : "1m4g3npr0"
+    }
+}));
+
+// var smtpTransport = nodemailer.createTransport(smtpTransport({
+//     host : "YOUR SMTP SERVER ADDRESS",
+//     secureConnection : false,
+//     port: 587,
+//     auth : {
+//         user : "YourEmail",
+//         pass : "YourEmailPassword"
+//     }
+// }));
+
+// var transporter = nodemailer.createTransport({
+//    service: "Gmail",  // sets automatically host, port and connection security settings
+//    auth: {
+//        user: "jerh56@gmail.com",
+//        pass: "1J79ol4f*3"
+//    }
+// });
+// setup e-mail data with unicode symbols
+
+
 
 //mongoose.connect(dbConfig.url);
 
@@ -217,6 +257,7 @@ passport.use(new FacebookStrategy({
             newUser.provider = profile.provider;
             newUser.usertype = 'user';
             newUser.userlongname = profile.displayName;
+            newUser.disabled = false;
             //newUser.photo = profile.photos[0].value;
    
             // save the user
@@ -279,49 +320,69 @@ passport.deserializeUser(function(obj, done) {
     // GOOGLE ==================================================================
     // =========================================================================
     passport.use(new GoogleStrategy({
-
+        passReqToCallback : true,
         clientID        : config.google.key,
         clientSecret    : config.google.secret,
         callbackURL     : config.google.callbackURL,
 
     },
-    function(token, refreshToken, profile, done) {
+    function(req, token, refreshToken, profile, done) {
 
         // make the code asynchronous
         // User.findOne won't fire until we have all our data back from Google
         process.nextTick(function() {
 
-            // try to find the user based on their google id
-            User.findOne({ 'provider_id' : profile.id }, function(err, user) {
-                if (err)
-                    return done(err);
 
-                if (user) {
+            User.findOne({ 'email' : profile.emails[0].value }, function(err, user) {
+               if (user) {
 
                     // if a user is found, log them in
-                    return done(null, user);
-                } else {
-                    // if the user isnt in our database, create a new user
-                    console.log(profile);
-                    var newUser  = new User();
-
-                    // set all of the relevant information
-                    newUser.provider_id  = profile.id;
-                    newUser.provider  = 'google';
-                    
-                    newUser.googletoken = token;
-                    newUser.userlongname  = profile.displayName;
-                    newUser.usertype = 'user';
-                    newUser.email = profile.emails[0].value; // pull the first email
-
-                    // save the user
-                    newUser.save(function(err) {
-                        if (err)
-                            throw err;
-                        return done(null, newUser);
-                    });
+                    return done(null, false, req.flash('message', 'Ya te registraste usando esta cuenta de correo de Google'));
+                    //return done(err, null, req.flash('message', 'Oops! Mauvais password.'));
+                    //return done('<H1>Problem </h1>', user, {message: 'Ya te registraste usando esta cuenta de correo'});
                 }
-            });
+                else
+                {
+
+                  // try to find the user based on their google id
+                  User.findOne({ 'provider_id' : profile.id }, function(err, user) {
+                      if (err)
+                          return done(err);
+
+                      if (user) {
+
+                          // if a user is found, log them in
+                          return done(null, user);
+                      } else {
+                          // if the user isnt in our database, create a new user
+                          console.log(profile);
+                          var newUser  = new User();
+
+                          // set all of the relevant information
+                          newUser.provider_id  = profile.id;
+                          newUser.provider  = 'google';
+                          
+                          newUser.googletoken = token;
+                          newUser.userlongname  = profile.displayName;
+                          newUser.usertype = 'user';
+                          newUser.email = profile.emails[0].value; // pull the first email
+                          newUser.disabled = false;
+
+                          // save the user
+                          newUser.save(function(err) {
+                              if (err)
+                                  throw err;
+                              return done(null, newUser);
+                          });
+                      }
+                  });
+                }
+
+
+             });
+
+           
+            
         });
 
     }));
@@ -370,6 +431,11 @@ passport.use('login', new LocalStrategy({
           console.log('Contraseña inválida');
           return done(null, false, req.flash('message', 'Contraseña inválida.'));
         }
+        // User exists but is disabled, log the error 
+        if (isDisabled(user)){
+          console.log('Usuario inhabilitado');
+          return done(null, false, req.flash('message', 'Cuenta inhabilitada, favor de entrar a tu bandeja de correo para habilitar tu cuenta'));
+        }
         // User and password both match, return user from 
         // done method which will be treated like success
         return done(null, user,req.flash('message', 'Inicio de sesión correcto.'));
@@ -407,6 +473,7 @@ passport.use('signup', new LocalStrategy({
           newUser.email = username;
           newUser.accept_terms = req.param('accept_terms');
           newUser.usertype = 'user';
+          newUser.disabled = true;
  
           // save the user
           newUser.save(function(err) {
@@ -414,7 +481,25 @@ passport.use('signup', new LocalStrategy({
               console.log('No se pudo guardar el usuario: '+err);  
               throw err;  
             }
-            console.log('Se registró correctamente el usuario');    
+            console.log('Se registró correctamente el usuario');
+
+            var mailOptions = {
+                from: '"Welcome" <welcome@mail-imgnpro.com>', // sender address
+                to: username, // list of receivers
+                subject: 'Hello', // Subject line
+                text: 'Welcome', // plaintext body
+                //html: '<a href="www.imgnpro.com/confirmuser"</a>' // html body
+                html: 'Hi '+ newUser.userlongname  +  '.<br><b>To confirm your account please click the link below</b><br><a href="www.imgnpro.com/confirmuser/' + newUser._id+'">Confirm acccount</a>' // html body
+            };
+            console.log(mailOptions);
+            //send mail with defined transport object
+            transporter.sendMail(mailOptions, function(error, info){
+                if(error){
+                    return console.log(error);
+                }
+                console.log('Message sent: ' + info.response);
+            });
+
             return done(null, newUser, {message:'Se registró correctamente el usuario'});
           }
           );
@@ -453,6 +538,11 @@ passport.use('de_login', new LocalStrategy({
           console.log('Contraseña inválida');
           return done(null, false, req.flash('message', 'Contraseña inválida.'));
         }
+        // User exists but is disabled, log the error 
+        if (isDisabled(user)){
+          console.log('Usuario inhabilitado');
+          return done(null, false, req.flash('message', 'Cuenta inhabilitada, favor de entrar a tu bandeja de correo para habilitar tu cuenta'));
+        }
         // User and password both match, return user from 
         // done method which will be treated like success
         return done(null, user,req.flash('message', 'Inicio de sesión correcto.'));
@@ -490,6 +580,7 @@ passport.use('de_signup', new LocalStrategy({
           newUser.email = username;
           newUser.accept_terms = req.param('accept_terms');
           newUser.usertype = 'designer';
+          newUser.disabled = true;
           
  
           // save the user
@@ -517,6 +608,10 @@ console.log(config.facebook.appname);
 
 var isValidPassword = function(user, password){
   return bCrypt.compareSync(password, user.password);
+}
+
+var isDisabled = function(user){
+  return  user.disabled;
 }
 
 // Generates hash using bCrypt

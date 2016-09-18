@@ -12,7 +12,8 @@ module.exports = mongoose.model('User',{
     //photo: String,
     googletoken: String,
     createdAt: {type:Date, default: Date.now},
-    usertype:{type:String}
+    usertype:{type:String},
+    disabled: {type:Boolean, default: true}
 });
 
 

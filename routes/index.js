@@ -10,6 +10,7 @@ var sha1 = require('sha1');
 var config = require('../config');
 var path = require('path');
 var Orders = require('../models/order.js');
+var User = require('../models/user.js');
 var Spec = require('../models/specification.js');
 var Contact = require('../models/contact.js');
 var ordersinproc  = 0;
@@ -308,11 +309,20 @@ catch(err) {
     // Display the Login page with any flash message, if any
     res.render('pedidos', {message: req.flash('message')});
   });
-
+  
+ router.get('/hinewuser', function(req, res) {
+    // Display the Login page with any flash message, if any
+    res.render('hinewuser', {message: req.flash('message')});
+  });
 
 /* GET login page. */
   router.get('/login', function(req, res) {
-    res.render('login', {message: req.flash('message')});
+    //console.log(req.flash('message'));
+   
+    //res.render('login', {message: 'dfjhdjhsjd'});
+    var msjres = req.flash('message');
+    res.render('login', {message: msjres[0]});
+
   });
 //Login para diseñadores
   router.get('/de_login', function(req, res) {
@@ -359,6 +369,15 @@ catch(err) {
      require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){
            res.render('especificaciones2', {message: req.flash('message'), user: req.user, config:config, countorders:ordersinproc, specid:''});
+  });
+
+
+
+/* Maneja la confirmación de un usuario */
+  router.get('/confirmuser/:userid',function(req, res) {
+    doConfirmUser(req.params.userid, function(err, message){
+         res.render('login', {message: message});
+    });      
   });
 
 /* Maneja la página especificaciones2 cuando se va a editar una especificación */
@@ -575,7 +594,7 @@ catch(err) {
 
 
 
- router.get('/signup_success', require('connect-ensure-login').ensureLoggedIn('/de_login'),
+ router.get('/signup_success', require('connect-ensure-login').ensureLoggedIn('/login'),
     function(req, res){
         var msjres = req.flash('success');
         res.setHeader('Content-Type', 'application/json');
@@ -908,8 +927,10 @@ router.get('/login/facebook/return',
   // the callback after google has authenticated the user
   router.get('/login/google/return',
           passport.authenticate('google', {
-            successRedirect : '/principal',
-            failureRedirect : '/login'
+          successRedirect : '/principal',
+          failureRedirect : '/login',
+          failureFlash : true,
+          successFlash : true 
   }));
 
 
@@ -1195,4 +1216,39 @@ function toDateString(date,cb){
   cd(dateformat);
 }
 
+function doConfirmUser(userid,cb){
+ //var confirmUser = new User();
+
+  console.log('Confirm user');
+  console.log(userid);
+  User.findOne({ _id: userid  }, function (err, doc){
+
+    console.log(err);
+    if (err){
+        console.log('Error al confimar usuario: '+err);
+        cb(1,'Error al confimar usuario: '+err);
+        //res.setHeader('Content-Type', 'application/json');
+        //res.send(JSON.stringify({ error: 1, message: 'No se guardaron los cambios, favor de contactar al administrador'})); 
+    }
+    else{
+      if (doc) {
+        doc.disabled = false;
+       
+        //doc.specid = req.user.specid;
+        console.log(doc);
+
+        doc.save();
+        cb(0,'usuario confirmado, favor de ingresar');
+        //newSpec.save();
+        //res.setHeader('Content-Type', 'application/json');
+        //res.send(JSON.stringify({ error: 0,  message: 'Se guardaron correctamente los cambios a la especificación'})); 
+      } 
+      else {
+        cb(1,'No se encontró al usuario');
+        //res.setHeader('Content-Type', 'application/json');
+        //res.send(JSON.stringify({ error: 1,  message: 'No se encontró la especificación, los cambios no fueron almacenados'})); 
+      }
+    }
+  });  
+}
 module.exports = router;

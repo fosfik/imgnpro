@@ -33,12 +33,13 @@ var transporter = require("nodemailer-smtp-transport")
 var app = express();
 
 var transporter = nodemailer.createTransport(transporter({
-    host : "imaginadores.mail-imgnpro.com",
+    host : "mail.mail-imgnpro.com",
     ignoreTLS : true,
     secureConnection : false,
     port: 2525,
     auth : {
         user : "becomeapartner@mail-imgnpro.com",
+        //pass: "m0r3n0"
         pass : "1m4g3npr0"
     }
 }));
@@ -484,7 +485,7 @@ passport.use('signup', new LocalStrategy({
             console.log('Se registró correctamente el usuario');
 
             var mailOptions = {
-                from: '"Welcome" <welcome@mail-imgnpro.com>', // sender address
+                from: '"Welcome" <becomeapartner@mail-imgnpro.com>', // sender address
                 to: username, // list of receivers
                 subject: 'Hello', // Subject line
                 text: 'Welcome', // plaintext body

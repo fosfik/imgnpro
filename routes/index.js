@@ -167,10 +167,6 @@ router.get('/listspecs/:limit', function(req, res) {
           newOrder.specid = req.body.specid;
           newOrder.totalpay = req.body.totalpay;
           // todo: recorrer el req.body para obtener los datos de las imagenes
-          
-
-
-
     var imageUploadInfos = JSON.parse(req.body['imageUploadInfos']);
     console.log(imageUploadInfos);
 
@@ -178,8 +174,9 @@ router.get('/listspecs/:limit', function(req, res) {
               //i === 0: arr[0] === undefined;
               //i === 1: arr[1] === 'hola';
               //i === 2: arr[2] === 'chau';
-              console.log(imageUploadInfos[i]);
-            newOrder.images.push(imageUploadInfos[i]);
+              imageUploadInfos[i].position = i+1;
+              console.log(imageUploadInfos[i].position);
+              newOrder.images.push(imageUploadInfos[i]);
 
           }
 
@@ -206,6 +203,28 @@ router.get('/listspecs/:limit', function(req, res) {
               console.log(numorderstr);
               
 
+              // crear paquetes de trabajo
+//              console.log(newOrder.images.length());
+
+//              var packagelenght = 15;
+// var imagecount = 59;
+// var numpacksfull = Math.floor(imagecount/packagelenght);
+// var otherfiles = (imagecount % packagelenght);
+
+// var lownumber = 1;
+// var highnumber = packagelenght;
+// for (var i=1; i <= numpacksfull; i++){
+//        alert(lownumber + ', ' + highnumber);  
+//        lownumber = lownumber + packagelenght;
+//        highnumber = highnumber + packagelenght;     
+
+//   }
+// if (otherfiles > 0){
+//    highnumber = lownumber + (otherfiles-1);
+//    alert(lownumber + ', ' + highnumber);
+// }
+
+
               //res.write('<h1>'+ numorderstr + '</h1>');
               //res.end();
               res.setHeader('Content-Type', 'application/json');
@@ -215,50 +234,14 @@ router.get('/listspecs/:limit', function(req, res) {
             }
 
         });  
-}
-catch(err) {
-   
-   console.log(err.message);
-}
-          // newOrder.images.push({imagename:"https://s3.amazonaws/imagen.jpg", width:300});
-          // newOrder.images.push({imagename:"https://s3.amazonaws/imagen.jpg", width:300});
-          // newOrder.images.push({imagename:"https://s3.amazonaws/imagen.jpg", width:300});
-          // newOrder.images.push({imagename:"https://s3.amazonaws/imagen.jpg", width:300});
-
-          
-          
-         
-    //res.set('Content-Type', 'application/javascript');
-
-  });
- 
-
- // router.get('/neworder',
- //  function(req, res) {
-
- //  });
+  }
+  catch(err) {
+     
+     console.log(err.message);
+  }
 
 
-
-      
-
-
-//var flash = require('connect-flash'); // middleware para mensajes en passport
-
-//app.use(flash());
-
-
-
-/* GET home page. */
-//router.get('/', function(req, res, next) {
-  //res.render('index', { title: 'Express' });
-//});
-
-// PASSPORT
-
-// router.get('*',function(req,res){  
-//     res.redirect('https://imgnpro.com'+req.url)
-// });
+});
 
   router.get('/',
   function(req, res) {

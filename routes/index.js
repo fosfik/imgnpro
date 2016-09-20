@@ -377,6 +377,7 @@ router.get('/listspecs/:limit', function(req, res) {
           
 
           countorders(req.user._id,function(count){
+            // Validar que el usuario esta activo.
                //console.log(count);
                //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id });
               // res.render('confirmpayorder', {message: req.flash('message'), user: req.user, numorder:req.params.numorder, order:order[0]});             

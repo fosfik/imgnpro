@@ -425,7 +425,7 @@ passport.use('login', new LocalStrategy({
         // Username does not exist, log error & redirect back
         if (!user){
           console.log('No se encontró el usuario'+username);
-          return done(null, false, req.flash('message', 'Correo electrónico no existe.'));                 
+          return done(null, false, req.flash('message', 'La cuenta no existe.'));                 
         }
         // User exists but wrong password, log the error 
         if (!isValidPassword(user, password)){
@@ -474,7 +474,14 @@ passport.use('signup', new LocalStrategy({
           newUser.email = username;
           newUser.accept_terms = req.param('accept_terms');
           newUser.usertype = 'user';
-          newUser.disabled = true;
+          if(config.register.usermustactivate == true){
+            newUser.disabled = true;
+          }
+          else
+          {
+            newUser.disabled = false;
+          }
+          
  
           // save the user
           newUser.save(function(err) {
@@ -532,7 +539,7 @@ passport.use('de_login', new LocalStrategy({
         // Username does not exist, log error & redirect back
         if (!user){
           console.log('No se encontró el usuario'+username);
-          return done(null, false, req.flash('message', 'Correo electrónico no existe.'));                 
+          return done(null, false, req.flash('message', 'La cuenta no existe.'));                 
         }
         // User exists but wrong password, log the error 
         if (!isValidPassword(user, password)){
@@ -581,7 +588,14 @@ passport.use('de_signup', new LocalStrategy({
           newUser.email = username;
           newUser.accept_terms = req.param('accept_terms');
           newUser.usertype = 'designer';
-          newUser.disabled = true;
+          if(config.register.designermustactivate == true){
+            newUser.disabled = true;
+          }
+          else
+          {
+            newUser.disabled = false;
+          }
+          
           
  
           // save the user

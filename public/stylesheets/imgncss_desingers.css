@@ -131,6 +131,15 @@ html {
     min-width: 620px;
 }
 
+hr {
+    width: 100%;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    border: 0;
+    height: 2px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), #CCCCCC, rgba(0, 0, 0, 0));
+}
+
 .encabezado {
     font-size: 28px;
     padding: 10px 5px;
@@ -193,7 +202,8 @@ html {
 /* ESTILO PARA EL BILBOARD */
 
 #bilboard {
-    margin-top: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     color: #FF0000;
     background: #500000;
     border: solid #990000 2px;
@@ -203,7 +213,19 @@ html {
     box-shadow: 4px 4px 6px rgba(20, 20, 20, .5);
 }
 
-#bilboard span {
+#bilboard2 {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: #00A0FF;
+    background: #0156ad;
+    border: solid #00A0FF 2px;
+    height: 30px;	
+    overflow: hidden;
+    position: relative;
+    box-shadow: 4px 4px 6px rgba(20, 20, 20, .5);
+}
+
+#bilboard span, #bilboard2 span {
      position: absolute;
      width: 100%;
      height: 100%;
@@ -246,15 +268,39 @@ html {
     border: 3px solid #000;
     padding: 10px 10px;
     max-width: auto;
-    height: 240px;
+    height: 270px;
     min-width: 570px;
+    text-align: center;
 }
 
+.elbloque {
+    position: relative;
+    overflow: hidden;
+}
+
+.miniBoxNo {
+    text-decoration: none;
+    margin: 5px;
+    width: 80px;
+    height: 80px;
+    background: #AAA;
+    border-radius: 10px;
+    color: #FFF;
+    text-align: center;
+    display: inline-block;
+    cursor: default;
+    transition: .3s;
+}
+
+
+
+
 .miniBox {
-    margin: 2px;
-    width: 50px;
-    height: 50px;
-    background: #000;
+    text-decoration: none;
+    margin: 5px;
+    width: 80px;
+    height: 80px;
+    background: #555;
     border-radius: 10px;
     color: #FFF;
     text-align: center;
@@ -263,7 +309,7 @@ html {
     transition: .3s;
 }
 
-.miniBox:hover {
+.miniBox:hover, .miniBoxNo:hover {
     background: #00A0FF;
     transition: .3s;
     box-shadow: 2px 2px 2px rgba(20, 20, 20, 0.5);
@@ -273,10 +319,218 @@ html {
     display: block;
     font-size: 20px;
     font-weight: bold;
-    margin-top: 10px;
+    margin-top: 23px;
 }
 
 .miniText {
     display: block;
     font-size: 8px;
+}
+
+/*  MODAL   */
+
+.modalDialog {
+    color: #FFFFFF;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0,0,0,0.8);
+    z-index: 99999;
+    opacity: 0;
+    -webkit-transition: opacity 400ms ease-in;
+    -moz-transition: opacity 400ms ease-in;
+    transition: opacity 400ms ease-in;
+    pointer-events: none;
+}
+
+.modalDialog:target {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modalDialog > div {
+    width: 500px;
+    height: auto;
+    position: relative;
+    margin: 10% auto;
+    padding: 5px 20px 20px 20px;
+    background: #000000;
+}
+
+.modalDialog .encabezado {
+    text-align: center;
+}
+
+.hrmodal {
+    width: 100%;
+    margin-top: 0px;
+    margin-bottom: 20px;
+    border: 0;
+    height: 2px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), #555555, rgba(0, 0, 0, 0));
+}
+
+.hrmodal2 {
+    width: 100%;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    height: 2px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), #555555, rgba(0, 0, 0, 0));
+}
+
+.modalDialog ul {
+    width: 100%;
+    display: inline-block;
+    list-style-type: none;
+    list-style-position: outside;
+    margin: 0px;
+    padding: 0px;
+    vertical-align: top;
+}
+
+.modalDialog li {
+    padding: 12px;
+    position: relative;
+}
+
+.etiquetasxtras {
+    display: inline-block;
+    padding: 5px 8px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.postextra {
+    display: inline-block;
+    padding: 5px 8px;
+    font-size: 14px;
+}
+
+.extreprefix{
+    font-size: 8px;
+    margin-right: 4px;
+}
+
+.modalDialog :-moz-placeholder {color: #333333; font-size: 14px; font-style: italic;}
+.modalDialog ::-webkit-input-placeholder {color: #333333; font-size: 14px; font-style: italic;}
+
+.modalDialog input {
+    padding: 5px 8px;
+}
+
+.infomodal {
+    display: inline-block;
+    width: 220px;
+    height: 150px;
+    margin: 0px;
+    padding: 10px;
+    vertical-align: top;
+}
+
+.texto_plano_modal {
+    display: inline-block;
+    padding: 10px;
+    font-size: 12px;
+    width: 200px;
+    height: 130px;
+    border: 1px dashed #555;
+}
+
+.buttonModal a{
+    background-color: red;
+    color: #FFFFFF;
+    padding: 10px 10px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    float: right;
+    margin: 10px 37%;
+    cursor: pointer;
+    width: auto;
+    height: auto;
+}
+
+.modalDialog input:focus {
+    outline-color: #555555;
+}
+
+.close {
+    background: #000000;
+    color: #FFFFFF;
+    border: 2px solid;
+    border-color: #FFFFFF;
+    line-height: 24px;
+    position: absolute;
+    right: -10px;
+    text-align: center;
+    top: -7px;
+    width: 24px;
+    text-decoration: none;
+    font-size: 12px;
+    -webkit-border-radius: 12px;
+    -moz-border-radius: 12px;
+    border-radius: 24px;
+}
+
+.modalTip {
+    color: #555;
+    text-align: center;
+    font-size: 14px;
+    margin: 10px;
+    font-weight: normal;
+}
+
+#res_message {
+    color: red;
+    text-align: center;
+    font-size: 18px;
+    margin: 10px;
+    font-weight: lighter;
+    font-style: italic;
+}
+
+#firstplace {
+    text-align: center;
+    width: 140px;
+    height: 78px;
+    background-image: url(../images/firstplace.png);
+    background-size: 140px;
+}
+
+.encabezado2 {
+    font-weight: bold;
+    text-align: center;
+    font-size: 28px;
+    width: 140px;
+}
+
+.hraside {
+    width: 140px;
+}
+
+.encabezado_aside {
+    margin-top: 12px;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.imagenum {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.texto_plano_aside {
+    font-size: 12px;
+    display: inline-block;
+}
+
+.encabezado_aside2 {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 10px;
 }

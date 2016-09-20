@@ -657,6 +657,7 @@ catch(err) {
       newSpec.format = specInfos[0].format;
       newSpec.colormode = specInfos[0].colormode;
       newSpec.background = specInfos[0].background;
+      newSpec.backgrndcolor = specInfos[0].backgrndcolor;
       newSpec.dpi = specInfos[0].DPI;
       newSpec.dpinone = specInfos[0].dpinone;
       newSpec.userid = req.user._id;  
@@ -721,6 +722,7 @@ catch(err) {
       newSpec.format = req.body.format;
       newSpec.colormode = req.body.colormode;
       newSpec.background = req.body.background;
+      newSpec.backgrndcolor = req.body.backgrndcolor;
       newSpec.dpi = req.body.DPI;
       newSpec.dpinone = req.body.dpinone;
       newSpec.userid = req.user._id;  
@@ -779,6 +781,7 @@ catch(err) {
                   doc.format = req.body.format;
                   doc.colormode = req.body.colormode;
                   doc.background = req.body.background;
+                  doc.backgrndcolor = req.body.backgrndcolor;
                   doc.dpi = req.body.DPI;
                   doc.dpinone = req.body.dpinone;
                   //doc.userid = req.user._id;  

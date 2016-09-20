@@ -43,6 +43,8 @@
                                     $('#format').prop("value", data.spec.format);
                                     $('#colormode').prop("value", data.spec.colormode);
                                     $('#background').prop("value", data.spec.background);
+                                    $('#colorselect').prop("value", data.spec.backgrndcolor);
+
 
                                     // if (data.spec.sizenone==null){
                                     //     $('#chksizenone').prop('checked', false);
@@ -227,6 +229,17 @@
                     desactCustomAllNext();
                 }); 
                 
+                $("#background").change(function() {
+                    if($("#background option:selected").text() ==='COLOR' ){
+                        $('#colorselect').prop("disabled", false);
+                      }
+                    else{
+                       $('#colorselect').prop("value", '#ffffff');
+                       $('#colorselect').prop("disabled", true);
+
+                    }
+                });
+
                 $("#format").change(function() {
 
                     //alert( $("#format option:selected").text());
@@ -236,6 +249,8 @@
                       if($("#format option:selected").text() ==='JPG' || $("#format option:selected").text() ==='JPG WEB' ){
                         $('#sin_fondo').prop("disabled", true);
                         $('#background').prop("value", 'blanco');
+                        $('#colorselect').prop("value", '#ffffff');
+                        $('#colorselect').prop("disabled", true);  
                       }
 
                       if($("#format option:selected").text() ==='JPG WEB' || $("#format option:selected").text() ==='PNG' ){
@@ -437,9 +452,11 @@
                 <select id="background" name="background">
                     <option value="blanco">BLANCO</option>
                     <option value="negro">NEGRO</option>
+                    <option value="color">COLOR</option>
                     <option id="sin_fondo" value="sin_fondo">SIN FONDO</option>
-                </select><br>
-
+                </select>
+                <input id="colorselect" type="color" name="backgrndcolor" value="#ffffff" disabled>
+                <br>
                 <label>Tamaño</label><br>
                 <input id="chksizenone" class="checks" type="checkbox" name="sizenone" value="none"  checked><span class="postinput">Sin Cambios</span>
 

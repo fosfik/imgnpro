@@ -41,6 +41,10 @@ if ( app.get('env') === 'production') {
 		correctcolor:'0.40',
 		clippingpath:'2.40',
 		basicretouch:'0.60'
+	},
+		register:{
+			usermustactivate: false,
+			designermustactivate: true
 	}
 
 
@@ -93,6 +97,10 @@ else{
 			correctcolor:'0.40',
 			clippingpath:'2.40',
 			basicretouch:'0.60'
+		},
+		register:{
+			usermustactivate: false,
+			designermustactivate: true
 		}
 	  };
 
@@ -133,6 +141,10 @@ else{
 			correctcolor:'0.40',
 			clippingpath:'2.40',
 			basicretouch:'0.60'
+		},
+		register:{
+			usermustactivate: false,
+			designermustactivate: true
 		}
 	  };
 

@@ -10,6 +10,7 @@ var sha1 = require('sha1');
 var config = require('../config');
 var path = require('path');
 var Orders = require('../models/order.js');
+var User = require('../models/user.js');
 var Spec = require('../models/specification.js');
 var Contact = require('../models/contact.js');
 var ordersinproc  = 0;
@@ -166,10 +167,6 @@ router.get('/listspecs/:limit', function(req, res) {
           newOrder.specid = req.body.specid;
           newOrder.totalpay = req.body.totalpay;
           // todo: recorrer el req.body para obtener los datos de las imagenes
-          
-
-
-
     var imageUploadInfos = JSON.parse(req.body['imageUploadInfos']);
     console.log(imageUploadInfos);
 
@@ -177,8 +174,9 @@ router.get('/listspecs/:limit', function(req, res) {
               //i === 0: arr[0] === undefined;
               //i === 1: arr[1] === 'hola';
               //i === 2: arr[2] === 'chau';
-              console.log(imageUploadInfos[i]);
-            newOrder.images.push(imageUploadInfos[i]);
+              imageUploadInfos[i].position = i+1;
+              console.log(imageUploadInfos[i].position);
+              newOrder.images.push(imageUploadInfos[i]);
 
           }
 
@@ -205,6 +203,28 @@ router.get('/listspecs/:limit', function(req, res) {
               console.log(numorderstr);
               
 
+              // crear paquetes de trabajo
+//              console.log(newOrder.images.length());
+
+//              var packagelenght = 15;
+// var imagecount = 59;
+// var numpacksfull = Math.floor(imagecount/packagelenght);
+// var otherfiles = (imagecount % packagelenght);
+
+// var lownumber = 1;
+// var highnumber = packagelenght;
+// for (var i=1; i <= numpacksfull; i++){
+//        alert(lownumber + ', ' + highnumber);  
+//        lownumber = lownumber + packagelenght;
+//        highnumber = highnumber + packagelenght;     
+
+//   }
+// if (otherfiles > 0){
+//    highnumber = lownumber + (otherfiles-1);
+//    alert(lownumber + ', ' + highnumber);
+// }
+
+
               //res.write('<h1>'+ numorderstr + '</h1>');
               //res.end();
               res.setHeader('Content-Type', 'application/json');
@@ -214,50 +234,14 @@ router.get('/listspecs/:limit', function(req, res) {
             }
 
         });  
-}
-catch(err) {
-   
-   console.log(err.message);
-}
-          // newOrder.images.push({imagename:"https://s3.amazonaws/imagen.jpg", width:300});
-          // newOrder.images.push({imagename:"https://s3.amazonaws/imagen.jpg", width:300});
-          // newOrder.images.push({imagename:"https://s3.amazonaws/imagen.jpg", width:300});
-          // newOrder.images.push({imagename:"https://s3.amazonaws/imagen.jpg", width:300});
-
-          
-          
-         
-    //res.set('Content-Type', 'application/javascript');
-
-  });
- 
-
- // router.get('/neworder',
- //  function(req, res) {
-
- //  });
+  }
+  catch(err) {
+     
+     console.log(err.message);
+  }
 
 
-
-      
-
-
-//var flash = require('connect-flash'); // middleware para mensajes en passport
-
-//app.use(flash());
-
-
-
-/* GET home page. */
-//router.get('/', function(req, res, next) {
-  //res.render('index', { title: 'Express' });
-//});
-
-// PASSPORT
-
-// router.get('*',function(req,res){  
-//     res.redirect('https://imgnpro.com'+req.url)
-// });
+});
 
   router.get('/',
   function(req, res) {
@@ -308,11 +292,20 @@ catch(err) {
     // Display the Login page with any flash message, if any
     res.render('pedidos', {message: req.flash('message')});
   });
-
+  
+ router.get('/hinewuser', function(req, res) {
+    // Display the Login page with any flash message, if any
+    res.render('hinewuser', {message: req.flash('message')});
+  });
 
 /* GET login page. */
   router.get('/login', function(req, res) {
-    res.render('login', {message: req.flash('message')});
+    //console.log(req.flash('message'));
+   
+    //res.render('login', {message: 'dfjhdjhsjd'});
+    var msjres = req.flash('message');
+    res.render('login', {message: msjres[0]});
+
   });
 //Login para diseñadores
   router.get('/de_login', function(req, res) {
@@ -361,6 +354,15 @@ catch(err) {
            res.render('especificaciones2', {message: req.flash('message'), user: req.user, config:config, countorders:ordersinproc, specid:''});
   });
 
+
+
+/* Maneja la confirmación de un usuario */
+  router.get('/confirmuser/:userid',function(req, res) {
+    doConfirmUser(req.params.userid, function(err, message){
+         res.render('login', {message: message});
+    });      
+  });
+
 /* Maneja la página especificaciones2 cuando se va a editar una especificación */
   router.get('/especificaciones2/:specid', 
      require('connect-ensure-login').ensureLoggedIn('/login'),
@@ -375,6 +377,7 @@ catch(err) {
           
 
           countorders(req.user._id,function(count){
+            // Validar que el usuario esta activo.
                //console.log(count);
                //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id });
               // res.render('confirmpayorder', {message: req.flash('message'), user: req.user, numorder:req.params.numorder, order:order[0]});             
@@ -575,7 +578,7 @@ catch(err) {
 
 
 
- router.get('/signup_success', require('connect-ensure-login').ensureLoggedIn('/de_login'),
+ router.get('/signup_success', require('connect-ensure-login').ensureLoggedIn('/login'),
     function(req, res){
         var msjres = req.flash('success');
         res.setHeader('Content-Type', 'application/json');
@@ -638,6 +641,7 @@ catch(err) {
       newSpec.format = specInfos[0].format;
       newSpec.colormode = specInfos[0].colormode;
       newSpec.background = specInfos[0].background;
+      newSpec.backgrndcolor = specInfos[0].backgrndcolor;
       newSpec.dpi = specInfos[0].DPI;
       newSpec.dpinone = specInfos[0].dpinone;
       newSpec.userid = req.user._id;  
@@ -702,6 +706,7 @@ catch(err) {
       newSpec.format = req.body.format;
       newSpec.colormode = req.body.colormode;
       newSpec.background = req.body.background;
+      newSpec.backgrndcolor = req.body.backgrndcolor;
       newSpec.dpi = req.body.DPI;
       newSpec.dpinone = req.body.dpinone;
       newSpec.userid = req.user._id;  
@@ -760,6 +765,7 @@ catch(err) {
                   doc.format = req.body.format;
                   doc.colormode = req.body.colormode;
                   doc.background = req.body.background;
+                  doc.backgrndcolor = req.body.backgrndcolor;
                   doc.dpi = req.body.DPI;
                   doc.dpinone = req.body.dpinone;
                   //doc.userid = req.user._id;  
@@ -908,8 +914,10 @@ router.get('/login/facebook/return',
   // the callback after google has authenticated the user
   router.get('/login/google/return',
           passport.authenticate('google', {
-            successRedirect : '/principal',
-            failureRedirect : '/login'
+          successRedirect : '/principal',
+          failureRedirect : '/login',
+          failureFlash : true,
+          successFlash : true 
   }));
 
 
@@ -1195,4 +1203,39 @@ function toDateString(date,cb){
   cd(dateformat);
 }
 
+function doConfirmUser(userid,cb){
+ //var confirmUser = new User();
+
+  console.log('Confirm user');
+  console.log(userid);
+  User.findOne({ _id: userid  }, function (err, doc){
+
+    console.log(err);
+    if (err){
+        console.log('Error al confimar usuario: '+err);
+        cb(1,'Error al confimar usuario: '+err);
+        //res.setHeader('Content-Type', 'application/json');
+        //res.send(JSON.stringify({ error: 1, message: 'No se guardaron los cambios, favor de contactar al administrador'})); 
+    }
+    else{
+      if (doc) {
+        doc.disabled = false;
+       
+        //doc.specid = req.user.specid;
+        console.log(doc);
+
+        doc.save();
+        cb(0,'usuario confirmado, favor de ingresar');
+        //newSpec.save();
+        //res.setHeader('Content-Type', 'application/json');
+        //res.send(JSON.stringify({ error: 0,  message: 'Se guardaron correctamente los cambios a la especificación'})); 
+      } 
+      else {
+        cb(1,'No se encontró al usuario');
+        //res.setHeader('Content-Type', 'application/json');
+        //res.send(JSON.stringify({ error: 1,  message: 'No se encontró la especificación, los cambios no fueron almacenados'})); 
+      }
+    }
+  });  
+}
 module.exports = router;

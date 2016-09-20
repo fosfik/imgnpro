@@ -4,6 +4,7 @@ var SpecSchema = new mongoose.Schema({
   name: {type: String},
   format: { type: String},
 	background: {type: String},
+  backgrndcolor:{type: String},
 	colormode: {type: String},
 	dpi: {type: Number, default: 0},
 	dpinone: {type: String},

@@ -158,6 +158,7 @@
                         if(file.status !== 'error'){
                             //alert(file.fail);
                             imageCount--;
+                            deleteitemfile(file.name);
                             $("div#imageCount").html(imageCount);
                             caltotalpay();
                         }
@@ -178,7 +179,7 @@
                                 });
                             }  
 
-                           console.log(this.files);
+                           //console.log(this.files);
                             return(_ref.parentNode.removeChild(file.previewElement));
                         }
                         else{
@@ -249,24 +250,14 @@
 //                     //}
 //                 }); 
 
-function deleteitemfile(imageUploadInfos,filename){
-
-    for (i = 0, len = imageUploadInfos.length; i < len - 1; i++) {
-        if (imageUploadInfos[i].name == filename) {
-            alert("El archivo: " + filename + " se va a borrar");
-           // return (pre = file.previewElement) != null ? pre.parentNode.removeChild(file.previewElement) : void 0;
-        }
-    }
-
-    // for (var i=0; i < imageUploadInfos.length; i++){
-    //           //i === 0: arr[0] === undefined;
-    //           //i === 1: arr[1] === 'hola';
-    //           //i === 2: arr[2] === 'chau';
-    //           console.log(imageUploadInfos[i]);
-            
-
-    //       }
-}
+            function deleteitemfile(filename){
+                for (i = 0, len = imageUploadInfos.length; i <= len - 1; i++) {
+                    if (imageUploadInfos[i].imagename == filename) {
+                        imageUploadInfos.splice(i,1);
+                        break;
+                    }
+                }
+            }
 
             function caltotalpay(){
                    

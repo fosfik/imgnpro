@@ -101,6 +101,9 @@ else{
 		register:{
 			usermustactivate: false,
 			designermustactivate: true
+		},
+		package:{
+			length: 20
 		}
 	  };
 

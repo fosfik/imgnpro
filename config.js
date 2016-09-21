@@ -45,6 +45,9 @@ if ( app.get('env') === 'production') {
 		register:{
 			usermustactivate: false,
 			designermustactivate: true
+	},
+		package:{
+			length: 20
 	}
 
 
@@ -148,6 +151,9 @@ else{
 		register:{
 			usermustactivate: false,
 			designermustactivate: true
+		},
+		package:{
+			length: 20
 		}
 	  };
 

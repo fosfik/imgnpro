@@ -86,8 +86,7 @@ html {
 
 .bienvenida ul{
     list-style: none;
-    height: 40px;
-    
+    height: 40px; 
 }
 
 .bienvenida li{
@@ -291,8 +290,6 @@ hr {
     cursor: default;
     transition: .3s;
 }
-
-
 
 
 .miniBox {
@@ -533,4 +530,88 @@ hr {
     font-size: 14px;
     font-weight: bold;
     margin-top: 10px;
+}
+
+
+#contenedor[name="cuenta"] {
+    float: left;
+    margin-left: 200px;
+    margin-top: 60px;
+    display: inline-block;
+    max-width: 57%;
+    min-width: 450px;
+}
+
+
+.col1, .col2, col3{
+    padding: 10px;
+    display: inline-block;
+    float: left;
+}
+
+.contactForm, .factForm {
+    padding: 10px;
+}
+
+.contactForm select {
+    background: none;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+select[name="tipocuenta"] {
+    width: 160px;
+}
+
+#micuenta{
+    width: 400px;
+    height: 100%;
+}
+
+#micuenta label{
+    font-size: 10px;
+    text-decoration: none;
+}
+
+#micuenta input{
+    text-decoration: none;
+    background: none;
+    font-size: 12px;
+    width: 180px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.encabezadoFact{
+    font-size: 20px;
+}
+
+hr[name="hrcuenta"] {
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border: 0;
+    height: 2px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), #CCCCCC, rgba(0, 0, 0, 0));
+}
+
+.col6 {
+    padding: 10px;
+    margin-top: 10px;
+    margin-left: 0px;
+    display: inline-block;
+    float: left;
+}
+
+.factForm select {
+    background: none;
+    font-size: 12px;
+    font-weight: bold;
+    width: 160px;
+    margin-bottom: 8px;
+}
+
+.requerido {
+    color: red;
+    font-weight: bold;
 }

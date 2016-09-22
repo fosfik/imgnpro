@@ -125,16 +125,29 @@ html {
     font-size: 12px;
 }
 
+table {
+    color: #000000;
+    border-collapse: collapse;
+    min-width: 400px;
+    width: 100%;
+}
+
 .tabla{
     margin-top: 0px;
     padding: 10px;
 }
 
-table{
-    color: #000000;
-    border-collapse: collapse;
-    min-width: 400px;
-    width: 100%;
+tr:first-child:hover {
+    background: none;
+}
+
+tr {
+    transition: .2s;
+}
+
+tr:hover {
+    background-color: #CCC;
+    transition: .3s;
 }
 
 th, td{
@@ -157,7 +170,7 @@ th {
 
 td {
     font-size: 14px;
-    height: 20px;
+    height: 16px;
 }
 
 .undone {

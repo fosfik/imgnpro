@@ -602,3 +602,51 @@ input[name="nombre"], input[name="email"] {
     font-size: 10px;
     color: red;
 }
+
+table {
+    color: #000000;
+    border-collapse: collapse;
+    min-width: 400px;
+    width: 100%;
+}
+
+.tabla{
+    margin-top: 0px;
+    padding: 10px;
+}
+
+tr:first-child:hover {
+    background: none;
+}
+
+tr {
+    transition: .2s;
+}
+
+tr:hover {
+    background-color: #CCC;
+    transition: .3s;
+}
+
+th, td{
+    padding: 5px;
+}
+
+th {
+    text-decoration: none;
+    font-size: 10px;
+    text-align: left;
+    font-weight: normal;
+    border-bottom: 1px #CCC solid;
+    -webkit-border-image: 
+      -webinear-gradient(to left, rgba(0, 0, 0, 0), #CCCCCC, rgba(0, 0, 0, 0)) 0 0 100%;
+    -moz-border-image:
+      -moz-linear-gradient(to left, rgba(0, 0, 0, 0), #CCCCCC, rgba(0, 0, 0, 0)) 0 0 100%;
+    border-image:
+        linear-gradient(to left, rgba(0, 0, 0, 0), #CCCCCC, rgba(0, 0, 0, 0)) 0 0 100%;
+}
+
+td {
+    font-size: 14px;
+    height: 16px;
+}

@@ -10,6 +10,7 @@ var sha1 = require('sha1');
 var config = require('../config');
 var path = require('path');
 var Orders = require('../models/order.js');
+var OrderPacks = require('../models/orderpacks.js');
 var User = require('../models/user.js');
 var Spec = require('../models/specification.js');
 var Contact = require('../models/contact.js');
@@ -204,25 +205,41 @@ router.get('/listspecs/:limit', function(req, res) {
               
 
               // crear paquetes de trabajo
-//              console.log(newOrder.images.length());
+             //console.log('cantidad imagenes ' + newOrder.images.length());
 
-//              var packagelenght = 15;
-// var imagecount = 59;
-// var numpacksfull = Math.floor(imagecount/packagelenght);
-// var otherfiles = (imagecount % packagelenght);
+            var packagelenght = config.package.length;
+            var imagecount = imageUploadInfos.length;
+            var numpacksfull = Math.floor(imagecount/packagelenght);
+            var otherfiles = (imagecount % packagelenght);
+             // crea un registro
+            var lownumber = 1;
+            var highnumber = packagelenght;
+            for (var i=1; i <= numpacksfull; i++){
+                   var newOrderPack = new OrderPacks();
+                   newOrderPack.userid = newOrder.userid;
+                   // almacenar los datos del paquete
+                   console.log(lownumber + ', ' + highnumber); 
+                   for (var y=lownumber; y <= highnumber; y++){
+                      newOrderPack.images.push(imageUploadInfos[y-1]);
+                   } 
+                    console.log(newOrderPack);
+                    newOrderPack.save();
+                   lownumber = lownumber + packagelenght;
+                   highnumber = highnumber + packagelenght;     
 
-// var lownumber = 1;
-// var highnumber = packagelenght;
-// for (var i=1; i <= numpacksfull; i++){
-//        alert(lownumber + ', ' + highnumber);  
-//        lownumber = lownumber + packagelenght;
-//        highnumber = highnumber + packagelenght;     
-
-//   }
-// if (otherfiles > 0){
-//    highnumber = lownumber + (otherfiles-1);
-//    alert(lownumber + ', ' + highnumber);
-// }
+            }
+            if (otherfiles > 0){
+               highnumber = lownumber + (otherfiles-1);
+               console.log(lownumber + ', ' + highnumber);
+               var newOrderPack = new OrderPacks();
+                   // almacenar los datos del paquete
+                  
+               for (var y=lownumber; y <= highnumber; y++){
+                  newOrderPack.images.push(imageUploadInfos[y-1]);
+               } 
+                newOrderPack.save();
+               console.log(newOrderPack);
+            }
 
 
               //res.write('<h1>'+ numorderstr + '</h1>');

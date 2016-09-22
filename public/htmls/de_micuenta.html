@@ -275,18 +275,15 @@
                         <option value="ZM">Zambia</option>
                         <option value="ZW">Zimbabue</option>
                     </select><br><br>
-                    <label for="nacimiento">Fecha de Nacimiento</label><br>
-                    <input type="date" name="nacimiento" value="" ><br>
-                    <label for="cuentabanco">Clave Interbancaria o Núm. de Cuenta<span class="requerido">*</span></label><br>
-                    <select name="tipocuenta" required>
-                        <option value="" disabled selected>Selecciona una Opción</option>
-                        <option>Número de Cuenta</option>
-                        <option>Número de Tarjeta</option>
-                        <option>CLABE Interbancaria</option>
-                    </select>
-                    <input type="text" name="cuentabanco" value="" placeholder="ej. 012345678901" ><br>
+                    <label for="nacimiento">Fecha de Nacimiento<span class="requerido">*</span></label><br>
+                    <input type="date" id="date" name="nacimiento" value="" ><br>
+                    <label for="numtarjeta">Número de Tarjeta de Débito<span class="requerido">*</span></label><br>
+                    <input type="text" name="numtarjeta" value="" maxlength="18" placeholder="ej. 1234567890123456" ><br>
+                    <label for="clabe">CLABE Interbancaria<span class="requerido">*</span></label><br>
+                    <input type="text" name="clabe" value="" maxlength="18" placeholder="ej. 1234567890123456" ><br>
                     <label for="banco">Banco o Institución Financiera<span class="requerido">*</span></label><br>
-                    <input type="text" name="banco" value="" placeholder="Nombre de Banco"><br>
+                    <input type="text" name="banco" value="" placeholder="Nombre de Banco"><br><br>
+                    <p class="texto_plano_requerido"><span class="requerido">*</span> Todos los campos son obligatorios.</p>
                 </form>
             </section>
         </section>

@@ -541,6 +541,11 @@ passport.use('de_login', new LocalStrategy({
           console.log('No se encontró el usuario'+username);
           return done(null, false, req.flash('message', 'La cuenta no existe.'));                 
         }
+
+        if(user.provider=='google' || user.provider=='facebook'){
+          return done(null, false, req.flash('message', 'La cuenta se registró con Google o Facebook y no es válida.'));                 
+        }
+
         // User exists but wrong password, log the error 
         if (!isValidPassword(user, password)){
           console.log('Contraseña inválida');

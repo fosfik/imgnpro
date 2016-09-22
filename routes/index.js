@@ -87,7 +87,32 @@ router.get('/listallorders', function(req, res) {
    
   }).select('imagecount numorder status date');
 });
- 
+
+// TODO agregar seguridad a esta ruta
+router.get('/listallorderpacks', function(req, res) {
+  OrderPacks.find({},function(err, orderpacks) {
+    // In case of any error return
+     if (err){
+       console.log('Error al consultar');
+     }
+     //console.log("prueba 2");
+   // already exists
+    if (orderpacks) {
+      //console.log('se encontraron pedidos');
+      res.setHeader('Content-Type', 'application/json');
+      res.send(orderpacks); 
+
+    } 
+    else {
+      console.log('No se encontraron paquetes de pedidos');
+    }
+   
+  }).select('imagecount numorder status date name userid');
+});
+
+
+
+
 // TODO agregar seguridad a esta ruta
 router.get('/listspecs', function(req, res) {
   
@@ -215,30 +240,57 @@ router.get('/listspecs/:limit', function(req, res) {
             var lownumber = 1;
             var highnumber = packagelenght;
             for (var i=1; i <= numpacksfull; i++){
-                   var newOrderPack = new OrderPacks();
-                   newOrderPack.userid = newOrder.userid;
+                  var newOrderPack = new OrderPacks();
+                  newOrderPack.userid = newOrder.userid;
+                  newOrderPack.numorder = newOrder.numorder;
+                  newOrderPack.name = 'Package ' + i;
+                  newOrderPack.userid = newOrder.userid;
+                  newOrderPack.date = Date();
+                  newOrderPack.imagecount = (highnumber - lownumber) + 1;
                    // almacenar los datos del paquete
                    console.log(lownumber + ', ' + highnumber); 
                    for (var y=lownumber; y <= highnumber; y++){
                       newOrderPack.images.push(imageUploadInfos[y-1]);
                    } 
-                    console.log(newOrderPack);
-                    newOrderPack.save();
+                    
+                    newOrderPack.save(function(err) {
+                        if (err){
+                          console.log('No se pudo guardar el paquete del pedido: '+ err); 
+                        }
+                        else
+                        {
+                          console.log(' Se guardó el paquete ' + y + ' del pedido');
+                          console.log(newOrderPack); 
+                        }
+                    });
                    lownumber = lownumber + packagelenght;
                    highnumber = highnumber + packagelenght;     
 
             }
             if (otherfiles > 0){
-               highnumber = lownumber + (otherfiles-1);
-               console.log(lownumber + ', ' + highnumber);
-               var newOrderPack = new OrderPacks();
-                   // almacenar los datos del paquete
-                  
+                highnumber = lownumber + (otherfiles-1);
+                console.log(lownumber + ', ' + highnumber);
+                var newOrderPack = new OrderPacks();
+                newOrderPack.userid = newOrder.userid;
+                newOrderPack.numorder = newOrder.numorder;
+                newOrderPack.name = 'Package ' + (numpacksfull + 1);
+                newOrderPack.userid = newOrder.userid;
+                newOrderPack.date = Date();
+                newOrderPack.imagecount = (highnumber - lownumber) + 1;
                for (var y=lownumber; y <= highnumber; y++){
                   newOrderPack.images.push(imageUploadInfos[y-1]);
                } 
-                newOrderPack.save();
-               console.log(newOrderPack);
+                newOrderPack.save(function(err) {
+                    if (err){
+                      console.log('No se pudo guardar el paquete ' + y +' del pedido: '+ err); 
+                    }
+                    else
+                    {
+                      console.log(' Se guardó el paquete' + y + ' del pedido'); 
+                      console.log(newOrderPack);
+                    }
+                });
+               
             }
 
 
@@ -305,9 +357,9 @@ router.get('/listspecs/:limit', function(req, res) {
     res.render('precios', {message: req.flash('message')});
   });
 
- router.get('/pedidos', function(req, res) {
+ router.get('/de_packages', function(req, res) {
     // Display the Login page with any flash message, if any
-    res.render('pedidos', {message: req.flash('message')});
+    res.render('de_packages', {message: req.flash('message')});
   });
   
  router.get('/hinewuser', function(req, res) {

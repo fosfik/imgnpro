@@ -14,7 +14,7 @@
                 //Se desactivan los botones de opcion de alineación
                 var strspecid= $('#specid').val();
                 // alert(strspecid.length);
-                
+                $('#specnombre').focus();
                 $('#datespec').prop('value', Date.now);
                 desactAllNext();
                 desactSizeAllNext();
@@ -173,6 +173,7 @@
                                     desactSizeAllNext();
                                     desactCustomAllNext();
                                     desactDPI();
+                                    
                                     }
 
                                 

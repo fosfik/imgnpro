@@ -10,14 +10,18 @@
             $(document).ready(function(){
                     $.ajax({
                         type: 'get',
-                        url: '/listallorders',
+                        url: '/listallorderpacks',
                         success: function (data) {
                             for (var i = 0; i < data.length; i++){
                                 var row = $("<tr>");
                                 row.append($("<td>" + data[i].numorder + "</td>"))
                                      .append($("<td>" + data[i].imagecount + "</td>"))
                                      .append($("<td>" + data[i].date + "</td>"))
-                                     .append($("<td>" + data[i].status + "</td>"));
+                                     .append($("<td>" + data[i].status + "</td>"))
+                                     .append($("<td>" + data[i].name + "</td>"))
+                                     .append($("<td>" + data[i].userid + "</td>"));
+
+
                                 $("#orderstable tbody").append(row);
                             }
                               
@@ -34,27 +38,19 @@
             <ul>
            </ul>
         </header>
-        <section id="menuver">
-            <nav>
-                <ul>
-                    <li class="menulogo"><h1><a href="principal"><img src="../images/logo_black.png" alt="logo"></a></h1></li>
-                    <li><a href="micuenta">Mi Cuenta</a></li>
-                    <li><a href="historial">Historial</a></li>
-                    <li><a href="especificaciones1">Especificaciones</a></li>
-                    <li><a href="subirimagen1">Subir Imagenes</a></li>
-                    <li><a href="contacto">Contacto</a></li>
-                </ul>
-            </nav>
-        </section>
     <section id="contenedor">
         <div id= "orderstable" class="tabla">
-            <p class="encabezado">Pedidos</p>
+            <p class="encabezado">Paquetes de los Pedidos</p>
             <table>
                 <tr>
                     <th>Orden</th>
                     <th>Imágenes</th>
                     <th>Fecha</th>
                     <th>Estatus</th>
+                    <th>Paquete</th>
+                    <th>User ID</th>
+
+
                 </tr>
                 
             </table>

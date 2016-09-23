@@ -1232,3 +1232,10 @@ input[name="checkcheck"] {
     color: #999;
     transition: .3s
 }
+
+#colorselect {
+    background-color: #e5e5e5;
+    color: #E5E5E5;
+    width: 20px;
+    border: none;
+}

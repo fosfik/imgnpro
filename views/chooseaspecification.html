@@ -82,15 +82,32 @@
                 // });  
 //$( "#myselect option:selected" ).text();
 
+//                $("#background").change(function() {
+//                    if($("#background option:selected").text() ==='COLOR' ){
+//                        $('#colorselect').prop("disabled", false);
+//                      }
+//                    else{
+//                       $('#colorselect').prop("value", '#ffffff');
+//                       $('#colorselect').prop("disabled", true);
+//
+//                    }
                 $("#background").change(function() {
                     if($("#background option:selected").text() ==='COLOR' ){
                         $('#colorselect').prop("disabled", false);
                       }
-                    else{
-                       $('#colorselect').prop("value", '#ffffff');
-                       $('#colorselect').prop("disabled", true);
-
-                    }
+                    if($("#background option:selected").text() ==='BLANCO' ){
+                        $('#colorselect').prop("value", '#FFFFFF');
+                        $('#colorselect').prop("disabled", true);
+                      }
+                    if($("#background option:selected").text() ==='NEGRO' ){
+                        $('#colorselect').prop("value", '#000000');
+                        $('#colorselect').prop("disabled", true);
+                      }
+                    if($("#background option:selected").text() ==='SIN FONDO' ){
+                        $('#colorselect').prop("value", '#E5E5E5');
+                        $('#colorselect').prop("disabled", true);
+                      }
+                
                 });
                 $("#format").change(function() {
 
@@ -177,7 +194,7 @@
                     <option value="color">COLOR</option>
                     <option id="sin_fondo" value="sin_fondo" disabled>SIN FONDO</option>
                 </select>
-                <input id="colorselect" type="color" name="backgrndcolor" value="#ffffff" disabled>
+                <input id="colorselect" type="color" name="backgrndcolor" value="#FFFFFF" disabled>
                 <br>
                 <label for="dpi">DPI</label><br>
                 <input id="depeis" type="text" name="DPI" value="72" maxlength="5" disabled><label for="dpi">dpi</label>

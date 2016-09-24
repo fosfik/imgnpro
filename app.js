@@ -427,6 +427,12 @@ passport.use('login', new LocalStrategy({
           console.log('No se encontró el usuario'+username);
           return done(null, false, req.flash('message', 'La cuenta no existe.'));                 
         }
+
+
+        if(user.usertype !='user'){
+          return done(null, false, req.flash('message', 'La cuenta no es de un usuario válido'));                 
+        }
+
         // User exists but wrong password, log the error 
         if (!isValidPassword(user, password)){
           console.log('Contraseña inválida');

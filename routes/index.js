@@ -319,6 +319,17 @@ router.get('/listspecs/:limit', function(req, res) {
     //console.log(req.user);
   });
 
+router.get('/imagen',
+  function(req, res) {
+    //res.render('intro', {message: req.flash('message')});
+    //res.download('../public/images/boton_play1.png');
+    console.log(path.resolve(__dirname));
+      res.attachment(path.join(__dirname, '../public/htmls', 'micuenta.bak' ));
+
+    res.attachment(path.join(__dirname, '../public/htmls', 'thankyou.bak' ));
+    res.end();
+    //console.log(req.user);
+  });
 
 /* GET como page. */
   router.get('/como', function(req, res) {
@@ -882,14 +893,22 @@ router.get('/listspecs/:limit', function(req, res) {
 /* Handle get payment sign POST */
   router.post('/getpaymentsign', function (req,res) {
    
-    var secretkey = 'trgy4y55664dgf'; 
+    var CSSB = process.env.CSSB || '5634ytyertewrg';
+    console.log(CSSB);
     var paymentsign = '';
     var Ds_Merchant_Amount = req.param('Ds_Merchant_Amount');
     var Ds_Merchant_Order = req.param('Ds_Merchant_Order');
     var Ds_Merchant_MerchantCode = req.param('Ds_Merchant_MerchantCode');
     var Ds_Merchant_Currency = req.param('Ds_Merchant_Currency');
     var Ds_Merchant_TransactionType  = req.param('Ds_Merchant_TransactionType');
-    paymentsign = sha1(Ds_Merchant_Amount + Ds_Merchant_Order + Ds_Merchant_MerchantCode + Ds_Merchant_Currency + Ds_Merchant_TransactionType + secretkey);
+    
+console.log(Ds_Merchant_Amount);
+console.log(Ds_Merchant_Order);
+console.log(Ds_Merchant_MerchantCode);
+console.log(Ds_Merchant_Currency);
+console.log(Ds_Merchant_TransactionType);
+
+    paymentsign = sha1(Ds_Merchant_Amount + Ds_Merchant_Order + Ds_Merchant_MerchantCode + Ds_Merchant_Currency + Ds_Merchant_TransactionType + CSSB);
     console.log(paymentsign);
 
  //SHA-1()

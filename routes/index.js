@@ -902,11 +902,11 @@ router.get('/imagen',
     var Ds_Merchant_Currency = req.param('Ds_Merchant_Currency');
     var Ds_Merchant_TransactionType  = req.param('Ds_Merchant_TransactionType');
     
-console.log(Ds_Merchant_Amount);
-console.log(Ds_Merchant_Order);
-console.log(Ds_Merchant_MerchantCode);
-console.log(Ds_Merchant_Currency);
-console.log(Ds_Merchant_TransactionType);
+    console.log(Ds_Merchant_Amount);
+    console.log(Ds_Merchant_Order);
+    console.log(Ds_Merchant_MerchantCode);
+    console.log(Ds_Merchant_Currency);
+    console.log(Ds_Merchant_TransactionType);
 
     paymentsign = sha1(Ds_Merchant_Amount + Ds_Merchant_Order + Ds_Merchant_MerchantCode + Ds_Merchant_Currency + Ds_Merchant_TransactionType + CSSB);
     console.log(paymentsign);

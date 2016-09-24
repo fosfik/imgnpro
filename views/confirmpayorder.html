@@ -5,6 +5,50 @@
         <title>IMGNpro, hagamos que tu producto destaque</title>
         <link rel="stylesheet" href="../stylesheets/imgncss_session.css">
         <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico"/>
+        <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+        <!-- <script src="../js/general.js"></script> -->
+        <script type="text/javascript">
+            // $(document).ready(function(){
+            //     //var newbuttonspec = $('#savebuttonspec');
+
+            //     // var iniformat = localStorage.getItem("format");
+            //     // if(iniformat ==='jpg_web' || iniformat ==='png'){
+            //     //     //$('#cuadroxtra4').prop('disabled',true);
+            //     //     $('#a_cuadroxtra4').prop('href','#');
+            //     //     $('#a_cuadroxtra4').click(function(){
+            //     //         alert('Las imágenes JPG WEB ó PNG no permiten la opción de Clipping Path');
+            //     //     });
+            //     // }
+
+
+            //     $('#buttonpay').click(function (ev) {
+            //         // recuperar las variables localStorage
+            //         var formdata = $('form').serialize();
+            //         $.ajax({
+            //                 type: 'post',
+            //                 url: '/updateuserdetails',
+            //                 data: formdata,
+            //                 success: function (data) {
+            //                     if (data.error == 1 ){
+            //                         //document.getElementById('res_message').innerHTML= data.message;    
+            //                         alert(data.message);
+            //                          $('#contactname').focus();
+            //                     }
+            //                     else{
+            //                         //setTimeout(window.location='/subirimagen4.html',500);
+            //                         alert(data.message);
+                                    
+            //                         //if(confirm("¿Quieres subir imágenes?")){
+            //                         document.location.href= "/payorder/<%= numorder %>";
+            //                         //}
+            //                         // else{
+            //                         //     document.getElementById("specForm").reset();
+            //                     }
+            //                 }
+            //          });
+            //        });   
+            //     });
+        </script>
     </head>
     <body>
         <header class="bienvenida">
@@ -36,11 +80,11 @@
             <section class="col1">
                 <form class="contactForm">
                     <label for="nombre">Nombre</label><br>
-                    <input type="text" name="nombre" value="" placeholder="Nombre completo"><br>
+                    <input id="contactname" type="text" name="contactname" value="" placeholder="Nombre completo"><br>
                     <label for="direccion">Email</label><br>
-                    <input type="email" name="email" value="" placeholder="ej. nombre@empresa.com"><br>
+                    <input type="email" name="contactemail" value="" placeholder="ej. nombre@empresa.com"><br>
                     <label for="pais">País</label><br>
-                    <select name="pais" >
+                    <select name="contactcountry" >
                         <option value="" disabled selected>Seleccione un País</option>
                         <option value="AF">Afganistán</option>
                         <option value="AL">Albania</option>
@@ -278,7 +322,7 @@
                         <option value="ZW">Zimbabue</option>
                     </select><br><br>
                     <label for="factura">Requiero Factura</label>
-                    <input name="checkcheck" type="checkbox" value="factura">
+                    <input name="chkfactura" type="checkbox" value="factura">
                 </form>
             </section>
             <hr>
@@ -286,9 +330,9 @@
             <section class="col6">
                 <form class="factForm">
                     <label for="rfc">R.F.C.</label><br>
-                    <input type="text" name="rfc" value="" placeholder="ej. IMG010909PRO"><br>
+                    <input type="text" name="factrfc" value="" placeholder="ej. IMG010909PRO"><br>
                     <label for="pais">País</label><br>
-                    <select name="pais" >
+                    <select name="factcountry" >
                         <option value="" disabled selected>Seleccione un País</option>
                         <option value="AF">Afganistán</option>
                         <option value="AL">Albania</option>
@@ -526,15 +570,15 @@
                         <option value="ZW">Zimbabue</option>
                     </select><br>
                     <label for="municipio">Municipio</label><br>
-                    <input type="text" name="estado" value="" placeholder="Ingrese municipio"><br>
+                    <input type="text" name="factmunicipio" value="" placeholder="Ingrese municipio"><br>
                     <label for="colonia">Colonia</label><br>
-                    <input type="text" name="colonia" value="" placeholder="Ingrese el nombre de la colonia"><br>
+                    <input type="text" name="factcolonia" value="" placeholder="Ingrese el nombre de la colonia"><br>
                     <label for="num_ext">Núm. Exterior</label><br>
-                    <input type="text" name="num_ext" value="" placeholder="Ingrese número exterior"><br>
+                    <input type="text" name="factnum_ext" value="" placeholder="Ingrese número exterior"><br>
                     <label for="cp">C.P.</label><br>
-                    <input type="text" name="cp" value="" placeholder="Ingrese código postal"><br>
+                    <input type="text" name="factcp" value="" placeholder="Ingrese código postal"><br>
                     <label for="paymethod">Método de Pago</label><br>
-                    <select name="paymethod">
+                    <select name="factpaymethod">
                         <option value="" disabled selected>Seleccione una opción</option>
                         <option value="cre">04 - Tarjeta de Crédito</option>
                         <option value="deb">28 - Tarjeta de Débito</option>
@@ -544,25 +588,25 @@
             <section class="col6">
                 <form class="factForm">
                     <label for="nombre">Nombre o Razón Social</label><br>
-                    <input type="text" name="nombre" value="" placeholder="Nombre o razón social completa"><br>
+                    <input type="text" name="factrazonsocial" value="" placeholder="Nombre o razón social completa"><br>
                     <label for="estado">Estado</label><br>
-                    <input type="text" name="estado" value="" placeholder="Ingrese estado"><br>
+                    <input type="text" name="factestado" value="" placeholder="Ingrese estado"><br>
                     <label for="ciudad">Ciudad</label><br>
-                    <input type="text" name="ciudad" value="" placeholder="Ingrese el nombre de la ciudad"><br>
+                    <input type="text" name="factciudad" value="" placeholder="Ingrese el nombre de la ciudad"><br>
                     <label for="calle">Calle</label><br>
-                    <input type="text" name="calle" value="" placeholder="Ingrese el nombre de la calle"><br>
+                    <input type="text" name="factcalle" value="" placeholder="Ingrese el nombre de la calle"><br>
                     <label for="num_int">Núm. Interior</label><br>
-                    <input type="text" name="num_int" value="" placeholder="Ingrese número interior"><br>
+                    <input type="text" name="factnum_int" value="" placeholder="Ingrese número interior"><br>
                     <label for="email2">Email</label><br>
-                    <input type="text" name="email2" value="" placeholder="ej. nombre@empresa.com"><br>
+                    <input type="text" name="factemail2" value="" placeholder="ej. nombre@empresa.com"><br>
                    <label for="terminacion">Terminación de la Tarjeta</label><br>
-                    <input type="text" name="terminacion" value="" placeholder="ej. 9999">
+                    <input type="text" name="factterminacion" value="" placeholder="ej. 9999">
                 </form>
             </section>
         </section>
         <hr>
         <div class="button2">
-            <a href="/payorder/<%= numorder %>">Pagar Ahora</a>
+            <a id="buttonpay" href="/payorder/<%= numorder %>">Pagar Ahora</a>
         </div>
     </section>
         <aside id="menurigth">

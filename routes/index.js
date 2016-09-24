@@ -892,7 +892,7 @@ router.get('/imagen',
 
 /* Handle get payment sign POST */
   router.post('/getpaymentsign', function (req,res) {
-   
+    
     var CSSB = process.env.CSSB || '5634ytyertewrg';
     console.log(CSSB);
     var paymentsign = '';

@@ -225,13 +225,18 @@
                         //contentType: "application/json",
                         success: function (data) {
                             if (data.error == 1 ){
-                                document.getElementById('res_message').innerHTML= data.message;
+                                // document.getElementById('res_message').innerHTML= data.message;
                                 alert(data.message);    
                             }
                             else{
                                 alert(data.message); 
-                                setTimeout(window.location='/confirmpayorder/' + data.numorder, 500 );
+                                if (data.typespec == 'free'){
+                                    setTimeout(window.location='/thankyou/' + data.numorder, 500 );
+                                }
+                                else{
+                                    setTimeout(window.location='/confirmpayorder/' + data.numorder, 500 );
                                     //+ data.numorder,500);
+                                }
                             }
                         }
                      });

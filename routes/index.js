@@ -16,7 +16,8 @@ var Spec = require('../models/specification.js');
 var Contact = require('../models/contact.js');
 var ordersinproc  = 0;
 aws.config.region = 'us-east-1';
-var S3_BUCKET_NAME = process.env.S3_BUCKET_NAME || 'imgnproprime';
+var S3_BUCKET_NAME = process.env.S3_BUCKET_NAME || 'imgnpro';
+var S3_BUCKET_NAME_THUMB = process.env.S3_BUCKET_NAME_THUMB|| 'imgnprothumb';
 
 // console.log(process.env.AWS_ACCESS_KEY_ID);
 // console.log(process.env.AWS_SECRET_ACCESS_KEY);
@@ -365,7 +366,7 @@ router.get('/imagen',
 
   router.get('/precios', function(req, res) {
     // Display the Login page with any flash message, if any
-    res.render('precios', {message: req.flash('message')});
+    res.render('precios', {message: req.flash('message'), precio:config.prices.cutandremove});
   });
 
  router.get('/de_packages', function(req, res) {
@@ -1067,20 +1068,32 @@ router.get('/sign-s3', (req, res) => {
 //var AWS = require('aws-sdk');
    
 
-const s3 = new aws.S3();
+  const s3 = new aws.S3();
 
-// el nombre del folder llevar el id del usuario
-var folder = req.user._id +'/' ;
+  // el nombre del folder llevar el id del usuario
+  var folder = req.user._id +'/' ;
+  // crea la carpeta para guardar las imágenes
+  var params = { Bucket: S3_BUCKET_NAME, Key: folder, ACL: 'public-read', Body:'body does not matter' };
+  s3.upload(params, function (err, data) {
+  if (err) {
+      console.log("Error creating the folder: ", err);
+      } else {
+      //console.log("Successfully created a folder on S3");
 
-var params = { Bucket: S3_BUCKET_NAME, Key: folder, ACL: 'public-read', Body:'body does not matter' };
-s3.upload(params, function (err, data) {
-if (err) {
-    console.log("Error creating the folder: ", err);
-    } else {
-    console.log("Successfully created a folder on S3");
+      }
+  });
+  // crea la carpeta para guardar las vistas en miniatura de las imágenes
+  var params = { Bucket: S3_BUCKET_NAME_THUMB, Key: folder, ACL: 'public-read', Body:'body does not matter' };
+  s3.upload(params, function (err, data) {
+  if (err) {
+      console.log("Error creating the folder thumbnail: ", err);
+      } else {
+      //console.log("Successfully created a thumbnail folder on S3");
 
-    }
-});
+      }
+  });
+
+
   // al fileName se le agrega el folder para que la firma lo reconozca
   const fileName = req.user._id +'/' + req.query['filename'];
   const fileType = req.query['filetype'];

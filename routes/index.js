@@ -15,6 +15,7 @@ var User = require('../models/user.js');
 var Spec = require('../models/specification.js');
 var Contact = require('../models/contact.js');
 var ordersinproc  = 0;
+
 aws.config.region = 'us-east-1';
 var S3_BUCKET_NAME = process.env.S3_BUCKET_NAME || 'imgnpro';
 var S3_BUCKET_NAME_THUMB = process.env.S3_BUCKET_NAME_THUMB|| 'imgnprothumb';
@@ -117,7 +118,7 @@ router.get('/listallorderpacks', function(req, res) {
 // TODO agregar seguridad a esta ruta
 router.get('/listspecs', function(req, res) {
   
-  Spec.find({'userid':req.user._id},function(err, specs) {
+  Spec.find({'userid':req.user._id, 'disabled':false},function(err, specs) {
     // In case of any error return
      if (err){
        console.log('Error al consultar');
@@ -139,7 +140,7 @@ router.get('/listspecs', function(req, res) {
 // TODO usar una sola ruta para consultar especificaciones
 router.get('/listspecs/:limit', function(req, res) {
   
-  Spec.find({'userid':req.user._id},function(err, specs) {
+  Spec.find({'userid':req.user._id, 'disabled':false},function(err, specs) {
     // In case of any error return
      if (err){
        console.log('Error al consultar');
@@ -185,31 +186,67 @@ router.get('/listspecs/:limit', function(req, res) {
    // todo: modificar este try catch
    try {
     console.log(req.body['imageUploadInfos']);
-    //console.log(req.params);
-    var numorderstr="";
-    var newOrder = new Orders();
-          //newOrder.name = 'orderfotos';
-          newOrder.userid = req.user._id;
-          newOrder.imagecount = req.body['imagecount'];
-          newOrder.specid = req.body.specid;
-          newOrder.totalpay = req.body.totalpay;
-          // todo: recorrer el req.body para obtener los datos de las imagenes
+    console.log(req.params);
     var imageUploadInfos = JSON.parse(req.body['imageUploadInfos']);
-    console.log(imageUploadInfos);
 
-          for (var i=0; i < imageUploadInfos.length; i++){
-              //i === 0: arr[0] === undefined;
-              //i === 1: arr[1] === 'hola';
-              //i === 2: arr[2] === 'chau';
-              imageUploadInfos[i].position = i+1;
-              console.log(imageUploadInfos[i].position);
-              newOrder.images.push(imageUploadInfos[i]);
+    findaspec(req.body.specid,function(error,spec){
+              //console.log(spec);
+              //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id , countorders:ordersinproc});
+    console.log(error);
+    console.log(spec[0].maxfiles);
 
-          }
+    console.log(imageUploadInfos.length);
+    if (error == 1){
+      res.setHeader('Content-Type', 'application/json');
+      res.send(JSON.stringify({ error: 1, message: 'No se pudo guardar el pedido'})); 
 
-           // save the user
-          newOrder.save(function(err) {
-            if (err){
+
+    }
+    else
+     {
+        if (spec[0].maxfiles > 0 && (imageUploadInfos.length > spec[0].maxfiles )){
+          res.setHeader('Content-Type', 'application/json');
+          res.send(JSON.stringify({
+           error: 1, message: 'Para este tipo de especificación solamente se permiten '+ spec[0].maxfiles + ' archivos'} 
+           )); 
+
+        }
+        else{
+
+          // todo bien
+        var numorderstr="";
+        var newOrder = new Orders();
+        //newOrder.name = 'orderfotos';
+        newOrder.userid = req.user._id;
+        newOrder.imagecount = req.body['imagecount'];
+        newOrder.specid = req.body.specid;
+        newOrder.totalpay = req.body.totalpay;
+
+        if (spec[0].typespec == 'free'){
+          newOrder.status = 'En Proceso';
+        }
+        else
+        {
+          newOrder.status = 'Por pagar';
+        }
+
+        // todo: recorrer el req.body para obtener los datos de las imagenes
+        
+        console.log(imageUploadInfos);
+
+        for (var i=0; i < imageUploadInfos.length; i++){
+            //i === 0: arr[0] === undefined;
+            //i === 1: arr[1] === 'hola';
+            //i === 2: arr[2] === 'chau';
+            imageUploadInfos[i].position = i+1;
+            console.log(imageUploadInfos[i].position);
+            newOrder.images.push(imageUploadInfos[i]);
+
+        }
+
+               // save the user
+        newOrder.save(function(err) {
+          if (err){
               //console.log(newOrder);
               //console.log(newOrder.images);
               console.log('No se pudo guardar el pedido: '+err); 
@@ -219,16 +256,16 @@ router.get('/listspecs/:limit', function(req, res) {
               res.send(JSON.stringify({ error: 1, message: 'No se pudo guardar el pedido'})); 
 
 
-            }
-            else
-            {
+          }
+          else{
 
-              console.log(' Se guardo el pedido'); 
+              console.log(' Se guardó el pedido'); 
               console.log(newOrder.numorder);
               // res.render('como2', {message: req.flash('message')});
               numorderstr = String(newOrder.numorder);
               console.log(numorderstr);
-              
+              // inhabilitar la especificacion gratuita
+              disableSpec(req.body.specid,function(err,message_spec){});
 
               // crear paquetes de trabajo
              //console.log('cantidad imagenes ' + newOrder.images.length());
@@ -242,6 +279,7 @@ router.get('/listspecs/:limit', function(req, res) {
             var highnumber = packagelenght;
             for (var i=1; i <= numpacksfull; i++){
                   var newOrderPack = new OrderPacks();
+                  newOrderPack.status = newOrder.status;  
                   newOrderPack.userid = newOrder.userid;
                   newOrderPack.numorder = newOrder.numorder;
                   newOrderPack.name = 'Package ' + i;
@@ -272,6 +310,7 @@ router.get('/listspecs/:limit', function(req, res) {
                 highnumber = lownumber + (otherfiles-1);
                 console.log(lownumber + ', ' + highnumber);
                 var newOrderPack = new OrderPacks();
+                newOrderPack.status = newOrder.status;  
                 newOrderPack.userid = newOrder.userid;
                 newOrderPack.numorder = newOrder.numorder;
                 newOrderPack.name = 'Package ' + (numpacksfull + 1);
@@ -293,24 +332,21 @@ router.get('/listspecs/:limit', function(req, res) {
                 });
                
             }
-
-
               //res.write('<h1>'+ numorderstr + '</h1>');
               //res.end();
               res.setHeader('Content-Type', 'application/json');
-              res.send(JSON.stringify({ error: 0, message: 'Se guardó el pedido', numorder: newOrder.numorder})); 
-
-
+              res.send(JSON.stringify({ error: 0, message: 'Se guardó el pedido', numorder: newOrder.numorder, typespec: spec[0].typespec })); 
             }
-
-        });  
+          });  
+        }
+      } 
+    });
   }
   catch(err) {
-     
-     console.log(err.message);
+    console.log(err.message);
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify({ error: 1, message: 'No se pudo guardar el pedido'})); 
   }
-
-
 });
 
   router.get('/',
@@ -600,6 +636,16 @@ router.get('/imagen',
           });
   });
 
+  router.get('/thankyou/:numorder', 
+     require('connect-ensure-login').ensureLoggedIn('/login'),
+         function(req, res){
+          findaorder(req.params.numorder,function(error,order){
+               console.log(order);
+               //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id });
+               res.render('thankyou', {message: req.flash('message'), user: req.user, numorder:req.params.numorder, order:order[0], countorders:ordersinproc});             
+          });
+  });
+
  router.get('/payorder/:numorder', 
      require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){
@@ -832,7 +878,7 @@ router.get('/imagen',
           }else{
             console.log('Update');
             console.log(specid);
-            Spec.findOne({ _id: specid  }, function (err, doc){
+            Spec.findOne({ _id: specid, typespec:'normal'  }, function (err, doc){
               console.log(req.body.name);
               console.log(err);
               if (err){
@@ -1208,7 +1254,7 @@ function spectotalprice(req, cb){
 
 
 function findaspec(specid, cb){
-  Spec.find({'_id':specid},function(err, specrecord) {
+  Spec.find({'_id':specid, 'disabled':false},function(err, specrecord) {
     // In case of any error return
      if (err){
        console.log('Error al consultar la especificación');
@@ -1225,7 +1271,7 @@ function findaspec(specid, cb){
         cb(2);
     }
    
-  }).select('name totalprice date').limit(1);
+  }).select('name totalprice date maxfiles typespec').limit(1);
 }
 
 function findaspecfull(specid, cb){
@@ -1233,7 +1279,7 @@ function findaspecfull(specid, cb){
     cb(1, 'Error al consultar la especificación, longitud 0');
   }
   else{
-      Spec.find({'_id':specid},function(err, specrecord) {
+      Spec.find({'_id':specid, 'disabled':false},function(err, specrecord) {
       // In case of any error return
        if (err){
          console.log('Error al consultar la especificación');
@@ -1339,4 +1385,39 @@ function doConfirmUser(userid,cb){
     }
   });  
 }
+
+function disableSpec(specid,cb){
+    console.log(specid);
+    Spec.findOne({ _id: specid, typespec:'free'  }, function (err, doc){
+      //console.log(req.body.name);
+      console.log(err);
+      if (err){
+          console.log('Error al guardar la especificación: '+err);
+          //res.setHeader('Content-Type', 'application/json');
+          //res.send(JSON.stringify({ error: 1, newSpecid: newSpec._id, message: 'No se guardaron los cambios, favor de contactar al administrador'})); 
+          cb(1,'Error al guardar la especificación: '+err);
+      }
+      else{
+        if (doc) {
+          
+          doc.disabled = true;
+          //doc.specid = req.user.specid;
+          console.log(doc);
+
+          doc.save();
+          cb(0,'Error al guardar la especificación: '+err);
+          //newSpec.save();
+          //res.setHeader('Content-Type', 'application/json');
+          //res.send(JSON.stringify({ error: 0, newSpecid: newSpec._id, message: 'Se guardaron correctamente los cambios a la especificación'})); 
+        } 
+        else {
+          cb(1,'No se encontró la especificación, los cambios no fueron almacenados');
+          //res.setHeader('Content-Type', 'application/json');
+          //res.send(JSON.stringify({ error: 1, newSpecid: newSpec._id, message: 'No se encontró la especificación, los cambios no fueron almacenados'})); 
+        }
+      }
+    });  
+}
+
+
 module.exports = router;

@@ -31,7 +31,10 @@ var SpecSchema = new mongoose.Schema({
 	basicretouch: {type: String},
   widthsize:{type: String},
   heightsize:{type: String},
-  spectype:{type: String}
+  spectype:{type: String},
+  disabled: {type:Boolean, default: false},
+  typespec:{type:String, default:'normal'},
+  maxfiles:{type:Number, default: 0}
 });
 // se genera un objeto basado en el esquema contador
 module.exports = mongoose.model('Specification', SpecSchema);

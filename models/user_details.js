@@ -14,6 +14,27 @@ module.exports = mongoose.model('User',{
     createdAt: {type:Date, default: Date.now},
     usertype:{type:String},
     disabled: {type:Boolean, default: true}
+
+
+
+    contactname:Juan Ernesto
+contactemail:jerh56@gmail.com
+contactcountry:DE
+chkfactura:factura
+factrfc:RAHJ760926P65
+factcountry:AD
+factmunicipio:Culiacan
+factcolonia:Las vegas
+factnum_ext:56788
+factcp:788976
+factpaymethod:cre
+factrazonsocial:Patito Inc
+factestado:Sinaloa
+factciudad:Culiacan
+factcalle:12334
+factnum_int:1233
+factemail2:hghsfg@dgf.com
+factterminacion:5678
 });
 
 

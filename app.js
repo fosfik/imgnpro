@@ -378,7 +378,12 @@ passport.deserializeUser(function(obj, done) {
                           newUser.save(function(err) {
                               if (err)
                                   throw err;
-                              return done(null, newUser);
+
+                              createfreespec(newUser._id,function(err,message_spec){
+                                console.log(message_spec);
+                                return done(null, newUser);
+                              });     
+                              
                           });
                       }
                   });
@@ -501,7 +506,7 @@ passport.use('signup', new LocalStrategy({
               throw err;  
             }
             console.log('Se registró correctamente el usuario');
-
+                
             var mailOptions = {
                 from: '"Welcome" <becomeapartner@mail-imgnpro.com>', // sender address
                 to: username, // list of receivers
@@ -518,8 +523,11 @@ passport.use('signup', new LocalStrategy({
                 }
                 console.log('Message sent: ' + info.response);
             });
-
-            return done(null, newUser, {message:'Se registró correctamente el usuario'});
+            createfreespec(newUser._id,function(err,message_spec){
+              console.log(message_spec);
+              return done(null, newUser, {message:'Se registró correctamente el usuario'});
+            }); 
+            
           }
           );
         }

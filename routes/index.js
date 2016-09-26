@@ -12,6 +12,7 @@ var path = require('path');
 var Orders = require('../models/order.js');
 var OrderPacks = require('../models/orderpacks.js');
 var User = require('../models/user.js');
+var User_details = require('../models/user_details.js');
 var Spec = require('../models/specification.js');
 var Contact = require('../models/contact.js');
 var ordersinproc  = 0;
@@ -815,6 +816,107 @@ router.get('/imagen',
     });
   });
 
+
+
+router.post('/updateuserdetails', require('connect-ensure-login').ensureLoggedIn('/login'),
+    function(req, res){
+    
+  // body...
+    //var user_details_id = req.body.specid;
+    var newUserDet = new User_details();
+      // set the user's local credentials
+      //newSpec.specid = req.body.specid;
+    newUserDet.userid = req.user._id;
+    newUserDet.contactname = req.body.contactname;
+    newUserDet.contactemail = req.body.contactemail;
+    newUserDet.contactcountry = req.body.contactcountry;
+    newUserDet.chkfactura = req.body.chkfactura;
+    newUserDet.factrfc = req.body.factrfc;
+    newUserDet.factcountry = req.body.factcountry;
+    newUserDet.factmunicipio = req.body.factmunicipio;
+    newUserDet.factcolonia = req.body.factcolonia;
+    newUserDet.factnum_ext = req.body.factnum_ext;
+    newUserDet.factcp = req.body.factcp;
+    newUserDet.factpaymethod = req.body.factpaymethod;
+    newUserDet.factrazonsocial = req.body.factrazonsocial;
+    newUserDet.factestado = req.body.factestado;
+    newUserDet.factciudad = req.body.factciudad;
+    newUserDet.factcalle = req.body.factcalle;
+    newUserDet.factnum_int = req.body.factnum_int;
+    newUserDet.factemail2 = req.body.factemail2;
+    newUserDet.factterminacion = req.body.factterminacion;
+    User_details.findOne({ userid: req.user._id}, function (err, doc){
+        //console.log(req.body.name);
+        console.log(err);
+        if (err){
+            console.log('Se presentó un problema al buscar los detalles del usuario: '+err);
+            //res.setHeader('Content-Type', 'application/json');
+            //res.send(JSON.stringify({ error: 1, newSpecid: newSpec._id, message: 'No se guardaron los cambios, favor de contactar al administrador'})); 
+            res.setHeader('Content-Type', 'application/json');
+            res.send(JSON.stringify({ error: 1, newUserDet: newUserDet._id, message: 'No se pudieron guardar los cambios, favor de contactar al administrador'}));
+        }
+        else{
+          if (doc) {
+
+            doc.userid=  req.body.userid;
+            doc.contactname =  req.body.contactname;
+            doc.contactemail =  req.body.contactemail;
+            doc.contactcountry =  req.body.contactcountry;
+            doc.chkfactura =  req.body.chkfactura;
+            doc.factrfc =  req.body.factrfc;
+            doc.factcountry = req.body.factcountry;
+            doc.factmunicipio = req.body.factmunicipio;
+            doc.factcolonia = req.body.factcolonia;
+            doc.factnum_ext = req.body.factnum_ext;
+            doc.factcp = req.body.factcp;
+            doc.factpaymethod = req.body.factpaymethod;
+            doc.factrazonsocial = req.body.factrazonsocial;
+            doc.factestado = req.body.factestado;
+            doc.factciudad = req.body.factciudad;
+            doc.factcalle = req.body.factcalle;
+            doc.factnum_int = req.body.factnum_int;
+            doc.factemail2 = req.body.factemail2;
+            doc.factterminacion = req.body.factterminacion;
+            //doc.specid = req.user.specid;
+            console.log(doc);
+            doc.save( function(err){
+               if (err){
+                  //newSpec.save();
+                  res.setHeader('Content-Type', 'application/json');
+                  res.send(JSON.stringify({ error: 0, newUserDet: newUserDet._id, message: 'No se guardaron correctamente los detalles del usuario'})); 
+               }
+               else{
+                  res.setHeader('Content-Type', 'application/json');
+                  res.send(JSON.stringify({ error: 0, newUserDet: newUserDet._id, message: 'Se guardaron correctamente los detalles del usuario'})); 
+               }
+            });
+          } 
+          else {
+            ///guardar
+              newUserDet.save(function(err) {
+                if (err){
+                  console.log('No se pudo guardar los detalles del usuario: ' + err); 
+                  res.setHeader('Content-Type', 'application/json');
+                  res.send(JSON.stringify({ error: 1, message: 'No se pudo guardar los detalles del usuario'})); 
+                  //throw err;  
+                }
+                else{
+                  res.setHeader('Content-Type', 'application/json');
+                  res.send(JSON.stringify({ error: 0, newUserDet: newUserDet._id, message: 'Se guardó correctamente los detalles del usuario'})); 
+                }
+              });
+
+             
+          }
+
+          
+        }
+
+      });
+
+
+});
+   
 
 
  /* Handle new specification POST */

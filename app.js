@@ -679,6 +679,7 @@ function createfreespec(userid,cb){
 
 
     console.log(userid);
+    console.log('User id ' + userid);
       var newSpec = new Spec();
       // set the user's local credentials
       newSpec.name = 'GRATIS';
@@ -709,6 +710,7 @@ function createfreespec(userid,cb){
               //throw err;  
               cb(1,'No se pudo guardar la especificación: ' + err);
             }
+            console.log('Se generó correctamente la especificación');
             //res.setHeader('Content-Type', 'application/json');
             //res.send(JSON.stringify({ error: 0, newSpecid: newSpec._id, message: 'Se generó correctamente la especificación'})); 
             cb(0,'Se generó correctamente la especificación');

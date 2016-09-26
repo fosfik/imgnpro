@@ -903,3 +903,14 @@ span {
 #openPassModal .encabezado {
     text-align: center;
 }
+
+.temporal {
+    font-size: 10px;
+    font-weight: normal;
+    color: red;
+}
+
+.texto_plano[name="blue"] {
+    color: #00A0FF;
+    font-weight: bold;
+}

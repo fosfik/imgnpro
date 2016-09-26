@@ -378,7 +378,12 @@ passport.deserializeUser(function(obj, done) {
                           newUser.save(function(err) {
                               if (err)
                                   throw err;
-                              return done(null, newUser);
+
+                              createfreespec(newUser._id,function(err,message_spec){
+                                console.log(message_spec);
+                                return done(null, newUser);
+                              });     
+                              
                           });
                       }
                   });
@@ -501,7 +506,7 @@ passport.use('signup', new LocalStrategy({
               throw err;  
             }
             console.log('Se registró correctamente el usuario');
-
+                
             var mailOptions = {
                 from: '"Welcome" <becomeapartner@mail-imgnpro.com>', // sender address
                 to: username, // list of receivers
@@ -518,8 +523,11 @@ passport.use('signup', new LocalStrategy({
                 }
                 console.log('Message sent: ' + info.response);
             });
-
-            return done(null, newUser, {message:'Se registró correctamente el usuario'});
+            createfreespec(newUser._id,function(err,message_spec){
+              console.log(message_spec);
+              return done(null, newUser, {message:'Se registró correctamente el usuario'});
+            }); 
+            
           }
           );
         }
@@ -671,6 +679,7 @@ function createfreespec(userid,cb){
 
 
     console.log(userid);
+    console.log('User id ' + userid);
       var newSpec = new Spec();
       // set the user's local credentials
       newSpec.name = 'GRATIS';
@@ -701,6 +710,7 @@ function createfreespec(userid,cb){
               //throw err;  
               cb(1,'No se pudo guardar la especificación: ' + err);
             }
+            console.log('Se generó correctamente la especificación');
             //res.setHeader('Content-Type', 'application/json');
             //res.send(JSON.stringify({ error: 0, newSpecid: newSpec._id, message: 'Se generó correctamente la especificación'})); 
             cb(0,'Se generó correctamente la especificación');

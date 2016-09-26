@@ -16,6 +16,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var Spec = require('./models/specification.js');
 
 //MongoDB 
 var dbConfig = require('./models/db.js');
@@ -267,8 +268,12 @@ passport.use(new FacebookStrategy({
                 console.log('No se pudo guardar el usuario: '+err);  
                 throw err;  
               }
-              console.log('Se registró correctamente el usuario');    
-              return done(null, newUser, {message:'Se registró correctamente el usuario'});
+              console.log('Se registró correctamente el usuario'); 
+              createfreespec(newUser._id,function(err,message_spec){
+                console.log(message_spec);
+                return done(null, newUser, {message:'Se registró correctamente el usuario'});
+              });   
+              
             }
             );
           }
@@ -373,7 +378,12 @@ passport.deserializeUser(function(obj, done) {
                           newUser.save(function(err) {
                               if (err)
                                   throw err;
-                              return done(null, newUser);
+
+                              createfreespec(newUser._id,function(err,message_spec){
+                                console.log(message_spec);
+                                return done(null, newUser);
+                              });     
+                              
                           });
                       }
                   });
@@ -427,6 +437,12 @@ passport.use('login', new LocalStrategy({
           console.log('No se encontró el usuario'+username);
           return done(null, false, req.flash('message', 'La cuenta no existe.'));                 
         }
+
+
+        if(user.usertype !='user'){
+          return done(null, false, req.flash('message', 'La cuenta no es de un usuario válido'));                 
+        }
+
         // User exists but wrong password, log the error 
         if (!isValidPassword(user, password)){
           console.log('Contraseña inválida');
@@ -490,7 +506,7 @@ passport.use('signup', new LocalStrategy({
               throw err;  
             }
             console.log('Se registró correctamente el usuario');
-
+                
             var mailOptions = {
                 from: '"Welcome" <becomeapartner@mail-imgnpro.com>', // sender address
                 to: username, // list of receivers
@@ -507,8 +523,11 @@ passport.use('signup', new LocalStrategy({
                 }
                 console.log('Message sent: ' + info.response);
             });
-
-            return done(null, newUser, {message:'Se registró correctamente el usuario'});
+            createfreespec(newUser._id,function(err,message_spec){
+              console.log(message_spec);
+              return done(null, newUser, {message:'Se registró correctamente el usuario'});
+            }); 
+            
           }
           );
         }
@@ -637,6 +656,95 @@ var isDisabled = function(user){
 // Generates hash using bCrypt
 var createHash = function(password){
  return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
+}
+
+
+function createfreespec(userid,cb){
+// _id: 57e7ff183cd647de5089ef74,
+  //   totalprice: '2.05',
+  //   naturalshadow: '0.55',
+  //   marginnone: 'none',
+  //   sizenone: 'none',
+  //   alignnone: 'none',
+  //   userid: '57abccb7595b239d492a2ca7',
+  //   dpinone: 'none',
+  //   background: 'blanco',
+  //   colormode: 'rgb',
+  //   format: 'jpg',
+   //   name: 'GRATIS',
+//   __v: 0,
+  //   typespec: 'normal',
+//   disabled: false,
+//   date: Sun Sep 25 2016 10:45:52 GMT-0600 (MDT) }
+
+
+    console.log(userid);
+    console.log('User id ' + userid);
+      var newSpec = new Spec();
+      // set the user's local credentials
+      newSpec.name = 'GRATIS';
+      newSpec.naturalshadow = config.prices.naturalshadow;
+      newSpec.marginnone = 'none';
+      newSpec.sizenone = 'none';
+      newSpec.alignnone = 'none';
+      newSpec.userid = userid; 
+      newSpec.dpinone = 'none';
+      newSpec.background = 'blanco';
+      newSpec.colormode = 'rgb';
+      newSpec.format = 'jpg';
+      newSpec.typespec = 'free';
+      newSpec.maxfiles = 3;
+
+
+      //var specInfos = [];
+      //specInfos[0].naturalshadow = 1;
+      spectotalprice(newSpec,function(total){
+        //res.setHeader('Content-Type', 'application/json');
+        //res.send(JSON.stringify({ error: 0, ntotal:total , message: 'Se guardó la especificación'})); 
+          newSpec.totalprice = total;
+          newSpec.save(function(err) {
+            if (err){
+              console.log('No se pudo guardar la especificación: ' + err); 
+              //res.setHeader('Content-Type', 'application/json');
+              //res.send(JSON.stringify({ error: 1, message: 'No se pudo guardar la especificación'})); 
+              //throw err;  
+              cb(1,'No se pudo guardar la especificación: ' + err);
+            }
+            console.log('Se generó correctamente la especificación');
+            //res.setHeader('Content-Type', 'application/json');
+            //res.send(JSON.stringify({ error: 0, newSpecid: newSpec._id, message: 'Se generó correctamente la especificación'})); 
+            cb(0,'Se generó correctamente la especificación');
+          });
+
+      });
+}
+
+function spectotalprice(req, cb){
+  
+  // se agrega a nTotal el costo mínimo 
+
+  //console.log(req.param('background'));
+  console.log(req); 
+  //console.log(parseFloat(req.body.naturalshadow));
+  // se multiplica por 100 para quitar los decimales y evitar errores de precision
+  var nTotal = (config.prices.cutandremove) * 100;
+  if (parseFloat(req.naturalshadow ) > 0){
+    nTotal = nTotal + (config.prices.naturalshadow * 100);
+  }
+  if (parseFloat(req.dropshadow) > 0){
+    nTotal = nTotal + (config.prices.dropshadow * 100);
+  }
+  if (parseFloat(req.correctcolor) > 0){
+    nTotal = nTotal + (config.prices.correctcolor * 100);
+  }
+  if (parseFloat(req.clippingpath)> 0){
+    nTotal = nTotal + (config.prices.clippingpath * 100);
+  }
+  if (parseFloat(req.basicretouch) >0){
+    nTotal = nTotal + (config.prices.basicretouch * 100);
+  }
+  nTotal = nTotal / 100;
+  cb(nTotal);
 }
 
 module.exports = app;

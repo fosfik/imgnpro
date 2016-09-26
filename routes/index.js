@@ -12,11 +12,14 @@ var path = require('path');
 var Orders = require('../models/order.js');
 var OrderPacks = require('../models/orderpacks.js');
 var User = require('../models/user.js');
+var User_details = require('../models/user_details.js');
 var Spec = require('../models/specification.js');
 var Contact = require('../models/contact.js');
 var ordersinproc  = 0;
+
 aws.config.region = 'us-east-1';
-var S3_BUCKET_NAME = process.env.S3_BUCKET_NAME || 'imgnproprime';
+var S3_BUCKET_NAME = process.env.S3_BUCKET_NAME || 'imgnpro';
+var S3_BUCKET_NAME_THUMB = process.env.S3_BUCKET_NAME_THUMB|| 'imgnprothumb';
 
 // console.log(process.env.AWS_ACCESS_KEY_ID);
 // console.log(process.env.AWS_SECRET_ACCESS_KEY);
@@ -116,7 +119,7 @@ router.get('/listallorderpacks', function(req, res) {
 // TODO agregar seguridad a esta ruta
 router.get('/listspecs', function(req, res) {
   
-  Spec.find({'userid':req.user._id},function(err, specs) {
+  Spec.find({'userid':req.user._id, 'disabled':false},function(err, specs) {
     // In case of any error return
      if (err){
        console.log('Error al consultar');
@@ -138,7 +141,7 @@ router.get('/listspecs', function(req, res) {
 // TODO usar una sola ruta para consultar especificaciones
 router.get('/listspecs/:limit', function(req, res) {
   
-  Spec.find({'userid':req.user._id},function(err, specs) {
+  Spec.find({'userid':req.user._id, 'disabled':false},function(err, specs) {
     // In case of any error return
      if (err){
        console.log('Error al consultar');
@@ -184,31 +187,67 @@ router.get('/listspecs/:limit', function(req, res) {
    // todo: modificar este try catch
    try {
     console.log(req.body['imageUploadInfos']);
-    //console.log(req.params);
-    var numorderstr="";
-    var newOrder = new Orders();
-          //newOrder.name = 'orderfotos';
-          newOrder.userid = req.user._id;
-          newOrder.imagecount = req.body['imagecount'];
-          newOrder.specid = req.body.specid;
-          newOrder.totalpay = req.body.totalpay;
-          // todo: recorrer el req.body para obtener los datos de las imagenes
+    console.log(req.params);
     var imageUploadInfos = JSON.parse(req.body['imageUploadInfos']);
-    console.log(imageUploadInfos);
 
-          for (var i=0; i < imageUploadInfos.length; i++){
-              //i === 0: arr[0] === undefined;
-              //i === 1: arr[1] === 'hola';
-              //i === 2: arr[2] === 'chau';
-              imageUploadInfos[i].position = i+1;
-              console.log(imageUploadInfos[i].position);
-              newOrder.images.push(imageUploadInfos[i]);
+    findaspec(req.body.specid,function(error,spec){
+              //console.log(spec);
+              //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id , countorders:ordersinproc});
+    console.log(error);
+    console.log(spec[0].maxfiles);
 
-          }
+    console.log(imageUploadInfos.length);
+    if (error == 1){
+      res.setHeader('Content-Type', 'application/json');
+      res.send(JSON.stringify({ error: 1, message: 'No se pudo guardar el pedido'})); 
 
-           // save the user
-          newOrder.save(function(err) {
-            if (err){
+
+    }
+    else
+     {
+        if (spec[0].maxfiles > 0 && (imageUploadInfos.length > spec[0].maxfiles )){
+          res.setHeader('Content-Type', 'application/json');
+          res.send(JSON.stringify({
+           error: 1, message: 'Para este tipo de especificación solamente se permiten '+ spec[0].maxfiles + ' archivos'} 
+           )); 
+
+        }
+        else{
+
+          // todo bien
+        var numorderstr="";
+        var newOrder = new Orders();
+        //newOrder.name = 'orderfotos';
+        newOrder.userid = req.user._id;
+        newOrder.imagecount = req.body['imagecount'];
+        newOrder.specid = req.body.specid;
+        newOrder.totalpay = req.body.totalpay;
+
+        if (spec[0].typespec == 'free'){
+          newOrder.status = 'En Proceso';
+        }
+        else
+        {
+          newOrder.status = 'Por pagar';
+        }
+
+        // todo: recorrer el req.body para obtener los datos de las imagenes
+        
+        console.log(imageUploadInfos);
+
+        for (var i=0; i < imageUploadInfos.length; i++){
+            //i === 0: arr[0] === undefined;
+            //i === 1: arr[1] === 'hola';
+            //i === 2: arr[2] === 'chau';
+            imageUploadInfos[i].position = i+1;
+            console.log(imageUploadInfos[i].position);
+            newOrder.images.push(imageUploadInfos[i]);
+
+        }
+
+               // save the user
+        newOrder.save(function(err) {
+          if (err){
               //console.log(newOrder);
               //console.log(newOrder.images);
               console.log('No se pudo guardar el pedido: '+err); 
@@ -218,16 +257,16 @@ router.get('/listspecs/:limit', function(req, res) {
               res.send(JSON.stringify({ error: 1, message: 'No se pudo guardar el pedido'})); 
 
 
-            }
-            else
-            {
+          }
+          else{
 
-              console.log(' Se guardo el pedido'); 
+              console.log(' Se guardó el pedido'); 
               console.log(newOrder.numorder);
               // res.render('como2', {message: req.flash('message')});
               numorderstr = String(newOrder.numorder);
               console.log(numorderstr);
-              
+              // inhabilitar la especificacion gratuita
+              disableSpec(req.body.specid,function(err,message_spec){});
 
               // crear paquetes de trabajo
              //console.log('cantidad imagenes ' + newOrder.images.length());
@@ -241,6 +280,7 @@ router.get('/listspecs/:limit', function(req, res) {
             var highnumber = packagelenght;
             for (var i=1; i <= numpacksfull; i++){
                   var newOrderPack = new OrderPacks();
+                  newOrderPack.status = newOrder.status;  
                   newOrderPack.userid = newOrder.userid;
                   newOrderPack.numorder = newOrder.numorder;
                   newOrderPack.name = 'Package ' + i;
@@ -271,6 +311,7 @@ router.get('/listspecs/:limit', function(req, res) {
                 highnumber = lownumber + (otherfiles-1);
                 console.log(lownumber + ', ' + highnumber);
                 var newOrderPack = new OrderPacks();
+                newOrderPack.status = newOrder.status;  
                 newOrderPack.userid = newOrder.userid;
                 newOrderPack.numorder = newOrder.numorder;
                 newOrderPack.name = 'Package ' + (numpacksfull + 1);
@@ -292,24 +333,21 @@ router.get('/listspecs/:limit', function(req, res) {
                 });
                
             }
-
-
               //res.write('<h1>'+ numorderstr + '</h1>');
               //res.end();
               res.setHeader('Content-Type', 'application/json');
-              res.send(JSON.stringify({ error: 0, message: 'Se guardó el pedido', numorder: newOrder.numorder})); 
-
-
+              res.send(JSON.stringify({ error: 0, message: 'Se guardó el pedido', numorder: newOrder.numorder, typespec: spec[0].typespec })); 
             }
-
-        });  
+          });  
+        }
+      } 
+    });
   }
   catch(err) {
-     
-     console.log(err.message);
+    console.log(err.message);
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify({ error: 1, message: 'No se pudo guardar el pedido'})); 
   }
-
-
 });
 
   router.get('/',
@@ -319,6 +357,17 @@ router.get('/listspecs/:limit', function(req, res) {
     //console.log(req.user);
   });
 
+router.get('/imagen',
+  function(req, res) {
+    //res.render('intro', {message: req.flash('message')});
+    //res.download('../public/images/boton_play1.png');
+    console.log(path.resolve(__dirname));
+      res.attachment(path.join(__dirname, '../public/htmls', 'micuenta.bak' ));
+
+    res.attachment(path.join(__dirname, '../public/htmls', 'thankyou.bak' ));
+    res.end();
+    //console.log(req.user);
+  });
 
 /* GET como page. */
   router.get('/como', function(req, res) {
@@ -354,7 +403,7 @@ router.get('/listspecs/:limit', function(req, res) {
 
   router.get('/precios', function(req, res) {
     // Display the Login page with any flash message, if any
-    res.render('precios', {message: req.flash('message')});
+    res.render('precios', {message: req.flash('message'), precio:config.prices.cutandremove});
   });
 
  router.get('/de_packages', function(req, res) {
@@ -588,6 +637,16 @@ router.get('/listspecs/:limit', function(req, res) {
           });
   });
 
+  router.get('/thankyou/:numorder', 
+     require('connect-ensure-login').ensureLoggedIn('/login'),
+         function(req, res){
+          findaorder(req.params.numorder,function(error,order){
+               console.log(order);
+               //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id });
+               res.render('thankyou', {message: req.flash('message'), user: req.user, numorder:req.params.numorder, order:order[0], countorders:ordersinproc});             
+          });
+  });
+
  router.get('/payorder/:numorder', 
      require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){
@@ -759,6 +818,107 @@ router.get('/listspecs/:limit', function(req, res) {
 
 
 
+router.post('/updateuserdetails', require('connect-ensure-login').ensureLoggedIn('/login'),
+    function(req, res){
+    
+  // body...
+    //var user_details_id = req.body.specid;
+    var newUserDet = new User_details();
+      // set the user's local credentials
+      //newSpec.specid = req.body.specid;
+    newUserDet.userid = req.user._id;
+    newUserDet.contactname = req.body.contactname;
+    newUserDet.contactemail = req.body.contactemail;
+    newUserDet.contactcountry = req.body.contactcountry;
+    newUserDet.chkfactura = req.body.chkfactura;
+    newUserDet.factrfc = req.body.factrfc;
+    newUserDet.factcountry = req.body.factcountry;
+    newUserDet.factmunicipio = req.body.factmunicipio;
+    newUserDet.factcolonia = req.body.factcolonia;
+    newUserDet.factnum_ext = req.body.factnum_ext;
+    newUserDet.factcp = req.body.factcp;
+    newUserDet.factpaymethod = req.body.factpaymethod;
+    newUserDet.factrazonsocial = req.body.factrazonsocial;
+    newUserDet.factestado = req.body.factestado;
+    newUserDet.factciudad = req.body.factciudad;
+    newUserDet.factcalle = req.body.factcalle;
+    newUserDet.factnum_int = req.body.factnum_int;
+    newUserDet.factemail2 = req.body.factemail2;
+    newUserDet.factterminacion = req.body.factterminacion;
+    User_details.findOne({ userid: req.user._id}, function (err, doc){
+        //console.log(req.body.name);
+        console.log(err);
+        if (err){
+            console.log('Se presentó un problema al buscar los detalles del usuario: '+err);
+            //res.setHeader('Content-Type', 'application/json');
+            //res.send(JSON.stringify({ error: 1, newSpecid: newSpec._id, message: 'No se guardaron los cambios, favor de contactar al administrador'})); 
+            res.setHeader('Content-Type', 'application/json');
+            res.send(JSON.stringify({ error: 1, newUserDet: newUserDet._id, message: 'No se pudieron guardar los cambios, favor de contactar al administrador'}));
+        }
+        else{
+          if (doc) {
+
+            doc.userid=  req.body.userid;
+            doc.contactname =  req.body.contactname;
+            doc.contactemail =  req.body.contactemail;
+            doc.contactcountry =  req.body.contactcountry;
+            doc.chkfactura =  req.body.chkfactura;
+            doc.factrfc =  req.body.factrfc;
+            doc.factcountry = req.body.factcountry;
+            doc.factmunicipio = req.body.factmunicipio;
+            doc.factcolonia = req.body.factcolonia;
+            doc.factnum_ext = req.body.factnum_ext;
+            doc.factcp = req.body.factcp;
+            doc.factpaymethod = req.body.factpaymethod;
+            doc.factrazonsocial = req.body.factrazonsocial;
+            doc.factestado = req.body.factestado;
+            doc.factciudad = req.body.factciudad;
+            doc.factcalle = req.body.factcalle;
+            doc.factnum_int = req.body.factnum_int;
+            doc.factemail2 = req.body.factemail2;
+            doc.factterminacion = req.body.factterminacion;
+            //doc.specid = req.user.specid;
+            console.log(doc);
+            doc.save( function(err){
+               if (err){
+                  //newSpec.save();
+                  res.setHeader('Content-Type', 'application/json');
+                  res.send(JSON.stringify({ error: 0, newUserDet: newUserDet._id, message: 'No se guardaron correctamente los detalles del usuario'})); 
+               }
+               else{
+                  res.setHeader('Content-Type', 'application/json');
+                  res.send(JSON.stringify({ error: 0, newUserDet: newUserDet._id, message: 'Se guardaron correctamente los detalles del usuario'})); 
+               }
+            });
+          } 
+          else {
+            ///guardar
+              newUserDet.save(function(err) {
+                if (err){
+                  console.log('No se pudo guardar los detalles del usuario: ' + err); 
+                  res.setHeader('Content-Type', 'application/json');
+                  res.send(JSON.stringify({ error: 1, message: 'No se pudo guardar los detalles del usuario'})); 
+                  //throw err;  
+                }
+                else{
+                  res.setHeader('Content-Type', 'application/json');
+                  res.send(JSON.stringify({ error: 0, newUserDet: newUserDet._id, message: 'Se guardó correctamente los detalles del usuario'})); 
+                }
+              });
+
+             
+          }
+
+          
+        }
+
+      });
+
+
+});
+   
+
+
  /* Handle new specification POST */
   router.post('/newspec', function (req,res) {
     // body...
@@ -820,7 +980,7 @@ router.get('/listspecs/:limit', function(req, res) {
           }else{
             console.log('Update');
             console.log(specid);
-            Spec.findOne({ _id: specid  }, function (err, doc){
+            Spec.findOne({ _id: specid, typespec:'normal'  }, function (err, doc){
               console.log(req.body.name);
               console.log(err);
               if (err){
@@ -881,15 +1041,23 @@ router.get('/listspecs/:limit', function(req, res) {
 
 /* Handle get payment sign POST */
   router.post('/getpaymentsign', function (req,res) {
-   
-    var secretkey = 'trgy4y55664dgf'; 
+    
+    var CSSB = process.env.CSSB || '5634ytyertewrg';
+    console.log(CSSB);
     var paymentsign = '';
     var Ds_Merchant_Amount = req.param('Ds_Merchant_Amount');
     var Ds_Merchant_Order = req.param('Ds_Merchant_Order');
     var Ds_Merchant_MerchantCode = req.param('Ds_Merchant_MerchantCode');
     var Ds_Merchant_Currency = req.param('Ds_Merchant_Currency');
     var Ds_Merchant_TransactionType  = req.param('Ds_Merchant_TransactionType');
-    paymentsign = sha1(Ds_Merchant_Amount + Ds_Merchant_Order + Ds_Merchant_MerchantCode + Ds_Merchant_Currency + Ds_Merchant_TransactionType + secretkey);
+    
+    console.log(Ds_Merchant_Amount);
+    console.log(Ds_Merchant_Order);
+    console.log(Ds_Merchant_MerchantCode);
+    console.log(Ds_Merchant_Currency);
+    console.log(Ds_Merchant_TransactionType);
+
+    paymentsign = sha1(Ds_Merchant_Amount + Ds_Merchant_Order + Ds_Merchant_MerchantCode + Ds_Merchant_Currency + Ds_Merchant_TransactionType + CSSB);
     console.log(paymentsign);
 
  //SHA-1()
@@ -1048,20 +1216,32 @@ router.get('/sign-s3', (req, res) => {
 //var AWS = require('aws-sdk');
    
 
-const s3 = new aws.S3();
+  const s3 = new aws.S3();
 
-// el nombre del folder llevar el id del usuario
-var folder = req.user._id +'/' ;
+  // el nombre del folder llevar el id del usuario
+  var folder = req.user._id +'/' ;
+  // crea la carpeta para guardar las imágenes
+  var params = { Bucket: S3_BUCKET_NAME, Key: folder, ACL: 'public-read', Body:'body does not matter' };
+  s3.upload(params, function (err, data) {
+  if (err) {
+      console.log("Error creating the folder: ", err);
+      } else {
+      //console.log("Successfully created a folder on S3");
 
-var params = { Bucket: S3_BUCKET_NAME, Key: folder, ACL: 'public-read', Body:'body does not matter' };
-s3.upload(params, function (err, data) {
-if (err) {
-    console.log("Error creating the folder: ", err);
-    } else {
-    console.log("Successfully created a folder on S3");
+      }
+  });
+  // crea la carpeta para guardar las vistas en miniatura de las imágenes
+  var params = { Bucket: S3_BUCKET_NAME_THUMB, Key: folder, ACL: 'public-read', Body:'body does not matter' };
+  s3.upload(params, function (err, data) {
+  if (err) {
+      console.log("Error creating the folder thumbnail: ", err);
+      } else {
+      //console.log("Successfully created a thumbnail folder on S3");
 
-    }
-});
+      }
+  });
+
+
   // al fileName se le agrega el folder para que la firma lo reconozca
   const fileName = req.user._id +'/' + req.query['filename'];
   const fileType = req.query['filetype'];
@@ -1176,7 +1356,7 @@ function spectotalprice(req, cb){
 
 
 function findaspec(specid, cb){
-  Spec.find({'_id':specid},function(err, specrecord) {
+  Spec.find({'_id':specid, 'disabled':false},function(err, specrecord) {
     // In case of any error return
      if (err){
        console.log('Error al consultar la especificación');
@@ -1193,7 +1373,7 @@ function findaspec(specid, cb){
         cb(2);
     }
    
-  }).select('name totalprice date').limit(1);
+  }).select('name totalprice date maxfiles typespec').limit(1);
 }
 
 function findaspecfull(specid, cb){
@@ -1201,7 +1381,7 @@ function findaspecfull(specid, cb){
     cb(1, 'Error al consultar la especificación, longitud 0');
   }
   else{
-      Spec.find({'_id':specid},function(err, specrecord) {
+      Spec.find({'_id':specid, 'disabled':false},function(err, specrecord) {
       // In case of any error return
        if (err){
          console.log('Error al consultar la especificación');
@@ -1307,4 +1487,39 @@ function doConfirmUser(userid,cb){
     }
   });  
 }
+
+function disableSpec(specid,cb){
+    console.log(specid);
+    Spec.findOne({ _id: specid, typespec:'free'  }, function (err, doc){
+      //console.log(req.body.name);
+      console.log(err);
+      if (err){
+          console.log('Error al guardar la especificación: '+err);
+          //res.setHeader('Content-Type', 'application/json');
+          //res.send(JSON.stringify({ error: 1, newSpecid: newSpec._id, message: 'No se guardaron los cambios, favor de contactar al administrador'})); 
+          cb(1,'Error al guardar la especificación: '+err);
+      }
+      else{
+        if (doc) {
+          
+          doc.disabled = true;
+          //doc.specid = req.user.specid;
+          console.log(doc);
+
+          doc.save();
+          cb(0,'Error al guardar la especificación: '+err);
+          //newSpec.save();
+          //res.setHeader('Content-Type', 'application/json');
+          //res.send(JSON.stringify({ error: 0, newSpecid: newSpec._id, message: 'Se guardaron correctamente los cambios a la especificación'})); 
+        } 
+        else {
+          cb(1,'No se encontró la especificación, los cambios no fueron almacenados');
+          //res.setHeader('Content-Type', 'application/json');
+          //res.send(JSON.stringify({ error: 1, newSpecid: newSpec._id, message: 'No se encontró la especificación, los cambios no fueron almacenados'})); 
+        }
+      }
+    });  
+}
+
+
 module.exports = router;

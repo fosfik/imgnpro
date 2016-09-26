@@ -21,4 +21,4 @@ orderSchema.pre('save', function(next) {
     }); 
 });
 
-module.exports = mongoose.model('ordertests', orderSchema);
+module.exports = mongoose.model('orders', orderSchema);

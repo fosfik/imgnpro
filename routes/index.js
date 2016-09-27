@@ -611,6 +611,24 @@ router.get('/imagen',
             });
   });
 
+  router.get('/getUser_details/:userid', 
+     require('connect-ensure-login').ensureLoggedIn('/login'),
+         function(req, res){
+            findauser_details(req.params.userid,function(error,message,user_details){
+              //console.log(spec);
+              //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id , countorders:ordersinproc});
+              
+              if (error===0){
+                res.setHeader('Content-Type', 'application/json');
+                res.send(JSON.stringify({ error: error, message: message, user_details: user_details[0]})); 
+              }
+              else{
+                res.setHeader('Content-Type', 'application/json');
+                res.send(JSON.stringify({ error: error, message: message})); 
+              }
+              
+            });
+  });
 /* Maneja la pagina donde se cierra el pedido o la orden de compra */
   router.get('/chooseaspecification', 
      require('connect-ensure-login').ensureLoggedIn('/login'),
@@ -829,10 +847,10 @@ router.post('/updateuserdetails', require('connect-ensure-login').ensureLoggedIn
     newUserDet.userid = req.user._id;
     newUserDet.contactname = req.body.contactname;
     newUserDet.contactemail = req.body.contactemail;
-    newUserDet.contactcountry = req.body.contactcountry;
-    newUserDet.chkfactura = req.body.chkfactura;
+    newUserDet.sel_contactcountry = req.body.sel_contactcountry;
+    newUserDet.chk_factura = req.body.chk_factura;
     newUserDet.factrfc = req.body.factrfc;
-    newUserDet.factcountry = req.body.factcountry;
+    newUserDet.sel_factcountry = req.body.sel_factcountry;
     newUserDet.factmunicipio = req.body.factmunicipio;
     newUserDet.factcolonia = req.body.factcolonia;
     newUserDet.factnum_ext = req.body.factnum_ext;
@@ -858,13 +876,13 @@ router.post('/updateuserdetails', require('connect-ensure-login').ensureLoggedIn
         else{
           if (doc) {
 
-            doc.userid=  req.body.userid;
+            doc.userid=  req.user._id;
             doc.contactname =  req.body.contactname;
             doc.contactemail =  req.body.contactemail;
-            doc.contactcountry =  req.body.contactcountry;
-            doc.chkfactura =  req.body.chkfactura;
+            doc.sel_contactcountry =  req.body.sel_contactcountry;
+            doc.chk_factura =  req.body.chk_factura;
             doc.factrfc =  req.body.factrfc;
-            doc.factcountry = req.body.factcountry;
+            doc.sel_factcountry = req.body.sel_factcountry;
             doc.factmunicipio = req.body.factmunicipio;
             doc.factcolonia = req.body.factcolonia;
             doc.factnum_ext = req.body.factnum_ext;
@@ -1376,6 +1394,8 @@ function findaspec(specid, cb){
   }).select('name totalprice date maxfiles typespec').limit(1);
 }
 
+
+
 function findaspecfull(specid, cb){
   if (specid.length === 0){
     cb(1, 'Error al consultar la especificación, longitud 0');
@@ -1404,6 +1424,33 @@ function findaspecfull(specid, cb){
   }
 }
 
+function findauser_details(userid, cb){
+  if (userid.length === 0){
+    cb(1, 'Error al consultar los detalles del usuario, longitud 0');
+  }
+  else{
+      User_details.find({'userid':userid},function(err, userrecord) {
+      // In case of any error return
+       if (err){
+         console.log('Error al consultar los detalles del usuario');
+
+        cb(1, 'Error al consultar los detalles del usuario');
+       }
+       else{
+    // already exists
+          if (userrecord) {
+            console.log('Se encontraron los detalles del usuario');
+            console.log(userrecord);
+            cb( 0,'Se encontraron los detalles del usuario', userrecord);
+          } 
+          else {
+            console.log('No se encontraron los detalles del usuario');
+              cb(2,'No se encontraron los detalles del usuario' );
+          }
+       }
+    }).limit(1);
+  }
+}
 
 function findaorder(orderid, cb){
   console.log(orderid);

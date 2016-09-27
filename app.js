@@ -439,7 +439,7 @@ passport.use('login', new LocalStrategy({
         }
 
 
-        if(user.usertype !='user'){
+        if(user.usertype !='user' && user.usertype !='business'){
           return done(null, false, req.flash('message', 'La cuenta no es de un usuario válido'));                 
         }
 

@@ -230,13 +230,13 @@
                             }
                             else{
                                 alert(data.message); 
-                                if (data.typespec == 'free'){
-                                    setTimeout(window.location='/thankyou/' + data.numorder, 500 );
-                                }
-                                else{
+                                //if (data.typespec == 'free'){
+                                //    setTimeout(window.location='/thankyou/' + data.numorder, 500 );
+                                //}
+                                //else{
                                     setTimeout(window.location='/confirmpayorder/' + data.numorder, 500 );
                                     //+ data.numorder,500);
-                                }
+                                //}
                             }
                         }
                      });

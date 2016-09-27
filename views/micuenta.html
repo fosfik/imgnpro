@@ -22,14 +22,22 @@
                             }
                             else{
                                 $.each(data.user_details, function(elem, val) {
-                                    console.log(elem + ':' + val);
+                                    //console.log(elem + ':' + val);
                                     $('input[name="' + elem +'"]').val(val);
                                     $('select[name="' + elem +'"]').val(val);
                                     $('input[value="' + val + '"]').prop('checked', true);
+                                    //desactFormFact();
                                 });    
                             }
                          }
                 });
+
+            $('#chk_factura').bind("DOMSubtreeModified",function(){
+              alert('changed');
+            });
+            $("#chk_factura").change(function(){
+                //desactFormFact();
+            }); 
 
             $('#btn_savedetails').click(function (ev) {
                 // recuperar las variables localStorage
@@ -51,7 +59,13 @@
                         }
                  });
                 ev.preventDefault();
-               });   
+               }); 
+
+               function desactFormFact(){
+                var chk_factura = document.getElementById('chk_factura').checked;
+                    $('#factForm1').find('input, textarea, button, select').prop('disabled',!chk_factura);
+                    $('#factForm2').find('input, textarea, button, select').prop('disabled',!chk_factura);
+               }  
             });
         </script>
     </head>
@@ -323,13 +337,13 @@
                         <option value="ZW">Zimbabue</option>
                     </select><br><br>
                     <label for="chkfactura">Requiero Factura</label>
-                    <input tabindex=4 name="chk_factura" type="checkbox" value="chk_factura">
+                    <input tabindex=4 id="chk_factura" name="chk_factura" type="checkbox" value="chk_factura">
                 </form>
             </section>
             <hr>
             <p class="encabezado2">Datos de Facturación</p>
             <section class="col6">
-                <form class="factForm">
+                <form id = "factForm1" class="factForm">
                     <label for="factrfc">R.F.C.</label><br>
                     <input tabindex=5 type="text" name="factrfc" value="" placeholder="ej. IMG010909PRO"><br>
                     <label for="factcountry">País</label><br>
@@ -587,7 +601,7 @@
                 </form>
             </section>
             <section class="col6">
-                <form class="factForm">
+                <form id = "factForm2" class="factForm">
                     <label for="factrazonsocial">Nombre o Razón Social</label><br>
                     <input tabindex=6 type="text" name="factrazonsocial" value="" placeholder="Nombre o razón social completa"><br>
                     <label for="factestado">Estado</label><br>

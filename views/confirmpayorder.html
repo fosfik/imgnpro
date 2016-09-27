@@ -46,8 +46,25 @@
                                 //setTimeout(window.location='/subirimagen4.html',500);
                                 alert(data.message);
                                 
+
+                                $.ajax({
+                                    type: 'post',
+                                    url: '/confirmOrder/<%= numorder %>',
+                                    data: formdata,
+                                    success: function (data) {
+                                       if (data.error == 1 ){
+                                            //document.getElementById('res_message').innerHTML= data.message;    
+                                            alert(data.message);
+                                             $('#contactname').focus();
+                                        }
+                                        else{ 
+                                            document.location.href= "/" + data.href  + "/<%= numorder %>";
+                                        }
+                                    }
+
+                                });
                                 //if(confirm("¿Quieres subir imágenes?")){
-                                document.location.href= "/payorder/<%= numorder %>";
+                                
                                 //}
                                 // else{
                                 //     document.getElementById("specForm").reset();
@@ -616,7 +633,7 @@
         </section>
         <hr>
         <div class="button2">
-            <a id="buttonpay" href="">Pagar Ahora</a>
+            <a id="buttonpay" href="">Confirmar</a>
         </div>
     </section>
         <aside id="menurigth">

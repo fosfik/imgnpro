@@ -179,6 +179,28 @@ router.get('/listspecs/:limit', function(req, res) {
     });  
   });
  
+// Confirma la aceptación del pedido.
+  router.post('/confirmOrder/:numorder', 
+     require('connect-ensure-login').ensureLoggedIn('/login'),
+         function(req, res){
+              //res.render('historial', {message: req.flash('message'), user: req.user, countorders:count });
+           findaorder(req.params.numorder,function(error,order){ 
+              console.log(order); 
+              findanyspec(order[0].specid, function(error, spec){
+                //console.log(spec);
+                console.log(req.user);
+                doConfirmOrder(req.params.numorder, req, spec[0].typespec ,function(tipomsg,message,href){
+                    //console.log(spec);
+                    //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id , countorders:ordersinproc});
+                    
+
+                  res.setHeader('Content-Type', 'application/json');
+                  res.send(JSON.stringify({ error: tipomsg, message: message, href:href})); 
+                    //res.render('especificaciones1', {message: 'Prueba', user: req.user, href:'thankyou'});
+                });
+              });  
+            });  
+  });
 
 
 /* Crea un nuevo pedido. */
@@ -224,7 +246,7 @@ router.get('/listspecs/:limit', function(req, res) {
         newOrder.totalpay = req.body.totalpay;
 
         if (spec[0].typespec == 'free'){
-          newOrder.status = 'En Proceso';
+          newOrder.status = 'Por pagar';
         }
         else
         {
@@ -1384,6 +1406,7 @@ function findaspec(specid, cb){
    // already exists
     if (specrecord) {
       console.log('se encontró  la especificación');
+      console.log(specrecord);
       cb( 0, specrecord);
     } 
     else {
@@ -1394,6 +1417,28 @@ function findaspec(specid, cb){
   }).select('name totalprice date maxfiles typespec').limit(1);
 }
 
+function findanyspec(specid, cb){
+  console.log(specid);
+  Spec.find({'_id':specid},function(err, specrecord) {
+    // In case of any error return
+     if (err){
+       console.log('Error al consultar la especificación');
+
+      cb(1);
+     }
+   // already exists
+    if (specrecord) {
+      console.log('se encontró  la especificación');
+      console.log(specrecord);
+      cb( 0, specrecord);
+    } 
+    else {
+      console.log('No se encontró la especificación');
+        cb(2);
+    }
+   
+  }).select('name totalprice date maxfiles typespec').limit(1);
+}
 
 
 function findaspecfull(specid, cb){
@@ -1452,6 +1497,35 @@ function findauser_details(userid, cb){
   }
 }
 
+function findauser(userid, cb){
+  if (userid.length === 0){
+    cb(1, 'Error al consultar al usuario, longitud 0');
+  }
+  else{
+      console.log(userid);
+      User.find({'_id':userid},function(err, user) {
+      // In case of any error return
+       if (err){
+         console.log('Error al consultar el usuario');
+
+        cb(1, 'Error al consultar el usuario');
+       }
+       else{
+    // already exists
+          if (user) {
+            console.log('Se encontró el usuario');
+            console.log(user);
+            cb( 0,'Se encontró el usuario', user);
+          } 
+          else {
+            console.log('No se encontró el usuario');
+              cb(2,'No se encontró el usuario' );
+          }
+       }
+    }).limit(1);
+  }
+}
+
 function findaorder(orderid, cb){
   console.log(orderid);
   Orders.find({'numorder':orderid},function(err, orderrecord) {
@@ -1477,9 +1551,85 @@ function findaorder(orderid, cb){
 
         cb(2);
     }
-  }).select('date status totalpay').limit(1);
+  }).select('date status totalpay specid').limit(1);
 }
 
+function doConfirmOrder(numorder,req,typespec,cb){
+  //console.log(req.user);
+  findauser(req.user._id,function(error,message,user){
+      //console.log(spec);
+      //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id , countorders:ordersinproc});
+      
+      if (error){
+        cb( 1,'No se encontró el usuario');
+      }
+      else
+      {
+        console.log('error:' + error);
+       console.log('user: ');
+       console.log(user);
+
+        var statusorder ='';
+       
+        if (user[0].usertype=='business' || typespec=='free' ){
+            statusorder ='En Proceso';
+            href = 'thankyou';
+        }
+        else
+        {
+           statusorder ='Por pagar';
+            href = 'payorder';
+        }
+        console.log(user);
+        console.log(statusorder);
+
+        //confirmar pedido y paquetes
+
+        if (statusorder =='En Proceso'){
+          var conditions = { numorder: numorder }
+            , update = { $set: { status: statusorder }}
+            , options = { multi: true };
+
+          Orders.update(conditions, update, options, function (err, numAffected) {
+            // numAffected is the number of updated documents
+           
+            console.log(numAffected);
+            if (err){
+                console.log(err);
+                cb( 1,'No fue posible actualizar el estatus del pedido');
+            }
+            else{
+                // actualizar paquetes
+
+                OrderPacks.update(conditions, update, options, function (err, numAffected) {
+                  // numAffected is the number of updated documents
+                 
+                  console.log(numAffected);
+                  if (err){
+                      console.log(err);
+                      cb( 1,'No fue posible actualizar el estatus del pedido');
+                  }
+                  else{
+                      // actualizar paquetes
+                      cb( 0,'Se actualizó el estatus del pedido', href);
+
+                  }
+                });
+                //cb( 0,'Se actualizó el estatus del pedido', href);
+
+            }
+          });
+
+        }
+        else
+        {
+            cb( 2,'Pedido normal', href);
+        }
+          
+
+      }
+    });
+}
 
 function countorders(userid,cb){
 

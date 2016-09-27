@@ -31,6 +31,7 @@
 
             $('#buttonpay').click(function (ev) {
                 // recuperar las variables localStorage
+              if (validInput()){
                 var formdata = $('form').serialize();
                 $.ajax({
                         type: 'post',
@@ -71,8 +72,35 @@
                             }
                         }
                  });
+
+
+              }
+
+
+                
                 ev.preventDefault();
-               });   
+               });
+
+              function validInput(){
+                var bValor = false;
+                if ($('#contactname').val().trim() === ''){
+                        alert("Favor de capturar el nombre");
+                        $('#contactname').focus(); 
+                }
+                else
+                {
+                    if ($('#contactemail').val().trim() === ''){
+                            alert("Favor de capturar el correo electrónico"); 
+                            $('#contactemail').focus(); 
+                    }
+                    else
+                    {
+                        bValor = true;
+                    } 
+                }
+
+                return bValor;
+              }   
             });
         </script>
     </head>
@@ -108,7 +136,7 @@
                     <label for="contactname">Nombre</label><br>
                     <input tabindex=1 id="contactname" type="text" name="contactname" value="" placeholder="Nombre completo" required><br>
                     <label for="contactemail">Email</label><br>
-                    <input tabindex=2 type="email" name="contactemail" value="" placeholder="ej. nombre@empresa.com" required><br>
+                    <input tabindex=2 id= "contactemail" type="email" name="contactemail" value="" placeholder="ej. nombre@empresa.com" required><br>
                     <label for="contactcountry">País</label><br>
                     <select tabindex=3 name="sel_contactcountry" >
                         <option value="" disabled selected>Seleccione un País</option>

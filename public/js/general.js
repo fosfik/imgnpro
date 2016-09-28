@@ -23,3 +23,8 @@ function isNotNullUndefined(param){
 	// }
 	return ( (param !== null && param !== undefined) ? true:false);
 }
+
+function fillzero(param,pattern){
+	return (pattern + param).slice(-7);
+
+}

@@ -23,7 +23,7 @@ var S3_BUCKET_NAME_THUMB = process.env.S3_BUCKET_NAME_THUMB|| 'imgnprothumb';
 
 // console.log(process.env.AWS_ACCESS_KEY_ID);
 // console.log(process.env.AWS_SECRET_ACCESS_KEY);
-
+//console.log(fillzero(23456, '0000000'));
 // TODO agregar seguridad a esta ruta
 router.get('/listorders/:limit', function(req, res) {
   Orders.find({'userid':req.user._id},function(err, orders) {
@@ -692,6 +692,8 @@ router.get('/imagen',
          function(req, res){
           
                //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id });
+               //var numorder_zero = fillzero(req.params.numorder, '0000000');
+
                res.render('payorder', {message: req.flash('message'), user: req.user, numorder:req.params.numorder, countorders:ordersinproc});             
          
   });
@@ -1080,31 +1082,46 @@ router.post('/updateuserdetails', require('connect-ensure-login').ensureLoggedIn
   });
 
 /* Handle get payment sign POST */
-  router.post('/getpaymentsign', function (req,res) {
-    
-    var CSSB = process.env.CSSB || '5634ytyertewrg';
-    console.log(CSSB);
-    var paymentsign = '';
-    var Ds_Merchant_Amount = req.param('Ds_Merchant_Amount');
-    var Ds_Merchant_Order = req.param('Ds_Merchant_Order');
-    var Ds_Merchant_MerchantCode = req.param('Ds_Merchant_MerchantCode');
-    var Ds_Merchant_Currency = req.param('Ds_Merchant_Currency');
-    var Ds_Merchant_TransactionType  = req.param('Ds_Merchant_TransactionType');
-    
-    console.log(Ds_Merchant_Amount);
-    console.log(Ds_Merchant_Order);
-    console.log(Ds_Merchant_MerchantCode);
-    console.log(Ds_Merchant_Currency);
-    console.log(Ds_Merchant_TransactionType);
+  router.post('/getpaymentsign/:numorder', function (req,res) {
+    //res.setHeader('Content-Type', 'application/json');
+    //res.send(JSON.stringify({ error: error, message: message, user_details: user_details[0]})); 
+    findaorder(req.params.numorder,function(err,order){
+      if (err){
+          res.setHeader('Content-Type', 'application/json');
+          res.send(JSON.stringify({ error: 1, message:'No se encontró el pedido', sign: ''})); 
+      }
+      else{
+          console.log(order);
+          var CSSB = process.env.CSSB || '5634ytyertewrg';
+          var paymentsign = '';
+          var Ds_Merchant_Amount = order[0].totalpay.toString().replace('.', ''); //req.param('Ds_Merchant_Amount');
+          var Ds_Merchant_Order = fillzero(req.params.numorder, '0000000');
+          var Ds_Merchant_MerchantCode = 4093847; //req.param('Ds_Merchant_MerchantCode');
+          var Ds_Merchant_Currency = 840; //req.param('Ds_Merchant_Currency');
+          var Ds_Merchant_TransactionType  = 0; //req.param('Ds_Merchant_TransactionType');
+          var Ds_Merchant_UrlOK = 'https://www.imgnpro.com/transactionok';
+          var Ds_Merchant_UrlKO = 'https://www.imgnpro.com/transactiondeny';
+          var Ds_Merchant_MerchantURL = 'https://www.imgnpro.com';
+          var Ds_Merchant_MerchantName = 'IMAGEN PRO';
+          var Ds_Merchant_Terminal = 1;
+          console.log('A pagar:' + Ds_Merchant_Amount);
+          console.log('Pedido:' + Ds_Merchant_Order);
+          console.log('Codigo comercio:' + Ds_Merchant_MerchantCode);
+          console.log('Moneda:' + Ds_Merchant_Currency);
+          console.log('Tipo transacción:' + Ds_Merchant_TransactionType);
 
-    paymentsign = sha1(Ds_Merchant_Amount + Ds_Merchant_Order + Ds_Merchant_MerchantCode + Ds_Merchant_Currency + Ds_Merchant_TransactionType + CSSB);
-    console.log(paymentsign);
 
- //SHA-1()
-           
-    res.setHeader('Content-Type', 'application/json');
-    res.send(JSON.stringify({ error: 0, sign: paymentsign})); 
-              
+
+
+          paymentsign = sha1(Ds_Merchant_Amount + Ds_Merchant_Order + Ds_Merchant_MerchantCode + Ds_Merchant_Currency + Ds_Merchant_TransactionType + CSSB);
+          console.log(paymentsign);
+
+             //SHA-1()
+                 
+          res.setHeader('Content-Type', 'application/json');
+          res.send(JSON.stringify({ error: 0, Ds_Merchant_MerchantSignature: paymentsign, Ds_Merchant_Amount:Ds_Merchant_Amount, Ds_Merchant_Order:Ds_Merchant_Order, Ds_Merchant_UrlOK:Ds_Merchant_UrlOK, Ds_Merchant_UrlKO:Ds_Merchant_UrlKO, Ds_Merchant_MerchantURL:Ds_Merchant_MerchantURL, Ds_Merchant_MerchantCode:Ds_Merchant_MerchantCode, Ds_Merchant_Currency:Ds_Merchant_Currency, Ds_Merchant_TransactionType:Ds_Merchant_TransactionType, Ds_Merchant_MerchantName:Ds_Merchant_MerchantName, Ds_Merchant_Terminal:Ds_Merchant_Terminal})); 
+        }
+    });        
   });
   /* Handle Registration POST */
   // router.post('/signuplocal', passport.authenticate('signup', {
@@ -1718,5 +1735,9 @@ function disableSpec(specid,cb){
     });  
 }
 
+function fillzero(param,pattern){
+  return (pattern + param).slice(-7);
+
+}
 
 module.exports = router;

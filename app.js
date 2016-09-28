@@ -340,10 +340,10 @@ passport.deserializeUser(function(obj, done) {
 
 
             User.findOne({ 'email' : profile.emails[0].value }, function(err, user) {
-               if (user) {
+               if (user && user.provider != 'google') {
 
                     // if a user is found, log them in
-                    return done(null, false, req.flash('message', 'Ya te registraste usando esta cuenta de correo de Google'));
+                    return done(null, false, req.flash('message', 'Ya te registraste usando esta cuenta de correo de Google, ingresa con password'));
                     //return done(err, null, req.flash('message', 'Oops! Mauvais password.'));
                     //return done('<H1>Problem </h1>', user, {message: 'Ya te registraste usando esta cuenta de correo'});
                 }
@@ -355,13 +355,13 @@ passport.deserializeUser(function(obj, done) {
                       if (err)
                           return done(err);
 
-                      if (user) {
-
+                      if (user && (user.usertype =='user' || user.usertype =='business' )){
+                          // valida si el usuario es cliente tipo usuario o cuenta empresarial
                           // if a user is found, log them in
                           return done(null, user);
                       } else {
                           // if the user isnt in our database, create a new user
-                          console.log(profile);
+                          //console.log(profile);
                           var newUser  = new User();
 
                           // set all of the relevant information

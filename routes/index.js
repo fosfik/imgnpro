@@ -29,7 +29,7 @@ router.get('/listorders/:limit', function(req, res) {
   Orders.find({'userid':req.user._id},function(err, orders) {
     // In case of any error return
      if (err){
-       console.log('Error al consultar');
+       console.log('Error al consultar: ' + err);
      }
      //console.log("prueba 2");
    // already exists
@@ -43,7 +43,7 @@ router.get('/listorders/:limit', function(req, res) {
       console.log('No se encontraron pedidos');
     }
    
-  }).select('imagecount numorder status date').sort('-date').limit(req.params.limit);
+  }).select('imagecount numorder status date').sort('-date').limit(parseInt(req.params.limit));
 });
 
 // TODO agregar seguridad a esta ruta
@@ -156,7 +156,7 @@ router.get('/listspecs/:limit', function(req, res) {
     else {
       console.log('No se encontraron especificaciones');
     }
-  }).select('_id name date totalprice').sort('-date').limit(req.params.limit);
+  }).select('_id name date totalprice').sort('-date').limit(parseInt(req.params.limit));
 });
 
 /* Crea un nuevo contacto. */

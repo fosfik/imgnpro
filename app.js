@@ -45,6 +45,36 @@ var transporter = nodemailer.createTransport(transporter({
     }
 }));
 
+
+
+//var express = require('express');
+//var RedisStore = require('connect-redis')(express.session);
+
+
+var session = require('express-session');
+var RedisStore = require('connect-redis')(session);
+
+// // app.use(session({
+//     store: new RedisStore({
+//    host: 'pub-redis-18869.us-east-1-3.4.ec2.garantiadata.com',
+//    port: 18869
+//  }),
+//     secret: 'keyboard cat',
+//     resave: true,
+//     saveUninitialized: true
+// }));
+
+//app.use(express.session({ store: new RedisStore(), secret: 'hey you' }));
+
+
+// exports.logout = function (req, res) {
+//   req.session.destroy();
+//   res.redirect('/');
+// };
+
+
+
+
 // var smtpTransport = nodemailer.createTransport(smtpTransport({
 //     host : "YOUR SMTP SERVER ADDRESS",
 //     secureConnection : false,
@@ -68,7 +98,7 @@ var transporter = nodemailer.createTransport(transporter({
 
 //mongoose.connect(dbConfig.url);
 
-var app = express();
+//var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -111,7 +141,14 @@ app.use(express.static(path.join(__dirname, 'public/htmls')));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
+// app.use(session({  store: new RedisStore({
+//    host: 'redis-10291.c8.us-east-1-2.ec2.cloud.redislabs.com',
+//    port: 10291,
+//    db: 0,
+//    pass: '1j79ol4f'
+//  }), secret: 'keyboard cat', resave: true, saveUninitialized: true }));
+app.use(session({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
+
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
@@ -181,25 +218,25 @@ app.use(function(req, res, next) {
 
 // development error handler
 // will print stacktrace
-// if (app.get('env') === 'development') {
-//   app.use(function(err, req, res, next) {
-//     res.status(err.status || 500);
-//     res.render('error', {
-//       message: err.message,
-//       error: err
-//     });
-//   });
-// }
+if (app.get('env') === 'development') {
+  app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+      message: err.message,
+      error: err
+    });
+  });
+}
 
-// production error handler
-// no stacktraces leaked to user
-// app.use(function(err, req, res, next) {
-//   res.status(err.status || 500);
-//   res.render('error', {
-//     message: err.message,
-//     error: {}
-//   });
-// });
+//production error handler
+//no stacktraces leaked to user
+app.use(function(err, req, res, next) {
+  res.status(err.status || 500);
+  res.render('error', {
+    message: err.message,
+    error: {}
+  });
+});
 
 
 app.use(function(req, res, next){

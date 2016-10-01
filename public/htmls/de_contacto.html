@@ -18,56 +18,36 @@
         <section id="menuver">
             <nav>
                 <ul>
-                    <li class="menulogo"><h1><a href="/principal"><img src="../images/logo_white.png" alt="logo"></a></h1></li>
-                    <li><a href="/de_micuenta">Mi Cuenta</a></li>
-                    <li><a href="/de_historial">Historial</a></li>
-                    <li><a href="/de_contacto">Contacto</a></li>
+                    <li class="menulogo"><h1><a href="../htmls/de_designers1.html"><img src="../images/logo_white.png" alt="logo"></a></h1></li>
+                    <li><a href="../htmls/de_micuenta.html">Mi Cuenta</a></li>
+                    <li><a href="../htmls/de_historial.html">Historial</a></li>
+                    <li><a href="../htmls/de_contacto.html">Soporte</a></li>
                     <li><a href="logout">Cerrar Sesión</a></li>
                 </ul>
             </nav>
         </section>
-        <section id="contenedor" name="cuenta">
-            <section class="col1">
-                <p class="encabezado">Historial</p>
-                <div id= "orderstable" class="tabla">
-                    <table>
-                        <tr>
-                            <th>Orden</th>
-                            <th>Paquete</th>
-                            <th>Imágenes</th>
-                            <th>Fecha</th>
-                            <th>Por Pagar</th>
-                        </tr>
-                        <tr>
-                            <td>1234</td>
-                            <td>Package 2</td>
-                            <td>20</td>
-                            <td>26-09-2016</td>
-                            <td>$177.66</td>
-                        </tr>
-                        <tr>
-                            <td>1234</td>
-                            <td>Package 2</td>
-                            <td>20</td>
-                            <td>26-09-2016</td>
-                            <td>$177.66</td>
-                        </tr>
-                        <tr>
-                            <td>1234</td>
-                            <td>Package 2</td>
-                            <td>20</td>
-                            <td>26-09-2016</td>
-                            <td>$177.66</td>
-                        </tr>
-                        <tr>
-                            <td>1234</td>
-                            <td>Package 2</td>
-                            <td>20</td>
-                            <td>26-09-2016</td>
-                            <td>$177.66</td>
-                        </tr>
-                    </table>
+        <section id="contenedor" name="soporte">
+            <section class="col4">
+                <p class="encabezado">Soporte</p>
+                <form id = "contactForm" class="accedeForm" action="/newcontact" method = "post">
+                <ul>
+                    <li>
+                        <label class="texto_plano">Nombre</label>
+                        <input type="text" name="name" required placeholder="¿Quién Eres?">
+                    </li>
+                    <li>
+                        <label class="texto_plano">Correo Electrónico</label>
+                        <input type="email" name="email" required placeholder="tunombre@ejemplo.com">
+                    </li>
+                    <li>
+                        <label class="texto_plano">Mensaje</label>
+                        <textarea cols="40" rows="6" name="message" placeholder="Escribe tu mensaje, nuestro personal se pondrá en contacto a la brevedad."></textarea>
+                    </li>
+                </ul>
+                <div class="button2">
+                    <input type="submit" value="Aceptar">
                 </div>
+            </form>
             </section>
         <hr name="hrcuenta">
         </section>

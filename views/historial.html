@@ -20,7 +20,7 @@
                                      .append($("<td>" + data[i].imagecount + "</td>"))
                                      .append($("<td>" + toDateString(data[i].date) + "</td>"))
                                      .append($("<td>" + data[i].status + "</td>"))
-                                     .append($("<td><a id='icontable' href=''><img src='../images/icon_doc.png' height='20px' width='20px'></a></td>"))
+                                     .append($("<td><a id='icontable' href='#openFactModal'><img src='../images/icon_doc.png' height='20px' width='20px'></a></td>"))
                                 $("#orderstable tbody").append(row);
                             }
                               
@@ -68,6 +68,29 @@
             <a href="subirimagen1">Subir Imágenes</a>
         </div>
     </section>
+
+
+
+    <!--MODAL PARA SOMBRA-->
+        <div id="openFactModal" class="modalDialog">
+            <div>
+                <a href="#close" title="Close" Class="close">X</a>
+                <h1 class="encabezado">Factura</h1>
+                <hr class="hrmodal">
+                <form id="shadowForm1" class="shadow_form" action="" method="" name="shadow_form">
+                    
+                    
+                    
+            <!---SCRIPT PARA CAMBIAR FOTO SEGUN LO SELECIONADO-->                    
+                    
+                      
+                    <div class="buttonModal">
+                        <a id="buttonshadow" href="#close">Aceptar</a>
+                    </div>                               
+                </form>
+            </div>
+        </div>
+
         <aside id="menurigth">
             <p class="encabezado"> Tutorial</p>
              <div class="video_med"><a onclick="ponleplay()" href="#openVideoModal"><img src="../images/tumbnail_video.jpg" width="140px"></a></div>

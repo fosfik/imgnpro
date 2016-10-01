@@ -180,19 +180,39 @@ router.get('/listspecs/:limit', function(req, res) {
 });
 
 /* Crea un nuevo contacto. */
+// Related pages: contacto.html
   router.post('/newcontact', function(req, res) {
-    console.log(req.body);
+    //console.log(req.body);
     var newContact = new Contact();
     newContact.name = req.body['name'];
     newContact.email = req.body['email'];
     newContact.message = req.body['message'];
     newContact.save(function(err) {
       if (err){
-          console.log('No se pudo guardar el pedido: '+err);  
+          console.log('No se pudo guardar el contacto: ' + err);  
           res.setHeader('Content-Type', 'application/json');
           res.send(JSON.stringify({ error: 1, message: 'No se pudo guardar el contacto'})); 
       }
       else{
+
+            var mailOptions = {
+                from: '"Contact" <server@mail-imgnpro.com>', // sender address
+                to: 'hi@mail-imgnpro.com, jerh56@gmail.com, jmoreno@mail-imgnpro.com', // list of receivers
+                subject: 'Hola', // Subject line
+                text: '', // plaintext body
+                //html: '<a href="www.imgnpro.com/confirmuser"</a>' // html body
+                html: '<html>' + 'Hola, mi nombre es ' + newContact.name + '<br><b>' + 
+                newContact.message + '</b><br>' + 'Mi correo electrónico es: <b>' + newContact.email + '</b></html>'  // html body
+            };
+            console.log(mailOptions);
+            //send mail with defined transport object
+            transporter.sendMail(mailOptions, function(error, info){
+                if(error){
+                    return console.log(error);
+                }
+                console.log('Message sent: ' + info.response);
+            });
+
           res.setHeader('Content-Type', 'application/json');
           res.send(JSON.stringify({ error: 0, message: 'Se guardó el contacto'})); 
       }
@@ -212,7 +232,7 @@ router.get('/listspecs/:limit', function(req, res) {
                 doConfirmOrder(req.params.numorder, req, spec[0].typespec ,function(tipomsg,message,href){
                     //console.log(spec);
                     //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id , countorders:ordersinproc});
-                    
+                  
 
                   res.setHeader('Content-Type', 'application/json');
                   res.send(JSON.stringify({ error: tipomsg, message: message, href:href})); 
@@ -1532,7 +1552,7 @@ function findaorder(orderid, cb){
    // already exists
     if (orderrecord) {
       console.log('Se encontró  el pedido');
-      console.log(orderrecord);
+      //console.log(orderrecord);
       //res.setHeader('Content-Type', 'application/json');
       //res.send(orders); 
 
@@ -1558,23 +1578,25 @@ function doConfirmOrder(numorder,req,typespec,cb){
       }
       else
       {
-        console.log('error:' + error);
-       console.log('user: ');
-       console.log(user);
+        //console.log('error:' + error);
+       //console.log('user: ');
+       //console.log(user);
 
         var statusorder ='';
        
         if (user[0].usertype=='business' || typespec=='free' ){
             statusorder ='En Proceso';
             href = 'thankyou';
+
+
         }
         else
         {
            statusorder ='Por pagar';
             href = 'payorder';
         }
-        console.log(user);
-        console.log(statusorder);
+        //console.log(user);
+        //console.log(statusorder);
 
         //confirmar pedido y paquetes
 
@@ -1582,6 +1604,67 @@ function doConfirmOrder(numorder,req,typespec,cb){
           var conditions = { numorder: numorder }
             , update = { $set: { status: statusorder }}
             , options = { multi: true };
+          findaorder(numorder,function(err,order){
+            User_details.findOne({userid:req.user._id},function(err,user_details){
+              if (err){
+                console.log(err);
+              } 
+              else{
+                  if(user_details.chk_factura == 'chk_factura'){
+                    var mailOptions = {
+                      from: '"Server" <server@mail-imgnpro.com>', // sender address
+                      to: 'makeacfdi@mail-imgnpro.com, jerh56@gmail.com', // list of receivers
+                      subject: 'Factura', // Subject line
+                      text: '', // plaintext body
+                      //html: '<a href="www.imgnpro.com/confirmuser"</a>' // html body
+                      html: '<html>' + 'Hola, el nombre de mi empresa es ' + user_details.factrazonsocial +
+                      '<br><b> Necesito una factura electrónica</b><br>' + 'Mis datos son los siguientes:<br> <b>' + 
+                      'Razón social:' + user_details.factrazonsocial + '<br>' +
+                      'RFC:' + user_details.factrfc + '<br>' +
+                      'Domicilio:' + user_details.factcalle + ',' + 
+                                     user_details.factcolonia + ',' + 
+                                     user_details.factnum_ext + ',' +
+                                     user_details.factnum_int + ',' +
+                                     user_details.factmunicipio + ',' +
+                                     user_details.factciudad + ',' +
+                                     user_details.factestado + ',' +
+                                     user_details.sel_factcountry + ',' + '<br>' +
+                      'Número de pedido:' + numorder + '<br>' +
+                      'Monto total: USD ' + order[0].totalpay + '<br>' +
+                      'Estatus del pedido: ' + statusorder + '<br>' +
+                      'Método de pago:' + user_details.factpaymethod + '<br>' +
+                      'Terminación de la tarjeta:' + user_details.factterminacion + '<br>' +
+                      'e-mail:  <span>' + user_details.factemail2 + '</span><br></b></html>'  // html body
+                    };
+                    //console.log(mailOptions);
+                    //send mail with defined transport object
+                    transporter.sendMail(mailOptions, function(error, info){
+                        if(error){
+                            return console.log(error);
+                        }
+                        console.log('Message sent: ' + info.response);
+                    });
+                  }
+                  
+              } 
+
+          });          
+
+          
+          }); 
+
+          // User_details
+          // .findOne({userid:req.user._id})
+          // .populate('userid')
+          // .exec(function(err,user_details){
+
+          //   if (err){
+          //     console.log(err);
+          //   } 
+          //   else{
+          //     console.log(user_details);  
+          //   } 
+          // });  
 
           Orders.update(conditions, update, options, function (err, numAffected) {
             // numAffected is the number of updated documents
@@ -1626,7 +1709,7 @@ function doConfirmOrder(numorder,req,typespec,cb){
 
 function countorders(userid,cb){
 
-  Orders.count({'userid':userid, 'status':'En proceso'}, function( err, count){
+  Orders.count({'userid':userid, 'status':'En Proceso'}, function( err, count){
     //console.log(userid);
     //console.log( "Número de pedidos:", count );
     //req.countorders = count;

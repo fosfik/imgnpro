@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
  
 module.exports = mongoose.model('user_details',{
-    userid: {type: String},
+    userid: {type: String, ref: 'User'},
     contactname: {type: String}, 
     contactemail: {type: String},
     sel_contactcountry: {type: String},

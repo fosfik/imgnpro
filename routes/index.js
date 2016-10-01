@@ -1,7 +1,6 @@
 var express = require('express');
 var aws = require('aws-sdk');
 var router = express.Router();
-var multer = require('multer');
 //var cloudinary = require('cloudinary');
 var passport = require('passport');
 var sha1 = require('sha1');
@@ -20,6 +19,27 @@ var ordersinproc  = 0;
 aws.config.region = 'us-east-1';
 var S3_BUCKET_NAME = process.env.S3_BUCKET_NAME || 'imgnpro';
 var S3_BUCKET_NAME_THUMB = process.env.S3_BUCKET_NAME_THUMB|| 'imgnprothumb';
+
+
+var nodemailer = require('nodemailer');
+
+// create reusable transporter object using the default SMTP transport
+//var transporter = nodemailer.createTransport('smtps://jerh56%40gmail.com:1J79ol4f*3@smtp.gmail.com');
+
+var transporter = require("nodemailer-smtp-transport")
+
+var transporter = nodemailer.createTransport(transporter({
+    host : "mail.mail-imgnpro.com",
+    ignoreTLS : true,
+    secureConnection : false,
+    port: 2525,
+    auth : {
+        user : "becomeapartner@mail-imgnpro.com",
+        //pass: "m0r3n0"
+        pass : "1m4g3npr0"
+    }
+}));
+
 
 // console.log(process.env.AWS_ACCESS_KEY_ID);
 // console.log(process.env.AWS_SECRET_ACCESS_KEY);
@@ -1222,8 +1242,6 @@ router.get('/profile',
     res.render('profile', { user: req.user });
   });
 
-//var upload = multer({ dest: 'uploads/' });
-
 /*
  * Respond to GET requests to /sign-s3.
  * Upon request, return JSON containing the temporarily-signed S3 request and
@@ -1334,48 +1352,6 @@ router.get('/sign-s3', (req, res) => {
 router.post('/save-details', (req, res) => {
   // TODO: Read POSTed form data and do something useful
 });
-
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({extended:true}));
-
-// app.set("view engine", "jade");
-// app.use(express.static("public"));
-
-
-// cloudinary.config({ 
-//   cloud_name: config.cloudinary.cloud_name, 
-//   api_key: config.cloudinary.api_key, 
-//   api_secret: config.cloudinary.api_secret 
-// });
-
-// var storage =   multer.diskStorage({
-//   destination: function (req, file, callback) {
-//     callback(null, 'public/uploads/');
-//   },
-//   filename: function (req, file, callback) {
-//     callback(null, file.originalname + '-' + Date.now());
-//   }
-// });
- 
-
-//  var type = multer({ storage : storage}).single('photoimage');
-
-
-// router.post('/upload', type, function (req,res) {
-
-//   /** When using the "single"
-//       data come in "req.file" regardless of the attribute "name". **/
-//   var tmp_path = req.file.path;
-//   console.log(tmp_path);
-//   cloudinary.uploader.upload(req.file.path, function(result) { 
-//      console.log(result) 
-//      //res.render("index");
-//      res.render('photo', {file : result});
-//      //res.send(result);
-//   });
-
-// });
-
     // cutandremove:1.50,
     // naturalshadow:0.55,
     // dropshadow:0.20,

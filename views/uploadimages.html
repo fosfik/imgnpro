@@ -83,7 +83,7 @@
                             //console.log(data);
 
                             if (!data.signedRequest) {
-                                return cb('Failed to receive an upload url');
+                                return cb('No se pudo recibir una URL para cargar la imagen');
                             }
 
                             file.signedRequest = data.signedRequest;
@@ -135,7 +135,7 @@
 
                             // app._showDefaultError(this, file, "Network Error!");
                             
-                            alert("Error subiendo archivo");
+                            alert("No se pudo cargar el archivo, favor de borrarlo de la lista y volver a intentar");
                             
                         } else {
                             // corregir esto para que solo agregue al array archivos completos
@@ -172,10 +172,10 @@
                                 $.getJSON('/delete-s3', params).done(function(data) {
                                     if (data.error ===1) {
                                         //return cb('Falló al borrar el archivo');
-                                        alert('Falló al borrar el archivo');
+                                        alert('No fue posible borrar el archivo del servidor');
                                     }
                                 }).fail(function() {
-                                    alert("Falló al borrar la imagen");
+                                    alert("No fue posible borrar el archivo");
                                 });
                             }  
 

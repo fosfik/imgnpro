@@ -32,6 +32,8 @@ var nodemailer = require('nodemailer');
 
 var transporter = require("nodemailer-smtp-transport")
 var app = express();
+var session = require('express-session'); // Manejo de sesiones
+var RedisStore = require('connect-redis')(session); // conexión a REDIS para almacenar sesiones de usuario
 
 var transporter = nodemailer.createTransport(transporter({
     host : "mail.mail-imgnpro.com",
@@ -44,62 +46,6 @@ var transporter = nodemailer.createTransport(transporter({
         pass : "1m4g3npr0"
     }
 }));
-
-
-
-//var express = require('express');
-//var RedisStore = require('connect-redis')(express.session);
-
-
-var session = require('express-session');
-var RedisStore = require('connect-redis')(session);
-
-// // app.use(session({
-//     store: new RedisStore({
-//    host: 'pub-redis-18869.us-east-1-3.4.ec2.garantiadata.com',
-//    port: 18869
-//  }),
-//     secret: 'keyboard cat',
-//     resave: true,
-//     saveUninitialized: true
-// }));
-
-//app.use(express.session({ store: new RedisStore(), secret: 'hey you' }));
-
-
-// exports.logout = function (req, res) {
-//   req.session.destroy();
-//   res.redirect('/');
-// };
-
-
-
-
-// var smtpTransport = nodemailer.createTransport(smtpTransport({
-//     host : "YOUR SMTP SERVER ADDRESS",
-//     secureConnection : false,
-//     port: 587,
-//     auth : {
-//         user : "YourEmail",
-//         pass : "YourEmailPassword"
-//     }
-// }));
-
-// var transporter = nodemailer.createTransport({
-//    service: "Gmail",  // sets automatically host, port and connection security settings
-//    auth: {
-//        user: "jerh56@gmail.com",
-//        pass: "1J79ol4f*3"
-//    }
-// });
-// setup e-mail data with unicode symbols
-
-
-
-//mongoose.connect(dbConfig.url);
-
-//var app = express();
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 // manejador de vistas ejs para usar HTML en lugas de archivos .jade
@@ -110,45 +56,18 @@ app.engine('html', ejs.renderFile);
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
-
-// app.use(bodyParser.json() );       // to support JSON-encoded bodies
-// app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
-//   extended: true
-// })); 
-
-
-// el orden de los app.use es importante
-
-// app.configure(function() {
-//   app.use(express.static('public'));
-//   app.use(express.cookieParser());
-//   app.use(express.bodyParser());
-//   app.use(express.session({ secret: 'keyboard cat' }));
-//   app.use(passport.initialize());
-//   app.use(passport.session());
-//   app.use(app.router);
-// });
-// Docs
-
-// cookieParser
-// session
-// passport.initialize
-// passport.session
-// app.router
-
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public/htmls')));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(session({  store: new RedisStore({
-//    host: 'redis-10291.c8.us-east-1-2.ec2.cloud.redislabs.com',
-//    port: 10291,
-//    db: 0,
-//    pass: '1j79ol4f'
-//  }), secret: 'keyboard cat', resave: true, saveUninitialized: true }));
-app.use(session({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
-
+app.use(session({  store: new RedisStore({
+   host: 'redis-10291.c8.us-east-1-2.ec2.cloud.redislabs.com',
+   port: 10291,
+   db: 0,
+   pass: '1j79ol4f'
+ }), secret: 'keyboard cat', resave: true, saveUninitialized: true }));
+//app.use(session({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
@@ -163,13 +82,6 @@ if (app.get('env') !== 'development') {
      }
    });
 }
-// para redirigir a https
-// Prueba del uso de middleware de express incorporando una función que siempre se ejecuta
-// app.use(function (req, res, next) {
-//   console.log('Time:', Date.now());
-//   next();
-// });
-//
 app.use('/', routes);
 app.use('/users', users);
 
@@ -177,33 +89,11 @@ app.use('/users', users);
 app.use(compression());
 
 // PASSPORT.
-//var app = express();
-
-// app.configure(function() {
-//   app.use(express.static('public'));
-//   app.use(express.cookieParser());
-//   app.use(express.bodyParser());
-//   app.use(express.session({ secret: 'keyboard cat' }));
-//   app.use(passport.initialize());
-//   app.use(passport.session());
-//   app.use(app.router);
-// });
-
-
-// Configure view engine to render EJS templates.
-//app.set('views', __dirname + '/views');
-//app.set('view engine', 'ejs');
-
 // Use application-level middleware for common functionality, including
 // logging, parsing, and session handling.
 app.use(require('morgan')('combined'));
-//app.use(require('cookie-parser')());
-//app.use(require('body-parser').urlencoded({ extended: true }));
-
 // Initialize Passport and restore authentication state, if any, from the
 // session.
-
-
 
 // PASSPORT
 
@@ -545,12 +435,12 @@ passport.use('signup', new LocalStrategy({
             console.log('Se registró correctamente el usuario');
                 
             var mailOptions = {
-                from: '"Welcome" <becomeapartner@mail-imgnpro.com>', // sender address
+                from: '"Welcome" <welcome@mail-imgnpro.com>', // sender address
                 to: username, // list of receivers
                 subject: 'Hello', // Subject line
                 text: 'Welcome', // plaintext body
                 //html: '<a href="www.imgnpro.com/confirmuser"</a>' // html body
-                html: '<html>Hi '+ newUser.userlongname  +  '.<br><b>To confirm your account please click the link below</b><br><a href="' + req.headers.host + '/confirmuser/' + newUser._id+'">Confirm acccount</a></html>' // html body
+                html: '<html>Hi '+ newUser.userlongname  +  '.<br><b>To confirm your account please click the link below</b><br><a href="' + req.headers.host + '/confirmuser/' + newUser._id+'">Confirm acccount</a><br>' + req.headers.host + '/confirmuser/' + newUser._id + '</html>' // html body
             };
             console.log(mailOptions);
             //send mail with defined transport object

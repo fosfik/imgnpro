@@ -19,7 +19,8 @@
                                      .append($("<td>" + data[i].date + "</td>"))
                                      .append($("<td>" + data[i].status + "</td>"))
                                      .append($("<td>" + data[i].name + "</td>"))
-                                     .append($("<td>" + data[i].userid + "</td>"));
+                                     .append($("<td>" + data[i].userid + "</td>"))
+                                     .append($("<td>" + data[i].isworking + "</td>"));
 
 
                                 $("#orderstable tbody").append(row);
@@ -49,6 +50,7 @@
                     <th>Estatus</th>
                     <th>Paquete</th>
                     <th>User ID</th>
+                    <th>Trabajando</th>
 
 
                 </tr>

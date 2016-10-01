@@ -14,6 +14,25 @@
                         type: 'get',
                         url: '/listorders',
                         success: function (data) {
+                            // if (data[i].status ==='Por pagar'){
+                            //         statusfinal = "<a class='porpagar' href='/confirmpayorder/" + data[i].numorder + "'>Por Pagar</a>";
+                            //     }
+                            //     else if (data[i].status ==='En Proceso')
+                            //     {
+                            //         statusfinal ="<a class='enproceso' href=''>En Proceso</a>";
+                            //     }
+                            //     else if (data[i].status ==='Terminado')
+                            //     {
+                            //         statusfinal ="<a class='terminado' href=''>Terminado</a>";
+                            //     }
+                            //     else if (data[i].status ==='Entregado')
+                            //     {
+                            //         statusfinal ="<a class='entregado' href=''>Entregado</a>";
+                            //     }
+                            // else
+                            //     {
+                            //         statusfinal =data[i].status;
+                            //     }
                             for (var i = 0; i < data.length; i++){
                                 var row = $("<tr>");
                                 row.append($("<td>" + data[i].numorder + "</td>"))
@@ -59,7 +78,7 @@
                     <th>Imágenes</th>
                     <th>Fecha</th>
                     <th>Estatus</th>
-                    <th>Factura</th>
+                    <th>Recibo</th>
                 </tr>
             </table>
         </div>

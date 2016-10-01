@@ -70,6 +70,7 @@ router.get('/listorders/:limit', function(req, res) {
 router.get('/listorders', function(req, res) {
   Orders.find({'userid':req.user._id},function(err, orders) {
     // In case of any error return
+    console.log(orders);
      if (err){
        console.log('Error al consultar');
      }
@@ -86,6 +87,29 @@ router.get('/listorders', function(req, res) {
     }
    
   }).select('imagecount numorder status date').sort('-date');
+});
+
+// Filtrar los paquetes que puede trabajar el diseñador
+router.get('/packagesforwork', function(req, res) {
+  OrderPacks.find({'status':'En Proceso', 'isworking':false},function(err, OrderPacks) {
+    // In case of any error return
+    console.log(OrderPacks);
+     if (err){
+       console.log('Error al consultar ' + err);
+     }
+     //console.log("prueba 2");
+   // already exists
+    if (OrderPacks) {
+      //console.log('se encontraron pedidos');
+      res.setHeader('Content-Type', 'application/json');
+      res.send(OrderPacks); 
+
+    } 
+    else {
+      console.log('No se encontraron paquetes de pedidos');
+    }
+   
+  }).select('_id numorder imagecount').sort('-date');
 });
 
 
@@ -130,7 +154,7 @@ router.get('/listallorderpacks', function(req, res) {
       console.log('No se encontraron paquetes de pedidos');
     }
    
-  }).select('imagecount numorder status date name userid');
+  }).select('imagecount numorder status date name userid isworking');
 });
 
 
@@ -419,17 +443,17 @@ router.get('/listspecs/:limit', function(req, res) {
     //console.log(req.user);
   });
 
-router.get('/imagen',
-  function(req, res) {
-    //res.render('intro', {message: req.flash('message')});
-    //res.download('../public/images/boton_play1.png');
-    console.log(path.resolve(__dirname));
-      res.attachment(path.join(__dirname, '../public/htmls', 'micuenta.bak' ));
+// router.get('/imagen',
+//   function(req, res) {
+//     //res.render('intro', {message: req.flash('message')});
+//     //res.download('../public/images/boton_play1.png');
+//     console.log(path.resolve(__dirname));
+//       res.attachment(path.join(__dirname, '../public/htmls', 'micuenta.bak' ));
 
-    res.attachment(path.join(__dirname, '../public/htmls', 'thankyou.bak' ));
-    res.end();
-    //console.log(req.user);
-  });
+//     res.attachment(path.join(__dirname, '../public/htmls', 'thankyou.bak' ));
+//     res.end();
+//     //console.log(req.user);
+//   });
 
 /* GET como page. */
   router.get('/como', function(req, res) {
@@ -727,6 +751,30 @@ router.get('/imagen',
           });
   });
 
+
+  router.get('/receipt/:numorder', 
+     require('connect-ensure-login').ensureLoggedIn('/login'),
+         function(req, res){
+         //  User_details
+         //  .findOne({userid:req.user._id})
+         //  .populate('userid')
+         //  .exec(function(err,user_details){
+
+         //    if (err){
+         //      console.log(err);
+         //    } 
+         //    else{
+         //      console.log(user_details);  
+         //    } 
+         //  });  
+
+          findaorder(req.params.numorder,function(error,order){
+               console.log(order);
+               //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id });
+               res.render('receipt', {message: req.flash('message'), user: req.user, numorder:req.params.numorder, order:order[0], countorders:ordersinproc});             
+          });
+  });
+
  router.get('/payorder/:numorder', 
      require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){
@@ -764,7 +812,7 @@ router.get('/imagen',
   
   /* Handle Designer Login POST */
  router.post('/de_signin', passport.authenticate('de_login', {
-    successRedirect: '/de_designers1.html',
+    successRedirect: '/de_designers.html',
     failureRedirect: '/de_login',
     failureFlash : true,
     successFlash : true 
@@ -1134,10 +1182,14 @@ router.post('/updateuserdetails', require('connect-ensure-login').ensureLoggedIn
           console.log(order);
           var CSSB = process.env.CSSB || '5634ytyertewrg';
           var paymentsign = '';
-          var Ds_Merchant_Amount = order[0].totalpay.toString().replace('.', ''); //req.param('Ds_Merchant_Amount');
+
+          var totalpayPesos = order[0].totalpay * 19.45;
+          totalpayPesos = setDecimals (totalpayPesos,2);
+          console.log(totalpayPesos); 
+          var Ds_Merchant_Amount = totalpayPesos.toString().replace('.', ''); //req.param('Ds_Merchant_Amount');
           var Ds_Merchant_Order = fillzero(req.params.numorder, '0000000');
           var Ds_Merchant_MerchantCode = 4093847; //req.param('Ds_Merchant_MerchantCode');
-          var Ds_Merchant_Currency = 840; //req.param('Ds_Merchant_Currency');
+          var Ds_Merchant_Currency = 484; // 484 pesos 840 Dólar req.param('Ds_Merchant_Currency');
           var Ds_Merchant_TransactionType  = 0; //req.param('Ds_Merchant_TransactionType');
           var Ds_Merchant_UrlOK = 'https://www.imgnpro.com/transactionok';
           var Ds_Merchant_UrlKO = 'https://www.imgnpro.com/transactiondeny';
@@ -1645,27 +1697,9 @@ function doConfirmOrder(numorder,req,typespec,cb){
                         console.log('Message sent: ' + info.response);
                     });
                   }
-                  
               } 
-
-          });          
-
-          
+            });          
           }); 
-
-          // User_details
-          // .findOne({userid:req.user._id})
-          // .populate('userid')
-          // .exec(function(err,user_details){
-
-          //   if (err){
-          //     console.log(err);
-          //   } 
-          //   else{
-          //     console.log(user_details);  
-          //   } 
-          // });  
-
           Orders.update(conditions, update, options, function (err, numAffected) {
             // numAffected is the number of updated documents
            
@@ -1797,6 +1831,18 @@ function disableSpec(specid,cb){
 function fillzero(param,pattern){
   return (pattern + param).slice(-7);
 
+}
+
+function setDecimals(sVal, nDec){ 
+  var n = parseFloat(sVal); 
+  var s = "0.00"; 
+  if (!isNaN(n)){ 
+   n = Math.round(n * Math.pow(10, nDec)) / Math.pow(10, nDec); 
+   s = String(n); 
+   s += (s.indexOf(".") == -1? ".": "") + String(Math.pow(10, nDec)).substr(1); 
+   s = s.substr(0, s.indexOf(".") + nDec + 1); 
+  } 
+  return s; 
 }
 
 module.exports = router;

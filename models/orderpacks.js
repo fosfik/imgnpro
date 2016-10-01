@@ -4,7 +4,10 @@ var orderSchema = mongoose.Schema({
     name: {type: String},
     userid: {type: String},
     date: { type: Date, default: Date.now },
+    date_start_work: { type: Date},
+    date_end_end: { type: Date},
     status: {type: String, default:'Por pagar'},
+    isworking: {type: Boolean, default: false},
     imagecount: {type:Number, default:0},
     designerid: {type: String},
     images: [{  imagename: String, width: Number, height: Number, length: Number, position: Number }]

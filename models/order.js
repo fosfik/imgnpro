@@ -3,7 +3,7 @@ var counter = require('./ordercounter.js');
 var orderSchema = mongoose.Schema({
     numorder: {type: String},
     name: {type: String},
-    userid: {type: String},
+    userid: {type: String, ref: 'User'},
     date: { type: Date, default: Date.now },
     status: {type: String, default:'Por pagar'},
     imagecount: {type:Number, default:0},

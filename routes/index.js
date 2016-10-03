@@ -755,24 +755,37 @@ router.get('/listspecs/:limit', function(req, res) {
   router.get('/receipt/:numorder', 
      require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){
-         //  User_details
-         //  .findOne({userid:req.user._id})
-         //  .populate('userid')
-         //  .exec(function(err,user_details){
+          User_details
+          .findOne({userid:req.user._id})
+          .populate('userid')
+          .exec(function(err,user_details){
 
-         //    if (err){
-         //      console.log(err);
-         //    } 
-         //    else{
-         //      console.log(user_details);  
-         //    } 
-         //  });  
+            if (err){
+              res.render('receipt', {message: '¡Lo sentimos!, No se encontró el número de recibo', user:req.user, numorder:0, countorders:ordersinproc});            
+            } 
+            else if (user_details){
 
-          findaorder(req.params.numorder,function(error,order){
-               console.log(order);
-               //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id });
-               res.render('receipt', {message: req.flash('message'), user: req.user, numorder:req.params.numorder, order:order[0], countorders:ordersinproc});             
-          });
+
+              Orders
+              .findOne({numorder:req.params.numorder})
+              .populate('specid', 'totalprice')
+              .exec(function(err,order){
+
+              
+              //findaorder(req.params.numorder,function(error,order){
+                 console.log(order);
+                 //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id });
+                 res.render('receipt', {message: req.flash('message'), user: req.user, numorder:req.params.numorder, order:order, countorders:ordersinproc, user_details:user_details});             
+              });
+
+            }
+            else
+            {
+              res.render('receipt', {message: '¡Lo sentimos!, No se encontró el número de recibo', user:req.user, numorder:0, countorders:ordersinproc});            
+            }
+          });  
+
+          
   });
 
  router.get('/payorder/:numorder', 

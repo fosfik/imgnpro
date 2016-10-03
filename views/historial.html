@@ -14,32 +14,34 @@
                         type: 'get',
                         url: '/listorders',
                         success: function (data) {
-                            // if (data[i].status ==='Por pagar'){
-                            //         statusfinal = "<a class='porpagar' href='/confirmpayorder/" + data[i].numorder + "'>Por Pagar</a>";
-                            //     }
-                            //     else if (data[i].status ==='En Proceso')
-                            //     {
-                            //         statusfinal ="<a class='enproceso' href=''>En Proceso</a>";
-                            //     }
-                            //     else if (data[i].status ==='Terminado')
-                            //     {
-                            //         statusfinal ="<a class='terminado' href=''>Terminado</a>";
-                            //     }
-                            //     else if (data[i].status ==='Entregado')
-                            //     {
-                            //         statusfinal ="<a class='entregado' href=''>Entregado</a>";
-                            //     }
-                            // else
-                            //     {
-                            //         statusfinal =data[i].status;
-                            //     }
+                            
                             for (var i = 0; i < data.length; i++){
+                                // if (data[i].status ==='Por pagar'){
+                                //     statusfinal = "<a class='porpagar' href='/confirmpayorder/" + data[i].numorder + "'>Por Pagar</a>";
+                                // }
+                                if (data[i].status !=='Por pagar')
+                                {
+                                    statusfinal ="<a id='icontable' href='/receipt/"+ data[i].numorder + "'><img src='../images/icon_doc.png' height='20px' width='20px'></a>";
+                                }
+                                // else if (data[i].status ==='Terminado')
+                                // {
+                                //     statusfinal ="<a class='terminado' href=''>Terminado</a>";
+                                // }
+                                // else if (data[i].status ==='Entregado')
+                                // {
+                                //     statusfinal ="<a class='entregado' href=''>Entregado</a>";
+                                // }
+                                else
+                                {
+                                    statusfinal ="";
+                                }
+
                                 var row = $("<tr>");
                                 row.append($("<td>" + data[i].numorder + "</td>"))
                                      .append($("<td>" + data[i].imagecount + "</td>"))
                                      .append($("<td>" + toDateString(data[i].date) + "</td>"))
                                      .append($("<td>" + data[i].status + "</td>"))
-                                     .append($("<td><a id='icontable' href='#openFactModal'><img src='../images/icon_doc.png' height='20px' width='20px'></a></td>"))
+                                     .append($("<td>" + statusfinal + "</td>"))
                                 $("#orderstable tbody").append(row);
                             }
                               
@@ -91,7 +93,7 @@
 
 
     <!--MODAL PARA SOMBRA-->
-        <div id="openFactModal" class="modalDialog">
+      <!--   <div id="openFactModal" class="modalDialog">
             <div>
                 <a href="#close" title="Close" Class="close">X</a>
                 <h1 class="encabezado">Factura</h1>
@@ -100,7 +102,6 @@
                     
                     
                     
-            <!---SCRIPT PARA CAMBIAR FOTO SEGUN LO SELECIONADO-->                    
                     
                       
                     <div class="buttonModal">
@@ -108,7 +109,7 @@
                     </div>                               
                 </form>
             </div>
-        </div>
+        </div> -->
 
         <aside id="menurigth">
             <p class="encabezado"> Tutorial</p>

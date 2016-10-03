@@ -28,36 +28,113 @@
         </section>
     <section id="contenedor">
         <section id="thankyou">
-            <p class="encabezado">FACTURA</p>
+            <p class="encabezado">RECIBO</p>
+            <p class="encabezado"><%= message %></p>
             <div id="receipttable" class="tabla">
                 <table>
                     <tr>
                         <td>
-                        Cliente No.<br>
-
+                        Cliente ID<br><span>
+                        <%= user._id %>    
+                            </span>    
+                        </td>
+                        <td>
+                        Correo<br><span>
+                        <% if (user_details.factemail2) { %>
+                           <%= user_details.factemail2 %>
+                        <% } %> 
+                            </span> 
 
                         </td>
                        <td rowspan="3">
-                       PARA<br>
+                       PARA<br><span>
+                            <% if (user_details.factrazonsocial) { %>
+                               <%= user_details.factrazonsocial %>
+                            <% } %> <br>
 
+                            <% if (user_details.factcalle) { %>
+                               <%= user_details.factcalle %>
+                            <% } %> <br>
+                            #
+                            <% if (user_details.factnum_ext) { %>
+                               <%= user_details.factnum_ext %>
+                            <% } %> <br>
+                            <% if (user_details.factciudad) { %>
+                               <%= user_details.factciudad %>
+                            <% } %> <br>
+                            <% if (user_details.factestado) { %>
+                               <%= user_details.factestado %>
+                            <% } %> <br>
+                            <% if (user_details.sel_factcountry) { %>
+                               <%= user_details.sel_factcountry %>
+                            <% } %> <br>
+                            RFC:
+                            <% if (user_details.factrfc) { %>
+                               <%= user_details.factrfc %>
+                            <% } %>
+
+                            </span>
                        </td>
                        <td rowspan="3">
-                       TOTAL
-
+                       TOTAL<br><span>
+                        <% if (order.totalpay) { %>
+                           <%= order.totalpay %>
+                        <% } %> 
+                            </span>
                        </td>
                     </tr>
                     <tr>
-                        <td>FECHA</td>
+                        <td colspan="2">FECHA<br><span>
+                            <% if (order.date) { %>
+                                <%= order.date %>
+                            <% } %> 
+                                </span>
+                        </td>
                        
                     </tr>
                     <tr>
-                        <td>PEDIDO No.<br>
+                        <td colspan="2">PEDIDO No.<br><span>
                         <%= numorder %>
-
+                            </span>
                         </td>
                        
                     </tr>
                     
+                </table>
+                <br>
+                <br>
+                <table>
+                    <tr>
+                        <td>DESCRIPCIÓN <br>
+                            <span>
+                            <% if (order.imagecount) { %>
+                               <%= order.imagecount %>
+                            <% } %>
+                            IMÁGENE(S)
+                            </span>
+                        </td>
+                        <td>CANTIDAD<br>
+                            <span>
+                            <% if (order.imagecount) { %>
+                               <%= order.imagecount %>
+                            <% } %>
+                            </span>
+                        </td>
+                        <td>PRECIO UNITARIO<br>
+                            <span>
+                            <% if (order.specid.totalprice) { %>
+                               <%= order.specid.totalprice %>
+                            <% } %>
+                            </span>
+                        </td>
+                        <td>TOTAL<br>
+                            <span>
+                            <% if (order.totalpay) { %>
+                               <%= order.totalpay %>
+                            <% } %>
+                            </span>
+                        </td>
+                    </tr>
                 </table>
 
             <br>
@@ -66,7 +143,7 @@
             <img id="logomini" src="../images/logo_black.png" alt="logo">
             <hr>
             <div class="buttonback">
-            <a href="/chooseanimage">Regresar</a>
+            <a href="/historial">Regresar</a>
             </div>
             <div class="button4">
             <a href="/subirimagen1">Nueva Orden</a>

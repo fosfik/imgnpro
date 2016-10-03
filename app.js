@@ -71,6 +71,9 @@ app.use(session({  store: new RedisStore({
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
+
+
+
 // para redirigir a https
 if (app.get('env') !== 'development') {
   app.use (function (req, res, next) {

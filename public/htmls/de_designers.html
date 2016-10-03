@@ -8,6 +8,35 @@
         <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico"/>
         <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
         <script type="text/javascript" src="../js/dropzone.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script type="text/javascript">
+            var socket = io();
+            $(document).ready(function(){
+                $('form').submit(function(){
+                    socket.emit('chat_msg', $('#m').val());
+                    $('#m').val('');
+                    return false;
+                });
+                socket.on('chat_msg', function(msg){
+                    //$('#messages').append($('<li>').text(msg));
+
+                    $('#conversation').append('<p class=""> <b>' + msg + '</p>');
+                        var sHeight = $('#conversation')[0].scrollHeight;
+                        //Scrolling the element to the sHeight
+                        $('#box_conversation').scrollTop(sHeight);
+                });
+            });
+        </script>
+        <style>
+          /** { margin: 0; padding: 0; box-sizing: border-box; }*/
+          /*body { font: 13px Helvetica, Arial; }*/
+          form { background: #FFF; padding: 3px; position: fixed; bottom: 10px; width: 50%; }
+          form input { border: 1px; border-color: #000; padding: 10px; width: 80%; margin-right: .5%;background: rgb(200, 224, 255); }
+          form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; text-align: left; }
+          #messages { list-style-type: none; margin: 0; padding: 0; text-align: left; }
+          #messages li { padding: 5px 10px; }
+          #messages li:nth-child(odd) { background: #eee; }
+        </style>
     </head>
     <body>
         <header class="bienvenida">
@@ -81,7 +110,15 @@
                 <div class="dialog"><span class="useradmin userdialog">AdminIMGNpro</span><p class="dialogtext">Hola HugMungus! Cómo te va?</p>
                 </div>
             </div>
-            <div class="message"><input type="text" placeholder="ingresa tu mensaje"><div class="buttonsend"><a href="">Send</a></div></div>
+
+            <!-- <ul id="messages"></ul> -->
+            <form action="">
+            <div id ="box_conversation" style="float:left;width:600px;height:100px;overflow:auto;padding:10px; text-align: left;  ">
+                <div id="conversation"></div>
+            </div>
+              <input id="m" autocomplete="off" style = "border:2px;" /><button>Send</button>
+            </form>
+            <!-- <div class="message"><input type="text" placeholder="ingresa tu mensaje"><div class="buttonsend"><a href="">Send</a></div></div> -->
         </div>
         
         <div id="openConfirmModal" class="modalDialog">

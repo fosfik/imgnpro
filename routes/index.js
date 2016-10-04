@@ -907,6 +907,16 @@ router.get('/listspecs/:limit', function(req, res) {
                res.render('payorder', {message: req.flash('message'), user: req.user, numorder:req.params.numorder, countorders:ordersinproc});             
          
   });
+ router.get('/cancelorder/:numorder', 
+     require('connect-ensure-login').ensureLoggedIn('/login'),
+         function(req, res){
+          
+               //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id });
+               //var numorder_zero = fillzero(req.params.numorder, '0000000');
+
+               res.render('cancelorder', {message: req.flash('message'), user: req.user, numorder:req.params.numorder, countorders:ordersinproc});             
+         
+  });
 // router.get('/uploadimages/:newSpecid', 
 //      require('connect-ensure-login').ensureLoggedIn('/login'),
 //          function(req, res){
@@ -1317,6 +1327,53 @@ router.post('/updateuserdetails', require('connect-ensure-login').ensureLoggedIn
           var Ds_Merchant_MerchantCode = 4093847; //req.param('Ds_Merchant_MerchantCode');
           var Ds_Merchant_Currency = 484; // 484 pesos 840 Dólar req.param('Ds_Merchant_Currency');
           var Ds_Merchant_TransactionType  = 0; //req.param('Ds_Merchant_TransactionType');
+          var Ds_Merchant_UrlOK = 'https://www.imgnpro.com/transactionok';
+          var Ds_Merchant_UrlKO = 'https://www.imgnpro.com/transactiondeny';
+          var Ds_Merchant_MerchantURL = 'https://www.imgnpro.com';
+          var Ds_Merchant_MerchantName = 'IMAGEN PRO';
+          var Ds_Merchant_Terminal = 1;
+          var Ds_Merchant_ProductDescription = order[0].imagecount + ' IMÁGEN(ES)';
+          console.log('A pagar:' + Ds_Merchant_Amount);
+          console.log('Pedido:' + Ds_Merchant_Order);
+          console.log('Codigo comercio:' + Ds_Merchant_MerchantCode);
+          console.log('Moneda:' + Ds_Merchant_Currency);
+          console.log('Tipo transacción:' + Ds_Merchant_TransactionType);
+
+
+
+
+          paymentsign = sha1(Ds_Merchant_Amount + Ds_Merchant_Order + Ds_Merchant_MerchantCode + Ds_Merchant_Currency + Ds_Merchant_TransactionType + CSSB);
+          console.log(paymentsign);
+
+             //SHA-1()
+                 
+          res.setHeader('Content-Type', 'application/json');
+          res.send(JSON.stringify({ error: 0, Ds_Merchant_MerchantSignature: paymentsign, Ds_Merchant_Amount:Ds_Merchant_Amount, Ds_Merchant_Order:Ds_Merchant_Order, Ds_Merchant_UrlOK:Ds_Merchant_UrlOK, Ds_Merchant_UrlKO:Ds_Merchant_UrlKO, Ds_Merchant_MerchantURL:Ds_Merchant_MerchantURL, Ds_Merchant_MerchantCode:Ds_Merchant_MerchantCode, Ds_Merchant_Currency:Ds_Merchant_Currency, Ds_Merchant_TransactionType:Ds_Merchant_TransactionType, Ds_Merchant_MerchantName:Ds_Merchant_MerchantName, Ds_Merchant_Terminal:Ds_Merchant_Terminal, Ds_Merchant_ProductDescription:Ds_Merchant_ProductDescription})); 
+        }
+    });        
+  });
+
+  router.post('/getcancelsign/:numorder', function (req,res) {
+    //res.setHeader('Content-Type', 'application/json');
+    //res.send(JSON.stringify({ error: error, message: message, user_details: user_details[0]})); 
+    findaorder(req.params.numorder,function(err,order){
+      if (err){
+          res.setHeader('Content-Type', 'application/json');
+          res.send(JSON.stringify({ error: 1, message:'No se encontró el pedido', sign: ''})); 
+      }
+      else{
+          console.log(order);
+          var CSSB = process.env.CSSB || '5634ytyertewrg';
+          var paymentsign = '';
+
+          var totalpayPesos = order[0].totalpay  * parseFloat(config.prices.dollar);
+          totalpayPesos = setDecimals (totalpayPesos,2);
+          console.log(totalpayPesos); 
+          var Ds_Merchant_Amount = totalpayPesos.toString().replace('.', ''); //req.param('Ds_Merchant_Amount');
+          var Ds_Merchant_Order = fillzero(req.params.numorder, '0000000');
+          var Ds_Merchant_MerchantCode = 4093847; //req.param('Ds_Merchant_MerchantCode');
+          var Ds_Merchant_Currency = 484; // 484 pesos 840 Dólar req.param('Ds_Merchant_Currency');
+          var Ds_Merchant_TransactionType  = 4; //req.param('Ds_Merchant_TransactionType');
           var Ds_Merchant_UrlOK = 'https://www.imgnpro.com/transactionok';
           var Ds_Merchant_UrlKO = 'https://www.imgnpro.com/transactiondeny';
           var Ds_Merchant_MerchantURL = 'https://www.imgnpro.com';

@@ -388,6 +388,7 @@ router.get('/listspecs/:limit', function(req, res) {
         newOrder.imagecount = req.body['imagecount'];
         newOrder.specid = req.body.specid;
         newOrder.totalpay = req.body.totalpay;
+        newOrder.totalpayMXN = req.body.totalpay * parseFloat(config.prices.dollar);
 
         if (spec[0].typespec == 'free'){
           newOrder.status = 'Por pagar';
@@ -740,7 +741,7 @@ router.get('/listspecs/:limit', function(req, res) {
   router.get('/uploadimages', 
      require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){
-           res.render('uploadimages', {message: req.flash('message'), user: req.user, countorders:ordersinproc});
+           res.render('uploadimages', {message: req.flash('message'), user: req.user, config:config, countorders:ordersinproc});
   });
 
 /* Maneja la pagina que tiene el dropzone para subir imágenes 
@@ -751,7 +752,7 @@ router.get('/listspecs/:limit', function(req, res) {
          function(req, res){
             findaspec(req.params.newSpecid,function(error,spec){
               //console.log(spec);
-              res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id , countorders:ordersinproc});
+              res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id , config:config, countorders:ordersinproc});
             });
   });
 
@@ -1308,7 +1309,7 @@ router.post('/updateuserdetails', require('connect-ensure-login').ensureLoggedIn
           var CSSB = process.env.CSSB || '5634ytyertewrg';
           var paymentsign = '';
 
-          var totalpayPesos = order[0].totalpay  * config.prices.dollar;
+          var totalpayPesos = order[0].totalpay  * parseFloat(config.prices.dollar);
           totalpayPesos = setDecimals (totalpayPesos,2);
           console.log(totalpayPesos); 
           var Ds_Merchant_Amount = totalpayPesos.toString().replace('.', ''); //req.param('Ds_Merchant_Amount');
@@ -1605,7 +1606,7 @@ function spectotalprice(req, cb){
     nTotal = nTotal + (config.prices.basicretouch * 100);
   }
   nTotal = nTotal / 100;
-  ntotalMXN = ntotal * config.prices.dollar;
+  ntotalMXN = nTotal * parseFloat(config.prices.dollar);
   cb(nTotal, ntotalMXN);
 }
 
@@ -1766,7 +1767,7 @@ function findaorder(orderid, cb){
 
         cb(2);
     }
-  }).select('date status totalpay specid imagecount').limit(1);
+  }).select('date status totalpay totalpayMXN specid imagecount').limit(1);
 }
 
 function doConfirmOrder(numorder,req,typespec,cb){
@@ -1833,6 +1834,7 @@ function doConfirmOrder(numorder,req,typespec,cb){
                                      user_details.sel_factcountry + ',' + '<br>' +
                       'Número de pedido:' + numorder + '<br>' +
                       'Monto total: USD ' + order[0].totalpay + '<br>' +
+                      'Monto total: MXN ' + order[0].totalpayMXN + '<br>' +
                       'Estatus del pedido: ' + statusorder + '<br>' +
                       'Método de pago:' + user_details.factpaymethod + '<br>' +
                       'Terminación de la tarjeta:' + user_details.factterminacion + '<br>' +
@@ -1988,6 +1990,7 @@ function doConfirmPayOrder(req,cb){
                                      user_details.sel_factcountry + ',' + '<br>' +
                       'Número de pedido:' + numorder + '<br>' +
                       'Monto total: USD ' + order[0].totalpay + '<br>' +
+                      'Monto total: MXN ' + order[0].totalpayMXN + '<br>' +
                       'Estatus del pedido: ' + statusorder + '<br>' +
                       'Método de pago:' + user_details.factpaymethod + '<br>' +
                       'Terminación de la tarjeta:' + user_details.factterminacion + '<br>' +

@@ -9,6 +9,7 @@ var orderSchema = mongoose.Schema({
     imagecount: {type:Number, default:0},
     specid: {type: String, ref:'Specification'}, //id de la especificación
     totalpay: {type:String, default:'0'},
+    totalpayMXN: {type:String, default:'0'},
     images: [{  imagename: String, width: Number, height: Number, length: Number, position: Number }]
 });
 orderSchema.pre('save', function(next) {

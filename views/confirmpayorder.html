@@ -9,6 +9,9 @@
         <!-- <script src="../js/general.js"></script> -->
         <script type="text/javascript">
             $(document).ready(function(){
+
+
+                calcPrices();
                 $.ajax({
                         type: 'get',
                         url: '/getUser_details/<%= user._id %>',
@@ -81,6 +84,13 @@
                 ev.preventDefault();
                });
 
+               function calcPrices(){
+                    var ntotal = <%= order.totalpay %>;
+                    var ntotalMXN = ntotal * <%= config.prices.dollar %>;
+                    //$("#totalprice").html(setDecimals(ntotal,2));
+                    $("#totalpriceMXN").html(ntotalMXN.toFixed(2));
+
+               }
               function validInput(){
                 var bValor = false;
                 if ($('#contactname').val().trim() === ''){
@@ -132,7 +142,7 @@
                 <p class="texto_precio2"><span class="prefixmoney">USD</span>$ <span><%= order.totalpay %></span></p>
                 <br><br><br>
                 <p class="textoplanotemp">Precio por Imagen</p>
-                <p class="textopreciotemp"><span class="prefijopeso">MXN</span>$19.35</p>
+                <p class="textopreciotemp"><span class="prefijopeso">MXN</span>$<span id="totalpriceMXN">19.35</span></p>
             </div>
             <section class="col1">
                 <form class="contactForm">

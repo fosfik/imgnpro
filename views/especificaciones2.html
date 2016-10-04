@@ -18,6 +18,7 @@
                 $('#datespec').prop('value', Date.now);
                 desactAllNext();
                 desactSizeAllNext();
+
                 //var newbuttonspec = $('#savebuttonspec');
                 //var newbuttonspec = $('#savebuttonspec');
                 var frm = $('#specForm');
@@ -173,6 +174,7 @@
                                     desactSizeAllNext();
                                     desactCustomAllNext();
                                     desactDPI();
+                                    //putPrices();
                                     
                                     }
 
@@ -309,6 +311,14 @@
 
                 }
 
+                // function putPrices(){
+                //     var ntotal = <%= config.prices.cutandremove %>;
+                //     var ntotalMXN = <%= config.prices.dollar %>;
+                //     $("#totalprice").html(setDecimals(ntotal,2));
+                //     $("#totalpriceMXN").html(setDecimals(ntotalMXN,2));
+
+                // }
+
                 function sumallextras(){
                    
                     var ntotal = <%= config.prices.cutandremove%>; 
@@ -334,8 +344,14 @@
         // :0.40,
         // :2.40,
         // :0.60
+                    // ntotal = ntotal / 100;
+                    // $("#totalprice").html(setDecimals(ntotal,2));
+
+
                     ntotal = ntotal / 100;
+                    ntotalMXN = ntotal * <%= config.prices.dollar %>;;
                     $("#totalprice").html(setDecimals(ntotal,2));
+                    $("#totalpriceMXN").html(ntotalMXN.toFixed(2));
                 }
 
                 function desactAllNext(){
@@ -432,7 +448,7 @@
             id="totalprice">1.50</span></p>
             <br><br><br>
             <p class="textoplanotemp">Precio por Imagen</p>
-            <p class="textopreciotemp"><span class="prefijopeso">MXN</span>$19.35</p>
+            <p class="textopreciotemp"><span class="prefijopeso">MXN</span>$<span id="totalpriceMXN">19.35</span></p>
 
         </div>
             <p class="encabezado">Especificaciones</p>

@@ -9,6 +9,7 @@ var sha1 = require('sha1');
 var config = require('../config');
 var path = require('path');
 var Orders = require('../models/order.js');
+var Order_transaction = require('../models/order_transaction.js');
 var OrderPacks = require('../models/orderpacks.js');
 var User = require('../models/user.js');
 var User_details = require('../models/user_details.js');
@@ -39,6 +40,85 @@ var transporter = nodemailer.createTransport(transporter({
         pass : "1m4g3npr0"
     }
 }));
+
+
+/* SOAP */
+
+// var easysoap = require('easysoap');
+//   //http://www.banxico.org.mx/DgieWSWeb/DgieWS
+//     // define soap params
+//     var params = {
+//     host   : 'http://www.banxico.org.mx',
+//     path   : '/DgieWSWeb/DgieWS',
+//     wsdl   : '/DgieWSWeb/DgieWS?WSDL'
+
+    // set soap headers (optional)
+    // headers: [{
+    //         'name'     : 'item_name',
+    //         'value'    : 'item_value',
+    //         'namespace': 'item_namespace'
+    //     }]
+    //}
+  
+    /*
+     * create the client
+     */ 
+//       var clientOptions = {
+//                    secure : false 
+//     };
+//     var soapClient = easysoap.createClient(params,clientOptions);
+
+//     soapClient.getAllFunctions()
+//     .then((functionArray) => { console.log(functionArray); })
+//     .catch((err) => { throw new Error(err); });
+
+// // ,
+// //                     '' : {
+// //                                  'ExecuteXML' : 1
+// //
+
+// soapClient.getMethodParamsByName('tasasDeInteresBanxico', function(err,mm){
+//   console.log("OK");
+// });
+// // .then((methodParams) => { 
+// //         console.log(methodParams);
+// //         console.log(methodParams.response); 
+// //       })
+// // .catch((err) => { throw new Error(err); });
+//            //         }
+
+// soapClient.call({method: 'tiposDeCambioBanxico',
+//       attributes: {
+//               xmlns: 'http://ws.dgie.banxico.org.mx'
+//             },
+//        params: {
+        
+//             } 
+//         })
+//       // .done((data, header) => {
+
+//       //   console.log(data, header);
+//       // })
+//         .then((callResponse) => { 
+//           console.log('ok');
+//       console.log(callResponse.data); // response data as json
+//             console.log(callResponse.body); // response body
+//       console.log(callResponse.header);  //response header
+//         })
+//     .catch((err) => { throw new Error(err); });
+
+    // soapClient.call({'tiposDeCambioBanxico' : 'Execute'})
+    // .then(function (callResponse) {
+    //         console.log(callResponse);
+    //     })
+    // .catch(function (err) {
+    //     console.log("Got an error making SOAP call: ", err);
+    // });
+
+    /*
+     * get the method params by given methodName
+         */
+
 
 
 // console.log(process.env.AWS_ACCESS_KEY_ID);
@@ -178,7 +258,7 @@ router.get('/listspecs', function(req, res) {
     else {
       console.log('No se encontraron especificaciones');
     }
-  }).select('_id name date totalprice').sort('-date');
+  }).select('_id name date totalprice totalpriceMXN').sort('-date');
 });
 
 // TODO agregar seguridad a esta ruta
@@ -200,7 +280,7 @@ router.get('/listspecs/:limit', function(req, res) {
     else {
       console.log('No se encontraron especificaciones');
     }
-  }).select('_id name date totalprice').sort('-date').limit(parseInt(req.params.limit));
+  }).select('_id name date totalprice totalpriceMXN').sort('-date').limit(parseInt(req.params.limit));
 });
 
 /* Crea un nuevo contacto. */
@@ -737,7 +817,7 @@ router.get('/listspecs/:limit', function(req, res) {
           findaorder(req.params.numorder,function(error,order){
                console.log(order);
                //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id });
-               res.render('confirmpayorder', {message: req.flash('message'), user: req.user, numorder:req.params.numorder, order:order[0], countorders:ordersinproc});             
+               res.render('confirmpayorder', {message: req.flash('message'), user: req.user, numorder:req.params.numorder, order:order[0],  config:config, countorders:ordersinproc});             
           });
   });
 
@@ -751,6 +831,34 @@ router.get('/listspecs/:limit', function(req, res) {
           });
   });
 
+ router.get('/denytransaction/:numorder', 
+     require('connect-ensure-login').ensureLoggedIn('/login'),
+         function(req, res){
+          findaorder(req.params.numorder,function(error,order){
+               console.log(order);
+               //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id });
+               res.render('denytransaction', {message: req.flash('message'), user: req.user, numorder:req.params.numorder, order:order[0], countorders:ordersinproc});             
+          });
+  });
+
+ router.get('/error/:numorder', 
+     require('connect-ensure-login').ensureLoggedIn('/login'),
+         function(req, res){
+          findaorder(req.params.numorder,function(error,order){
+               console.log(order);
+               //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id });
+               res.render('error', {message: 'No se pudo completar la orden', user: req.user, numorder:req.params.numorder, order:order[0], countorders:ordersinproc});             
+          });
+  });
+
+ router.get('/error', 
+     require('connect-ensure-login').ensureLoggedIn('/login'),
+         function(req, res){
+          
+               //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id });
+               res.render('error', {message: 'Ha ocurrido un error inesperado', user: req.user, numorder:0, order:0, countorders:ordersinproc});             
+      
+  });
 
   router.get('/receipt/:numorder', 
      require('connect-ensure-login').ensureLoggedIn('/login'),
@@ -938,11 +1046,12 @@ router.get('/listspecs/:limit', function(req, res) {
       newSpec.spectype = specInfos[0].spectype;
       newSpec.date = specInfos[0].date;
       // pasar el req specInfo
-      spectotalprice(specInfos[0],function(total){
+      spectotalprice(specInfos[0],function(total,totalMXN){
           console.log(total);
         //res.setHeader('Content-Type', 'application/json');
         //res.send(JSON.stringify({ error: 0, ntotal:total , message: 'Se guardó la especificación'})); 
           newSpec.totalprice = total;
+          newSpec.totalpriceMXN = totalMXN;
           // save the user
           newSpec.save(function(err) {
             if (err){
@@ -1103,10 +1212,11 @@ router.post('/updateuserdetails', require('connect-ensure-login').ensureLoggedIn
       newSpec.heightsize = req.body.heightsize;
       newSpec.spectype = req.body.spectype;
       newSpec.date = req.body.date;
-      spectotalprice(req.body,function(total){
+      spectotalprice(req.body,function(total, totalMXN){
         //res.setHeader('Content-Type', 'application/json');
         //res.send(JSON.stringify({ error: 0, ntotal:total , message: 'Se guardó la especificación'})); 
           newSpec.totalprice = total;
+          newSpec.totalpriceMXN = totalMXN;
           // guarda los cambios de una especificacion
           if (specid === null || specid === ''){
             // crea una nueva especificacion
@@ -1163,6 +1273,8 @@ router.post('/updateuserdetails', require('connect-ensure-login').ensureLoggedIn
                   doc.spectype = req.body.spectype;
                   doc.date = req.body.date;
                   doc.totalprice = newSpec.totalprice;
+                  doc.totalpriceMXN = newSpec.totalpriceMXN;
+
                   //doc.specid = req.user.specid;
                   console.log(doc);
 
@@ -1196,7 +1308,7 @@ router.post('/updateuserdetails', require('connect-ensure-login').ensureLoggedIn
           var CSSB = process.env.CSSB || '5634ytyertewrg';
           var paymentsign = '';
 
-          var totalpayPesos = order[0].totalpay * 19.45;
+          var totalpayPesos = order[0].totalpay  * config.prices.dollar;
           totalpayPesos = setDecimals (totalpayPesos,2);
           console.log(totalpayPesos); 
           var Ds_Merchant_Amount = totalpayPesos.toString().replace('.', ''); //req.param('Ds_Merchant_Amount');
@@ -1209,6 +1321,7 @@ router.post('/updateuserdetails', require('connect-ensure-login').ensureLoggedIn
           var Ds_Merchant_MerchantURL = 'https://www.imgnpro.com';
           var Ds_Merchant_MerchantName = 'IMAGEN PRO';
           var Ds_Merchant_Terminal = 1;
+          var Ds_Merchant_ProductDescription = order[0].imagecount + ' IMÁGEN(ES)';
           console.log('A pagar:' + Ds_Merchant_Amount);
           console.log('Pedido:' + Ds_Merchant_Order);
           console.log('Codigo comercio:' + Ds_Merchant_MerchantCode);
@@ -1224,7 +1337,7 @@ router.post('/updateuserdetails', require('connect-ensure-login').ensureLoggedIn
              //SHA-1()
                  
           res.setHeader('Content-Type', 'application/json');
-          res.send(JSON.stringify({ error: 0, Ds_Merchant_MerchantSignature: paymentsign, Ds_Merchant_Amount:Ds_Merchant_Amount, Ds_Merchant_Order:Ds_Merchant_Order, Ds_Merchant_UrlOK:Ds_Merchant_UrlOK, Ds_Merchant_UrlKO:Ds_Merchant_UrlKO, Ds_Merchant_MerchantURL:Ds_Merchant_MerchantURL, Ds_Merchant_MerchantCode:Ds_Merchant_MerchantCode, Ds_Merchant_Currency:Ds_Merchant_Currency, Ds_Merchant_TransactionType:Ds_Merchant_TransactionType, Ds_Merchant_MerchantName:Ds_Merchant_MerchantName, Ds_Merchant_Terminal:Ds_Merchant_Terminal})); 
+          res.send(JSON.stringify({ error: 0, Ds_Merchant_MerchantSignature: paymentsign, Ds_Merchant_Amount:Ds_Merchant_Amount, Ds_Merchant_Order:Ds_Merchant_Order, Ds_Merchant_UrlOK:Ds_Merchant_UrlOK, Ds_Merchant_UrlKO:Ds_Merchant_UrlKO, Ds_Merchant_MerchantURL:Ds_Merchant_MerchantURL, Ds_Merchant_MerchantCode:Ds_Merchant_MerchantCode, Ds_Merchant_Currency:Ds_Merchant_Currency, Ds_Merchant_TransactionType:Ds_Merchant_TransactionType, Ds_Merchant_MerchantName:Ds_Merchant_MerchantName, Ds_Merchant_Terminal:Ds_Merchant_Terminal, Ds_Merchant_ProductDescription:Ds_Merchant_ProductDescription})); 
         }
     });        
   });
@@ -1246,6 +1359,10 @@ router.post('/updateuserdetails', require('connect-ensure-login').ensureLoggedIn
 //   });
 
 //res.sendFile(__dirname + '/indexAgent.html');
+
+
+
+
 
 router.get('/uploadfile',
   function(req, res) {
@@ -1429,6 +1546,24 @@ router.get('/sign-s3', (req, res) => {
   });
 });
 
+
+router.post('/transactionok', function (req,res) {
+  console.log(req.params);
+  doConfirmPayOrder(req,function(tipomsg, message,href){
+    //res.setHeader('Content-Type', 'application/json');
+    //res.send(JSON.stringify({ error: tipomsg, message: message, href:href}));
+    if (tipomsg == 1){
+      res.redirect('/error.html/' + req.params.Ds_Order); 
+    }
+    else{
+      res.redirect('/' + href+ '/' + req.params.Ds_Order); 
+    }
+    
+  });
+                 
+});
+
+
 /*
  * Respond to POST requests to /submit_form.
  * This function needs to be completed to handle the information in
@@ -1453,6 +1588,7 @@ function spectotalprice(req, cb){
   //console.log(parseFloat(req.body.naturalshadow));
   // se multiplica por 100 para quitar los decimales y evitar errores de precision
   var nTotal = (config.prices.cutandremove) * 100;
+  var ntotalMXN = 0;
   if (parseFloat(req.naturalshadow ) > 0){
     nTotal = nTotal + (config.prices.naturalshadow * 100);
   }
@@ -1469,7 +1605,8 @@ function spectotalprice(req, cb){
     nTotal = nTotal + (config.prices.basicretouch * 100);
   }
   nTotal = nTotal / 100;
-  cb(nTotal);
+  ntotalMXN = ntotal * config.prices.dollar;
+  cb(nTotal, ntotalMXN);
 }
 
 
@@ -1492,7 +1629,7 @@ function findaspec(specid, cb){
         cb(2);
     }
    
-  }).select('name totalprice date maxfiles typespec').limit(1);
+  }).select('name totalprice totalpriceMXN date maxfiles typespec').limit(1);
 }
 
 function findanyspec(specid, cb){
@@ -1515,7 +1652,7 @@ function findanyspec(specid, cb){
         cb(2);
     }
    
-  }).select('name totalprice date maxfiles typespec').limit(1);
+  }).select('name totalprice totalpriceMXN date maxfiles typespec').limit(1);
 }
 
 
@@ -1629,7 +1766,7 @@ function findaorder(orderid, cb){
 
         cb(2);
     }
-  }).select('date status totalpay specid').limit(1);
+  }).select('date status totalpay specid imagecount').limit(1);
 }
 
 function doConfirmOrder(numorder,req,typespec,cb){
@@ -1752,6 +1889,163 @@ function doConfirmOrder(numorder,req,typespec,cb){
 
       }
     });
+}
+
+
+function doConfirmPayOrder(req,cb){
+  var Ds_Response = req.params.Ds_Response;
+  var numorder = req.params.Ds_Order;
+  numorder = numorder.replace(/0/g, ''); // quita los ceros del pedido
+  console.log(req.user);
+  //findauser(req.user._id,function(error,message,user){
+      //console.log(spec);
+      //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id , countorders:ordersinproc});
+      
+      // if (error){
+      //   cb( 1,'No se encontró el usuario');
+      // }
+      // else
+      // {
+        //console.log('error:' + error);
+       //console.log('user: ');
+       //console.log(user);
+
+    var newOrder_transaction = new Order_transaction();
+      // set the user's local credentials
+      //newSpec.specid = req.body.specid;
+    //newOrder_transaction.userid = req.user._id;
+    
+    newOrder_transaction.numorder = req.params.numorder;
+    newOrder_transaction.Ds_Amount = req.params.Ds_Amount;
+    newOrder_transaction.Ds_Currency = req.params.Ds_Currency;
+    newOrder_transaction.Ds_Order= req.params.Ds_Order;
+    newOrder_transaction.Ds_MerchantCode = req.params.Ds_MerchantCode;
+    newOrder_transaction.Ds_Terminal = req.params.Ds_Terminal;
+    newOrder_transaction.Ds_Signature = req.params.Ds_Signature;
+    newOrder_transaction.Ds_Response = req.params.Ds_Response;
+    newOrder_transaction.Ds_MerchantData = req.params.Ds_MerchantData;
+    newOrder_transaction.Ds_SecurePayment = req.params.Ds_SecurePayment;
+    newOrder_transaction.Ds_TransactionType = req.params.Ds_TransactionType;
+    newOrder_transaction.Ds_ConsumerLanguage = req.params.Ds_ConsumerLanguage;
+    newOrder_transaction.Ds_ErrorCode = req.params.Ds_ErrorCode;
+    newOrder_transaction.Ds_ErrorMessage = req.params.Ds_ErrorMessage;
+
+    newOrder_transaction.save(function(err) {
+          if (err){
+              console.log('No se pudo guardar la transacción del pedido: '+ req.params.numorder +' '+err); 
+          }
+          else{
+            console.log('Se guardó la transacción del pedido:' + req.params.numorder); 
+          }
+     });     
+
+        var statusorder ='';
+       
+        if (Ds_Response=='000' ){
+            statusorder ='En Proceso';
+            href = 'thankyou';
+
+
+        }
+        else
+        {
+           statusorder ='Por pagar';
+            href = 'denytransaction';
+        }
+        //console.log(user);
+        //console.log(statusorder);
+
+        //confirmar pedido y paquetes
+
+        if (statusorder =='En Proceso'){
+          var conditions = { numorder: numorder }
+            , update = { $set: { status: statusorder }}
+            , options = { multi: true };
+          findaorder(numorder,function(err,order){
+            User_details.findOne({userid:req.user._id},function(err,user_details){
+              if (err){
+                console.log(err);
+              } 
+              else{
+                  if(user_details.chk_factura == 'chk_factura'){
+                    var mailOptions = {
+                      from: '"Server" <server@mail-imgnpro.com>', // sender address
+                      to: 'makeacfdi@mail-imgnpro.com, jerh56@gmail.com', // list of receivers
+                      subject: 'Factura', // Subject line
+                      text: '', // plaintext body
+                      //html: '<a href="www.imgnpro.com/confirmuser"</a>' // html body
+                      html: '<html>' + 'Hola, el nombre de mi empresa es ' + user_details.factrazonsocial +
+                      '<br><b> Necesito una factura electrónica</b><br>' + 'Mis datos son los siguientes:<br> <b>' + 
+                      'Razón social:' + user_details.factrazonsocial + '<br>' +
+                      'RFC:' + user_details.factrfc + '<br>' +
+                      'Domicilio:' + user_details.factcalle + ',' + 
+                                     user_details.factcolonia + ',' + 
+                                     user_details.factnum_ext + ',' +
+                                     user_details.factnum_int + ',' +
+                                     user_details.factmunicipio + ',' +
+                                     user_details.factciudad + ',' +
+                                     user_details.factestado + ',' +
+                                     user_details.sel_factcountry + ',' + '<br>' +
+                      'Número de pedido:' + numorder + '<br>' +
+                      'Monto total: USD ' + order[0].totalpay + '<br>' +
+                      'Estatus del pedido: ' + statusorder + '<br>' +
+                      'Método de pago:' + user_details.factpaymethod + '<br>' +
+                      'Terminación de la tarjeta:' + user_details.factterminacion + '<br>' +
+                      'e-mail:  <span>' + user_details.factemail2 + '</span><br></b></html>'  // html body
+                    };
+                    //console.log(mailOptions);
+                    //send mail with defined transport object
+                    transporter.sendMail(mailOptions, function(error, info){
+                        if(error){
+                            return console.log(error);
+                        }
+                        console.log('Message sent: ' + info.response);
+                    });
+                  }
+              } 
+            });          
+          }); 
+
+
+          Orders.update(conditions, update, options, function (err, numAffected) {
+            // numAffected is the number of updated documents
+           
+            console.log(numAffected);
+            if (err){
+                console.log(err);
+                cb( 1,'No fue posible actualizar el estatus del pedido');
+            }
+            else{
+                // actualizar paquetes
+
+                OrderPacks.update(conditions, update, options, function (err, numAffected) {
+                  // numAffected is the number of updated documents
+                 
+                  console.log(numAffected);
+                  if (err){
+                      console.log(err);
+                      cb( 1,'No fue posible actualizar el estatus del pedido');
+                  }
+                  else{
+                      // actualizar paquetes
+                      cb( 0,'Transacción autorizada', href);
+
+                  }
+                });
+                //cb( 0,'Se actualizó el estatus del pedido', href);
+
+            }
+          });
+
+        }
+        else
+        {
+            cb( 2,'Transacción denegada', href);
+        }
+          
+
+      //}
+    //});
 }
 
 function countorders(userid,cb){

@@ -40,7 +40,8 @@ if ( app.get('env') === 'production') {
 		dropshadow:'0.20',
 		correctcolor:'0.40',
 		clippingpath:'2.40',
-		basicretouch:'0.60'
+		basicretouch:'0.60',
+		dollar:'19.72'
 	},
 		register:{
 			usermustactivate: false,
@@ -99,7 +100,8 @@ else{
 			dropshadow:'0.20',
 			correctcolor:'0.40',
 			clippingpath:'2.40',
-			basicretouch:'0.60'
+			basicretouch:'0.60',
+			dollar:'19.72'
 		},
 		register:{
 			usermustactivate: false,
@@ -146,7 +148,8 @@ else{
 			dropshadow:'0.20',
 			correctcolor:'0.40',
 			clippingpath:'2.40',
-			basicretouch:'0.60'
+			basicretouch:'0.60',
+			dollar:'19.72'
 		},
 		register:{
 			usermustactivate: false,

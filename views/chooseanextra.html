@@ -9,6 +9,7 @@
         <script src="../js/general.js"></script>
         <script type="text/javascript">
             $(document).ready(function(){
+
                 var newbuttonspec = $('#savebuttonspec');
 
                 var iniformat = localStorage.getItem("format");
@@ -19,6 +20,7 @@
                         alert('Las imágenes JPG WEB ó PNG no permiten la opción de Clipping Path');
                     });
                 }
+                putPrices(); // pone los precios actuales
                 newbuttonspec.click(function (ev) {
                     // recuperar las variables localStorage
                     var specInfos =[];
@@ -206,9 +208,15 @@
                     sumallextras();
                 });
 
+                function putPrices(){
+                    var ntotal = <%= config.prices.cutandremove %>;
+                    var ntotalMXN = <%= config.prices.dollar %>;
+                    $("#totalprice").html(setDecimals(ntotal,2));
+                    $("#totalpriceMXN").html(setDecimals(ntotalMXN,2));
 
-                  function sumallextras(){
-                   
+                }
+                function sumallextras(){
+                    var ntotalMXN =0;
                     var ntotal = <%= config.prices.cutandremove%>; 
                     ntotal = ntotal * 100;
 
@@ -235,7 +243,10 @@
                     }
                                 
                     ntotal = ntotal / 100;
-                    $("#totalprice").html(ntotal);
+                    ntotalMXN = ntotal * <%= config.prices.dollar %>;;
+                    $("#totalprice").html(setDecimals(ntotal,2));
+                    $("#totalpriceMXN").html(ntotalMXN.toFixed(2));
+
                 }
 
             });
@@ -299,7 +310,7 @@
                 <p class="texto_plano4">Precio por Imagen</p>
                 <p class="texto_precio2"><span class="prefixmoney">USD</span>$<span id="totalprice">1.50</span></p>
                 <p class="textoplanotemp2">Precio por Imagen</p>
-                <p class="textopreciotemp2"><span class="prefijopeso2">MXN</span>$19.35</p>
+                <p class="textopreciotemp2"><span class="prefijopeso2">MXN</span>$<span id="totalpriceMXN">19.35</span></p>
             </div>
         </div>
         <div class="picnum">Seleccione Extras</div>

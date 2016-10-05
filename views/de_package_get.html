@@ -21,7 +21,8 @@
                                     // console.log(valueimg);
 
                                     var params = {
-                                        filename: valueimg.imagename
+                                        filename: valueimg.imagename,
+                                        userid: value.userid
                                     };
                                     $.getJSON('/sign-s3get', params).done(function(data) {
                                                                 //console.log(data);

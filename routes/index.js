@@ -1678,7 +1678,7 @@ console.log("OK");
 
 
         // al fileName se le agrega el folder para que la firma lo reconozca
-        const fileName = req.user._id +'/' + req.query['filename'];
+        const fileName = req.query['userid'] +'/' + req.query['filename'];
         //const fileType = req.query['filetype'];
         // const s3Params = {
         //   Bucket: S3_BUCKET_NAME,

@@ -67,16 +67,28 @@
                         };
                         if (this.files.length) {
                             var i, len, pre;
-                            for (i = 0, len = this.files.length; i < len - 1; i++) {
-                                if (this.files[i].name == file.name) {
-                                    //alert("El archivo: " + file.name + " ya está agregado al pedido.")
+
+                            
+                            for (i = 0, len = imageUploadInfos.length; i < len; i++) {
+                                if (imageUploadInfos[i].imagename == file.name) {
+                                    alert("El archivo: " + file.name + " ya está agregado al pedido.");
                                     //this.files.splice(i,1);
                                     //cb();
                                     return (pre = file.previewElement) != null ? pre.parentNode.removeChild(file.previewElement) : void 0;
                                 }
                             }
+
+                            // for (i = 0, len = this.files.length; i < len - 1; i++) {
+                            //     if (this.files[i].name == file.name) {
+                            //         //alert("El archivo: " + file.name + " ya está agregado al pedido.")
+                            //         //this.files.splice(i,1);
+                            //         //cb();
+                            //         return (pre = file.previewElement) != null ? pre.parentNode.removeChild(file.previewElement) : void 0;
+                            //     }
+                            // }
                         }
 
+                        
 
                         //path to S3 signature
                         $.getJSON('/sign-s3', params).done(function(data) {
@@ -86,6 +98,14 @@
                                 return cb('No se pudo recibir una URL para cargar la imagen');
                             }
 
+                            // $.getJSON('/sign-s3get', params).done(function(data) {
+                            //                             //console.log(data);
+
+                            //     if (!data.signedRequest) {
+                            //         return console.log('No se pudo recibir una URL para descargar la imagen');
+                            //     }
+
+                            // });
                             file.signedRequest = data.signedRequest;
                             file.finalURL = data.downloadURL;
                             //imageCount++;

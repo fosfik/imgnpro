@@ -234,10 +234,30 @@ router.get('/listallorderpacks', function(req, res) {
       console.log('No se encontraron paquetes de pedidos');
     }
    
-  }).select('imagecount numorder status date name userid isworking');
+  }).select('_id imagecount numorder status date name userid isworking');
 });
 
+router.get('/listorderpack/:orderpackid', function(req, res) {
+  OrderPacks.find({'_id':req.params.orderpackid},function(err, orderpack) {
+    // In case of any error return
+     if (err){
+       console.log('Error al consultar un paquete de un pedido');
+     }
+     //console.log("prueba 2");
+   // already exists
+    if (orderpack) {
+      //console.log('se encontraron pedidos');
+      res.setHeader('Content-Type', 'application/json');
+      res.send(orderpack); 
+      //res.render('de_package_get', {orderpack:orderpack});
 
+    } 
+    else {
+      console.log('No se encontró el paquete del pedido ' + req.params.orderpackid);
+    }
+   
+  }).select('imagecount numorder status date name userid isworking images');
+});
 
 
 // TODO agregar seguridad a esta ruta
@@ -576,6 +596,11 @@ router.get('/listspecs/:limit', function(req, res) {
  router.get('/de_packages', function(req, res) {
     // Display the Login page with any flash message, if any
     res.render('de_packages', {message: req.flash('message')});
+  });
+
+ router.get('/de_package_get/:packageid', function(req, res) {
+    // Display the Login page with any flash message, if any
+    res.render('de_package_get', {packageid: req.params.packageid});
   });
   
  router.get('/hinewuser', function(req, res) {
@@ -1587,9 +1612,24 @@ router.get('/sign-s3', (req, res) => {
     ContentType: fileType,
     ACL: 'public-read'
   };
-  console.log(fileName);
-  console.log(fileType);
-   console.log(s3Params);
+  console.log('File:' + fileName);
+  console.log('fileType:' + fileType);
+  console.log(s3Params);
+
+  var params2 = {Bucket: S3_BUCKET_NAME, Key: fileName, Expires: 100000};
+
+
+s3.getSignedUrl('getObject', params2, function (err, url) {
+  console.log("The URL is", url);
+});
+
+ var params3 = {Bucket: S3_BUCKET_NAME_THUMB, Key: fileName};
+
+
+s3.getSignedUrl('getObject', params3, function (err, url) {
+  console.log("The URL is", url);
+});
+
   s3.getSignedUrl('putObject', s3Params, (err, data) => {
     if(err){
       console.log("error");
@@ -1599,9 +1639,98 @@ router.get('/sign-s3', (req, res) => {
       signedRequest: data,
       url: `https://${S3_BUCKET_NAME}.s3.amazonaws.com/${fileName}`
     };
+    console.log(returnData);
     res.write(JSON.stringify(returnData));
     res.end();
   });
+});
+
+
+router.get('/sign-s3get', (req, res) => {
+
+//var AWS = require('aws-sdk');
+   
+  //if (req.params.method=='get'){
+        const s3 = new aws.S3();
+console.log("OK");
+        // // el nombre del folder llevar el id del usuario
+        // var folder = req.user._id +'/' ;
+        // // crea la carpeta para guardar las imágenes
+        // var params = { Bucket: S3_BUCKET_NAME, Key: folder, ACL: 'public-read', Body:'body does not matter' };
+        // s3.upload(params, function (err, data) {
+        // if (err) {
+        //     console.log("Error creating the folder: ", err);
+        //     } else {
+        //     //console.log("Successfully created a folder on S3");
+
+        //     }
+        // });
+        // // crea la carpeta para guardar las vistas en miniatura de las imágenes
+        // var params = { Bucket: S3_BUCKET_NAME_THUMB, Key: folder, ACL: 'public-read', Body:'body does not matter' };
+        // s3.upload(params, function (err, data) {
+        // if (err) {
+        //     console.log("Error creating the folder thumbnail: ", err);
+        //     } else {
+        //     //console.log("Successfully created a thumbnail folder on S3");
+
+        //     }
+        // });
+
+
+        // al fileName se le agrega el folder para que la firma lo reconozca
+        const fileName = req.user._id +'/' + req.query['filename'];
+        //const fileType = req.query['filetype'];
+        // const s3Params = {
+        //   Bucket: S3_BUCKET_NAME,
+        //   Key: fileName,
+        //   Expires: 10000,
+        //   ContentType: fileType,
+        //   ACL: 'public-read'
+        // };
+        console.log('File:' + fileName);
+        //console.log('fileType:' + fileType);
+        //console.log(s3Params);
+
+        const s3Params = {Bucket: S3_BUCKET_NAME, Key: fileName, Expires: 100000};
+        const s3Paramsthumb = {Bucket: S3_BUCKET_NAME_THUMB, Key: fileName, Expires: 100000};
+
+
+      // s3.getSignedUrl('getObject', params2, function (err, url) {
+      //   console.log("The URL is", url);
+      // });
+
+       // var s3Params = {Bucket: S3_BUCKET_NAME_THUMB, Key: fileName};
+
+      var urlthumb = s3.getSignedUrl('getObject', s3Paramsthumb);
+
+      s3.getSignedUrl('getObject', s3Params, function (err, data) {
+        //console.log("The URL is", url);
+          if(err){
+            console.log("error");
+            return res.end();
+          }
+          const returnData = {
+            signedRequest: data,
+            signedthumbRequest: urlthumb
+            //url: `https://${S3_BUCKET_NAME}.s3.amazonaws.com/${fileName}`
+          };
+          console.log(returnData);
+          res.write(JSON.stringify(returnData));
+          res.end();
+
+      });
+
+        // s3.getSignedUrl('putObject', s3Params, (err, data) => {
+          
+        // });
+
+  // }
+  // else
+  // {
+  //   res.write(JSON.stringify({signedRequest:''}));
+  //   res.end();
+  // }
+  
 });
 
 

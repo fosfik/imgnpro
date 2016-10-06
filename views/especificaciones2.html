@@ -296,12 +296,12 @@
                                     sumallextras(); 
                                     if (uploadimages==true){
                                         if(confirm("¿Quieres subir imágenes?")){
-                                            document.location.href="/uploadimages/" + data.newSpecid;
+                                            document.location.href="/uploadimages/<%= specid %>";
                                         }
                                     }
                                     else
                                     {
-                                        document.location.href="/uploadimages/" + data.newSpecid;
+                                        document.location.href="/uploadimages/<%= specid %>";
                                     }
                                     
                                 }

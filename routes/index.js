@@ -143,7 +143,7 @@ router.get('/listorders/:limit', function(req, res) {
       console.log('No se encontraron pedidos');
     }
    
-  }).select('imagecount numorder status date').sort('-date').limit(parseInt(req.params.limit));
+  }).select('imagecount numorder status date specid').sort('-date').limit(parseInt(req.params.limit));
 });
 
 // TODO agregar seguridad a esta ruta
@@ -679,6 +679,14 @@ router.get('/listspecs/:limit', function(req, res) {
          function(req, res){
            res.render('especificaciones2', {message: req.flash('message'), user: req.user, config:config, countorders:ordersinproc, specid:req.params.specid});
   });
+
+/* Maneja la página de_especificaciones2 cuando se va a editar una especificación */
+  router.get('/de_especificaciones2/:specid', 
+     require('connect-ensure-login').ensureLoggedIn('/login'),
+         function(req, res){
+           res.render('de_especificaciones2', {message: req.flash('message'), user: req.user, config:config, countorders:ordersinproc, specid:req.params.specid});
+  });
+
   /* Maneja la aplicación principal */
   router.get('/principal', 
      require('connect-ensure-login').ensureLoggedIn('/login'),
@@ -847,6 +855,17 @@ router.get('/listspecs/:limit', function(req, res) {
           });
   });
 
+ router.get('/findaorder/:numorder', 
+     //require('connect-ensure-login').ensureLoggedIn('/login'),
+         function(req, res){
+          findaorder(req.params.numorder,function(error,order){
+               console.log(order);
+               res.setHeader('Content-Type', 'application/json');
+               res.send(JSON.stringify({ order:order[0].numorder, specid: order[0].specid}));
+               //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id });
+               //res.render('confirmpayorder', {message: req.flash('message'), user: req.user, numorder:req.params.numorder, order:order[0],  config:config, countorders:ordersinproc});             
+          });
+  });
   router.get('/thankyou/:numorder', 
      require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){

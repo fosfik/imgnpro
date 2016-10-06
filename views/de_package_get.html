@@ -13,8 +13,20 @@
                         type: 'get',
                         url: '/listorderpack/<%= packageid %>',
                         success: function (data) {
-                            // console.log(data);
+                             console.log(data[0]);
                             // console.log(data.images);
+                            $.getJSON('/findaorder/' + data[0].numorder).done(function(order) {
+                                                                //console.log(data);
+                        
+                                        if (order) {
+                                        console.log(order);
+                                            $("#specLink").attr("href","/de_especificaciones2/" + order.specid );
+                                        }
+                                        
+
+                            });
+
+                            
                             $.each(data, function(index, value) {
                                 // console.log(value);
                                 $.each(value.images, function(index, valueimg) {
@@ -69,7 +81,8 @@
         </header>
     <section id="contenedor">
         <div id= "orderstable" class="tabla">
-            <p class="encabezado">Paquete de Pedido</p>
+            <p class="encabezado">Paquete de Pedido </p>(<span><a id="specLink" href>Especificación</a></span>)
+
             <table>
                 <tr>
                     <th>Orden</th>

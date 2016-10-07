@@ -606,7 +606,7 @@ router.get('/listspecs/:limit', function(req, res) {
 
 
   router.get('/de_uploadimages/:packageid', 
-     //require('connect-ensure-login').ensureLoggedIn('/login'),
+     //require('connect-ensure-login').ensureLoggedIn('/de_login'),
          function(req, res){
 
             OrderPacks.find({'_id':req.params.packageid },function(err, OrderPack) {
@@ -727,7 +727,7 @@ router.get('/listspecs/:limit', function(req, res) {
 
 /* Maneja la página de_especificaciones2 cuando se va a editar una especificación */
   router.get('/de_especificaciones2/:specid', 
-     require('connect-ensure-login').ensureLoggedIn('/login'),
+     require('connect-ensure-login').ensureLoggedIn('/de_login'),
          function(req, res){
            res.render('de_especificaciones2', {message: req.flash('message'), user: req.user, config:config, countorders:ordersinproc, specid:req.params.specid});
   });

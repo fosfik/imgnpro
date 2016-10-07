@@ -19,6 +19,7 @@ var ordersinproc  = 0;
 
 aws.config.region = 'us-east-1';
 var S3_BUCKET_NAME = process.env.S3_BUCKET_NAME || 'imgnpro';
+var S3_BUCKET_NAME_DONE = process.env.S3_BUCKET_NAME_DONE || 'imgnprodone';
 var S3_BUCKET_NAME_THUMB = process.env.S3_BUCKET_NAME_THUMB|| 'imgnprothumb';
 
 
@@ -189,7 +190,7 @@ router.get('/packagesforwork', function(req, res) {
       console.log('No se encontraron paquetes de pedidos');
     }
    
-  }).select('_id numorder imagecount').sort('-date');
+  }).select('_id numorder imagecount').sort('numorder');
 });
 
 
@@ -602,6 +603,50 @@ router.get('/listspecs/:limit', function(req, res) {
     // Display the Login page with any flash message, if any
     res.render('de_package_get', {packageid: req.params.packageid});
   });
+
+
+  router.get('/de_uploadimages/:packageid', 
+     //require('connect-ensure-login').ensureLoggedIn('/login'),
+         function(req, res){
+
+            OrderPacks.find({'_id':req.params.packageid },function(err, OrderPack) {
+                // In case of any error return
+                console.log(OrderPack);
+                 if (err){
+                   console.log('Error al consultar ' + err);
+                 }
+                 //console.log("prueba 2");
+               // already exists
+                if (OrderPack) {
+                  //console.log(OrderPack);
+                  console.log(OrderPack[0].numorder);
+                  console.log('Cantidad:' + OrderPack[0].imagecount);
+
+                  findaorder(OrderPack[0].numorder,function(error,order){
+                     console.log(order);
+
+                      findaspec(order[0].specid,function(error,spec){
+                                //console.log(spec);
+                             res.render('de_uploadimages', {message: req.flash('message'), numorder: OrderPack[0].numorder, user: req.user, packname:OrderPack[0].name ,userid: OrderPack[0].userid, imagecount:OrderPack[0].imagecount, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id , config:config, order:order[0], orderpackid:OrderPack[0]._id});
+                       
+                       });
+                     //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id });
+                     //res.render('confirmpayorder', {message: req.flash('message'), user: req.user, numorder:req.params.numorder, order:order[0],  config:config, countorders:ordersinproc});             
+                      // res.setHeader('Content-Type', 'application/json');
+                      // res.send(order); 
+                  });
+                } 
+                else {
+                  console.log('No se encontraron paquetes de pedidos');
+                }
+               
+              });
+
+
+
+
+     
+  });
   
  router.get('/hinewuser', function(req, res) {
     // Display the Login page with any flash message, if any
@@ -788,6 +833,9 @@ router.get('/listspecs/:limit', function(req, res) {
               res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id , config:config, countorders:ordersinproc});
             });
   });
+
+
+  
 
   /* Maneja la pagina que tiene el dropzone para subir imágenes 
    Cuando es llamada desde la creación de una especificación
@@ -1631,23 +1679,23 @@ router.get('/sign-s3', (req, res) => {
     ContentType: fileType,
     ACL: 'public-read'
   };
-  console.log('File:' + fileName);
-  console.log('fileType:' + fileType);
-  console.log(s3Params);
+  // console.log('File:' + fileName);
+  // console.log('fileType:' + fileType);
+  // console.log(s3Params);
 
-  var params2 = {Bucket: S3_BUCKET_NAME, Key: fileName, Expires: 100000};
-
-
-s3.getSignedUrl('getObject', params2, function (err, url) {
-  console.log("The URL is", url);
-});
-
- var params3 = {Bucket: S3_BUCKET_NAME_THUMB, Key: fileName};
+//   var params2 = {Bucket: S3_BUCKET_NAME, Key: fileName, Expires: 100000};
 
 
-s3.getSignedUrl('getObject', params3, function (err, url) {
-  console.log("The URL is", url);
-});
+// s3.getSignedUrl('getObject', params2, function (err, url) {
+//   console.log("The URL is", url);
+// });
+
+//  var params3 = {Bucket: S3_BUCKET_NAME_THUMB, Key: fileName};
+
+
+// s3.getSignedUrl('getObject', params3, function (err, url) {
+//   console.log("The URL is", url);
+// });
 
   s3.getSignedUrl('putObject', s3Params, (err, data) => {
     if(err){
@@ -1666,59 +1714,11 @@ s3.getSignedUrl('getObject', params3, function (err, url) {
 
 
 router.get('/sign-s3get', (req, res) => {
-
-//var AWS = require('aws-sdk');
-   
-  //if (req.params.method=='get'){
         const s3 = new aws.S3();
-console.log("OK");
-        // // el nombre del folder llevar el id del usuario
-        // var folder = req.user._id +'/' ;
-        // // crea la carpeta para guardar las imágenes
-        // var params = { Bucket: S3_BUCKET_NAME, Key: folder, ACL: 'public-read', Body:'body does not matter' };
-        // s3.upload(params, function (err, data) {
-        // if (err) {
-        //     console.log("Error creating the folder: ", err);
-        //     } else {
-        //     //console.log("Successfully created a folder on S3");
-
-        //     }
-        // });
-        // // crea la carpeta para guardar las vistas en miniatura de las imágenes
-        // var params = { Bucket: S3_BUCKET_NAME_THUMB, Key: folder, ACL: 'public-read', Body:'body does not matter' };
-        // s3.upload(params, function (err, data) {
-        // if (err) {
-        //     console.log("Error creating the folder thumbnail: ", err);
-        //     } else {
-        //     //console.log("Successfully created a thumbnail folder on S3");
-
-        //     }
-        // });
-
-
-        // al fileName se le agrega el folder para que la firma lo reconozca
         const fileName = req.query['userid'] +'/' + req.query['filename'];
-        //const fileType = req.query['filetype'];
-        // const s3Params = {
-        //   Bucket: S3_BUCKET_NAME,
-        //   Key: fileName,
-        //   Expires: 10000,
-        //   ContentType: fileType,
-        //   ACL: 'public-read'
-        // };
         console.log('File:' + fileName);
-        //console.log('fileType:' + fileType);
-        //console.log(s3Params);
-
         const s3Params = {Bucket: S3_BUCKET_NAME, Key: fileName, Expires: 100000};
         const s3Paramsthumb = {Bucket: S3_BUCKET_NAME_THUMB, Key: fileName, Expires: 100000};
-
-
-      // s3.getSignedUrl('getObject', params2, function (err, url) {
-      //   console.log("The URL is", url);
-      // });
-
-       // var s3Params = {Bucket: S3_BUCKET_NAME_THUMB, Key: fileName};
 
       var urlthumb = s3.getSignedUrl('getObject', s3Paramsthumb);
 
@@ -1738,18 +1738,121 @@ console.log("OK");
           res.end();
 
       });
+});
 
-        // s3.getSignedUrl('putObject', s3Params, (err, data) => {
-          
-        // });
+// se pide un key para borrar un archivo terminado
+router.get('/delete-s3done', (req, res) => {
+  const s3 = new aws.S3();
+  const fileName = req.query['userid']  +'/' + req.query['filename']; 
+  var params = {
+    Bucket: S3_BUCKET_NAME_DONE, /* required */
+    Key: fileName /* required */
+    //MFA: 'STRING_VALUE',
+    //RequestPayer: 'requester',
+    //VersionId: 'STRING_VALUE'
+  };
 
-  // }
-  // else
-  // {
-  //   res.write(JSON.stringify({signedRequest:''}));
-  //   res.end();
-  // }
+
+  s3.deleteObject(params, function(err, data) {
+    if (err) {
+      console.log(err, err.stack); 
+      var returnData = {
+        error: 1,
+        message: `Error al borrar`
+      };
+      res.write(JSON.stringify(returnData));
+      res.end();
+    
+    }// an error occurred
+    else{     
+      console.log(data);           // successful response
+      var returnData = {
+          error: 0,
+          message: `se borró`
+        };
+        res.write(JSON.stringify(returnData));
+        res.end();
+        }
+      });
+
+
+
+
+});
+
+// Para solicitar una llave para que el diseñador suba un archivo terminado
+
+router.get('/sign-s3done', (req, res) => {
+  const s3 = new aws.S3();
+  // el nombre del folder llevar el id del usuario
+  var folder = req.query['userid'] +'/' ;
+  // crea la carpeta para guardar las imágenes
+  var params = { Bucket: S3_BUCKET_NAME_DONE, Key: folder, ACL: 'public-read', Body:'body does not matter' };
   
+
+  OrderPacks.findOne({'_id': req.query['orderpackid']}, function(err,OrderPack){
+    console.log('Ordepack');
+    console.log(OrderPack);
+    var orderpackimgs = OrderPack.images;
+    var b_findimg = false;
+    console.log(orderpackimgs[0].imagename);
+     
+    for(var i=0;i < OrderPack.images.length; i++ ){
+
+
+     console.log(OrderPack.images[i].imagename);
+       
+      if(OrderPack.images[i].imagename == req.query['filename'] ){
+        console.log('I found it');
+        b_findimg = true;
+        break;
+      }
+       
+    }
+    if (b_findimg == true){
+      s3.upload(params, function (err, data) {
+      if (err) {
+          console.log("Error al crear la carpeta de trabajos terminados: ", err);
+          } else {
+          //console.log("Successfully created a folder on S3");
+
+          }
+      });
+
+      // al fileName se le agrega el folder para que la firma lo reconozca
+      const fileName = req.query['userid'] + '/' + req.query['filename'];
+      const fileType = req.query['filetype'];
+      const s3Params = {
+        Bucket: S3_BUCKET_NAME_DONE,
+        Key: fileName,
+        Expires: 10000,
+        ContentType: fileType,
+        ACL: 'public-read'
+      };
+      s3.getSignedUrl('putObject', s3Params, (err, data) => {
+        if(err){
+          console.log("error");
+          res.write(JSON.stringify({err:2,message:'No se pudo obtener una firma'}));
+          return res.end();
+        }
+        const returnData = {
+          signedRequest: data,
+          url: `https://${S3_BUCKET_NAME_DONE}.s3.amazonaws.com/${fileName}`
+        };
+        console.log(returnData);
+        res.write(JSON.stringify(returnData));
+        res.end();
+      });
+
+    }else{
+      res.write(JSON.stringify({err:1, message:'Imagen no válida'}));
+      return res.end();
+    }
+
+  });
+
+
+
 });
 
 

@@ -1334,8 +1334,8 @@ router.post('/updateuserdetails', require('connect-ensure-login').ensureLoggedIn
                 res.send(JSON.stringify({ error: 0, newSpecid: newSpec._id, message: 'Se generó correctamente la especificación'})); 
               });
           }else{
-            console.log('Update');
-            console.log(specid);
+            //console.log('Update');
+            //console.log(specid);
             Spec.findOne({ _id: specid, typespec:'normal'  }, function (err, doc){
               console.log(req.body.name);
               console.log(err);

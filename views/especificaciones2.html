@@ -282,13 +282,13 @@
                             data: frm.serialize(),
                             success: function (data) {
                                 if (data.error == 1 ){
-                                    //document.getElementById('res_message').innerHTML= data.message;    
                                     alert(data.message);
                                      $('#specnombre').focus();
                                 }
                                 else{
-                                    //setTimeout(window.location='/subirimagen4.html',500);
                                     alert(data.message);
+                                    alert(data);
+                                    console.log(data);
                                     $('#specid').prop('value','');
                                     document.getElementById("specForm").reset();
                                     desactAllNext();
@@ -296,12 +296,12 @@
                                     sumallextras(); 
                                     if (uploadimages==true){
                                         if(confirm("¿Quieres subir imágenes?")){
-                                            document.location.href="/uploadimages/<%= specid %>";
+                                            document.location.href="/uploadimages/" + data.newSpecid;
                                         }
                                     }
                                     else
                                     {
-                                        document.location.href="/uploadimages/<%= specid %>";
+                                        document.location.href="/uploadimages/" + data.newSpecid;
                                     }
                                     
                                 }

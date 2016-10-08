@@ -1385,11 +1385,11 @@ router.post('/updateuserdetails', require('connect-ensure-login').ensureLoggedIn
                   
                   //newSpec.save();
                   res.setHeader('Content-Type', 'application/json');
-                  res.send(JSON.stringify({ error: 0, newSpecid: newSpec._id, message: 'Se guardaron correctamente los cambios a la especificación'})); 
+                  res.send(JSON.stringify({ error: 0, newSpecid: specid, message: 'Se guardaron correctamente los cambios a la especificación'})); 
                 } 
                 else {
                   res.setHeader('Content-Type', 'application/json');
-                  res.send(JSON.stringify({ error: 1, newSpecid: newSpec._id, message: 'No se encontró la especificación, los cambios no fueron almacenados'})); 
+                  res.send(JSON.stringify({ error: 1, newSpecid: specid, message: 'No se encontró la especificación, los cambios no fueron almacenados'})); 
                 }
               }
             });  

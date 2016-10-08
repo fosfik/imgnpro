@@ -28,3 +28,7 @@ function fillzero(param,pattern){
 	return (pattern + param).slice(-7);
 
 }
+
+function normFileName(filename){
+	return filename.replace(/\s/g, "+");
+}

@@ -20,7 +20,8 @@
                         alert('Las imágenes JPG WEB ó PNG no permiten la opción de Clipping Path');
                     });
                 }
-                putPrices(); // pone los precios actuales
+                //putPrices(); // pone los precios actuales
+                sumallextras();
                 newbuttonspec.click(function (ev) {
                     // recuperar las variables localStorage
                     var specInfos =[];
@@ -208,13 +209,13 @@
                     sumallextras();
                 });
 
-                function putPrices(){
-                    var ntotal = <%= config.prices.cutandremove %>;
-                    var ntotalMXN = <%= config.prices.dollar %>;
-                    $("#totalprice").html(setDecimals(ntotal,2));
-                    $("#totalpriceMXN").html(setDecimals(ntotalMXN,2));
+                // function putPrices(){
+                //     var ntotal = <%= config.prices.cutandremove %>;
+                //     var ntotalMXN = <%= config.prices.dollar %>;
+                //     $("#totalprice").html(setDecimals(ntotal,2));
+                //     $("#totalpriceMXN").html(setDecimals(ntotalMXN,2));
 
-                }
+                // }
                 function sumallextras(){
                     var ntotalMXN =0;
                     var ntotal = <%= config.prices.cutandremove%>; 

@@ -368,6 +368,9 @@ passport.use('login', new LocalStrategy({
           return done(null, false, req.flash('message', 'La cuenta no existe.'));                 
         }
 
+        if(user.provider=='google' || user.provider=='facebook'){
+          return done(null, false, req.flash('message', 'La cuenta se registró con Google o Facebook y no es válida.'));                 
+        }
 
         if(user.usertype !='user' && user.usertype !='business'){
           return done(null, false, req.flash('message', 'La cuenta no es de un usuario válido'));                 

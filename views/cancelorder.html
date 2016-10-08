@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8">
+        <title>IMGNpro, hagamos que tu producto destaque</title>
+        <link rel="stylesheet" href="../stylesheets/imgncss_session.css">
+        <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+        <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico"/>
+        <style>
+            .centrar
+            {
+                position: absolute;
+                /*nos posicionamos en el centro del navegador*/
+                top:50%;
+                left:50%;
+                /*determinamos una anchura*/
+                width:400px;
+                /*indicamos que el margen izquierdo, es la mitad de la anchura*/
+                margin-left:-200px;
+                /*determinamos una altura*/
+                height:300px;
+                /*indicamos que el margen superior, es la mitad de la altura*/
+                margin-top:-150px;
+                border:1px solid #808080;
+                padding:5px;
+            }
+        </style>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $(document).ajaxStart(function(){
+                    //$('#divload').show();
+                    window.location="#divload";
+                });
+                $( document ).ajaxStop(function() {
+                    $('#divload').hide();
+                });
+
+                //var buttonspec = $('#buttonpayment');
+                var frm = $('#paymentForm');
+                //buttonspec.click(function (ev) {
+                    $.ajax({
+                        type: frm.attr('method'),
+                        url: '/getcancelsign/<%= numorder %>', //frm.attr('action'),
+                        data: frm.serialize(),
+                        success: function (data) {
+
+                            //https://ecom.eglobal.com.mx/VPBridgeWeb/servlets/TransactionStartBridge
+
+                            if (data.error == 1 ){
+                                document.getElementById('res_message').innerHTML= data.message;    
+                            }
+                            else{
+                                //document.getElementById('res_message').innerHTML= data.sign; 
+
+                               //$('#Dsmerchantsign').val(data.sign);
+                               $.each(data, function(elem, val) {
+                                    //console.log(elem + ':' + val);
+                                    $('input[name="' + elem +'"]').val(val);
+                                    //$('select[name="' + elem +'"]').val(val);
+                                    //$('input[value="' + val + '"]').prop('checked', true);
+                                    //desactFormFact();
+                                }); 
+                                //request payment  
+
+                                // $('<form action="comments.php" method="POST"><input type="hidden" name="aid" value="hjhhjhj"></form>').submit();  
+                               $('#paymentForm').submit();
+                                // $.ajax({
+                                //     type: 'post',
+                                //     url: 'https://ecom.eglobal.com.mx/VPBridgeWeb/servlets/TransactionStartBridge',
+                                //     data: frm.serialize(),
+                                //     async: false,
+                                //     success: function (data) {
+
+                                //     },
+                                //     error: function(xhr,status,error){
+                                //         document.getElementById('res_message').innerHTML = error;
+                                //     }
+
+                                // });
+                                 
+                            }
+                        },
+                        error: function(xhr,status,error){
+                            document.getElementById('res_message').innerHTML= error;
+                        }
+
+                    });
+                    //ev.preventDefault();
+               // });  
+            });
+        </script>
+    </head>
+    <body>
+        <div id="divload" class="centrar modalDialog">
+            <img src="../images/loading_white.gif">
+        </div>
+        <form id = "paymentForm" class="col1" action="https://ecom.eglobal.com.mx/VPBridgeWeb/servlets/TransactionStartBridge" method="post">
+            <input type="hidden" name="Ds_Merchant_Amount" placeholder="Cantidad a pagar" value="">
+            <input type="hidden" name="Ds_Merchant_Currency" placeholder="" value="">
+            <input type="hidden" name="Ds_Merchant_Order" placeholder="Número Pedido" value="">
+            <input type="hidden" name="Ds_Merchant_ProductDescription" placeholder="" value="30 imágenes especificación 1">
+            <input type="hidden" name="Ds_Merchant_MerchantCode" placeholder="" value="">
+            <input type="hidden" name="Ds_Merchant_MerchantURL" placeholder="" value="">
+            <input type="hidden" name="Ds_Merchant_UrlOK" placeholder="" value="">
+            <input type="hidden" name="Ds_Merchant_UrlKO" placeholder="" value="">
+            <input type="hidden" name="Ds_Merchant_MerchantName" placeholder="" value="">
+            <input type="hidden" name="Ds_Merchant_MerchantSignature" placeholder="">
+            <input type="hidden" name="Ds_Merchant_Terminal" placeholder="" value="">
+            <input type="hidden" name="Ds_Merchant_TransactionType" placeholder="" value="">
+        </form>
+    </body>
+</html>

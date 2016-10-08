@@ -174,6 +174,7 @@
                                     desactSizeAllNext();
                                     desactCustomAllNext();
                                     desactDPI();
+                                    desactFormFact();
                                     //putPrices();
                                     
                                     }
@@ -296,12 +297,12 @@
                                     sumallextras(); 
                                     if (uploadimages==true){
                                         if(confirm("¿Quieres subir imágenes?")){
-                                            document.location.href="/uploadimages/<%= specid %>";
+                                            document.location.href="/uploadimages/" + data.newSpecid;
                                         }
                                     }
                                     else
                                     {
-                                        document.location.href="/uploadimages/<%= specid %>";
+                                        document.location.href="/uploadimages/" + data.newSpecid;
                                     }
                                     
                                 }
@@ -410,6 +411,10 @@
                         $('input[name=heightsize]').prop('disabled', true);
                     }
                 }
+                function desactFormFact(){
+                    
+                    $('#specForm').find('input, textarea, button, select').prop('disabled',true);
+               } 
 
             });
             
@@ -421,24 +426,8 @@
     </head>
     <body>
         <header class="bienvenida">
-            <ul>
-                <li>Hola <a id="user" class="bold"><%= user.userlongname %></a><a class="bold">!</a></li>
-                <li>Órdenes en Proceso <a id="orders" class="bold"><%= countorders %></a></li>
-                <li><a id="salir" class="bold" href="/logout">Salir</a></li>
-            </ul>
+            
         </header>
-        <section id="menuver">
-            <nav>
-                <ul>
-                    <li class="menulogo"><h1><a href="/principal"><img src="../images/logo_black.png" alt="logo"></a></h1></li>
-                    <li><a href="/micuenta">Mi Cuenta</a></li>
-                    <li><a href="/historial">Historial</a></li>
-                    <li><a href="/especificaciones1">Especificaciones</a></li>
-                    <li><a href="/subirimagen1">Subir Imagenes</a></li>
-                    <li><a href="/contacto">Contacto</a></li>
-                </ul>
-            </nav>
-        </section>
     <section id="contenedor">
         
         <div class="especificaciones_form">
@@ -539,32 +528,15 @@
 
             </form>
             <section id="area_botones">
-                <div class="buttonblue">
-                <a id="savebuttonspec" href=""><img src="../images/icon_ok.png" height="15px" width="15px">Guardar Cambios</a>
-                </div>
+                
                 <!-- <div class="buttonblue">
                 <a id="newbuttonspec" href=""><img src="../images/icon_plus.png" height="15px" width="15px">Nuevo</a>
                 </div> -->
             </section>
         </div>
         <hr>
-        <div id="saveploadbuttonspec" class="button2">
-            <a href="">Guardar y Subir Imágenes</a>
-        </div>
+        
     </section>
-        <aside id="menurigth">
-            <p class="encabezado"> Tutorial</p>
-             <div class="video_med"><a onclick="ponleplay()" href="#openVideoModal"><img src="../images/tumbnail_video.jpg" width="140px"></a></div>
-            <hr>
-            <p class="encabezado"> FAQs</p>
-            <p><a class="texto_plano">1. ¿Están seguros mis datos?</a></p>
-            <p><a class="texto_plano">2. ¿Tiempo de Entrega?</a></p>
-            <p><a class="texto_plano">3. ¿Prueba Gratis?</a></p>
-            <p><a class="texto_plano">4. ¿Cómo Pago?</a></p>
-            <div class="button1">
-            <a href="/faq">Ver más</a> 
-            </div>
-        </aside>
         <script>
             function desactDPI(){
                 var chkalgnnone = document.getElementById('chkDPInone').checked;

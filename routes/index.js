@@ -19,6 +19,7 @@ var ordersinproc  = 0;
 
 aws.config.region = 'us-east-1';
 var S3_BUCKET_NAME = process.env.S3_BUCKET_NAME || 'imgnpro';
+var S3_BUCKET_NAME_DONE = process.env.S3_BUCKET_NAME_DONE || 'imgnprodone';
 var S3_BUCKET_NAME_THUMB = process.env.S3_BUCKET_NAME_THUMB|| 'imgnprothumb';
 
 
@@ -143,7 +144,7 @@ router.get('/listorders/:limit', function(req, res) {
       console.log('No se encontraron pedidos');
     }
    
-  }).select('imagecount numorder status date').sort('-date').limit(parseInt(req.params.limit));
+  }).select('imagecount numorder status date specid').sort('-date').limit(parseInt(req.params.limit));
 });
 
 // TODO agregar seguridad a esta ruta
@@ -189,7 +190,7 @@ router.get('/packagesforwork', function(req, res) {
       console.log('No se encontraron paquetes de pedidos');
     }
    
-  }).select('_id numorder imagecount').sort('-date');
+  }).select('_id numorder imagecount').sort('numorder');
 });
 
 
@@ -234,10 +235,30 @@ router.get('/listallorderpacks', function(req, res) {
       console.log('No se encontraron paquetes de pedidos');
     }
    
-  }).select('imagecount numorder status date name userid isworking');
+  }).select('_id imagecount numorder status date name userid isworking');
 });
 
+router.get('/listorderpack/:orderpackid', function(req, res) {
+  OrderPacks.find({'_id':req.params.orderpackid},function(err, orderpack) {
+    // In case of any error return
+     if (err){
+       console.log('Error al consultar un paquete de un pedido');
+     }
+     //console.log("prueba 2");
+   // already exists
+    if (orderpack) {
+      //console.log('se encontraron pedidos');
+      res.setHeader('Content-Type', 'application/json');
+      res.send(orderpack); 
+      //res.render('de_package_get', {orderpack:orderpack});
 
+    } 
+    else {
+      console.log('No se encontró el paquete del pedido ' + req.params.orderpackid);
+    }
+   
+  }).select('imagecount numorder status date name userid isworking images');
+});
 
 
 // TODO agregar seguridad a esta ruta
@@ -577,6 +598,55 @@ router.get('/listspecs/:limit', function(req, res) {
     // Display the Login page with any flash message, if any
     res.render('de_packages', {message: req.flash('message')});
   });
+
+ router.get('/de_package_get/:packageid', function(req, res) {
+    // Display the Login page with any flash message, if any
+    res.render('de_package_get', {packageid: req.params.packageid});
+  });
+
+
+  router.get('/de_uploadimages/:packageid', 
+     //require('connect-ensure-login').ensureLoggedIn('/de_login'),
+         function(req, res){
+
+            OrderPacks.find({'_id':req.params.packageid },function(err, OrderPack) {
+                // In case of any error return
+                console.log(OrderPack);
+                 if (err){
+                   console.log('Error al consultar ' + err);
+                 }
+                 //console.log("prueba 2");
+               // already exists
+                if (OrderPack) {
+                  //console.log(OrderPack);
+                  console.log(OrderPack[0].numorder);
+                  console.log('Cantidad:' + OrderPack[0].imagecount);
+
+                  findaorder(OrderPack[0].numorder,function(error,order){
+                     console.log(order);
+
+                      findaspec(order[0].specid,function(error,spec){
+                                //console.log(spec);
+                             res.render('de_uploadimages', {message: req.flash('message'), numorder: OrderPack[0].numorder, user: req.user, packname:OrderPack[0].name ,userid: OrderPack[0].userid, imagecount:OrderPack[0].imagecount, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id , config:config, order:order[0], orderpackid:OrderPack[0]._id});
+                       
+                       });
+                     //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id });
+                     //res.render('confirmpayorder', {message: req.flash('message'), user: req.user, numorder:req.params.numorder, order:order[0],  config:config, countorders:ordersinproc});             
+                      // res.setHeader('Content-Type', 'application/json');
+                      // res.send(order); 
+                  });
+                } 
+                else {
+                  console.log('No se encontraron paquetes de pedidos');
+                }
+               
+              });
+
+
+
+
+     
+  });
   
  router.get('/hinewuser', function(req, res) {
     // Display the Login page with any flash message, if any
@@ -654,6 +724,14 @@ router.get('/listspecs/:limit', function(req, res) {
          function(req, res){
            res.render('especificaciones2', {message: req.flash('message'), user: req.user, config:config, countorders:ordersinproc, specid:req.params.specid});
   });
+
+/* Maneja la página de_especificaciones2 cuando se va a editar una especificación */
+  router.get('/de_especificaciones2/:specid', 
+     require('connect-ensure-login').ensureLoggedIn('/de_login'),
+         function(req, res){
+           res.render('de_especificaciones2', {message: req.flash('message'), user: req.user, config:config, countorders:ordersinproc, specid:req.params.specid});
+  });
+
   /* Maneja la aplicación principal */
   router.get('/principal', 
      require('connect-ensure-login').ensureLoggedIn('/login'),
@@ -756,6 +834,9 @@ router.get('/listspecs/:limit', function(req, res) {
             });
   });
 
+
+  
+
   /* Maneja la pagina que tiene el dropzone para subir imágenes 
    Cuando es llamada desde la creación de una especificación
 */
@@ -822,6 +903,17 @@ router.get('/listspecs/:limit', function(req, res) {
           });
   });
 
+ router.get('/findaorder/:numorder', 
+     //require('connect-ensure-login').ensureLoggedIn('/login'),
+         function(req, res){
+          findaorder(req.params.numorder,function(error,order){
+               console.log(order);
+               res.setHeader('Content-Type', 'application/json');
+               res.send(JSON.stringify({ order:order[0].numorder, specid: order[0].specid}));
+               //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id });
+               //res.render('confirmpayorder', {message: req.flash('message'), user: req.user, numorder:req.params.numorder, order:order[0],  config:config, countorders:ordersinproc});             
+          });
+  });
   router.get('/thankyou/:numorder', 
      require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){
@@ -905,6 +997,16 @@ router.get('/listspecs/:limit', function(req, res) {
                //var numorder_zero = fillzero(req.params.numorder, '0000000');
 
                res.render('payorder', {message: req.flash('message'), user: req.user, numorder:req.params.numorder, countorders:ordersinproc});             
+         
+  });
+ router.get('/cancelorder/:numorder', 
+     require('connect-ensure-login').ensureLoggedIn('/login'),
+         function(req, res){
+          
+               //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id });
+               //var numorder_zero = fillzero(req.params.numorder, '0000000');
+
+               res.render('cancelorder', {message: req.flash('message'), user: req.user, numorder:req.params.numorder, countorders:ordersinproc});             
          
   });
 // router.get('/uploadimages/:newSpecid', 
@@ -1342,6 +1444,53 @@ router.post('/updateuserdetails', require('connect-ensure-login').ensureLoggedIn
         }
     });        
   });
+
+  router.post('/getcancelsign/:numorder', function (req,res) {
+    //res.setHeader('Content-Type', 'application/json');
+    //res.send(JSON.stringify({ error: error, message: message, user_details: user_details[0]})); 
+    findaorder(req.params.numorder,function(err,order){
+      if (err){
+          res.setHeader('Content-Type', 'application/json');
+          res.send(JSON.stringify({ error: 1, message:'No se encontró el pedido', sign: ''})); 
+      }
+      else{
+          console.log(order);
+          var CSSB = process.env.CSSB || '5634ytyertewrg';
+          var paymentsign = '';
+
+          var totalpayPesos = order[0].totalpay  * parseFloat(config.prices.dollar);
+          totalpayPesos = setDecimals (totalpayPesos,2);
+          console.log(totalpayPesos); 
+          var Ds_Merchant_Amount = totalpayPesos.toString().replace('.', ''); //req.param('Ds_Merchant_Amount');
+          var Ds_Merchant_Order = fillzero(req.params.numorder, '0000000');
+          var Ds_Merchant_MerchantCode = 4093847; //req.param('Ds_Merchant_MerchantCode');
+          var Ds_Merchant_Currency = 484; // 484 pesos 840 Dólar req.param('Ds_Merchant_Currency');
+          var Ds_Merchant_TransactionType  = 4; //req.param('Ds_Merchant_TransactionType');
+          var Ds_Merchant_UrlOK = 'https://www.imgnpro.com/transactionok';
+          var Ds_Merchant_UrlKO = 'https://www.imgnpro.com/transactiondeny';
+          var Ds_Merchant_MerchantURL = 'https://www.imgnpro.com';
+          var Ds_Merchant_MerchantName = 'IMAGEN PRO';
+          var Ds_Merchant_Terminal = 1;
+          var Ds_Merchant_ProductDescription = order[0].imagecount + ' IMÁGEN(ES)';
+          console.log('A pagar:' + Ds_Merchant_Amount);
+          console.log('Pedido:' + Ds_Merchant_Order);
+          console.log('Codigo comercio:' + Ds_Merchant_MerchantCode);
+          console.log('Moneda:' + Ds_Merchant_Currency);
+          console.log('Tipo transacción:' + Ds_Merchant_TransactionType);
+
+
+
+
+          paymentsign = sha1(Ds_Merchant_Amount + Ds_Merchant_Order + Ds_Merchant_MerchantCode + Ds_Merchant_Currency + Ds_Merchant_TransactionType + CSSB);
+          console.log(paymentsign);
+
+             //SHA-1()
+                 
+          res.setHeader('Content-Type', 'application/json');
+          res.send(JSON.stringify({ error: 0, Ds_Merchant_MerchantSignature: paymentsign, Ds_Merchant_Amount:Ds_Merchant_Amount, Ds_Merchant_Order:Ds_Merchant_Order, Ds_Merchant_UrlOK:Ds_Merchant_UrlOK, Ds_Merchant_UrlKO:Ds_Merchant_UrlKO, Ds_Merchant_MerchantURL:Ds_Merchant_MerchantURL, Ds_Merchant_MerchantCode:Ds_Merchant_MerchantCode, Ds_Merchant_Currency:Ds_Merchant_Currency, Ds_Merchant_TransactionType:Ds_Merchant_TransactionType, Ds_Merchant_MerchantName:Ds_Merchant_MerchantName, Ds_Merchant_Terminal:Ds_Merchant_Terminal, Ds_Merchant_ProductDescription:Ds_Merchant_ProductDescription})); 
+        }
+    });        
+  });
   /* Handle Registration POST */
   // router.post('/signuplocal', passport.authenticate('signup', {
   //   successRedirect: '/reslocal',
@@ -1530,9 +1679,24 @@ router.get('/sign-s3', (req, res) => {
     ContentType: fileType,
     ACL: 'public-read'
   };
-  console.log(fileName);
-  console.log(fileType);
-   console.log(s3Params);
+  // console.log('File:' + fileName);
+  // console.log('fileType:' + fileType);
+  // console.log(s3Params);
+
+//   var params2 = {Bucket: S3_BUCKET_NAME, Key: fileName, Expires: 100000};
+
+
+// s3.getSignedUrl('getObject', params2, function (err, url) {
+//   console.log("The URL is", url);
+// });
+
+//  var params3 = {Bucket: S3_BUCKET_NAME_THUMB, Key: fileName};
+
+
+// s3.getSignedUrl('getObject', params3, function (err, url) {
+//   console.log("The URL is", url);
+// });
+
   s3.getSignedUrl('putObject', s3Params, (err, data) => {
     if(err){
       console.log("error");
@@ -1542,9 +1706,153 @@ router.get('/sign-s3', (req, res) => {
       signedRequest: data,
       url: `https://${S3_BUCKET_NAME}.s3.amazonaws.com/${fileName}`
     };
+    console.log(returnData);
     res.write(JSON.stringify(returnData));
     res.end();
   });
+});
+
+
+router.get('/sign-s3get', (req, res) => {
+        const s3 = new aws.S3();
+        const fileName = req.query['userid'] +'/' + req.query['filename'];
+        console.log('File:' + fileName);
+        const s3Params = {Bucket: S3_BUCKET_NAME, Key: fileName, Expires: 100000};
+        const s3Paramsthumb = {Bucket: S3_BUCKET_NAME_THUMB, Key: fileName, Expires: 100000};
+
+      var urlthumb = s3.getSignedUrl('getObject', s3Paramsthumb);
+
+      s3.getSignedUrl('getObject', s3Params, function (err, data) {
+        //console.log("The URL is", url);
+          if(err){
+            console.log("error");
+            return res.end();
+          }
+          const returnData = {
+            signedRequest: data,
+            signedthumbRequest: urlthumb
+            //url: `https://${S3_BUCKET_NAME}.s3.amazonaws.com/${fileName}`
+          };
+          console.log(returnData);
+          res.write(JSON.stringify(returnData));
+          res.end();
+
+      });
+});
+
+// se pide un key para borrar un archivo terminado
+router.get('/delete-s3done', (req, res) => {
+  const s3 = new aws.S3();
+  const fileName = req.query['userid']  +'/' + req.query['filename']; 
+  var params = {
+    Bucket: S3_BUCKET_NAME_DONE, /* required */
+    Key: fileName /* required */
+    //MFA: 'STRING_VALUE',
+    //RequestPayer: 'requester',
+    //VersionId: 'STRING_VALUE'
+  };
+
+
+  s3.deleteObject(params, function(err, data) {
+    if (err) {
+      console.log(err, err.stack); 
+      var returnData = {
+        error: 1,
+        message: `Error al borrar`
+      };
+      res.write(JSON.stringify(returnData));
+      res.end();
+    
+    }// an error occurred
+    else{     
+      console.log(data);           // successful response
+      var returnData = {
+          error: 0,
+          message: `se borró`
+        };
+        res.write(JSON.stringify(returnData));
+        res.end();
+        }
+      });
+
+
+
+
+});
+
+// Para solicitar una llave para que el diseñador suba un archivo terminado
+
+router.get('/sign-s3done', (req, res) => {
+  const s3 = new aws.S3();
+  // el nombre del folder llevar el id del usuario
+  var folder = req.query['userid'] +'/' ;
+  // crea la carpeta para guardar las imágenes
+  var params = { Bucket: S3_BUCKET_NAME_DONE, Key: folder, ACL: 'public-read', Body:'body does not matter' };
+  
+
+  OrderPacks.findOne({'_id': req.query['orderpackid']}, function(err,OrderPack){
+    console.log('Ordepack');
+    console.log(OrderPack);
+    var orderpackimgs = OrderPack.images;
+    var b_findimg = false;
+    console.log(orderpackimgs[0].imagename);
+     
+    for(var i=0;i < OrderPack.images.length; i++ ){
+
+
+     console.log(OrderPack.images[i].imagename);
+       
+      if(OrderPack.images[i].imagename == req.query['filename'] ){
+        console.log('I found it');
+        b_findimg = true;
+        break;
+      }
+       
+    }
+    if (b_findimg == true){
+      s3.upload(params, function (err, data) {
+      if (err) {
+          console.log("Error al crear la carpeta de trabajos terminados: ", err);
+          } else {
+          //console.log("Successfully created a folder on S3");
+
+          }
+      });
+
+      // al fileName se le agrega el folder para que la firma lo reconozca
+      const fileName = req.query['userid'] + '/' + req.query['filename'];
+      const fileType = req.query['filetype'];
+      const s3Params = {
+        Bucket: S3_BUCKET_NAME_DONE,
+        Key: fileName,
+        Expires: 10000,
+        ContentType: fileType,
+        ACL: 'public-read'
+      };
+      s3.getSignedUrl('putObject', s3Params, (err, data) => {
+        if(err){
+          console.log("error");
+          res.write(JSON.stringify({err:2,message:'No se pudo obtener una firma'}));
+          return res.end();
+        }
+        const returnData = {
+          signedRequest: data,
+          url: `https://${S3_BUCKET_NAME_DONE}.s3.amazonaws.com/${fileName}`
+        };
+        console.log(returnData);
+        res.write(JSON.stringify(returnData));
+        res.end();
+      });
+
+    }else{
+      res.write(JSON.stringify({err:1, message:'Imagen no válida'}));
+      return res.end();
+    }
+
+  });
+
+
+
 });
 
 

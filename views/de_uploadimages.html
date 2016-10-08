@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8">
+        <title>IMGNpro, hagamos que tu producto destaque</title>
+        <link rel="stylesheet" href="../stylesheets/imgncss_session.css">
+        <link rel="stylesheet" href="../stylesheets/dropzone.css">
+        <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico"/>
+        <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+        <script type="text/javascript" src="../js/dropzone.js"></script>
+        <script src="../js/general.js"></script>
+        <script type="text/javascript">
+            Dropzone.autoDiscover = false;
+            var acceptedFileType = ".jpg, .jpeg, .png, .tif, .tiff, .psd";
+            var imageCount = 0;
+            var imageUploadInfos =[];
+            $(document).ready(function(){
+                //caltotalpay();
+                $("div#myId").dropzone({
+                    url:"#",
+                    dictDefaultMessage: "<b>Suelta tus archivos aquí</b><br> <p class='texto_plano'> (o haz click)<p>",
+                    dictRemoveFile: "Borrar imagen",
+                    dictMaxFilesExceeded: "Ya no puedes cargar más imágenes, se ha alcanzado el límite de este paquete.",
+                    method: "PUT",
+                    uploadMultiple: false,
+                    paramName: "file",
+                    maxFiles: <%= imagecount %>,
+                    thumbnailWidth: 100,
+                    thumbnailHeight: 100,
+                    parallelUploads: 20,
+                    autoProcessQueue: true,
+                    addRemoveLinks: true,
+                    clickable: true, //".fileinput-button" // Define the element that should be used as click trigger to select files.
+                    acceptedFiles: acceptedFileType,
+                    
+                    accept: function(file, cb) {
+                        var params = {
+                            filename: file.name,
+                            filetype: file.type,
+                            userid: '<%= userid %>',
+                            orderpackid: '<%= orderpackid %>'
+                        };
+                        if (this.files.length) {
+                            var i, len, pre;
+
+                            
+                            for (i = 0, len = imageUploadInfos.length; i < len; i++) {
+                                if (imageUploadInfos[i].imagename == file.name) {
+                                    alert("El archivo: " + file.name + " ya está agregado al paquete.");
+                                    //this.files.splice(i,1);
+                                    //cb();
+                                    return (pre = file.previewElement) != null ? pre.parentNode.removeChild(file.previewElement) : void 0;
+                                }
+                            }
+
+                        }
+
+                        
+
+                        //path to S3 signature
+                        $.getJSON('/sign-s3done', params).done(function(data) {
+                            //console.log(data);
+
+                            if(data.err == 1){
+                                return cb('Esta imagen no pertenece a este paquete:' + data.message);
+                            }
+                            if (!data.signedRequest) {
+                                return cb('No se pudo recibir una URL para cargar la imagen');
+                            }
+
+                            
+
+                            file.signedRequest = data.signedRequest;
+                            file.finalURL = data.downloadURL;
+
+                            cb();
+                        }).fail(function() {
+                            alert("Falló al cargar la imagen");
+                            return cb('No se pudo conseguir una url válida');
+                        });
+                    },
+                    sending: function(file, xhr) {
+
+                        console.log('sending')
+                        var _send = xhr.send;
+                        xhr.setRequestHeader('x-amz-acl', 'public-read');
+                        xhr.send = function() {
+                            _send.call(xhr, file);
+                        }
+
+                    },
+                    processing:function(file){
+
+                        this.options.url = file.signedRequest;
+
+                    },
+                    complete:function(file){
+                        //if (file.accepted && file.status == 'error' && file.retryTime > 5) {
+                        if (file.accepted && file.status == 'error') {
+                        
+                            file.accepted = false;
+                            
+                            alert("No se pudo cargar el archivo, favor de borrarlo de la lista y volver a intentar");
+                            
+                        } else {
+                            // corregir esto para que solo agregue al array archivos completos
+                            
+                            if(file.accepted===true){    
+                                 imageCount++;
+                                //document.forms[0].imagelist.value = imageUploadInfos;
+                                $("div#imageCount").html(imageCount);
+                                //caltotalpay();
+                                imageUploadInfos.push({
+                                    imagename: file.name,
+                                    width: file.width,
+                                    height: file.height,
+                                    length: file.size
+                                });
+                             }
+                        }
+                    },
+                    removedfile: function(file) {
+                        if(file.status !== 'error'){
+                            //alert(file.fail);
+                            imageCount--;
+                            deleteitemfile(file.name);
+                            $("div#imageCount").html(imageCount);
+                            //caltotalpay();
+                        }
+                       
+                        if (file.previewElement != null){
+                            var _ref = file.previewElement;
+                            var params = {
+                                filename: file.name,
+                                userid: '<%= userid %>',
+                                orderpackid: '<%= orderpackid %>'
+                             };
+                            if ( file.upload.progress === 100 ) { // se evalua si se completó la carga
+                                $.getJSON('/delete-s3done', params).done(function(data) {
+                                    if (data.error ===1) {
+                                        //return cb('Falló al borrar el archivo');
+                                        alert('No fue posible borrar el archivo del servidor');
+                                    }
+                                }).fail(function() {
+                                    alert("No fue posible borrar el archivo");
+                                });
+                            }  
+
+                           //console.log(this.files);
+                            return(_ref.parentNode.removeChild(file.previewElement));
+                        }
+                        else{
+                            return 0;
+                        }
+                    }
+
+                });
+
+                
+                $('#bconfirmpack').click(function (ev) {
+                    var packImgCount = $("div#packImgCount").html();
+                    var imageCount = $("div#imageCount").html();
+                    packImgCount = parseInt(packImgCount);
+                    imageCount = parseInt(imageCount);
+
+                   if (imageCount == packImgCount){
+                        alert("Paquete confirmado");
+                   } 
+                   else{
+                        alert("Favor de cargar imágenes, faltan " + ( packImgCount - imageCount) + " por cargar");
+                   }
+               });
+
+                    
+                //     ev.preventDefault();
+                // });  
+            function deleteitemfile(filename){
+                for (i = 0, len = imageUploadInfos.length; i <= len - 1; i++) {
+                    if (imageUploadInfos[i].imagename == filename) {
+                        imageUploadInfos.splice(i,1);
+                        break;
+                    }
+                }
+            }
+
+            // function caltotalpay(){
+                   
+            //         var ntotalprice = <%= totalprice %> * 100; 
+            //         var ntotalimages = $("div#imageCount").html();
+            //        // ntotalprice = ntotalprice * 100;
+                    
+            //         var ntotalpay = ntotalprice * ntotalimages;
+
+            //         ntotalpay = ntotalpay / 100;
+            //         ntotalpayMXN = ntotalpay * <%= config.prices.dollar %> 
+            //         ntotalpay = ntotalpay.toFixed(2); // redondea a dos decimales
+            //         ntotalpayMXN = ntotalpayMXN.toFixed(2);
+            //         $("#ntotalpay").html(setDecimals(ntotalpay,2));
+            //         $("#ntotalpayMXN").html(setDecimals(ntotalpayMXN,2));
+
+            //     }
+            });
+        </script>
+
+    </head>
+    <body>
+        <header class="bienvenida">
+        </header>
+    <section id="contenedor">
+        <p class="encabezado">Subir Imágenes</p>
+        <!-- <a class="ruta">Escoge una imagen</a>
+        <a class="slash">/</a>
+        <a class="ruta">Especificación</a>
+        <a class="slash">/</a>
+        <a class="ruta">Tamaño</a>
+        <a class="slash">/</a>
+        <a class="ruta">Alineación</a>
+        <a class="slash">/</a>
+        <a class="ruta">Margen</a>
+        <a class="slash">/</a>
+        <a class="ruta">Extras</a>
+        <a class="slash">/</a>
+        <a class="ruta_on">Subir imágenes</a> -->
+        
+        <div class="recontenedordrop">
+        
+            <div class="dropArea">
+                <div id="myId" class="dropzone"> </div>
+            </div>
+            <hr>
+            <div class="col3">
+                <div class="col5">
+                    <div class="droptable1">Nombre de Especificación</div>
+                    <div class="droptable2"><%= namespec %></div>
+                </div>
+                <div class="col5">
+                    <div class="droptable1">Pedido No.</div>
+                    <div  class="droptable2"><%= numorder %></div>
+                </div>
+                <div class="col5">
+                    <div class="droptable1">Paquete No.</div>
+                    <div  class="droptable2"><%= packname %></div>
+                </div>
+                <div class="col5">
+                    <div class="droptable1">Imágenes subidas</div>
+                    <div id="imageCount" class="droptable2">0</div>
+                </div>
+                <div class="col5">
+                    <div class="droptable1">Imágenes del paquete</div>
+                    <div id="packImgCount" class="droptable2"><%= imagecount %></div>
+                </div>
+                <div class="col5">
+                    <!-- <div class="droptable1">Precio por Imagen</div>
+                    <div class="droptable2">$ <%= totalprice %></div> -->
+                    <!-- <input id="ntotalprice" type="hidden" value= <%= totalprice %>> -->
+                </div>
+                <!-- <div class="col5">
+                    <div class="droptable1">Costo Total</div>
+                    <p class="droptable2">USD<span class="droptable3">$ <span id="ntotalpay" class="droptable3">9.99 </span></span></p>
+                    <p class="droptable4">MXN<span class="droptable5">$ <span id="ntotalpayMXN" class="droptable5">9.99 </span></span></p>
+                </div> -->
+            </div>
+        </div>
+        <hr>
+        <div class="button2">
+            <a id="bconfirmpack">Confirmar Paquete</a>
+        </div>
+        <!-- <form id = "orderForm" class="" action="/neworder" method="post">
+            <input type="hidden" name="imagelist" placeholder="" value=""><br>
+        </form> -->
+        
+    </section>
+    </body>
+</html>

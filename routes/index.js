@@ -664,7 +664,7 @@ console.log('ID:' + req.body.specid);
                   findaorder(OrderPack[0].numorder,function(error,order){
                      console.log(order);
 
-                      findanyspec(order[0].specid,function(error,spec){
+                      findanyorderspec(order[0].specid,function(error,spec){
                                 //console.log(spec);
                              res.render('de_uploadimages', {message: req.flash('message'), numorder: OrderPack[0].numorder, user: req.user, packname:OrderPack[0].name ,userid: OrderPack[0].userid, imagecount:OrderPack[0].imagecount, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id , config:config, order:order[0], orderpackid:OrderPack[0]._id});
                        
@@ -2014,28 +2014,28 @@ function findaspec(specid, cb){
   }).select('name totalprice totalpriceMXN date maxfiles typespec').limit(1);
 }
 
-function findanyspec(specid, cb){
-  console.log(specid);
-  Spec.find({'_id':specid},function(err, specrecord) {
-    // In case of any error return
-     if (err){
-       console.log('Error al consultar la especificación');
+// function findanyspec(specid, cb){
+//   console.log(specid);
+//   Spec.find({'_id':specid},function(err, specrecord) {
+//     // In case of any error return
+//      if (err){
+//        console.log('Error al consultar la especificación');
 
-      cb(1);
-     }
-   // already exists
-    if (specrecord) {
-      console.log('se encontró  la especificación');
-      console.log(specrecord);
-      cb( 0, specrecord);
-    } 
-    else {
-      console.log('No se encontró la especificación');
-        cb(2);
-    }
+//       cb(1);
+//      }
+//    // already exists
+//     if (specrecord) {
+//       console.log('se encontró  la especificación');
+//       console.log(specrecord);
+//       cb( 0, specrecord);
+//     } 
+//     else {
+//       console.log('No se encontró la especificación');
+//         cb(2);
+//     }
    
-  }).select('name totalprice totalpriceMXN date maxfiles typespec').limit(1);
-}
+//   }).select('name totalprice totalpriceMXN date maxfiles typespec').limit(1);
+// }
 
 function findanyorderspec(specid, cb){
   console.log(specid);
@@ -2047,7 +2047,7 @@ function findanyorderspec(specid, cb){
       cb(1);
      }
    // already exists
-    if (specrecord) {
+    if (specrecord.length > 0) {
       console.log('se encontró  la especificación');
       console.log(specrecord);
       cb( 0, specrecord);

@@ -1869,18 +1869,12 @@ router.get('/sign-s3done', (req, res) => {
 
   if(sFext){
     sFNameComp = sFname.substring(0, sFname.length - sFext[1].length );
-    console.log(sFNameComp);
+    console.log('archivo subido por el diseñador:' + sFNameComp);
   }else{
     console.log("error");
     res.write(JSON.stringify({err:2,message:'El archivo no tiene extensión'}));
     return res.end();
-
  }
-
-
-
-
-
   OrderPacks.findOne({'_id': req.query['orderpackid']}, function(err,OrderPack){
     console.log('Ordepack');
     console.log(OrderPack);
@@ -1888,12 +1882,27 @@ router.get('/sign-s3done', (req, res) => {
     var b_findimg = false;
     console.log(orderpackimgs[0].imagename);
      
+    var sFnameU = "";
+    var sFNameCompU = ""; 
     for(var i=0;i < OrderPack.images.length; i++ ){
 
 
      console.log(OrderPack.images[i].imagename);
+     
+     sFnameU = OrderPack.images[i].imagename;
+     var sFextU = sFnameU.match(/\.([^.]*)$/);
+     console.log(sFextU);
+
+      if(sFextU){
+        sFNameCompU = sFnameU.substring(0, sFnameU.length - sFextU[1].length );
        
-      if(OrderPack.images[i].imagename == req.query['filename'] ){
+      }else{
+        sFNameCompU = sFnameU;
+     }
+      console.log('archivo subido usuario:' + sFNameCompU);
+
+      //if(OrderPack.images[i].imagename == req.query['filename'] ){
+      if(sFNameCompU == sFNameComp ){
         console.log('I found it');
         b_findimg = true;
         break;

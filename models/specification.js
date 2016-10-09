@@ -33,10 +33,10 @@ var SpecSchema = new mongoose.Schema({
 	basicretouch: {type: String},
   widthsize:{type: String},
   heightsize:{type: String},
-  spectype:{type: String},
+  spectype:{type: String},  // La forma en que se hizo la espec (stepbystep o manual)
   disabled: {type:Boolean, default: false},
-  typespec:{type:String, default:'normal'},
-  maxfiles:{type:Number, default: 0}
+  typespec:{type:String, default:'normal'}, // Si es gratis o no (free o normal)
+  maxfiles:{type:Number, default: 0}  // 0 = ilimitado, número máximo de archivos, ejemplo una espec gratis permite solamente 3 archivos.
 });
 // se genera un objeto basado en el esquema contador
 module.exports = mongoose.model('Specification', SpecSchema);

@@ -352,7 +352,7 @@ router.get('/listspecs/:limit', function(req, res) {
               //res.render('historial', {message: req.flash('message'), user: req.user, countorders:count });
            findaorder(req.params.numorder,function(error,order){ 
               console.log(order); 
-              findanyspec(order[0].specid, function(error, spec){
+              findanyorderspec(order[0].specid, function(error, spec){
                 //console.log(spec);
                 console.log(req.user);
                 doConfirmOrder(req.params.numorder, req, spec[0].typespec ,function(tipomsg,message,href){
@@ -381,57 +381,10 @@ router.get('/listspecs/:limit', function(req, res) {
 //findaspecfull(specid, disabled,
 console.log('ID:' + req.body.specid);
     findaspecfull(req.body.specid,true,function(error,message,spec){
-     
-              console.log(spec);
-              //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id , countorders:ordersinproc});
-    // console.log(error);
-    // console.log(spec[0].maxfiles);
-
-    var newOrderSpec = new OrderSpec();
-
-    newOrderSpec.name = spec[0].name;
-      newOrderSpec.format = spec[0].format;
-      newOrderSpec.format_ext = spec[0].format;
-      newOrderSpec.format_ext =spec[0].format_ext;
-      newOrderSpec.colormode =spec[0].colormode;
-      newOrderSpec.background =spec[0].background;
-      newOrderSpec.backgrndcolor =spec[0].backgrndcolor;
-      newOrderSpec.dpi =spec[0].DPI;
-      newOrderSpec.dpinone =spec[0].dpinone;
-      newOrderSpec.userid =spec[0].userid;  
-      newOrderSpec.alignnone =spec[0].alignnone;
-      newOrderSpec.alignhor =spec[0].alignhor;
-      newOrderSpec.alignver =spec[0].alignver;
-      newOrderSpec.sizenone =spec[0].sizenone;
-      newOrderSpec.imagesize =spec[0].imagesize;
-      newOrderSpec.marginnone =spec[0].marginnone;
-      newOrderSpec.marginmeasure =spec[0].marginmeasure;
-      newOrderSpec.measuresize =spec[0].measuresize;
-      newOrderSpec.margintop =spec[0].margintop;
-      newOrderSpec.marginbottom =spec[0].marginbottom;
-      newOrderSpec.marginright =spec[0].marginright;
-      newOrderSpec.marginleft =spec[0].marginleft;
-      newOrderSpec.naturalshadow =spec[0].naturalshadow;
-      newOrderSpec.dropshadow =spec[0].dropshadow;
-      newOrderSpec.correctcolor =spec[0].correctcolor;
-      newOrderSpec.clippingpath =spec[0].clippingpath;
-      newOrderSpec.basicretouch =spec[0].basicretouch;
-      newOrderSpec.widthsize =spec[0].widthsize;
-      newOrderSpec.heightsize =spec[0].heightsize;
-      newOrderSpec.spectype =spec[0].spectype;
-      newOrderSpec.date =spec[0].date;
-      newOrderSpec.totalprice =spec[0].total;
-      newOrderSpec.totalpriceMXN =spec[0].total;
-    newOrderSpec.save();
-
-    console.log(newOrderSpec._id);
-
     // console.log(imageUploadInfos.length);
     if (error == 1){
       res.setHeader('Content-Type', 'application/json');
       res.send(JSON.stringify({ error: 1, message: 'No se pudo guardar el pedido'})); 
-
-
     }
     else
      {
@@ -443,6 +396,47 @@ console.log('ID:' + req.body.specid);
 
         }
         else{
+
+            console.log(spec);
+            var newOrderSpec = new OrderSpec();
+            newOrderSpec.name = spec[0].name;
+            newOrderSpec.format = spec[0].format;
+            newOrderSpec.format_ext =spec[0].format_ext;
+            newOrderSpec.colormode =spec[0].colormode;
+            newOrderSpec.background =spec[0].background;
+            newOrderSpec.backgrndcolor =spec[0].backgrndcolor;
+            newOrderSpec.dpi =spec[0].DPI;
+            newOrderSpec.dpinone =spec[0].dpinone;
+            newOrderSpec.userid =spec[0].userid;  
+            newOrderSpec.alignnone =spec[0].alignnone;
+            newOrderSpec.alignhor =spec[0].alignhor;
+            newOrderSpec.alignver =spec[0].alignver;
+            newOrderSpec.sizenone =spec[0].sizenone;
+            newOrderSpec.imagesize =spec[0].imagesize;
+            newOrderSpec.marginnone =spec[0].marginnone;
+            newOrderSpec.marginmeasure =spec[0].marginmeasure;
+            newOrderSpec.measuresize =spec[0].measuresize;
+            newOrderSpec.margintop =spec[0].margintop;
+            newOrderSpec.marginbottom =spec[0].marginbottom;
+            newOrderSpec.marginright =spec[0].marginright;
+            newOrderSpec.marginleft =spec[0].marginleft;
+            newOrderSpec.naturalshadow =spec[0].naturalshadow;
+            newOrderSpec.dropshadow =spec[0].dropshadow;
+            newOrderSpec.correctcolor =spec[0].correctcolor;
+            newOrderSpec.clippingpath =spec[0].clippingpath;
+            newOrderSpec.basicretouch =spec[0].basicretouch;
+            newOrderSpec.widthsize =spec[0].widthsize;
+            newOrderSpec.heightsize =spec[0].heightsize;
+            newOrderSpec.spectype =spec[0].spectype;
+            newOrderSpec.typespec =spec[0].typespec;
+            newOrderSpec.date =spec[0].date;
+            newOrderSpec.totalprice =spec[0].totalprice;
+            newOrderSpec.totalpriceMXN =spec[0].totalpriceMXN;
+            newOrderSpec.numorder =spec[0].numorder;
+            newOrderSpec.disabled =spec[0].disabled;
+            newOrderSpec.maxfiles =spec[0].maxfiles;
+            newOrderSpec.save(); // Se clona la spec
+            console.log(newOrderSpec._id);
 
           // todo bien
         var numorderstr="";
@@ -492,14 +486,14 @@ console.log('ID:' + req.body.specid);
 
           }
           else{
-
-              console.log(' Se guardó el pedido'); 
-              console.log(newOrder.numorder);
-              // res.render('como2', {message: req.flash('message')});
-              numorderstr = String(newOrder.numorder);
-              console.log(numorderstr);
-              // inhabilitar la especificacion gratuita
-              disableSpec(req.body.specid,function(err,message_spec){});
+            console.log(' Se guardó el pedido'); 
+            console.log(newOrder.numorder);
+            
+            // res.render('como2', {message: req.flash('message')});
+            numorderstr = String(newOrder.numorder);
+            console.log(numorderstr);
+            // inhabilitar la especificacion gratuita para que el cliente no la pueda volver a usar
+            disableSpec(req.body.specid,function(err,message_spec){});
 
               // crear paquetes de trabajo
              //console.log('cantidad imagenes ' + newOrder.images.length());

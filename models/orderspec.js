@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
- 
 var SpecSchema = new mongoose.Schema({
   name: {type: String},
   format: { type: String},

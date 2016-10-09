@@ -38,14 +38,5 @@ var SpecSchema = new mongoose.Schema({
   typespec:{type:String, default:'normal'},
   maxfiles:{type:Number, default: 0}
 });
-// se genera un objeto basado en el esquema contador
-module.exports = mongoose.model('Specification', SpecSchema);
+module.exports = mongoose.model('Orderspec', SpecSchema);
 
-// var mongoose = require('mongoose');
-// var userSchema = new mongoose.Schema({
-//     userlongname: String,
-//     password: String,
-//     email: String,
-//     accept_terms: Boolean
-// });
-// mongoose.model('User', userSchema);

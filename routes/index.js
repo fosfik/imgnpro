@@ -11,6 +11,7 @@ var path = require('path');
 var Orders = require('../models/order.js');
 var Order_transaction = require('../models/order_transaction.js');
 var OrderPacks = require('../models/orderpacks.js');
+var OrderSpec = require('../models/orderspec.js');
 var User = require('../models/user.js');
 var User_details = require('../models/user_details.js');
 var Spec = require('../models/specification.js');
@@ -377,13 +378,55 @@ router.get('/listspecs/:limit', function(req, res) {
     console.log(req.params);
     var imageUploadInfos = JSON.parse(req.body['imageUploadInfos']);
 
-    findaspec(req.body.specid,function(error,spec){
-              //console.log(spec);
+//findaspecfull(specid, disabled,
+console.log('ID:' + req.body.specid);
+    findaspecfull(req.body.specid,true,function(error,message,spec){
+     
+              console.log(spec);
               //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id , countorders:ordersinproc});
-    console.log(error);
-    console.log(spec[0].maxfiles);
+    // console.log(error);
+    // console.log(spec[0].maxfiles);
 
-    console.log(imageUploadInfos.length);
+    var newOrderSpec = new OrderSpec();
+
+    newOrderSpec.name = spec[0].name;
+      newOrderSpec.format = spec[0].format;
+      newOrderSpec.format_ext = spec[0].format;
+      newOrderSpec.format_ext =spec[0].format_ext;
+      newOrderSpec.colormode =spec[0].colormode;
+      newOrderSpec.background =spec[0].background;
+      newOrderSpec.backgrndcolor =spec[0].backgrndcolor;
+      newOrderSpec.dpi =spec[0].DPI;
+      newOrderSpec.dpinone =spec[0].dpinone;
+      newOrderSpec.userid =spec[0].userid;  
+      newOrderSpec.alignnone =spec[0].alignnone;
+      newOrderSpec.alignhor =spec[0].alignhor;
+      newOrderSpec.alignver =spec[0].alignver;
+      newOrderSpec.sizenone =spec[0].sizenone;
+      newOrderSpec.imagesize =spec[0].imagesize;
+      newOrderSpec.marginnone =spec[0].marginnone;
+      newOrderSpec.marginmeasure =spec[0].marginmeasure;
+      newOrderSpec.measuresize =spec[0].measuresize;
+      newOrderSpec.margintop =spec[0].margintop;
+      newOrderSpec.marginbottom =spec[0].marginbottom;
+      newOrderSpec.marginright =spec[0].marginright;
+      newOrderSpec.marginleft =spec[0].marginleft;
+      newOrderSpec.naturalshadow =spec[0].naturalshadow;
+      newOrderSpec.dropshadow =spec[0].dropshadow;
+      newOrderSpec.correctcolor =spec[0].correctcolor;
+      newOrderSpec.clippingpath =spec[0].clippingpath;
+      newOrderSpec.basicretouch =spec[0].basicretouch;
+      newOrderSpec.widthsize =spec[0].widthsize;
+      newOrderSpec.heightsize =spec[0].heightsize;
+      newOrderSpec.spectype =spec[0].spectype;
+      newOrderSpec.date =spec[0].date;
+      newOrderSpec.totalprice =spec[0].total;
+      newOrderSpec.totalpriceMXN =spec[0].total;
+    newOrderSpec.save();
+
+    console.log(newOrderSpec._id);
+
+    // console.log(imageUploadInfos.length);
     if (error == 1){
       res.setHeader('Content-Type', 'application/json');
       res.send(JSON.stringify({ error: 1, message: 'No se pudo guardar el pedido'})); 
@@ -407,7 +450,9 @@ router.get('/listspecs/:limit', function(req, res) {
         //newOrder.name = 'orderfotos';
         newOrder.userid = req.user._id;
         newOrder.imagecount = req.body['imagecount'];
-        newOrder.specid = req.body.specid;
+        newOrder.specid = newOrderSpec._id
+        
+        // modificar esto 
         newOrder.totalpay = req.body.totalpay;
         newOrder.totalpayMXN = req.body.totalpay * parseFloat(config.prices.dollar);
 
@@ -625,7 +670,7 @@ router.get('/listspecs/:limit', function(req, res) {
                   findaorder(OrderPack[0].numorder,function(error,order){
                      console.log(order);
 
-                      findaspec(order[0].specid,function(error,spec){
+                      findanyspec(order[0].specid,function(error,spec){
                                 //console.log(spec);
                              res.render('de_uploadimages', {message: req.flash('message'), numorder: OrderPack[0].numorder, user: req.user, packname:OrderPack[0].name ,userid: OrderPack[0].userid, imagecount:OrderPack[0].imagecount, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id , config:config, order:order[0], orderpackid:OrderPack[0]._id});
                        
@@ -840,10 +885,13 @@ router.get('/listspecs/:limit', function(req, res) {
   /* Maneja la pagina que tiene el dropzone para subir imágenes 
    Cuando es llamada desde la creación de una especificación
 */
-  router.get('/getSpec/:specid', 
+  router.get('/getSpec/:specid/:disabled', 
      require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){
-            findaspecfull(req.params.specid,function(error,message,spec){
+          //console.log(req.params.disabled)
+          var disabled = (req.params.disabled === 'true');
+          //console.log(disabled)
+            findaspecfull(req.params.specid,disabled,function(error,message,spec){
               //console.log(spec);
               //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id , countorders:ordersinproc});
               
@@ -859,6 +907,27 @@ router.get('/listspecs/:limit', function(req, res) {
             });
   });
 
+  router.get('/getOrdeSpec/:specid', 
+     require('connect-ensure-login').ensureLoggedIn('/login'),
+         function(req, res){
+          //console.log(req.params.disabled)
+          var disabled = (req.params.disabled === 'true');
+          //console.log(disabled)
+            findanyorderspec(req.params.specid,function(error,spec){
+              //console.log(spec);
+              //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id , countorders:ordersinproc});
+              
+              if (error===0){
+                res.setHeader('Content-Type', 'application/json');
+                res.send(JSON.stringify({ error: error, message: 'No se pudo encontrar la especificación', spec: spec[0]})); 
+              }
+              else{
+                res.setHeader('Content-Type', 'application/json');
+                res.send(JSON.stringify({ error: error, message: 'Se encontró la especificación del pedido'})); 
+              }
+              
+            });
+  });
   router.get('/getUser_details/:userid', 
      require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){
@@ -1121,6 +1190,9 @@ router.get('/listspecs/:limit', function(req, res) {
       // recibir el array de datos
       newSpec.name = specInfos[0].specname;
       newSpec.format = specInfos[0].format;
+      newSpec.format_ext = specInfos[0].format;
+      if(specInfos[0].format==='jpg_web'){newSpec.format_ext = 'jpg'}
+      if(specInfos[0].format==='tiff'){newSpec.format_ext = 'tif'}
       newSpec.colormode = specInfos[0].colormode;
       newSpec.background = specInfos[0].background;
       newSpec.backgrndcolor = specInfos[0].backgrndcolor;
@@ -1148,6 +1220,7 @@ router.get('/listspecs/:limit', function(req, res) {
       newSpec.heightsize = specInfos[0].heightsize;
       newSpec.spectype = specInfos[0].spectype;
       newSpec.date = specInfos[0].date;
+
       // pasar el req specInfo
       spectotalprice(specInfos[0],function(total,totalMXN){
           console.log(total);
@@ -1288,6 +1361,9 @@ router.post('/updateuserdetails', require('connect-ensure-login').ensureLoggedIn
       //newSpec.specid = req.body.specid;
       newSpec.name = req.body.name;
       newSpec.format = req.body.format;
+      newSpec.format_ext = req.body.format;
+      if(req.body.format==='jpg_web'){newSpec.format_ext = 'jpg'}
+      if(req.body.format==='tiff'){newSpec.format_ext = 'tif'}
       newSpec.colormode = req.body.colormode;
       newSpec.background = req.body.background;
       newSpec.backgrndcolor = req.body.backgrndcolor;
@@ -1348,6 +1424,9 @@ router.post('/updateuserdetails', require('connect-ensure-login').ensureLoggedIn
                 if (doc) {
                   doc.name = req.body.name;
                   doc.format = req.body.format;
+                  doc.format_ext = req.body.format;
+                  if(req.body.format==='jpg_web'){doc.format_ext = 'jpg'}
+                  if(req.body.format==='tiff'){doc.format_ext = 'tif'}
                   doc.colormode = req.body.colormode;
                   doc.background = req.body.background;
                   doc.backgrndcolor = req.body.backgrndcolor;
@@ -1964,22 +2043,48 @@ function findanyspec(specid, cb){
   }).select('name totalprice totalpriceMXN date maxfiles typespec').limit(1);
 }
 
+function findanyorderspec(specid, cb){
+  console.log(specid);
+  OrderSpec.find({'_id':specid},function(err, specrecord) {
+    // In case of any error return
+     if (err){
+       console.log('Error al consultar la especificación');
 
-function findaspecfull(specid, cb){
+      cb(1);
+     }
+   // already exists
+    if (specrecord) {
+      console.log('se encontró  la especificación');
+      console.log(specrecord);
+      cb( 0, specrecord);
+    } 
+    else {
+      console.log('No se encontró la especificación');
+        cb(2);
+    }
+   
+  }).limit(1);
+}
+
+function findaspecfull(specid, disabled, cb){
   if (specid.length === 0){
     cb(1, 'Error al consultar la especificación, longitud 0');
   }
   else{
-      Spec.find({'_id':specid, 'disabled':false},function(err, specrecord) {
+      var params = {'_id':specid, 'disabled': disabled};
+      if(disabled){
+        params = {'_id':specid}
+      }
+      Spec.find(params,function(err, specrecord) {
       // In case of any error return
        if (err){
          console.log('Error al consultar la especificación');
 
-        cb(1, 'Error al consultar la especificación');
+        cb(1, 'Error al consultar la especificación' + err);
        }
        else{
     // already exists
-          if (specrecord) {
+          if (specrecord.length > 0) {
             console.log('Se encontró  la especificación');
             console.log(specrecord);
             cb( 0,'Se encontró  la especificación', specrecord);

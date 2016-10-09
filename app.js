@@ -625,6 +625,7 @@ function createfreespec(userid,cb){
       newSpec.background = 'blanco';
       newSpec.colormode = 'rgb';
       newSpec.format = 'jpg';
+      newSpec.format_ext = 'jpg';
       newSpec.typespec = 'free';
       newSpec.maxfiles = 3;
 

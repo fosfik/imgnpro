@@ -1862,6 +1862,24 @@ router.get('/sign-s3done', (req, res) => {
   // crea la carpeta para guardar las imágenes
   var params = { Bucket: S3_BUCKET_NAME_DONE, Key: folder, ACL: 'public-read', Body:'body does not matter' };
   
+  var sFname = req.query['filename'];
+  var sFext = sFname.match(/\.([^.]*)$/);
+  var sFNameComp = "";
+  console.log(sFext);
+
+  if(sFext){
+    sFNameComp = sFname.substring(0, sFname.length - sFext[1].length );
+    console.log(sFNameComp);
+  }else{
+    console.log("error");
+    res.write(JSON.stringify({err:2,message:'El archivo no tiene extensión'}));
+    return res.end();
+
+ }
+
+
+
+
 
   OrderPacks.findOne({'_id': req.query['orderpackid']}, function(err,OrderPack){
     console.log('Ordepack');

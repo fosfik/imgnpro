@@ -135,7 +135,7 @@ router.get('/listorders/:limit', function(req, res) {
      }
      //console.log("prueba 2");
    // already exists
-    if (orders) {
+    if (orders.length > 0) {
       console.log('se encontraron pedidos');
       res.setHeader('Content-Type', 'application/json');
       res.send(orders); 
@@ -158,7 +158,7 @@ router.get('/listorders', function(req, res) {
      }
      //console.log("prueba 2");
    // already exists
-    if (orders) {
+    if (orders.length > 0) {
       //console.log('se encontraron pedidos');
       res.setHeader('Content-Type', 'application/json');
       res.send(orders); 
@@ -181,7 +181,7 @@ router.get('/packagesforwork', function(req, res) {
      }
      //console.log("prueba 2");
    // already exists
-    if (OrderPacks) {
+    if (OrderPacks.length > 0) {
       //console.log('se encontraron pedidos');
       res.setHeader('Content-Type', 'application/json');
       res.send(OrderPacks); 
@@ -204,7 +204,7 @@ router.get('/listallorders', function(req, res) {
      }
      //console.log("prueba 2");
    // already exists
-    if (orders) {
+    if (orders.length > 0) {
       //console.log('se encontraron pedidos');
       res.setHeader('Content-Type', 'application/json');
       res.send(orders); 
@@ -226,7 +226,7 @@ router.get('/listallorderpacks', function(req, res) {
      }
      //console.log("prueba 2");
    // already exists
-    if (orderpacks) {
+    if (orderpacks.length > 0) {
       //console.log('se encontraron pedidos');
       res.setHeader('Content-Type', 'application/json');
       res.send(orderpacks); 
@@ -247,7 +247,7 @@ router.get('/listorderpack/:orderpackid', function(req, res) {
      }
      //console.log("prueba 2");
    // already exists
-    if (orderpack) {
+    if (orderpack.length > 0) {
       //console.log('se encontraron pedidos');
       res.setHeader('Content-Type', 'application/json');
       res.send(orderpack); 
@@ -272,7 +272,7 @@ router.get('/listspecs', function(req, res) {
      }
      //console.log("prueba 2");
    // already exists
-    if (specs) {
+    if (specs.length > 0) {
       //console.log('se encontraron especificaciones');
       res.setHeader('Content-Type', 'application/json');
       res.send(specs); 
@@ -294,7 +294,7 @@ router.get('/listspecs/:limit', function(req, res) {
      }
      //console.log("prueba 2");
    // already exists
-    if (specs) {
+    if (specs.length > 0) {
       //console.log('se encontraron especificaciones');
       res.setHeader('Content-Type', 'application/json');
       res.send(specs); 
@@ -656,7 +656,7 @@ console.log('ID:' + req.body.specid);
                  }
                  //console.log("prueba 2");
                // already exists
-                if (OrderPack) {
+                if (OrderPack.length > 0) {
                   //console.log(OrderPack);
                   console.log(OrderPack[0].numorder);
                   console.log('Cantidad:' + OrderPack[0].imagecount);
@@ -2028,7 +2028,7 @@ function findaspec(specid, cb){
       cb(1);
      }
    // already exists
-    if (specrecord) {
+    if (specrecord.length > 0) {
       console.log('se encontró  la especificación');
       console.log(specrecord);
       cb( 0, specrecord);
@@ -2133,7 +2133,7 @@ function findauser_details(userid, cb){
        }
        else{
     // already exists
-          if (userrecord) {
+          if (userrecord.length > 0) {
             console.log('Se encontraron los detalles del usuario');
             console.log(userrecord);
             cb( 0,'Se encontraron los detalles del usuario', userrecord);
@@ -2162,7 +2162,7 @@ function findauser(userid, cb){
        }
        else{
     // already exists
-          if (user) {
+          if (user.length > 0) {
             console.log('Se encontró el usuario');
             console.log(user);
             cb( 0,'Se encontró el usuario', user);
@@ -2187,7 +2187,7 @@ function findaorder(orderid, cb){
      }
      //console.log("prueba 2");
    // already exists
-    if (orderrecord) {
+    if (orderrecord.length > 0) {
       console.log('Se encontró  el pedido');
       //console.log(orderrecord);
       //res.setHeader('Content-Type', 'application/json');

@@ -510,6 +510,7 @@ console.log('ID:' + req.body.specid);
                   newOrderPack.status = newOrder.status;  
                   newOrderPack.userid = newOrder.userid;
                   newOrderPack.numorder = newOrder.numorder;
+                  newOrderPack.specid = newOrderSpec._id;
                   newOrderPack.name = 'Package ' + i;
                   newOrderPack.userid = newOrder.userid;
                   newOrderPack.date = Date();
@@ -541,6 +542,7 @@ console.log('ID:' + req.body.specid);
                 newOrderPack.status = newOrder.status;  
                 newOrderPack.userid = newOrder.userid;
                 newOrderPack.numorder = newOrder.numorder;
+                newOrderPack.specid = newOrderSpec._id;
                 newOrderPack.name = 'Package ' + (numpacksfull + 1);
                 newOrderPack.userid = newOrder.userid;
                 newOrderPack.date = Date();
@@ -1876,7 +1878,7 @@ router.get('/sign-s3done', (req, res) => {
     return res.end();
  }
   OrderPacks.findOne({'_id': req.query['orderpackid']}, function(err,OrderPack){
-    console.log('Ordepack');
+    console.log('OrderPack');
     console.log(OrderPack);
     var orderpackimgs = OrderPack.images;
     var b_findimg = false;
@@ -1945,7 +1947,7 @@ router.get('/sign-s3done', (req, res) => {
       });
 
     }else{
-      res.write(JSON.stringify({err:1, message:'Imagen no válida'}));
+      res.write(JSON.stringify({err:1, message:' Imagen no válida'}));
       return res.end();
     }
 

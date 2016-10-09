@@ -37,5 +37,5 @@ var SpecSchema = new mongoose.Schema({
   typespec:{type:String, default:'normal'},
   maxfiles:{type:Number, default: 0}
 });
-module.exports = mongoose.model('Orderspec', SpecSchema);
+module.exports = mongoose.model('Orderspecs', SpecSchema);
 

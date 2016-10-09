@@ -10,6 +10,7 @@ var orderSchema = mongoose.Schema({
     isworking: {type: Boolean, default: false},
     imagecount: {type:Number, default:0},
     designerid: {type: String},
+    specid:{type: String, ref: 'Orderspecs'},
     images: [{  imagename: String, width: Number, height: Number, length: Number, position: Number }]
 });
 

@@ -6,6 +6,7 @@
 
 var app = require('../app');
 //var router = require('../routes/router');
+var User = require('../models/user.js');
 
 var debug = require('debug')('imaginadores:server');
 var http = require('http');
@@ -38,9 +39,11 @@ var io = require('socket.io')(server);
 //   res.sendfile('index.html');
 // });
 
+// IO
+
 io.on('connection', function(socket){
   console.log('a user connected');
-  socket.broadcast.emit('Se conecto un usuario');
+  socket.broadcast.emit('Se conectó un usuario');
   
   // se desconecta el usuario
   socket.on('disconnect', function(){
@@ -49,7 +52,31 @@ io.on('connection', function(socket){
   // llega un mensaje
   socket.on('chat_msg', function(msg){
     console.log('message: ' + msg);
-    io.emit('chat_msg', msg);
+    var jsMsg = JSON.parse(msg);
+    console.log(jsMsg);
+    console.log(jsMsg.userid);
+    User.findOne({_id: jsMsg.userid}, function(err,user){
+        console.log(err);
+        if (err){
+            console.log(err);
+        }else{
+          if (user){
+            io.emit('chat_msg', '{"msg":"' + jsMsg.msg +'","username":"' + user.userlongname +  '"}'  );
+          }else{
+            console.log('Nada');
+          }
+
+        }
+
+    });
+    
+
+    
+  });
+  socket.on('id', function(msg){
+    console.log('message: ' + msg);
+   
+
   });
 
 });

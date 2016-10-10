@@ -13,14 +13,15 @@
             var socket = io();
             $(document).ready(function(){
                 $('form').submit(function(){
-                    socket.emit('chat_msg', $('#m').val());
+                    socket.emit('chat_msg', '{ "msg":"' + $('#m').val() + '","userid":"<%= user._id %>"}');
                     $('#m').val('');
                     return false;
                 });
                 socket.on('chat_msg', function(msg){
                     //$('#messages').append($('<li>').text(msg));
-
-                    $('#conversation').append('<p class=""> <b>' + msg + '</p>');
+                    var jsMsg = JSON.parse(msg);
+                    console.log(jsMsg);
+                    $('#conversation').append('<p class=""> <b>' + jsMsg.username + ': '+  jsMsg.msg + '</p>');
                         var sHeight = $('#conversation')[0].scrollHeight;
                         //Scrolling the element to the sHeight
                         $('#box_conversation').scrollTop(sHeight);
@@ -41,7 +42,7 @@
     <body>
         <header class="bienvenida">
             <ul>
-                <li>Hola <a id="user" class="bold">Princesita22</a><a class="bold">!</a></li>
+                <li>Hola <a id="user" class="bold"><%= user.userlongname %></a><a class="bold">!</a></li>
                 <li>Orden <a id="order" class="bold">0</a></li>
                 <li>Tiempo Restante <a id="tiempo" class="bold">03:18:12</a> </li>
                 <li class="button3"><a href="done">¡YA TERMINÉ!</a></li>
@@ -50,7 +51,7 @@
         <section id="menuver">
             <nav>
                 <ul>
-                    <li class="menulogo"><h1><a href="../htmls/de_designers.html"><img src="../images/logo_white.png" alt="logo"></a></h1></li>
+                    <li class="menulogo"><h1><a href="/de_designers"><img src="../images/logo_white.png" alt="logo"></a></h1></li>
                     <li><a href="../htmls/de_micuenta.html">Mi Cuenta</a></li>
                     <li><a href="../htmls/de_historial.html">Historial</a></li>
                     <li><a href="../htmls/de_contacto.html">Soporte</a></li>

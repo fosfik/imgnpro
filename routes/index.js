@@ -127,6 +127,10 @@ var transporter = nodemailer.createTransport(transporter({
 // console.log(process.env.AWS_SECRET_ACCESS_KEY);
 //console.log(fillzero(23456, '0000000'));
 // TODO agregar seguridad a esta ruta
+
+
+
+
 router.get('/listorders/:limit', function(req, res) {
   Orders.find({'userid':req.user._id},function(err, orders) {
     // In case of any error return
@@ -236,7 +240,7 @@ router.get('/listallorderpacks', function(req, res) {
       console.log('No se encontraron paquetes de pedidos');
     }
    
-  }).select('_id imagecount numorder status date name userid isworking');
+  }).select('_id imagecount numorder status date name userid isworking').sort({date:-1});
 });
 
 router.get('/listorderpack/:orderpackid', function(req, res) {
@@ -750,6 +754,11 @@ console.log('ID:' + req.body.specid);
            res.render('especificaciones2', {message: req.flash('message'), user: req.user, config:config, countorders:ordersinproc, specid:''});
   });
 
+router.get('/de_designers', 
+     require('connect-ensure-login').ensureLoggedIn('/login'),
+         function(req, res){
+           res.render('de_designers', {message: req.flash('message'), user: req.user, config:config});
+  });
 
 
 /* Maneja la confirmación de un usuario */
@@ -1101,7 +1110,7 @@ console.log('ID:' + req.body.specid);
   
   /* Handle Designer Login POST */
  router.post('/de_signin', passport.authenticate('de_login', {
-    successRedirect: '/de_designers.html',
+    successRedirect: '/de_designers',
     failureRedirect: '/de_login',
     failureFlash : true,
     successFlash : true 

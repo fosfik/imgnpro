@@ -90,6 +90,9 @@
                             if(data.err == 1){
                                 return cb('Esta imagen no pertenece a este paquete:' + data.message);
                             }
+                            if(data.err == 2){
+                                return cb(data.message);
+                            }
                             if (!data.signedRequest) {
                                 return cb('No se pudo recibir una URL para cargar la imagen');
                             }

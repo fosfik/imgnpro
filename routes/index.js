@@ -1877,9 +1877,19 @@ router.get('/sign-s3done', (req, res) => {
     res.write(JSON.stringify({err:2,message:'El archivo no tiene extensión'}));
     return res.end();
  }
-  OrderPacks.findOne({'_id': req.query['orderpackid']}, function(err,OrderPack){
+  OrderPacks
+  .findOne({'_id': req.query['orderpackid']})
+  .populate('specid','format_ext')
+  .exec(function(err,OrderPack){
     console.log('OrderPack');
     console.log(OrderPack);
+    console.log("SpecID: " + OrderPack.specid.format_ext);
+    console.log(sFext);
+    if(sFext[1] != OrderPack.specid.format_ext){
+        res.write(JSON.stringify({err:2, message:'La extensión o el tipo del archivo no coincide con la especificación'}));
+        return res.end();
+    }
+
     var orderpackimgs = OrderPack.images;
     var b_findimg = false;
     console.log(orderpackimgs[0].imagename);

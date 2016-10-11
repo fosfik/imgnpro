@@ -7,6 +7,7 @@
 var app = require('../app');
 //var router = require('../routes/router');
 var User = require('../models/user.js');
+var OrderPacks = require('../models/orderpacks.js');
 
 var debug = require('debug')('imaginadores:server');
 var http = require('http');
@@ -79,6 +80,23 @@ io.on('connection', function(socket){
 
   });
 
+  socket.on('get_packages', function(msg){
+    console.log(msg);
+    //var jsMsg = JSON.parse(msg);
+
+    OrderPacks.find({status:'En Proceso', isworking:false}, function(err, orderpacks){
+      if (err){
+            console.log(err);
+        }else{
+          if (orderpacks){
+
+            io.emit('packs_list', '{"packs":'+ JSON.stringify(orderpacks) + '}'  );
+          }else{
+            console.log('Nada');
+          }
+        }
+    }).select('_id imagecount').limit(6);
+  });
 });
 
 // http.listen(3000, function(){

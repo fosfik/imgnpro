@@ -12,6 +12,12 @@
         <script type="text/javascript">
             var socket = io();
             $(document).ready(function(){
+                for (var i = 1; i <= 6; i++){
+                    $('#p'+ i).hide();
+                }    
+                
+
+                socket.emit('get_packages', '');
                 $('form').submit(function(){
                     socket.emit('chat_msg', '{ "msg":"' + $('#m').val() + '","userid":"<%= user._id %>"}');
                     $('#m').val('');
@@ -26,6 +32,23 @@
                         //Scrolling the element to the sHeight
                         $('#box_conversation').scrollTop(sHeight);
                 });
+
+                socket.on('packs_list', function(msg){
+                    //$('#messages').append($('<li>').text(msg));
+                    var jsMsg = JSON.parse(msg);
+                    console.log(jsMsg);
+                    for (var i = 1; i <= jsMsg.packs.length; i++){
+                        $('#pno' + i).html(jsMsg.packs[i-1].imagecount);
+                        $('#p' + i).show(1000);
+                    }  
+                    // $('#conversation').append('<p class=""> <b>' + jsMsg.username + ': '+  jsMsg.msg + '</p>');
+                    //     var sHeight = $('#conversation')[0].scrollHeight;
+                    //     //Scrolling the element to the sHeight
+                    //     $('#box_conversation').scrollTop(sHeight);
+                });
+
+
+
             });
         </script>
         <style>
@@ -67,28 +90,28 @@
         </div>
         <div class="recontenedor_bloques">
             <div class="elbloque">
-                <a href="#openConfirmModal" name="p1" class="miniBox">
-                    <span class="bigNumber">2</span>
+                <a id = "p1" href="#openConfirmModal" name="p1" class="miniBox">
+                    <span id = "pno1" class="bigNumber">2</span>
                     <span class="miniText">Imágenes</span>
                 </a>
-                <a href="#openConfirmModal" name="p2" class="miniBox">
-                    <span class="bigNumber">14</span>
+                <a id = "p2" href="#openConfirmModal" name="p2" class="miniBox">
+                    <span id = "pno2" class="bigNumber">14</span>
                     <span class="miniText">Imágenes</span>
                 </a>
-                <a href="#openConfirmModal" name="p3" class="miniBox">
-                    <span class="bigNumber">7</span>
+                <a id = "p3" href="#openConfirmModal" name="p3" class="miniBox">
+                    <span id = "pno3" class="bigNumber">7</span>
                     <span class="miniText">Imágenes</span>
                 </a>
-                <a href="#openConfirmModal" name="p4" class="miniBox">
-                    <span class="bigNumber">1</span>
+                <a id = "p4" href="#openConfirmModal" name="p4" class="miniBox">
+                    <span id = "pno4" class="bigNumber">1</span>
                     <span class="miniText">Imágenes</span>
                 </a>
-                <a href="#openConfirmModal" name="p5" class="miniBox">
-                    <span class="bigNumber">20</span>
+                <a id = "p5" href="#openConfirmModal" name="p5" class="miniBox">
+                    <span id = "pno5" class="bigNumber">20</span>
                     <span class="miniText">Imágenes</span>
                 </a>
-                <a href="#openConfirmModal" name="p6" class="miniBox">
-                    <span class="bigNumber">18</span>
+                <a id = "p6" href="#openConfirmModal" name="p6" class="miniBox">
+                    <span id = "pno6" class="bigNumber">18</span>
                     <span class="miniText">Imágenes</span>
                 </a>
             </div>

@@ -306,7 +306,7 @@ router.get('/listspecs/:limit', function(req, res) {
     else {
       console.log('No se encontraron especificaciones');
     }
-  }).select('_id name date totalprice totalpriceMXN').sort('-date').limit(parseInt(req.params.limit));
+  }).select('_id name date totalprice totalpriceMXN typespec').sort('-date').limit(parseInt(req.params.limit));
 });
 
 /* Crea un nuevo contacto. */
@@ -790,11 +790,8 @@ router.get('/de_designers',
           
 
           countorders(req.user._id,function(count){
-            // Validar que el usuario esta activo.
-               //console.log(count);
-               //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id });
-              // res.render('confirmpayorder', {message: req.flash('message'), user: req.user, numorder:req.params.numorder, order:order[0]});             
-              res.render('principal', {message: req.flash('message'), user: req.user, countorders:count});
+            // Validar si el usuario tiene .
+               res.render('principal', {message: req.flash('message'), user: req.user, countorders:count});
  
           });
  });
@@ -1242,9 +1239,18 @@ router.get('/de_designers',
               throw err;  
             }
             console.log('Se guardó correctamente la especificación');
-            console.log(newSpec._id);
-            res.setHeader('Content-Type', 'application/json');
-            res.send(JSON.stringify({ error: 0, newSpecid: newSpec._id, message: 'Se guardó correctamente la especificación'})); 
+
+            Spec.find({'userid': newSpec.userid ,'typespec':'free', 'disabled':false},function(err, specrecord) {
+               // already exists
+                if (specrecord.length > 0) {
+                  res.setHeader('Content-Type', 'application/json');
+                  res.send(JSON.stringify({ error: 0, freeSpecid: specrecord[0]._id, newSpecid: newSpec._id, message: 'Se guardó correctamente la especificación'})); 
+                } 
+                else {
+                  res.setHeader('Content-Type', 'application/json');
+                  res.send(JSON.stringify({ error: 0, newSpecid: newSpec._id, message: 'Se guardó correctamente la especificación'})); 
+                }
+              }).select('_id').limit(1);
           });
     });
   });

@@ -53,7 +53,13 @@
                         type: 'get',
                         url: '/listspecs/5',
                         success: function (data) {
+                            console.log(data);
                             for (var i = 0; i < data.length; i++){
+
+                                if (data[i].typespec == 'free'){
+                                    document.location.href="/chooseanimage";
+                                    break;
+                                }
                                 var row = $("<tr>");
                                 row.append($("<td>" + data[i].name + "</td>"))
                                      .append($("<td>" + toDateString(data[i].date) + "</td>"))

@@ -74,12 +74,74 @@ io.on('connection', function(socket){
 
     
   });
-  socket.on('id', function(msg){
+
+  socket.on('reserve_pack', function(msg){
     console.log('message: ' + msg);
-   
+    var jsMsg = JSON.parse(msg);
+    console.log(jsMsg);
+    console.log(jsMsg.userid);
+    User.findOne({_id: jsMsg.userid}, function(err,user){
+        console.log(err);
+        if (err){
+            console.log(err);
+        }else{
+          if (user){
+            OrderPacks.findOne({_id: jsMsg.orderpackid}, function(err, orderpack){
+              if (err){
+                console.log(err);
+              }else{
+                if (user){
+                   io.emit('chat_msg', '{"msg":" Reservé el paquete: ' + orderpack.name + ', del pedido: ' + orderpack.numorder + '","username":"' + user.userlongname +  '"}'  );
+                }
+              }
 
+            });
+          }else{
+            console.log('Nada');
+          }
+
+        }
+
+    });
+    
+
+    
   });
+  
+  
 
+   socket.on('confirm_pack', function(msg){
+    console.log('message: ' + msg);
+    var jsMsg = JSON.parse(msg);
+    console.log(jsMsg);
+    console.log(jsMsg.userid);
+    User.findOne({_id: jsMsg.userid}, function(err,user){
+        console.log(err);
+        if (err){
+            console.log(err);
+        }else{
+          if (user){
+            OrderPacks.findOne({_id: jsMsg.orderpackid}, function(err, orderpack){
+              if (err){
+                console.log(err);
+              }else{
+                if (user){
+                   io.emit('chat_msg', '{"msg":" Confirmé el paquete: ' + orderpack.name + ', del pedido: ' + orderpack.numorder + '","username":"' + user.userlongname +  '"}'  );
+                }
+              }
+
+            });
+          }else{
+            console.log('Nada');
+          }
+
+        }
+
+    });
+    
+
+    
+  });
   socket.on('get_packages', function(msg){
     console.log(msg);
     //var jsMsg = JSON.parse(msg);

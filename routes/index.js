@@ -223,7 +223,7 @@ router.get('/listallorders', function(req, res) {
 
 // TODO agregar seguridad a esta ruta
 router.get('/listallorderpacks', function(req, res) {
-  OrderPacks.find({},function(err, orderpacks) {
+  OrderPacks.find({status:'En Proceso'},function(err, orderpacks) {
     // In case of any error return
      if (err){
        console.log('Error al consultar');

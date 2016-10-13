@@ -262,7 +262,7 @@ router.get('/listorderpack/:orderpackid', function(req, res) {
       console.log('No se encontró el paquete del pedido ' + req.params.orderpackid);
     }
    
-  }).select('imagecount numorder status date name userid isworking images');
+  }).select('_id imagecount numorder status date name userid isworking images');
 });
 
 
@@ -647,6 +647,11 @@ console.log('ID:' + req.body.specid);
  router.get('/de_package_get/:packageid', function(req, res) {
     // Display the Login page with any flash message, if any
     res.render('de_package_get', {packageid: req.params.packageid});
+  });
+
+ router.get('/de_package_review/:packageid', function(req, res) {
+    // Display the Login page with any flash message, if any
+    res.render('de_package_review', {packageid: req.params.packageid});
   });
 
 
@@ -1830,6 +1835,77 @@ router.get('/sign-s3get', (req, res) => {
       });
 });
 
+router.get('/sign-s3review', (req, res) => {
+      const s3 = new aws.S3();
+      
+      var sFname = req.query['filename'];
+      var sFext = sFname.match(/\.([^.]*)$/);
+      var sFNameComp = "";
+      console.log(sFext);
+      var returnData = {};
+      if(sFext){
+        sFNameComp = sFname.substring(0, sFname.length - sFext[1].length );
+        //console.log('archivo subido por el diseñador:' + sFNameComp);
+      }else{
+        console.log("error");
+
+        returnData = {
+            error: 1
+            //url: `https://${S3_BUCKET_NAME}.s3.amazonaws.com/${fileName}`
+          };
+          
+        res.write(JSON.stringify(returnData));
+        //res.write(JSON.stringify({err:2,message:'El archivo no tiene extensión'}));
+        return res.end();
+     }
+    OrderPacks
+    .findOne({'_id': req.query['orderpackid']})
+    .populate('specid','format_ext')
+    .exec(function(err,OrderPack){
+
+      console.log('OrderPack');
+      console.log(OrderPack);
+      console.log("SpecID: " + OrderPack.specid.format_ext);
+      console.log(sFext);
+
+        sFNameComp = sFNameComp + OrderPack.specid.format_ext;
+        const fileName = req.query['userid'] +'/' + sFNameComp;
+        console.log('File:' + fileName);
+        const s3Params = {Bucket: S3_BUCKET_NAME_DONE, Key: fileName, Expires: 100000};
+        const s3Paramsthumb = {Bucket: S3_BUCKET_NAME_THUMB, Key: fileName, Expires: 100000};
+
+      var urlthumb = s3.getSignedUrl('getObject', s3Paramsthumb);
+      s3.getSignedUrl('getObject', s3Params, function (err, data) {
+        //console.log("The URL is", url);
+          if(err){
+            console.log("error");
+            returnData = {
+              signedthumbRequest: urlthumb
+              //url: `https://${S3_BUCKET_NAME}.s3.amazonaws.com/${fileName}`
+            };
+            res.write(JSON.stringify(returnData));
+            return res.end();
+          }
+
+          returnData = {
+            signedRequest: data,
+            signedthumbRequest: urlthumb,
+            signedFileName: sFNameComp
+            //url: `https://${S3_BUCKET_NAME}.s3.amazonaws.com/${fileName}`
+          };
+          console.log(returnData);
+          res.write(JSON.stringify(returnData));
+          res.end();
+
+      });
+
+    });
+      
+
+
+
+});
+
 // se pide un key para borrar un archivo terminado
 router.get('/delete-s3done', (req, res) => {
   const s3 = new aws.S3();
@@ -1900,6 +1976,9 @@ router.get('/sign-s3done', (req, res) => {
     console.log(OrderPack);
     console.log("SpecID: " + OrderPack.specid.format_ext);
     console.log(sFext);
+
+
+
     if(sFext[1] != OrderPack.specid.format_ext){
         res.write(JSON.stringify({err:2, message:'La extensión o el tipo del archivo no coincide con la especificación'}));
         return res.end();

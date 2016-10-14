@@ -223,7 +223,7 @@ router.get('/listallorders', function(req, res) {
 
 // TODO agregar seguridad a esta ruta
 router.get('/listallorderpacks', function(req, res) {
-  OrderPacks.find({},function(err, orderpacks) {
+  OrderPacks.find({status:'En Proceso'},function(err, orderpacks) {
     // In case of any error return
      if (err){
        console.log('Error al consultar');
@@ -262,7 +262,7 @@ router.get('/listorderpack/:orderpackid', function(req, res) {
       console.log('No se encontró el paquete del pedido ' + req.params.orderpackid);
     }
    
-  }).select('imagecount numorder status date name userid isworking images');
+  }).select('_id imagecount numorder status date name userid isworking images');
 });
 
 
@@ -306,7 +306,7 @@ router.get('/listspecs/:limit', function(req, res) {
     else {
       console.log('No se encontraron especificaciones');
     }
-  }).select('_id name date totalprice totalpriceMXN').sort('-date').limit(parseInt(req.params.limit));
+  }).select('_id name date totalprice totalpriceMXN typespec').sort('-date').limit(parseInt(req.params.limit));
 });
 
 /* Crea un nuevo contacto. */
@@ -649,6 +649,11 @@ console.log('ID:' + req.body.specid);
     res.render('de_package_get', {packageid: req.params.packageid});
   });
 
+ router.get('/de_package_review/:packageid', function(req, res) {
+    // Display the Login page with any flash message, if any
+    res.render('de_package_review', {packageid: req.params.packageid});
+  });
+
 
   router.get('/de_uploadimages/:packageid', 
      //require('connect-ensure-login').ensureLoggedIn('/de_login'),
@@ -790,11 +795,8 @@ router.get('/de_designers',
           
 
           countorders(req.user._id,function(count){
-            // Validar que el usuario esta activo.
-               //console.log(count);
-               //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id });
-              // res.render('confirmpayorder', {message: req.flash('message'), user: req.user, numorder:req.params.numorder, order:order[0]});             
-              res.render('principal', {message: req.flash('message'), user: req.user, countorders:count});
+            // Validar si el usuario tiene .
+               res.render('principal', {message: req.flash('message'), user: req.user, countorders:count});
  
           });
  });
@@ -1242,9 +1244,18 @@ router.get('/de_designers',
               throw err;  
             }
             console.log('Se guardó correctamente la especificación');
-            console.log(newSpec._id);
-            res.setHeader('Content-Type', 'application/json');
-            res.send(JSON.stringify({ error: 0, newSpecid: newSpec._id, message: 'Se guardó correctamente la especificación'})); 
+
+            Spec.find({'userid': newSpec.userid ,'typespec':'free', 'disabled':false},function(err, specrecord) {
+               // already exists
+                if (specrecord.length > 0) {
+                  res.setHeader('Content-Type', 'application/json');
+                  res.send(JSON.stringify({ error: 0, freeSpecid: specrecord[0]._id, newSpecid: newSpec._id, message: 'Se guardó correctamente la especificación'})); 
+                } 
+                else {
+                  res.setHeader('Content-Type', 'application/json');
+                  res.send(JSON.stringify({ error: 0, newSpecid: newSpec._id, message: 'Se guardó correctamente la especificación'})); 
+                }
+              }).select('_id').limit(1);
           });
     });
   });
@@ -1824,6 +1835,77 @@ router.get('/sign-s3get', (req, res) => {
       });
 });
 
+router.get('/sign-s3review', (req, res) => {
+      const s3 = new aws.S3();
+      
+      var sFname = req.query['filename'];
+      var sFext = sFname.match(/\.([^.]*)$/);
+      var sFNameComp = "";
+      console.log(sFext);
+      var returnData = {};
+      if(sFext){
+        sFNameComp = sFname.substring(0, sFname.length - sFext[1].length );
+        //console.log('archivo subido por el diseñador:' + sFNameComp);
+      }else{
+        console.log("error");
+
+        returnData = {
+            error: 1
+            //url: `https://${S3_BUCKET_NAME}.s3.amazonaws.com/${fileName}`
+          };
+          
+        res.write(JSON.stringify(returnData));
+        //res.write(JSON.stringify({err:2,message:'El archivo no tiene extensión'}));
+        return res.end();
+     }
+    OrderPacks
+    .findOne({'_id': req.query['orderpackid']})
+    .populate('specid','format_ext')
+    .exec(function(err,OrderPack){
+
+      console.log('OrderPack');
+      console.log(OrderPack);
+      console.log("SpecID: " + OrderPack.specid.format_ext);
+      console.log(sFext);
+
+        sFNameComp = sFNameComp + OrderPack.specid.format_ext;
+        const fileName = req.query['userid'] +'/' + sFNameComp;
+        console.log('File:' + fileName);
+        const s3Params = {Bucket: S3_BUCKET_NAME_DONE, Key: fileName, Expires: 100000};
+        const s3Paramsthumb = {Bucket: S3_BUCKET_NAME_THUMB, Key: fileName, Expires: 100000};
+
+      var urlthumb = s3.getSignedUrl('getObject', s3Paramsthumb);
+      s3.getSignedUrl('getObject', s3Params, function (err, data) {
+        //console.log("The URL is", url);
+          if(err){
+            console.log("error");
+            returnData = {
+              signedthumbRequest: urlthumb
+              //url: `https://${S3_BUCKET_NAME}.s3.amazonaws.com/${fileName}`
+            };
+            res.write(JSON.stringify(returnData));
+            return res.end();
+          }
+
+          returnData = {
+            signedRequest: data,
+            signedthumbRequest: urlthumb,
+            signedFileName: sFNameComp
+            //url: `https://${S3_BUCKET_NAME}.s3.amazonaws.com/${fileName}`
+          };
+          console.log(returnData);
+          res.write(JSON.stringify(returnData));
+          res.end();
+
+      });
+
+    });
+      
+
+
+
+});
+
 // se pide un key para borrar un archivo terminado
 router.get('/delete-s3done', (req, res) => {
   const s3 = new aws.S3();
@@ -1894,6 +1976,9 @@ router.get('/sign-s3done', (req, res) => {
     console.log(OrderPack);
     console.log("SpecID: " + OrderPack.specid.format_ext);
     console.log(sFext);
+
+
+
     if(sFext[1] != OrderPack.specid.format_ext){
         res.write(JSON.stringify({err:2, message:'La extensión o el tipo del archivo no coincide con la especificación'}));
         return res.end();

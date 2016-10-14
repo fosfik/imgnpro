@@ -106,9 +106,21 @@
                                 else{
                                     //setTimeout(window.location='/subirimagen4.html',500);
                                     alert(data.message);
+                                    if (data.freeSpecid){
+                                        if(confirm("¿Quieres tus 3 IMÁGENES GRATIS?")){
+                                            document.location.href="/uploadimages/" + data.freeSpecid;
+                                        }
+                                        else
+                                        {
+                                            document.location.href="/uploadimages/" + data.newSpecid;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        document.location.href="/uploadimages/" + data.newSpecid;
+                                    }
                                     
-                                    //if(confirm("¿Quieres subir imágenes?")){
-                                    document.location.href="/uploadimages/" + data.newSpecid;
+                                    
                                     //}
                                     // else{
                                     //     document.getElementById("specForm").reset();

@@ -12,6 +12,12 @@
         <script type="text/javascript">
             var socket = io();
             $(document).ready(function(){
+                for (var i = 1; i <= 6; i++){
+                    $('#p'+ i).hide();
+                }    
+                
+
+                socket.emit('get_packages', '');
                 $('form').submit(function(){
                     socket.emit('chat_msg', '{ "msg":"' + $('#m').val() + '","userid":"<%= user._id %>"}');
                     $('#m').val('');
@@ -26,6 +32,125 @@
                         //Scrolling the element to the sHeight
                         $('#box_conversation').scrollTop(sHeight);
                 });
+
+                socket.on('packs_list', function(msg){
+                    //$('#messages').append($('<li>').text(msg));
+                    var jsMsg = JSON.parse(msg);
+                    console.log(jsMsg);
+                    for (var i = 1; i <= jsMsg.packs.length; i++){
+                        $('#pno' + i).html(jsMsg.packs[i-1].imagecount);
+                        $('#p' + i).show(1000);
+
+                        $('#orderpackid' + i).val(jsMsg.packs[i-1]._id);
+                    }  
+                    // $('#conversation').append('<p class=""> <b>' + jsMsg.username + ': '+  jsMsg.msg + '</p>');
+                    //     var sHeight = $('#conversation')[0].scrollHeight;
+                    //     //Scrolling the element to the sHeight
+                    //     $('#box_conversation').scrollTop(sHeight);
+                });
+
+                $('#p1').click(function(){
+                   // alert('{ "orderpackid":"' + $('#orderpackid1').val() + '","userid":"<%= user._id %>"}');    
+                    
+                    socket.emit('reserve_pack', '{ "orderpackid":"' + $('#orderpackid1').val() + '","userid":"<%= user._id %>"}');
+                    
+                });
+                $('#p2').click(function(){
+                    //alert('{ "orderpackid":"' + $('#orderpackid2').val() + '","userid":"<%= user._id %>"}');    
+                    
+                    socket.emit('reserve_pack', '{ "orderpackid":"' + $('#orderpackid2').val() + '","userid":"<%= user._id %>"}');
+                    
+                });
+                $('#p3').click(function(){
+                   // alert('{ "orderpackid":"' + $('#orderpackid3').val() + '","userid":"<%= user._id %>"}');    
+                    
+                    socket.emit('reserve_pack', '{ "orderpackid":"' + $('#orderpackid3').val() + '","userid":"<%= user._id %>"}');
+                    
+                });
+                $('#p4').click(function(){
+                    //alert('{ "orderpackid":"' + $('#orderpackid4').val() + '","userid":"<%= user._id %>"}');    
+                    
+                    socket.emit('reserve_pack', '{ "orderpackid":"' + $('#orderpackid4').val() + '","userid":"<%= user._id %>"}');
+                    
+                });
+                $('#p5').click(function(){
+                    //alert('{ "orderpackid":"' + $('#orderpackid5').val() + '","userid":"<%= user._id %>"}');    
+                    
+                    socket.emit('reserve_pack', '{ "orderpackid":"' + $('#orderpackid5').val() + '","userid":"<%= user._id %>"}');
+                    
+                });
+                $('#p6').click(function(){
+                    //alert('{ "orderpackid":"' + $('#orderpackid6').val() + '","userid":"<%= user._id %>"}');    
+                    
+                    socket.emit('reserve_pack', '{ "orderpackid":"' + $('#orderpackid6').val() + '","userid":"<%= user._id %>"}');
+                    
+                });
+                
+                $('#buttondownload1').click(function(){
+                    //alert('{ "orderpackid":"' + $('#orderpackid1').val() + '","userid":"<%= user._id %>"}');    
+                    
+                    socket.emit('confirm_pack', '{ "orderpackid":"' + $('#orderpackid1').val() + '","userid":"<%= user._id %>"}');
+                    
+                });
+                 $('#buttondownload2').click(function(){
+                    //alert('{ "orderpackid":"' + $('#orderpackid2').val() + '","userid":"<%= user._id %>"}');    
+                    
+                    socket.emit('confirm_pack', '{ "orderpackid":"' + $('#orderpackid2').val() + '","userid":"<%= user._id %>"}');
+                    
+                });
+                 $('#buttondownload3').click(function(){
+                    //alert('{ "orderpackid":"' + $('#orderpackid3').val() + '","userid":"<%= user._id %>"}');    
+                    
+                    socket.emit('confirm_pack', '{ "orderpackid":"' + $('#orderpackid3').val() + '","userid":"<%= user._id %>"}');
+                    
+                });
+                 $('#buttondownload4').click(function(){
+                    //alert('{ "orderpackid":"' + $('#orderpackid4').val() + '","userid":"<%= user._id %>"}');    
+                    
+                    socket.emit('confirm_pack', '{ "orderpackid":"' + $('#orderpackid4').val() + '","userid":"<%= user._id %>"}');
+                    
+                });
+                 $('#buttondownload5').click(function(){
+                    //alert('{ "orderpackid":"' + $('#orderpackid5').val() + '","userid":"<%= user._id %>"}');    
+                    
+                    socket.emit('confirm_pack', '{ "orderpackid":"' + $('#orderpackid5').val() + '","userid":"<%= user._id %>"}');
+                    
+                });
+                 $('#buttondownload6').click(function(){
+                    //alert('{ "orderpackid":"' + $('#orderpackid6').val() + '","userid":"<%= user._id %>"}');    
+                    
+                    socket.emit('confirm_pack', '{ "orderpackid":"' + $('#orderpackid6').val() + '","userid":"<%= user._id %>"}');
+                    
+                });
+
+            //   function createModal(){
+
+            //     '<div id="openConfirmModal" class="modalDialog"><div><a href="#close" title="Close" Class="close">X</a><h1 class="encabezado">Confirmación de Trabajo</h1><hr class="hrmodal"><form id="colorForm" action="" method="" name="color_form"><ul>';
+            //     '<li>
+            //                 <p class="texto_plano">1. Al bajar el paquete tendré 8 horas para concluir el trabajo asignado.</p>
+            //                 <br>
+            //                 <p class="texto_plano">2. Me comprometo a leer y realizar a cada imagen las especificaciones anexas en el paquete.</p>
+            //                 <br>
+            //                 <p class="texto_plano">3. Acepto las políticas de Imagen Pro y me apego a sus reglas.</p>
+            //             </li>
+            //             <li>
+            //                 <input id="aceptJob" type="checkbox" required>
+            //                 <label class="etiquetasxtras">Acepto</label>
+            //             </li>
+            //         </ul>
+            //         <div>
+            //             <hr class="hrmodal2">
+            //             <h1 class="modalTip">¡Genera mayores ingresos al realizar más de un paquete al día!</h1>
+            //             <hr class="hrmodal2">
+            //             <h1 id="res_message"></h1>
+            //         </div>   
+            //         <div class="buttonModal">
+            //             <a id="buttondownload" href="#close">Bajar Paquete</a>
+            //         </div>                               
+            //     </form>
+            // </div>'
+            //   }
+
             });
         </script>
         <style>
@@ -67,28 +192,28 @@
         </div>
         <div class="recontenedor_bloques">
             <div class="elbloque">
-                <a href="#openConfirmModal" name="p1" class="miniBox">
-                    <span class="bigNumber">2</span>
+                <a id = "p1" href="#openConfirmModal1" name="p1" class="miniBox">
+                    <span id = "pno1" class="bigNumber">2</span>
                     <span class="miniText">Imágenes</span>
                 </a>
-                <a href="#openConfirmModal" name="p2" class="miniBox">
-                    <span class="bigNumber">14</span>
+                <a id = "p2" href="#openConfirmModal2" name="p2" class="miniBox">
+                    <span id = "pno2" class="bigNumber">14</span>
                     <span class="miniText">Imágenes</span>
                 </a>
-                <a href="#openConfirmModal" name="p3" class="miniBox">
-                    <span class="bigNumber">7</span>
+                <a id = "p3" href="#openConfirmModal3" name="p3" class="miniBox">
+                    <span id = "pno3" class="bigNumber">7</span>
                     <span class="miniText">Imágenes</span>
                 </a>
-                <a href="#openConfirmModal" name="p4" class="miniBox">
-                    <span class="bigNumber">1</span>
+                <a id = "p4" href="#openConfirmModal4" name="p4" class="miniBox">
+                    <span id = "pno4" class="bigNumber">1</span>
                     <span class="miniText">Imágenes</span>
                 </a>
-                <a href="#openConfirmModal" name="p5" class="miniBox">
-                    <span class="bigNumber">20</span>
+                <a id = "p5" href="#openConfirmModal5" name="p5" class="miniBox">
+                    <span id = "pno5" class="bigNumber">20</span>
                     <span class="miniText">Imágenes</span>
                 </a>
-                <a href="#openConfirmModal" name="p6" class="miniBox">
-                    <span class="bigNumber">18</span>
+                <a id = "p6" href="#openConfirmModal6" name="p6" class="miniBox">
+                    <span id = "pno6" class="bigNumber">18</span>
                     <span class="miniText">Imágenes</span>
                 </a>
             </div>
@@ -121,8 +246,10 @@
             </form>
             <!-- <div class="message"><input type="text" placeholder="ingresa tu mensaje"><div class="buttonsend"><a href="">Send</a></div></div> -->
         </div>
-        
-        <div id="openConfirmModal" class="modalDialog">
+        <div id="contenedor_Modal">
+            
+        </div>
+        <div id="openConfirmModal1" class="modalDialog">
             <div>
                 <a href="#close" title="Close" Class="close">X</a>
                 <h1 class="encabezado">Confirmación de Trabajo</h1>
@@ -149,8 +276,176 @@
                         <h1 id="res_message"></h1>
                     </div>   
                     <div class="buttonModal">
-                        <a id="buttondownload" href="#close">Bajar Paquete</a>
-                    </div>                               
+                        <a id="buttondownload1" href="#close">Bajar Paquete</a>
+                    </div> 
+                    <input id="orderpackid1" type="hidden" name="">                              
+                </form>
+            </div>
+        </div>
+
+        <div id="openConfirmModal2" class="modalDialog">
+            <div>
+                <a href="#close" title="Close" Class="close">X</a>
+                <h1 class="encabezado">Confirmación de Trabajo</h1>
+                <hr class="hrmodal">
+                <form id="colorForm" action="" method="" name="color_form">
+                    
+                    <ul>
+                        <li>
+                            <p class="texto_plano">1. Al bajar el paquete tendré 8 horas para concluir el trabajo asignado.</p>
+                            <br>
+                            <p class="texto_plano">2. Me comprometo a leer y realizar a cada imagen las especificaciones anexas en el paquete.</p>
+                            <br>
+                            <p class="texto_plano">3. Acepto las políticas de Imagen Pro y me apego a sus reglas.</p>
+                        </li>
+                        <li>
+                            <input id="aceptJob" type="checkbox" required>
+                            <label class="etiquetasxtras">Acepto</label>
+                        </li>
+                    </ul>
+                    <div>
+                        <hr class="hrmodal2">
+                        <h1 class="modalTip">¡Genera mayores ingresos al realizar más de un paquete al día!</h1>
+                        <hr class="hrmodal2">
+                        <h1 id="res_message"></h1>
+                    </div>   
+                    <div class="buttonModal">
+                        <a id="buttondownload2" href="#close">Bajar Paquete</a>
+                    </div>  
+                    <input id="orderpackid2" type="hidden" name="">                             
+                </form>
+            </div>
+        </div>
+
+        <div id="openConfirmModal3" class="modalDialog">
+            <div>
+                <a href="#close" title="Close" Class="close">X</a>
+                <h1 class="encabezado">Confirmación de Trabajo</h1>
+                <hr class="hrmodal">
+                <form id="colorForm" action="" method="" name="color_form">
+                    
+                    <ul>
+                        <li>
+                            <p class="texto_plano">1. Al bajar el paquete tendré 8 horas para concluir el trabajo asignado.</p>
+                            <br>
+                            <p class="texto_plano">2. Me comprometo a leer y realizar a cada imagen las especificaciones anexas en el paquete.</p>
+                            <br>
+                            <p class="texto_plano">3. Acepto las políticas de Imagen Pro y me apego a sus reglas.</p>
+                        </li>
+                        <li>
+                            <input id="aceptJob" type="checkbox" required>
+                            <label class="etiquetasxtras">Acepto</label>
+                        </li>
+                    </ul>
+                    <div>
+                        <hr class="hrmodal2">
+                        <h1 class="modalTip">¡Genera mayores ingresos al realizar más de un paquete al día!</h1>
+                        <hr class="hrmodal2">
+                        <h1 id="res_message"></h1>
+                    </div>   
+                    <div class="buttonModal">
+                        <a id="buttondownload3" href="#close">Bajar Paquete</a>
+                    </div>
+                    <input id="orderpackid3" type="hidden" name="">                               
+                </form>
+            </div>
+        </div>
+        <div id="openConfirmModal4" class="modalDialog">
+            <div>
+                <a href="#close" title="Close" Class="close">X</a>
+                <h1 class="encabezado">Confirmación de Trabajo</h1>
+                <hr class="hrmodal">
+                <form id="colorForm" action="" method="" name="color_form">
+                    
+                    <ul>
+                        <li>
+                            <p class="texto_plano">1. Al bajar el paquete tendré 8 horas para concluir el trabajo asignado.</p>
+                            <br>
+                            <p class="texto_plano">2. Me comprometo a leer y realizar a cada imagen las especificaciones anexas en el paquete.</p>
+                            <br>
+                            <p class="texto_plano">3. Acepto las políticas de Imagen Pro y me apego a sus reglas.</p>
+                        </li>
+                        <li>
+                            <input id="aceptJob" type="checkbox" required>
+                            <label class="etiquetasxtras">Acepto</label>
+                        </li>
+                    </ul>
+                    <div>
+                        <hr class="hrmodal2">
+                        <h1 class="modalTip">¡Genera mayores ingresos al realizar más de un paquete al día!</h1>
+                        <hr class="hrmodal2">
+                        <h1 id="res_message"></h1>
+                    </div>   
+                    <div class="buttonModal">
+                        <a id="buttondownload4" href="#close">Bajar Paquete</a>
+                    </div> 
+                    <input id="orderpackid4" type="hidden" name="">                              
+                </form>
+            </div>
+        </div>
+        <div id="openConfirmModal5" class="modalDialog">
+            <div>
+                <a href="#close" title="Close" Class="close">X</a>
+                <h1 class="encabezado">Confirmación de Trabajo</h1>
+                <hr class="hrmodal">
+                <form id="colorForm" action="" method="" name="color_form">
+                    
+                    <ul>
+                        <li>
+                            <p class="texto_plano">1. Al bajar el paquete tendré 8 horas para concluir el trabajo asignado.</p>
+                            <br>
+                            <p class="texto_plano">2. Me comprometo a leer y realizar a cada imagen las especificaciones anexas en el paquete.</p>
+                            <br>
+                            <p class="texto_plano">3. Acepto las políticas de Imagen Pro y me apego a sus reglas.</p>
+                        </li>
+                        <li>
+                            <input id="aceptJob" type="checkbox" required>
+                            <label class="etiquetasxtras">Acepto</label>
+                        </li>
+                    </ul>
+                    <div>
+                        <hr class="hrmodal2">
+                        <h1 class="modalTip">¡Genera mayores ingresos al realizar más de un paquete al día!</h1>
+                        <hr class="hrmodal2">
+                        <h1 id="res_message"></h1>
+                    </div>   
+                    <div class="buttonModal">
+                        <a id="buttondownload5" href="#close">Bajar Paquete</a>
+                    </div>  
+                    <input id="orderpackid5" type="hidden" name="">                             
+                </form>
+            </div>
+        </div>
+        <div id="openConfirmModal6" class="modalDialog">
+            <div>
+                <a href="#close" title="Close" Class="close">X</a>
+                <h1 class="encabezado">Confirmación de Trabajo</h1>
+                <hr class="hrmodal">
+                <form id="colorForm" action="" method="" name="color_form">
+                    
+                    <ul>
+                        <li>
+                            <p class="texto_plano">1. Al bajar el paquete tendré 8 horas para concluir el trabajo asignado.</p>
+                            <br>
+                            <p class="texto_plano">2. Me comprometo a leer y realizar a cada imagen las especificaciones anexas en el paquete.</p>
+                            <br>
+                            <p class="texto_plano">3. Acepto las políticas de Imagen Pro y me apego a sus reglas.</p>
+                        </li>
+                        <li>
+                            <input id="aceptJob" type="checkbox" required>
+                            <label class="etiquetasxtras">Acepto</label>
+                        </li>
+                    </ul>
+                    <div>
+                        <hr class="hrmodal2">
+                        <h1 class="modalTip">¡Genera mayores ingresos al realizar más de un paquete al día!</h1>
+                        <hr class="hrmodal2">
+                        <h1 id="res_message"></h1>
+                    </div>   
+                    <div class="buttonModal">
+                        <a id="buttondownload6" href="#close">Bajar Paquete</a>
+                    </div>  
+                    <input id="orderpackid6" type="hidden" name="">                             
                 </form>
             </div>
         </div>

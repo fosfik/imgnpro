@@ -1,0 +1,248 @@
+* {
+    border: 0px;
+    margin: 0px;
+    padding: 0px;
+    font-family: helvetica, arial, sans-serif;
+}
+
+html {
+    background: #E5E5E5 no-repeat center center fixed;
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+}
+
+#botonintro {
+    display: none;
+    border: solid 1px #FFF;
+    color: #FFF;
+    line-height: 24px;
+    vertical-align: top;
+    padding: 5px;
+    font-size: 12px;
+    font-weight: lighter;
+    text-decoration: none;
+    float: right;
+    margin-right: 40px;
+    margin-top: 5px;
+    -webkit-transition: all 5s ease;
+    transition: all 5s ease;
+}
+
+#botonintro.sticky {
+    display: inline-block;
+    border: solid 1px #FFF;
+    color: #FFF;
+    line-height: 24px;
+    vertical-align: top;
+    padding: 5px;
+    font-size: 12px;
+    font-weight: lighter;
+    text-decoration: none;
+    float: right;
+    margin-right: 40px;
+    margin-top: 5px;
+}
+
+#slogan {
+    display: none;
+    color: #000;
+    line-height: 50px;
+    vertical-align: top;
+    padding: 10px;
+    font-size: 12px;
+    font-weight: lighter;
+    -webkit-transition: all 5s ease;
+    transition: all 5s ease;
+}
+
+#slogan.sticky {
+    display: inline-block;
+    color: #FFF;
+    line-height: 24px;
+    vertical-align: bottom;
+    padding: 10px;
+    font-size: 12px;
+    font-weight: lighter;
+}
+
+header {
+    position: fixed;
+    width: 100%;
+    text-align: center;
+    height: 108px;
+    background: #000;
+    -webkit-transition: all .5s ease;
+    transition: all .5s ease;
+    padding: 10px;
+}
+
+header.sticky {
+    z-index: 9999;
+    margin-top: 0;
+    text-align: left;
+    position: fixed;
+    height: 48px;
+    width: 100%;
+    background: #000;
+    padding-left: 20px;
+}
+
+#contenedor1 {
+    text-align: center;
+    padding: 30px;
+    display: inline-block;
+    width: 100%; 
+}
+
+#contregistro {
+    display: inline-block;
+    border: solid 2px #ccc;
+    border-radius: 20px;
+    width: 400px;
+    padding: 20px;
+    margin-top: 150px;
+}
+
+.redes_icon{
+    margin-right: 5px;
+    float: left;
+    height: 16px;
+}
+
+.texto_plano {
+    font-size: 12px;
+    padding: 5px;
+    text-decoration: none;
+}
+
+input[name="nombre"] {
+    display: inline-block;
+    width: 95%;
+    height: 20px;
+    margin: 5px;
+    padding: 5px;
+    text-align: center;
+    font-size: 14px;
+    color: #000;
+    background: #EEE;
+    border: solid 1px #CCC;
+}
+
+input[name="email"] {
+    display: inline-block;
+    width: 44%;
+    height: 20px;
+    margin: 5px;
+    padding: 5px;
+    text-align: center;
+    font-size: 14px;
+    color: #000;
+    background: #EEE;
+    border: solid 1px #CCC;
+}
+
+input[name="pass"] {
+    display: inline-block;
+    width: 43.89%;
+    height: 20px;
+    margin: 5px;
+    padding: 5px;
+    text-align: center;
+    font-size: 14px;
+    color: #000;
+    background: #EEE;
+    border: solid 1px #CCC;
+}
+
+.postcheck {
+    display: inline-block;
+    font-size: 10px;
+    color: #000;
+    text-align: center;
+    margin: 5px;
+}
+
+.terms {
+    text-decoration: none;
+    color: #00B4FF
+}
+
+.buttonreg {
+    display: inline-block;
+    color: #FFFFFF;
+    background: red;
+    padding: 5px;
+    text-decoration: none;
+    font-size: 12px;
+    margin: 10px 10px;
+    cursor: pointer;
+    float: none;
+    width: auto;
+    height: auto;
+    transition: .1s;
+}
+
+.button3, .button4{
+    display: inline-block;
+    color: #FFFFFF;
+    padding: 5px;
+    text-decoration: none;
+    font-size: 12px;
+    margin: 10px 10px;
+    cursor: pointer;
+    float: none;
+    width: auto;
+    height: auto;
+    transition: .1s;
+}
+
+.button3 {
+    background-color: #0952b8;
+    transition: .1s;
+}
+
+.button4 {
+    background-color: #d60000;
+    transition: .1s;
+}
+
+.button3 a, .button4 a {
+    text-decoration: none;
+    font: 16px;
+    color: #FFFFFF;
+}
+
+.button3:hover, .button4:hover, .buttonreg:hover {
+    box-shadow: 2px 2px 2px rgba(20, 20, 20, 0.4);
+    transition: .2s
+}
+
+hr {
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    height: 1px;
+    background: #CCC;
+}
+
+.supertext {
+    font-size: 36px;
+    text-align: left;
+    padding: 5px;
+    margin-left: 15px;
+    color: #000;
+}
+
+.textnormal {
+    font-size: 14px;
+    text-align: left;
+    padding: 5px;
+    margin-left: 30px;
+    color: #000;
+}
+
+.textcont {
+    width: 60%;
+    padding: 10px;
+}

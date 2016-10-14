@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8">
+        <title>IMGNpro, hagamos que tu producto destaque</title>
+        <link rel="stylesheet" href="../stylesheets/imgncss_landing.css">
+        <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico"/>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    
+        <script>
+            $(document).ready(function() {
+                $(window).on('scroll', function() {
+                    if (Math.round($(window).scrollTop()) > 100) {
+                        $('header').addClass("sticky");
+                        $('#slogan').addClass("sticky");
+                        $('#botonintro').addClass("sticky");
+                    }
+                    else {
+                        $('header').removeClass("sticky");
+                        $('#slogan').removeClass("sticky");
+                        $('#botonintro').removeClass("sticky");
+                    }
+                });
+            });
+        </script>
+        
+    </head>
+    <body>
+        <header>
+            <a href="../../views/intro.html"><img id="logohead" src="../images/logowslogan.png" height="100%"></a>
+            <span id="slogan">the background remover</span>
+            <a id="botonintro" href="../../views/intro.html">Ir al Intro</a>
+        </header>
+        <section id="contenedor1">
+            <div id="contregistro">
+                <div class="registro1">
+                    <input type="text" name="nombre" placeholder="Nombre">
+                    <br>
+                    <input type="email" name="email" placeholder="Correo Electrónico">
+                    <input type="password" name="pass" placeholder="Contraseña">
+                    <br>
+                    <br>
+                    <input type="checkbox"><label class="postcheck">Acepto los <a class="terms" href="../pdfs/tems.pdf" target="_blank">Terminos y Condiciones de IMGNpro</a>.</label>
+                    <input class="buttonreg" type="submit" value="Quiero mis 3 fótos Gratis!">
+                    <p class="texto_plano">o bien regístrate Gratis con tu cuenta de</p>
+                    <div class="button3">
+                        <img class="redes_icon" src="../images/icon_f.png"><a href="/login/facebook">Facebook</a>
+                    </div>
+                    <div class="button4">
+                        <img class="redes_icon" src="../images/icon_g.png"><a href="/login/google">Google</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="contenedor1">
+            <hr>
+            <div class="textcont">
+                <p class="supertext">¿Que es IMGNpro?</p>
+                <br>
+                <p class="textnormal">Es una plataforma web, en la cual podrás optimizar tus imagenes, ahorrar tiempo y dinero, y sobre todo, maximizar la capacidad creativa de tu equipo de diseño.</p>
+            </div>
+        </section>
+        <section id="contenedor1">
+            <hr>
+            <div class="textcont">
+                <p class="supertext">¿Que es IMGNpro?</p>
+                <br>
+                <p class="textnormal">Es una plataforma web, en la cual podrás optimizar tus imagenes, ahorrar tiempo y dinero, y sobre todo, maximizar la capacidad creativa de tu equipo de diseño.</p>
+            </div>
+        </section>
+        <section id="contenedor1">
+            <hr>
+            <div class="textcont">
+                <p class="supertext">¿Que es IMGNpro?</p>
+                <br>
+                <p class="textnormal">Es una plataforma web, en la cual podrás optimizar tus imagenes, ahorrar tiempo y dinero, y sobre todo, maximizar la capacidad creativa de tu equipo de diseño.</p>
+            </div>
+        </section>
+        <section id="contenedor1">
+            <hr>
+            <div class="textcont">
+                <p class="supertext">¿Que es IMGNpro?</p>
+                <br>
+                <p class="textnormal">Es una plataforma web, en la cual podrás optimizar tus imagenes, ahorrar tiempo y dinero, y sobre todo, maximizar la capacidad creativa de tu equipo de diseño.</p>
+            </div>
+        </section>
+        <section id="contenedor1">
+            <hr>
+            <div class="textcont">
+                <p class="supertext">¿Que es IMGNpro?</p>
+                <br>
+                <p class="textnormal">Es una plataforma web, en la cual podrás optimizar tus imagenes, ahorrar tiempo y dinero, y sobre todo, maximizar la capacidad creativa de tu equipo de diseño.</p>
+            </div>
+        </section>
+    </body>
+</html>

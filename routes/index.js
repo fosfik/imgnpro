@@ -1978,8 +1978,12 @@ router.get('/sign-s3done', (req, res) => {
     console.log(sFext);
 
 
+    if(OrderPack.specid.format_ext == "tif" && (sFext[1] != 'tiff' && sFext[1] != 'tif')  ){
+        res.write(JSON.stringify({err:2, message:'La extensión o el tipo del archivo no coincide con la especificación'}));
+        return res.end();
+    }
 
-    if(sFext[1] != OrderPack.specid.format_ext){
+    if(sFext[1] != OrderPack.specid.format_ext  && sFext[1] != 'zip'){
         res.write(JSON.stringify({err:2, message:'La extensión o el tipo del archivo no coincide con la especificación'}));
         return res.end();
     }
@@ -2009,7 +2013,7 @@ router.get('/sign-s3done', (req, res) => {
 
       //if(OrderPack.images[i].imagename == req.query['filename'] ){
       if(sFNameCompU == sFNameComp ){
-        console.log('I found it');
+        console.log('Se econtró archivo');
         b_findimg = true;
         break;
       }
@@ -2026,8 +2030,13 @@ router.get('/sign-s3done', (req, res) => {
       });
 
       // al fileName se le agrega el folder para que la firma lo reconozca
-      const fileName = req.query['userid'] + '/' + req.query['filename'];
-      const fileType = req.query['filetype'];
+      var fileName = req.query['userid'] + '/' + req.query['filename'];
+      var fileType = req.query['filetype'];
+
+      if (sFext[1] == 'zip'){
+        fileName = req.query['userid'] + '/' +  sFNameCompU + '.' + sFext[1];
+      }
+      
       const s3Params = {
         Bucket: S3_BUCKET_NAME_DONE,
         Key: fileName,

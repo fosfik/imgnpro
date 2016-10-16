@@ -17,10 +17,10 @@
             $(document).ready(function(){
                 //caltotalpay();
 
-     url: app.S3_BUCKET,
-        method: "POST",
-        autoProcessQueue: true,
-        clickable: ['.file-upload-container', '.add-more-icon'],
+     // url: app.S3_BUCKET,
+     //    method: "POST",
+     //    autoProcessQueue: true,
+     //    clickable: ['.file-upload-container', '.add-more-icon'],
         //maxfiles: 5,
         // parallelUploads: 10,
         
@@ -41,7 +41,7 @@
                     dictRemoveFile: "Borrar imagen",
                     dictMaxFilesExceeded: "Ya no puedes cargar más imágenes, se ha alcanzado el límite de este paquete.",
                     dictInvalidFileType: "No puedes subir archivos de este tipo (solamente: .jpg, .tif, .psd y .png)",
-                    method: "PUT",
+                    method: "POST",
                     maxFilesize: 2000, // in mb
                     uploadMultiple: false,
                     paramName: "file",

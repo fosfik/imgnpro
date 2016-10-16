@@ -18,7 +18,7 @@
                 $('#datespec').prop('value', Date.now);
                 desactAllNext();
                 desactSizeAllNext();
-                sumallextras();
+                //sumallextras();
                 //var newbuttonspec = $('#savebuttonspec');
                 //var newbuttonspec = $('#savebuttonspec');
                 var frm = $('#specForm');
@@ -169,7 +169,7 @@
                                       
 
 
-                                    sumallextras();
+                                    //sumallextras();
                                     desactAllNext();
                                     desactSizeAllNext();
                                     desactCustomAllNext();
@@ -196,26 +196,26 @@
                     ev.preventDefault();
     
                 });
-                $("#specForm input[name='naturalshadow']").change(function(){
-                        $("#specForm input[name='dropshadow']").prop( "checked", false );
-                        sumallextras();
-                }); 
-                $("#specForm input[name='dropshadow']").change(function(){
-                    //if($(this).is(":checked")) {
-                        $("#specForm input[name='naturalshadow']").prop( "checked", false );
-                        sumallextras();
-                    //}
-                }); 
-                $("#specForm input[name='correctcolor']").change(function(){
-                        sumallextras();
-                }); 
+                // $("#specForm input[name='naturalshadow']").change(function(){
+                //         $("#specForm input[name='dropshadow']").prop( "checked", false );
+                //         sumallextras();
+                // }); 
+                // $("#specForm input[name='dropshadow']").change(function(){
+                //     //if($(this).is(":checked")) {
+                //         $("#specForm input[name='naturalshadow']").prop( "checked", false );
+                //         sumallextras();
+                //     //}
+                // }); 
+                // $("#specForm input[name='correctcolor']").change(function(){
+                //         sumallextras();
+                // }); 
 
-                $("#specForm input[name='clippingpath']").change(function(){
-                        sumallextras();
-                }); 
-                $("#specForm input[name='basicretouch']").change(function(){
-                        sumallextras();
-                }); 
+                // $("#specForm input[name='clippingpath']").change(function(){
+                //         sumallextras();
+                // }); 
+                // $("#specForm input[name='basicretouch']").change(function(){
+                //         sumallextras();
+                // }); 
 
                 $("#chkalgnnone").change(function(){
                     desactAllNext();
@@ -263,7 +263,7 @@
                         $("#specForm input[name='clippingpath']").prop("disabled",true);
                         $('#mode_cmyk').prop("disabled", true);
                         $('#colormode').prop("value", 'rgb');
-                        sumallextras();
+                        //sumallextras();
                        }
                       else{
                         $("#specForm input[name='clippingpath']").prop("disabled",false);        
@@ -294,7 +294,7 @@
                                     document.getElementById("specForm").reset();
                                     desactAllNext();
                                     desactSizeAllNext();
-                                    sumallextras(); 
+                                    //sumallextras(); 
                                     if (uploadimages==true){
                                         if(confirm("¿Quieres subir imágenes?")){
                                             document.location.href="/uploadimages/" + data.newSpecid;
@@ -320,40 +320,40 @@
 
                 // }
 
-                function sumallextras(){
+        //         function sumallextras(){
                    
-                    var ntotal = <%= config.prices.cutandremove%>; 
-                    ntotal = ntotal * 100;
-                    if($('input:checkbox[name=dropshadow]').is(":checked")) {
-                         ntotal = ntotal + ($('input:checkbox[name=dropshadow]').val() * 100)
-                     }
-                    if($('input:checkbox[name=naturalshadow]').is(":checked")) {
-                        ntotal = ntotal + ($('input:checkbox[name=naturalshadow]').val() * 100)
-                    }
-                    if($('input:checkbox[name=correctcolor]').is(":checked")) {
-                        ntotal = ntotal + ($('input:checkbox[name=correctcolor]').val() * 100)
-                    }
-                    if($('input:checkbox[name=clippingpath]').is(":checked")) {
-                        ntotal = ntotal + ($('input:checkbox[name=clippingpath]').val() * 100)
-                    }
-                    if($('input:checkbox[name=basicretouch]').is(":checked")) {
-                        ntotal = ntotal + ($('input:checkbox[name=basicretouch]').val() * 100)
-                    }                    
+        //             var ntotal = <%= config.prices.cutandremove%>; 
+        //             ntotal = ntotal * 100;
+        //             if($('input:checkbox[name=dropshadow]').is(":checked")) {
+        //                  ntotal = ntotal + ($('input:checkbox[name=dropshadow]').val() * 100)
+        //              }
+        //             if($('input:checkbox[name=naturalshadow]').is(":checked")) {
+        //                 ntotal = ntotal + ($('input:checkbox[name=naturalshadow]').val() * 100)
+        //             }
+        //             if($('input:checkbox[name=correctcolor]').is(":checked")) {
+        //                 ntotal = ntotal + ($('input:checkbox[name=correctcolor]').val() * 100)
+        //             }
+        //             if($('input:checkbox[name=clippingpath]').is(":checked")) {
+        //                 ntotal = ntotal + ($('input:checkbox[name=clippingpath]').val() * 100)
+        //             }
+        //             if($('input:checkbox[name=basicretouch]').is(":checked")) {
+        //                 ntotal = ntotal + ($('input:checkbox[name=basicretouch]').val() * 100)
+        //             }                    
 
 
-        // :0.20,
-        // :0.40,
-        // :2.40,
-        // :0.60
-                    // ntotal = ntotal / 100;
-                    // $("#totalprice").html(setDecimals(ntotal,2));
+        // // :0.20,
+        // // :0.40,
+        // // :2.40,
+        // // :0.60
+        //             // ntotal = ntotal / 100;
+        //             // $("#totalprice").html(setDecimals(ntotal,2));
 
 
-                    ntotal = ntotal / 100;
-                    ntotalMXN = ntotal * <%= config.prices.dollar %>;;
-                    $("#totalprice").html(setDecimals(ntotal,2));
-                    $("#totalpriceMXN").html(ntotalMXN.toFixed(2));
-                }
+        //             ntotal = ntotal / 100;
+        //             ntotalMXN = ntotal * <%= config.prices.dollar %>;;
+        //             $("#totalprice").html(setDecimals(ntotal,2));
+        //             $("#totalpriceMXN").html(ntotalMXN.toFixed(2));
+        //         }
 
                 function desactAllNext(){
                     var chkalgnnone = document.getElementById('chkalgnnone').checked;
@@ -434,10 +434,10 @@
         <div class="label">
             <p class="texto_plano4">Precio por Imagen</p>
             <p class="texto_precio2"><span class="prefixmoney">USD</span>$<span
-            id="totalprice">1.50</span></p>
+            id="totalprice">0</span></p>
             <br><br><br>
             <p class="textoplanotemp">Precio por Imagen</p>
-            <p class="textopreciotemp"><span class="prefijopeso">MXN</span>$<span id="totalpriceMXN">19.35</span></p>
+            <p class="textopreciotemp"><span class="prefijopeso">MXN</span>$<span id="totalpriceMXN">0</span></p>
 
         </div>
             <p class="encabezado">Especificaciones</p>

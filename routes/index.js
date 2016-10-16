@@ -1981,12 +1981,17 @@ router.get('/sign-s3done', (req, res) => {
     if(OrderPack.specid.format_ext == "tif" && (sFext[1] != 'tiff' && sFext[1] != 'tif')  ){
         res.write(JSON.stringify({err:2, message:'La extensión o el tipo del archivo no coincide con la especificación'}));
         return res.end();
+    }else
+    {
+      if(sFext[1] != OrderPack.specid.format_ext  && sFext[1] != 'zip'){
+              res.write(JSON.stringify({err:2, message:'La extensión o el tipo del archivo no coincide con la especificación'}));
+              return res.end();
+        }
+
     }
 
-    if(sFext[1] != OrderPack.specid.format_ext  && sFext[1] != 'zip'){
-        res.write(JSON.stringify({err:2, message:'La extensión o el tipo del archivo no coincide con la especificación'}));
-        return res.end();
-    }
+
+    
 
     var orderpackimgs = OrderPack.images;
     var b_findimg = false;

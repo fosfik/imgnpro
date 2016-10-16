@@ -108,10 +108,10 @@
                             //console.log(data);
 
                             if(res.err == 1){
-                                return cb('Esta imagen no pertenece a este paquete:' + data.message);
+                                return cb('Esta imagen no pertenece a este paquete:' + res.message);
                             }
                             if(res.err == 2){
-                                return cb(data.message);
+                                return cb(res.message);
                             }
                             if (!res.policy) {
                                 return cb('No se pudo recibir una URL para cargar la imagen');

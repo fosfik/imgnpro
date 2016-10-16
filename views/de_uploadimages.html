@@ -129,8 +129,14 @@
                             return cb('No se pudo conseguir una url válida');
                         });
                     },
-                    sending: function(file, xhr) {
+                    sending: function(file, xhr, formData) {
 
+
+// app._dropzoneSendingCallback = function (file, xhr, formData) {
+//     $.each(file.postData, function (k, v) {
+//         formData.append(k, v);
+//     });
+// };
                         console.log('sending')
                         // var _send = xhr.send;
                         // xhr.setRequestHeader('x-amz-acl', 'public-read');

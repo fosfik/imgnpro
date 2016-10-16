@@ -37,9 +37,10 @@
 
                 $("div#myId").dropzone({
                     //url:"#",
-                    url: "https://imgnprotestdone.s3.amazonaws.com/",
+                    url: "https://<%= S3_BUCKET_NAME_DONE %>.s3.amazonaws.com/",
                     dictDefaultMessage: "<b>Suelta tus archivos aquí</b><br> <p class='texto_plano'> (o haz click)<p>",
                     dictRemoveFile: "Borrar imagen",
+                    dictCancelUpload: "Borrar imagen",
                     dictMaxFilesExceeded: "Ya no puedes cargar más imágenes, se ha alcanzado el límite de este paquete.",
                     dictInvalidFileType: "No puedes subir archivos de este tipo (solamente: .jpg, .tif, .psd y .png)",
                     method: "POST",
@@ -121,8 +122,9 @@
                             
                             file.postData = { key: res.key, AWSAccessKeyId: res.AWSAccessKeyId, acl: "public-read", policy: res.policy, signature: res.signature, 'content-type': file.type };
 
-                            //file.signedRequest = data.signedRequest;
-                            //file.finalURL = data.downloadURL;
+                            file.signedRequest = res.url;
+                            //this.options.url  = res.url;
+                            //file.finalURL = res.url;
 
                             cb();
                         }).fail(function() {
@@ -146,14 +148,16 @@
                         // }
                         $.each(file.postData, function (k, v) {
                             formData.append(k, v);
+                        
                         });
+                        formData.append("Content-Length", "50000000");
 
                     },
-                    processing:function(file){
+                    // processing:function(file){
 
-                        this.options.url = file.signedRequest;
+                    //     this.options.url = file.signedRequest;
 
-                    },
+                    // },
                     complete:function(file){
                         //if (file.accepted && file.status == 'error' && file.retryTime > 5) {
                         if (file.accepted && file.status == 'error') {

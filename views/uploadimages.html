@@ -18,9 +18,10 @@
             $(document).ready(function(){
                 caltotalpay();
                 $("div#myId").dropzone({
-                    url:"#",
+                    url:"https://<%= S3_BUCKET_NAME %>.s3.amazonaws.com/",
                     dictDefaultMessage: "<b>Suelta tus archivos aquí</b><br> <p class='texto_plano'> (o haz click)<p>",
                     dictRemoveFile: "Borrar imagen",
+                    dictCancelUpload: "Borrar imagen",
                                     //{ "My-Awesome-Header": "header value" }
                     // Dropzone.prototype.defaultOptions.dictDefaultMessage = "Drop files here to upload";
                     // Dropzone.prototype.defaultOptions.dictFallbackMessage = "Your browser does not support drag'n'drop file uploads.";
@@ -33,7 +34,10 @@
                     // Dropzone.prototype.defaultOptions.dictRemoveFile = "Remove file";
                     // Dropzone.prototype.defaultOptions.dictMaxFilesExceeded = "You can not upload any more files.";
 
-                    method: "PUT",
+                    dictMaxFilesExceeded: "Ya no puedes cargar más imágenes, se ha alcanzado el límite de este paquete.",
+                    dictInvalidFileType: "No puedes subir archivos de este tipo (solamente: .jpg, .tif, .psd y .png)",
+                    method: "POST",
+                    maxFilesize: 2000, // in mb
                     uploadMultiple: false,
                     paramName: "file",
                     //maxFiles: 10000,
@@ -73,28 +77,13 @@
                         
 
                         //path to S3 signature
-                        $.getJSON('/sign-s3', params).done(function(data) {
+                        $.getJSON('/sign-s3', params).done(function(res) {
                             //console.log(data);
-
-                            if (!data.signedRequest) {
+                            if (!res.policy) {
                                 return cb('No se pudo recibir una URL para cargar la imagen');
                             }
-
-                            // $.getJSON('/sign-s3get', params).done(function(data) {
-                            //                             //console.log(data);
-
-                            //     if (!data.signedRequest) {
-                            //         return console.log('No se pudo recibir una URL para descargar la imagen');
-                            //     }
-
-                            // });
-                            file.signedRequest = data.signedRequest;
-                            file.finalURL = data.downloadURL;
-                            //imageCount++;
-                            //document.forms[0].imagelist.value = imageUploadInfos;
-                            //alert("accept");
-                            //$("div#imageCount").html(imageCount);
-
+                            file.postData = { key: res.key, AWSAccessKeyId: res.AWSAccessKeyId, acl: "public-read", policy: res.policy, signature: res.signature, 'content-type': file.type };
+                            file.signedRequest = res.url;
                             cb();
                         }).fail(function() {
                             
@@ -112,19 +101,25 @@
                     sending: function(file, xhr, formData) {
 
                         console.log('sending')
-                        var _send = xhr.send;
-                        formData.append("fileName", "myName.tif");
-                        xhr.setRequestHeader('x-amz-acl', 'public-read');
-                        xhr.send = function() {
-                            _send.call(xhr, file);
-                        }
+                        // var _send = xhr.send;
+                        // formData.append("fileName", "myName.tif");
+                        // xhr.setRequestHeader('x-amz-acl', 'public-read');
+                        // xhr.send = function() {
+                        //     _send.call(xhr, file);
+                        // }
+
+                        $.each(file.postData, function (k, v) {
+                            formData.append(k, v);
+                        
+                        });
+                        formData.append("Content-Length", "50000000");
 
                     },
-                    processing:function(file){
+                    // processing:function(file){
 
-                        this.options.url = file.signedRequest;
+                    //    // this.options.url = file.signedRequest;
 
-                    },
+                    // },
                     complete:function(file){
                         //if (file.accepted && file.status == 'error' && file.retryTime > 5) {
                         if (file.accepted && file.status == 'error') {

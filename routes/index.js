@@ -1978,6 +1978,7 @@ router.get('/sign-s3done', (req, res) => {
     console.log(sFext);
 
 
+
     if(OrderPack.specid.format_ext == "tif" && (sFext[1] != 'tiff' && sFext[1] != 'tif')  ){
         res.write(JSON.stringify({err:2, message:'La extensión o el tipo del archivo no coincide con la especificación'}));
         return res.end();

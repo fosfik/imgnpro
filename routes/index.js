@@ -2044,20 +2044,48 @@ router.get('/sign-s3done', (req, res) => {
         ContentType: fileType,
         ACL: 'public-read'
       };
-      s3.getSignedUrl('putObject', s3Params, (err, data) => {
-        if(err){
-          console.log("error");
-          res.write(JSON.stringify({err:2,message:'No se pudo obtener una firma'}));
-          return res.end();
-        }
-        const returnData = {
-          signedRequest: data,
-          url: `https://${S3_BUCKET_NAME_DONE}.s3.amazonaws.com/${fileName}`
-        };
-        console.log(returnData);
-        res.write(JSON.stringify(returnData));
-        res.end();
+
+
+      var policy = require('s3-policy');
+       
+      var p = policy({
+        secret: 'aWQF6VpSE96yIaHgrZPFM6JXbycbjYf67a4O9slH',
+        length: 5000000,
+        bucket: S3_BUCKET_NAME_DONE,
+        key: fileName,
+        expires: new Date(Date.now() + 60000),
+        acl: 'public-read'
       });
+       
+      console.log(p.policy);
+      console.log(p.signature);
+      var result = {
+        AWSAccessKeyId: 'AKIAIXDUE4POETB7MR6Q',
+        key: fileName,
+        policy: p.policy,
+        signature: p.signature
+      };
+
+      console.log(result);
+        res.write(JSON.stringify(result));
+        res.end();
+
+
+
+      // s3.getSignedUrl('putObject', s3Params, (err, data) => {
+      //   if(err){
+      //     console.log("error");
+      //     res.write(JSON.stringify({err:2,message:'No se pudo obtener una firma'}));
+      //     return res.end();
+      //   }
+      //   const returnData = {
+      //     signedRequest: data,
+      //     url: `https://${S3_BUCKET_NAME_DONE}.s3.amazonaws.com/${fileName}`
+      //   };
+      //   console.log(returnData);
+      //   res.write(JSON.stringify(returnData));
+      //   res.end();
+      // });
 
     }else{
       res.write(JSON.stringify({err:1, message:' Imagen no válida'}));

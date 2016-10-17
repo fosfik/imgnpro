@@ -104,6 +104,15 @@ header.sticky {
     margin-top: 150px;
 }
 
+#contregistro2 {
+    display: inline-block;
+    border: solid 2px #ccc;
+    border-radius: 20px;
+    width: 400px;
+    padding: 20px;
+    margin-top: 50px;
+}
+
 .redes_icon{
     margin-right: 5px;
     float: left;
@@ -228,6 +237,16 @@ hr {
 
 .supertext {
     font-size: 36px;
+    font-weight: lighter;
+    text-align: left;
+    padding: 5px;
+    margin-left: 15px;
+    color: #000;
+}
+
+.notsupertext {
+    font-size: 22px;
+    font-weight: lighter;
     text-align: left;
     padding: 5px;
     margin-left: 15px;
@@ -243,6 +262,42 @@ hr {
 }
 
 .textcont {
-    width: 60%;
+    width: 40%;
     padding: 10px;
+    display: inline-block;
+    margin-right: 20px
+}
+
+.fotoad {
+    width: 300px;
+    border-radius: 10px
+}
+
+#wrapwrapper {
+    width: 330px;
+    height: 250px;
+    text-align: center;
+    display: inline-block;
+    padding: 10px;
+    vertical-align: top;
+}
+
+#rotating-item-wrapper {
+    position: relative;
+	display: inline-block;
+    width: 300px;
+}
+
+.rotating-item1, .rotating-item2, .rotating-item3, .rotating-item4 {
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+footer {
+    text-align: center;
+    font-size: 12px;
+    padding: 20px;
+    color: #888
 }

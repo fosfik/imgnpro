@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8">
+        <title>IMGNpro, hagamos que tu producto destaque</title>
+        <link rel="stylesheet" href="../stylesheets/imgncss_session.css">
+        <link rel="stylesheet" href="../stylesheets/dropzone.css">
+        <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico"/>
+        <script src="../js/google.js"></script>
+        <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $.getJSON('/findaorder/<%= numorder %>').done(function(order) {
+                    if (order) {
+                        $("#imageCount").html(order.imagecount);
+                     console.log(order);
+                    //     $("#specLink").attr("href","/de_especificaciones2/" + order.specid );
+                        $.each(order.images, function(index, valueimg) {
+                            //console.log(valueimg);
+
+                             var params = {
+                                 filename: valueimg.imagename,
+                                 userid: order.userid
+                             };
+                            // $.getJSON('/sign-s3review', params).done(function(data) {
+                            //                             //console.log(data);
+                            //     var url ='';
+                            //     var urlthumb ='';
+                            //     var revimagename = '';
+                            //     if (data.signedRequest) {
+                            //         url = data.signedRequest;
+                            //         urlthumb = data.signedthumbRequest;
+                            //         revimagename = data.signedFileName;
+                            //     }
+                            //     var row = $("<tr>");
+                            //     row.append($("<td>" + value.numorder + "</td>"))
+                            //          .append($("<td>" + value.name + "</td>"))
+                            //          .append($("<td><a href='" + url + "' download>" + revimagename + "</a></td>"))
+                            //          .append($("<td><img src='" + urlthumb + "'></td>"));       
+
+                                     
+                            //     $("#orderstable tbody").append(row);
+
+                            // });
+                            
+
+                        });
+
+                    }
+                });
+                //$.each(data, function(index, value) {
+                    // console.log(value);
+                  
+            }); 
+        </script>
+       
+
+    </head>
+    <body>
+        <header class="bienvenida">
+            <ul>
+                <li>Hola <a id="user" class="bold">%= user.userlongname %></a><a class="bold">!</a></li>
+                <li>Órdenes en Proceso <a id="orders" class="bold"><%= countorders %></a></li>
+                <li><a id="salir" class="bold" href="logout">Salir</a></li>
+            </ul>
+        </header>
+        <section id="menuver">
+            <nav>
+                <ul>
+                    <li class="menulogo"><h1><a href="/principal"><img src="../images/logo_black.png" alt="logo"></a></h1></li>
+                    <li><a href="/micuenta">Mi Cuenta</a></li>
+                    <li><a href="/historial">Historial</a></li>
+                    <li><a href="/especificaciones1">Especificaciones</a></li>
+                    <li><a href="/subirimagen1">Subir Imagenes</a></li>
+                    <li><a href="/contacto">Contacto</a></li>
+                </ul>
+            </nav>
+        </section>
+    <section id="contenedor">
+        <p class="encabezado">Descargar Imágenes</p>
+        <hr>
+        <section id="contenedor">
+            <div id= "orderstable" class="tabla">
+                <p class="encabezado">Lista del pedido <span><%= numorder %></span></p>
+                <table>
+                    <tr>
+                        <th>Orden</th>
+                        <th>Imagen</th>
+                    </tr>
+                </table>
+            </div>
+            <hr>
+            <div class="col3">
+                <div class="col5">
+                    <div class="droptable1">Número de Pedido</div>
+                    <div class="droptable2"><%= numorder %></div>
+                </div>
+                <div class="col5">
+                    <div class="droptable1">Imágenes</div>
+                    <div id="imageCount" class="droptable2">0</div>
+                </div>
+                <div class="col5">
+                    <div class="buttonblue2"><a href="#openQualityModal">Control de Calidad</a></div>
+                </div>
+            </div>
+            <hr>
+        </section>
+
+
+        
+    </section>
+        <aside id="menurigth">
+            <p class="encabezado"> Tutorial</p>
+             <div class="video_med"><a onclick="ponleplay()" href="#openVideoModal"><img src="../images/tumbnail_video.jpg" width="140px"></a></div>
+            <hr>
+            <p class="encabezado"> FAQs</p>
+            <p><a class="texto_plano">1. ¿Están seguros mis datos?</a></p>
+            <p><a class="texto_plano">2. ¿Tiempo de Entrega?</a></p>
+            <p><a class="texto_plano">3. ¿Prueba Gratis?</a></p>
+            <p><a class="texto_plano">4. ¿Cómo Pago?</a></p>
+            <div class="button1">
+            <a href="faq">Ver más</a> 
+            </div>
+        </aside>
+        <div id="openQualityModal" class="modalDialog">
+            <div>
+                <a href="#close" title="Close" Class="close">X</a>
+                <h1 class="encabezado">Control de Calidad</h1>
+                <hr class="hrmodal">
+                <div class="contModal">
+                    <p class="texto_calidad">Tu entera satisfación es nuestra garantía.</p><p class="texto_calidad">Si alguna de las imágenes recibidas no es satisfactoria,</p><p class="texto_calidad">por favor mándala a nuestro correo</p>
+                    <p class="texto_calidad_mail"><a href="mailto:qualitycontrol@mail-imgnpro.com">qualitycontrol@mail-imgnpro.com</a></p>
+                    <p class="texto_calidad">junto con una descripción del problema presentado.</p>
+                    <br>
+                    <p class="texto_calidad">En la brevedad nos prondremos en contacto con usted.</p>
+                    <br>
+                </div>
+                <div class="buttonModal">
+                        <a id="buttonshadow" href="#close">Aceptar</a>
+                </div> 
+            </div>
+        </div>
+    </body>
+</html>

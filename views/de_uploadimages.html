@@ -11,18 +11,40 @@
         <script src="../js/general.js"></script>
         <script type="text/javascript">
             Dropzone.autoDiscover = false;
-            var acceptedFileType = ".jpg, .png, .tif, .psd";
+            var acceptedFileType = ".jpg, .png, .tif, .psd, .zip, .tiff";
             var imageCount = 0;
             var imageUploadInfos =[];
             $(document).ready(function(){
                 //caltotalpay();
+
+     // url: app.S3_BUCKET,
+     //    method: "POST",
+     //    autoProcessQueue: true,
+     //    clickable: ['.file-upload-container', '.add-more-icon'],
+        //maxfiles: 5,
+        // parallelUploads: 10,
+        
+        // maxThumbnailFilesize: 8, // 3MB
+        // thumbnailWidth: 150,
+        // thumbnailHeight: 150,
+        // acceptedFiles: app.acceptedFileType,
+        // dictInvalidFileType: app.ErrorFileTypeMessage,
+        // accept: app._dropzoneAcceptCallback,
+        // sending: app._dropzoneSendingCallback,
+        // complete: app._dropzoneCompleteCallback,
+        // success: app._dropzoneSuccessCallBack,
+        // error: app._dropzoneErrorCallBack
+
                 $("div#myId").dropzone({
-                    url:"#",
+                    //url:"#",
+                    url: "https://<%= S3_BUCKET_NAME_DONE %>.s3.amazonaws.com/",
                     dictDefaultMessage: "<b>Suelta tus archivos aquí</b><br> <p class='texto_plano'> (o haz click)<p>",
                     dictRemoveFile: "Borrar imagen",
+                    dictCancelUpload: "Borrar imagen",
                     dictMaxFilesExceeded: "Ya no puedes cargar más imágenes, se ha alcanzado el límite de este paquete.",
                     dictInvalidFileType: "No puedes subir archivos de este tipo (solamente: .jpg, .tif, .psd y .png)",
-                    method: "PUT",
+                    method: "POST",
+                    maxFilesize: 2000, // in mb
                     uploadMultiple: false,
                     paramName: "file",
                     maxFiles: <%= imagecount %>,
@@ -84,23 +106,25 @@
                         
 
                         //path to S3 signature
-                        $.getJSON('/sign-s3done', params).done(function(data) {
+                        $.getJSON('/sign-s3done', params).done(function(res) {
                             //console.log(data);
 
-                            if(data.err == 1){
-                                return cb('Esta imagen no pertenece a este paquete:' + data.message);
+                            if(res.err == 1){
+                                return cb('Esta imagen no pertenece a este paquete:' + res.message);
                             }
-                            if(data.err == 2){
-                                return cb(data.message);
+                            if(res.err == 2){
+                                return cb(res.message);
                             }
-                            if (!data.signedRequest) {
+                            if (!res.policy) {
                                 return cb('No se pudo recibir una URL para cargar la imagen');
                             }
 
                             
+                            file.postData = { key: res.key, AWSAccessKeyId: res.AWSAccessKeyId, acl: "public-read", policy: res.policy, signature: res.signature, 'content-type': file.type };
 
-                            file.signedRequest = data.signedRequest;
-                            file.finalURL = data.downloadURL;
+                            file.signedRequest = res.url;
+                            //this.options.url  = res.url;
+                            //file.finalURL = res.url;
 
                             cb();
                         }).fail(function() {
@@ -108,21 +132,32 @@
                             return cb('No se pudo conseguir una url válida');
                         });
                     },
-                    sending: function(file, xhr) {
+                    sending: function(file, xhr, formData) {
 
+
+// app._dropzoneSendingCallback = function (file, xhr, formData) {
+//     $.each(file.postData, function (k, v) {
+//         formData.append(k, v);
+//     });
+// };
                         console.log('sending')
-                        var _send = xhr.send;
-                        xhr.setRequestHeader('x-amz-acl', 'public-read');
-                        xhr.send = function() {
-                            _send.call(xhr, file);
-                        }
+                        // var _send = xhr.send;
+                        // xhr.setRequestHeader('x-amz-acl', 'public-read');
+                        // xhr.send = function() {
+                        //     _send.call(xhr, file);
+                        // }
+                        $.each(file.postData, function (k, v) {
+                            formData.append(k, v);
+                        
+                        });
+                        formData.append("Content-Length", "200000000");
 
                     },
-                    processing:function(file){
+                    // processing:function(file){
 
-                        this.options.url = file.signedRequest;
+                    //     this.options.url = file.signedRequest;
 
-                    },
+                    // },
                     complete:function(file){
                         //if (file.accepted && file.status == 'error' && file.retryTime > 5) {
                         if (file.accepted && file.status == 'error') {

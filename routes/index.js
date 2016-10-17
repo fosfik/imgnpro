@@ -654,6 +654,11 @@ console.log('ID:' + req.body.specid);
     res.render('de_package_review', {packageid: req.params.packageid});
   });
 
+ router.get('/downloadimages/:numorder', function(req, res) {
+    // Display the Login page with any flash message, if any
+    res.render('downloadimages', {numorder: req.params.numorder, countorders:ordersinproc});
+  });
+
 
   router.get('/de_uploadimages/:packageid', 
      //require('connect-ensure-login').ensureLoggedIn('/de_login'),
@@ -985,7 +990,7 @@ router.get('/de_designers',
           findaorder(req.params.numorder,function(error,order){
                console.log(order);
                res.setHeader('Content-Type', 'application/json');
-               res.send(JSON.stringify({ order:order[0].numorder, specid: order[0].specid}));
+               res.send(JSON.stringify({ order:order[0].numorder, specid: order[0].specid, imagecount:order[0].imagecount, images:order[0].images, userid: order[0].userid}));
                //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id });
                //res.render('confirmpayorder', {message: req.flash('message'), user: req.user, numorder:req.params.numorder, order:order[0],  config:config, countorders:ordersinproc});             
           });
@@ -1769,7 +1774,7 @@ router.get('/sign-s3', (req, res) => {
   var policy = require('s3-policy');
   var p = policy({
     secret: process.env.AWS_SECRET_ACCESS_KEY,
-    length: 50000000,
+    length: 200000000,
     bucket: S3_BUCKET_NAME,
     key: fileName,
     ContentType: fileType,
@@ -1823,6 +1828,34 @@ router.get('/sign-s3get', (req, res) => {
           const returnData = {
             signedRequest: data,
             signedthumbRequest: urlthumb
+            //url: `https://${S3_BUCKET_NAME}.s3.amazonaws.com/${fileName}`
+          };
+          console.log(returnData);
+          res.write(JSON.stringify(returnData));
+          res.end();
+
+      });
+});
+
+
+router.get('/sign-s3down', (req, res) => {
+        const s3 = new aws.S3();
+        const fileName = req.query['userid'] +'/' + req.query['filename'];
+        console.log('File:' + fileName);
+        const s3Params = {Bucket: S3_BUCKET_NAME_DONE, Key: fileName, Expires: 100000};
+        //const s3Paramsthumb = {Bucket: S3_BUCKET_NAME_THUMB, Key: fileName, Expires: 100000};
+
+      //var urlthumb = s3.getSignedUrl('getObject', s3Paramsthumb);
+
+      s3.getSignedUrl('getObject', s3Params, function (err, data) {
+        //console.log("The URL is", url);
+          if(err){
+            console.log("error");
+            return res.end();
+          }
+          const returnData = {
+            signedRequest: data
+            //signedthumbRequest: urlthumb
             //url: `https://${S3_BUCKET_NAME}.s3.amazonaws.com/${fileName}`
           };
           console.log(returnData);
@@ -2053,8 +2086,8 @@ console.log(sFext[1] != 'zip');
       var policy = require('s3-policy');
        
       var p = policy({
-        secret: 'aWQF6VpSE96yIaHgrZPFM6JXbycbjYf67a4O9slH',
-        length: 50000000,
+        secret: process.env.AWS_SECRET_ACCESS_KEY,
+        length: 200000000,
         bucket: S3_BUCKET_NAME_DONE,
         key: fileName,
         ContentType: fileType,
@@ -2062,10 +2095,11 @@ console.log(sFext[1] != 'zip');
         acl: 'public-read'
       });
        
+ // };
       console.log(p.policy);
       console.log(p.signature);
       var result = {
-        AWSAccessKeyId: 'AKIAIXDUE4POETB7MR6Q',
+        AWSAccessKeyId: process.env.AWS_ACCESS_KEY_ID,
         key: fileName,
         policy: p.policy,
         signature: p.signature,
@@ -2350,7 +2384,7 @@ function findaorder(orderid, cb){
 
         cb(2);
     }
-  }).select('date status totalpay totalpayMXN specid imagecount').limit(1);
+  }).select('date status totalpay totalpayMXN specid imagecount images userid').limit(1);
 }
 
 function doConfirmOrder(numorder,req,typespec,cb){

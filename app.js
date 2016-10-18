@@ -401,6 +401,10 @@ passport.use('signup', new LocalStrategy({
     //console.log("prueba");
     findOrCreateUser = function(){
       // find a user in Mongo with provided username
+     var acceptTerm = req.param('accept_terms');
+     if (acceptTerm === undefined){
+        return done(null, false,{message:'Acepte los términos y condiciones por favor'});
+     }
      User.findOne({'email':username},function(err, user) {
         // In case of any error return
          if (err){

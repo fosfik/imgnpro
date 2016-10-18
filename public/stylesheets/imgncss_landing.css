@@ -125,22 +125,9 @@ header.sticky {
     text-decoration: none;
 }
 
-input[name="nombre"] {
+input[name="nombre"], input[name="email"] {
     display: inline-block;
     width: 95%;
-    height: 20px;
-    margin: 5px;
-    padding: 5px;
-    text-align: center;
-    font-size: 14px;
-    color: #000;
-    background: #EEE;
-    border: solid 1px #CCC;
-}
-
-input[name="email"] {
-    display: inline-block;
-    width: 44%;
     height: 20px;
     margin: 5px;
     padding: 5px;

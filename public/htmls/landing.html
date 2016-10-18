@@ -5,11 +5,50 @@
         <title>IMGNpro, hagamos que tu producto destaque</title>
         <link rel="stylesheet" href="../stylesheets/imgncss_landing.css">
         <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico"/>
+        <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-    
+        <script src="../js/google.js"></script>
         <script>
             $(document).ready(function() {
+
+                var frm = $('#contactForm1');
+                frm.submit(function (ev) {
+                    $.ajax({
+                        type: frm.attr('method'),
+                        url: frm.attr('action'),
+                        data: frm.serialize(),
+                        success: function (data) {
+                            if (data.error == 1 ){
+                               alert(data.message);    
+                            }
+                            else{
+                                setTimeout(window.location='/principal',500);    
+                            }
+                        }
+                    });
+                    ev.preventDefault();
+                });
+
+                var frm2 = $('#contactForm2');
+                frm2.submit(function (ev) {
+                    $.ajax({
+                        type: frm2.attr('method'),
+                        url: frm2.attr('action'),
+                        data: frm2.serialize(),
+                        success: function (data) {
+                            if (data.error == 1 ){
+                               alert(data.message);    
+                            }
+                            else{
+                                setTimeout(window.location='/principal',500);    
+                            }
+                        }
+                    });
+                    ev.preventDefault();
+                });
+
+
                 $(window).on('scroll', function() {
                     if (Math.round($(window).scrollTop()) > 100) {
                         $('header').addClass("sticky");
@@ -22,7 +61,21 @@
                         $('#botonintro').removeClass("sticky");
                     }
                 });
+                
+
+                
+                      
             });
+        </script>
+        <script type="text/javascript">
+            function check(input,input2) {
+                if (input.value != document.getElementById(input2).value) {
+                    input.setCustomValidity('La contraseña no coincide.');
+                } else {
+                    // input is valid -- reset the error message
+                    input.setCustomValidity('');
+                }
+            }
         </script>
         <script>
             $(window).load(function() {	//start after HTML, images have loaded
@@ -196,23 +249,25 @@
         <section id="contenedor1">
             <div id="contregistro">
                 <div class="registro1">
-                    <input type="text" name="nombre" placeholder="Nombre">
-                    <br>
-                    <input type="email" name="email" placeholder="Correo Electrónico">
-                    <br>
-                    <input type="password" name="pass" placeholder="Contraseña">
-                    <input type="password" name="pass" placeholder="Repetir Contraseña">
-                    <br>
-                    <br>
-                    <input type="checkbox"><label class="postcheck">Acepto los <a class="terms" href="../pdfs/tems.pdf" target="_blank">Terminos y Condiciones de IMGNpro</a>.</label>
-                    <input class="buttonreg" type="submit" value="Quiero mis 3 fótos Gratis!">
-                    <p class="texto_plano">o bien regístrate Gratis con tu cuenta de</p>
-                    <div class="button3">
-                        <img class="redes_icon" src="../images/icon_f.png"><a href="/login/facebook">Facebook</a>
-                    </div>
-                    <div class="button4">
-                        <img class="redes_icon" src="../images/icon_g.png"><a href="/login/google">Google</a>
-                    </div>
+                    <form id="contactForm1"  action="/signup" method="post" name="registro_form">
+                        <input type="text" name="userlongname" placeholder="Nombre" required>
+                        <br>
+                        <input type="email" name="email" placeholder="Correo Electrónico" required>
+                        <br>
+                        <input type="password" name="password" id="password1"  placeholder="Contraseña" required>
+                        <input type="password" name="confirmpass"  id="confirmpass" oninput="check(this, 'password1')" placeholder="Confirmar Contraseña" required>
+                        <br>
+                        <br>
+                        <input type="checkbox" name="accept_terms" required><label class="postcheck">Acepto los <a class="terms" href="../pdfs/tems.pdf" target="_blank">Terminos y Condiciones de IMGNpro</a>.</label>
+                        <input class="buttonreg" type="submit" value="Quiero mis 3 fótos Gratis!">
+                        <p class="texto_plano">o bien regístrate Gratis con tu cuenta de</p>
+                        <div class="button3">
+                            <img class="redes_icon" src="../images/icon_f.png"><a href="/login/facebook">Facebook</a>
+                        </div>
+                        <div class="button4">
+                            <img class="redes_icon" src="../images/icon_g.png"><a href="/login/google">Google</a>
+                        </div>
+                    </form> 
                 </div>
             </div>
         </section>
@@ -274,23 +329,25 @@
         <section id="contenedor1">
             <div id="contregistro2">
                 <div class="registro1">
-                    <input type="text" name="nombre" placeholder="Nombre">
-                    <br>
-                    <input type="email" name="email" placeholder="Correo Electrónico">
-                    <br>
-                    <input type="password" name="pass" placeholder="Contraseña">
-                    <input type="password" name="pass" placeholder="Repetir Contraseña">
-                    <br>
-                    <br>
-                    <input type="checkbox"><label class="postcheck">Acepto los <a class="terms" href="../pdfs/tems.pdf" target="_blank">Terminos y Condiciones de IMGNpro</a>.</label>
-                    <input class="buttonreg" type="submit" value="Quiero mis 3 fótos Gratis!">
-                    <p class="texto_plano">o bien regístrate Gratis con tu cuenta de</p>
-                    <div class="button3">
-                        <img class="redes_icon" src="../images/icon_f.png"><a href="/login/facebook">Facebook</a>
-                    </div>
-                    <div class="button4">
-                        <img class="redes_icon" src="../images/icon_g.png"><a href="/login/google">Google</a>
-                    </div>
+                    <form id="contactForm2"  action="/signup" method="post" name="registro_form">
+                        <input type="text" name="userlongname" placeholder="Nombre" required>
+                        <br>
+                        <input type="email" name="email" placeholder="Correo Electrónico" required>
+                        <br>
+                        <input type="password" name="password" id="password2"  placeholder="Contraseña" required>
+                        <input type="password" name="confirmpass"  id="confirmpass" oninput="check(this, 'password2')" placeholder="Confirmar Contraseña" required>
+                        <br>
+                        <br>
+                        <input type="checkbox" name="accept_terms" required><label class="postcheck">Acepto los <a class="terms" href="../pdfs/tems.pdf" target="_blank">Terminos y Condiciones de IMGNpro</a>.</label>
+                        <input class="buttonreg" type="submit" value="Quiero mis 3 fótos Gratis!">
+                        <p class="texto_plano">o bien regístrate Gratis con tu cuenta de</p>
+                        <div class="button3">
+                            <img class="redes_icon" src="../images/icon_f.png"><a href="/login/facebook">Facebook</a>
+                        </div>
+                        <div class="button4">
+                            <img class="redes_icon" src="../images/icon_g.png"><a href="/login/google">Google</a>
+                        </div>
+                    </form> 
                 </div>
             </div>
         </section>

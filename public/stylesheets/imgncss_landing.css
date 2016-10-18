@@ -125,7 +125,7 @@ header.sticky {
     text-decoration: none;
 }
 
-input[name="nombre"], input[name="email"] {
+input[name="userlongname"], input[name="email"] {
     display: inline-block;
     width: 95%;
     height: 20px;
@@ -138,7 +138,20 @@ input[name="nombre"], input[name="email"] {
     border: solid 1px #CCC;
 }
 
-input[name="pass"] {
+input[name="password"] {
+    display: inline-block;
+    width: 43.89%;
+    height: 20px;
+    margin: 5px;
+    padding: 5px;
+    text-align: center;
+    font-size: 14px;
+    color: #000;
+    background: #EEE;
+    border: solid 1px #CCC;
+}
+
+input[name="confirmpass"] {
     display: inline-block;
     width: 43.89%;
     height: 20px;

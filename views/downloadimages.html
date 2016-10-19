@@ -22,26 +22,26 @@
                                  filename: valueimg.imagename,
                                  userid: order.userid
                              };
-                            // $.getJSON('/sign-s3review', params).done(function(data) {
-                            //                             //console.log(data);
-                            //     var url ='';
-                            //     var urlthumb ='';
-                            //     var revimagename = '';
-                            //     if (data.signedRequest) {
-                            //         url = data.signedRequest;
-                            //         urlthumb = data.signedthumbRequest;
-                            //         revimagename = data.signedFileName;
-                            //     }
-                            //     var row = $("<tr>");
-                            //     row.append($("<td>" + value.numorder + "</td>"))
-                            //          .append($("<td>" + value.name + "</td>"))
-                            //          .append($("<td><a href='" + url + "' download>" + revimagename + "</a></td>"))
-                            //          .append($("<td><img src='" + urlthumb + "'></td>"));       
+                            $.getJSON('/sign-s3down', params).done(function(data) {
+                                                        //console.log(data);
+                                var url ='';
+                                //var urlthumb ='';
+                                var revimagename = '';
+                                if (data.signedRequest) {
+                                    url = data.signedRequest;
+                                    //urlthumb = data.signedthumbRequest;
+                                    revimagename = data.signedFileName;
+                                }
+                                var row = $("<tr>");
+                                row.append($("<td>" + value.numorder + "</td>"))
+                                     .append($("<td>" + value.name + "</td>"))
+                                     .append($("<td><a href='" + url + "' download>" + revimagename + "</a></td>"));
+                                        
 
                                      
-                            //     $("#orderstable tbody").append(row);
+                                $("#orderstable tbody").append(row);
 
-                            // });
+                            });
                             
 
                         });
@@ -61,7 +61,7 @@
             <ul>
                 <li>Hola <a id="user" class="bold">%= user.userlongname %></a><a class="bold">!</a></li>
                 <li>Órdenes en Proceso <a id="orders" class="bold"><%= countorders %></a></li>
-                <li><a id="salir" class="bold" href="logout">Salir</a></li>
+                <li><a id="salir" class="bold" href="/logout">Salir</a></li>
             </ul>
         </header>
         <section id="menuver">
@@ -119,7 +119,7 @@
             <p><a class="texto_plano">3. ¿Prueba Gratis?</a></p>
             <p><a class="texto_plano">4. ¿Cómo Pago?</a></p>
             <div class="button1">
-            <a href="faq">Ver más</a> 
+            <a href="/faq">Ver más</a> 
             </div>
         </aside>
         <div id="openQualityModal" class="modalDialog">

@@ -1718,6 +1718,7 @@ router.get('/delete-s3', (req, res) => {
         error: 1,
         message: `Error al borrar`
       };
+      res.setHeader('Content-Type', 'application/json');
       res.write(JSON.stringify(returnData));
       res.end();
     
@@ -1728,14 +1729,11 @@ router.get('/delete-s3', (req, res) => {
           error: 0,
           message: `se borró`
         };
+        res.setHeader('Content-Type', 'application/json');
         res.write(JSON.stringify(returnData));
         res.end();
         }
       });
-
-
-
-
 });
 
 router.get('/sign-s3', (req, res) => {
@@ -1791,6 +1789,7 @@ router.get('/sign-s3', (req, res) => {
     url: `https://${S3_BUCKET_NAME}.s3.amazonaws.com/${fileName}`
   };
   //console.log(result);
+  res.setHeader('Content-Type', 'application/json');
   res.write(JSON.stringify(result));
   res.end();
 
@@ -1823,6 +1822,8 @@ router.get('/sign-s3get', (req, res) => {
         //console.log("The URL is", url);
           if(err){
             console.log("error");
+            res.setHeader('Content-Type', 'application/json');
+            res.write(JSON.stringify({}));
             return res.end();
           }
           const returnData = {
@@ -1831,6 +1832,7 @@ router.get('/sign-s3get', (req, res) => {
             //url: `https://${S3_BUCKET_NAME}.s3.amazonaws.com/${fileName}`
           };
           //console.log(returnData);
+          res.setHeader('Content-Type', 'application/json');
           res.write(JSON.stringify(returnData));
           res.end();
 
@@ -1851,6 +1853,8 @@ router.get('/sign-s3down', (req, res) => {
         //console.log("The URL is", url);
           if(err){
             console.log("error");
+            res.setHeader('Content-Type', 'application/json');
+            res.write(JSON.stringify({}));
             return res.end();
           }
           const returnData = {
@@ -1859,6 +1863,7 @@ router.get('/sign-s3down', (req, res) => {
             //url: `https://${S3_BUCKET_NAME}.s3.amazonaws.com/${fileName}`
           };
           //console.log(returnData);
+          res.setHeader('Content-Type', 'application/json');
           res.write(JSON.stringify(returnData));
           res.end();
 
@@ -1883,7 +1888,7 @@ router.get('/sign-s3review', (req, res) => {
             error: 1
             //url: `https://${S3_BUCKET_NAME}.s3.amazonaws.com/${fileName}`
           };
-          
+        res.setHeader('Content-Type', 'application/json');  
         res.write(JSON.stringify(returnData));
         //res.write(JSON.stringify({err:2,message:'El archivo no tiene extensión'}));
         return res.end();
@@ -1913,6 +1918,7 @@ router.get('/sign-s3review', (req, res) => {
               signedthumbRequest: urlthumb
               //url: `https://${S3_BUCKET_NAME}.s3.amazonaws.com/${fileName}`
             };
+            res.setHeader('Content-Type', 'application/json');
             res.write(JSON.stringify(returnData));
             return res.end();
           }
@@ -1924,6 +1930,7 @@ router.get('/sign-s3review', (req, res) => {
             //url: `https://${S3_BUCKET_NAME}.s3.amazonaws.com/${fileName}`
           };
           //console.log(returnData);
+          res.setHeader('Content-Type', 'application/json');
           res.write(JSON.stringify(returnData));
           res.end();
 
@@ -1956,6 +1963,7 @@ router.get('/delete-s3done', (req, res) => {
         error: 1,
         message: `Error al borrar`
       };
+      res.setHeader('Content-Type', 'application/json');
       res.write(JSON.stringify(returnData));
       res.end();
     
@@ -1966,14 +1974,11 @@ router.get('/delete-s3done', (req, res) => {
           error: 0,
           message: `se borró`
         };
+        res.setHeader('Content-Type', 'application/json');
         res.write(JSON.stringify(returnData));
         res.end();
         }
       });
-
-
-
-
 });
 
 // Para solicitar una llave para que el diseñador suba un archivo terminado
@@ -1995,6 +2000,7 @@ router.get('/sign-s3done', (req, res) => {
     //console.log('archivo subido por el diseñador:' + sFNameComp);
   }else{
     console.log("error");
+    res.setHeader('Content-Type', 'application/json');
     res.write(JSON.stringify({err:2,message:'El archivo no tiene extensión'}));
     return res.end();
  }
@@ -2007,22 +2013,23 @@ router.get('/sign-s3done', (req, res) => {
     //console.log("SpecID: " + OrderPack.specid.format_ext);
     //console.log(sFext);
 
-    if(OrderPack.specid.format_ext == "tif" && (sFext[1] != 'tiff' && sFext[1] != 'tif' && sFext[1] != 'zip' )  ){
+    if(OrderPack.specid.format_ext == "tif" && (sFext[1] != 'tiff' && sFext[1] != 'tif')  ){
         //console.log('1');
+        res.setHeader('Content-Type', 'application/json');
         res.write(JSON.stringify({err:2, message:'La extensión o el tipo del archivo no coincide con la especificación'}));
         return res.end();
     }
     
     if (OrderPack.specid.format_ext == "tif" && sFext[1] == 'tiff'){
-      sFext[1] = 'tif' ;
+        sFext[1] = 'tif' ;
     }
 
 //console.log(sFext[1] !== 'zip');
 //console.log(sFext[1] != 'zip');
-    if(sFext[1] != OrderPack.specid.format_ext  && sFext[1] != 'zip'){
-            res.write(JSON.stringify({err:2, message:'La extensión o el tipo del archivo no coincide con la especificación'}));
-            return res.end();
-    }
+    // if(sFext[1] != OrderPack.specid.format_ext  && sFext[1] != 'zip'){
+    //         res.write(JSON.stringify({err:2, message:'La extensión o el tipo del archivo no coincide con la especificación'}));
+    //         return res.end();
+    // }
 
     
     var orderpackimgs = OrderPack.images;
@@ -2107,6 +2114,7 @@ router.get('/sign-s3done', (req, res) => {
       };
 
       //console.log(result);
+        res.setHeader('Content-Type', 'application/json');
         res.write(JSON.stringify(result));
         res.end();
 
@@ -2128,6 +2136,7 @@ router.get('/sign-s3done', (req, res) => {
       // });
 
     }else{
+      res.setHeader('Content-Type', 'application/json');
       res.write(JSON.stringify({err:1, message:' Imagen no válida'}));
       return res.end();
     }
@@ -2672,7 +2681,7 @@ function doConfirmPayOrder(req,cb){
 
 router.get('/testorder', function (req,res) {
     //console.log('testorder');
-    Orders.findOne({ numorder: 19}, function (err, doc){
+    Orders.findOne({ numorder: 17}, function (err, doc){
 
     console.log(err);
     if (err){
@@ -2687,14 +2696,23 @@ router.get('/testorder', function (req,res) {
         //doc.disabled = false;
        
         //doc.specid = req.user.specid;
+        //console.log(doc);
+        //console.log(doc.images[0].push('position1', 'ooo'));
+        doc.images[0].de_imagename= 'paptito.jpg';
+        //doc.images[0].deimagename= 'paptito.jpg';
         console.log(doc);
-        console.log(doc.images[0].push('position1', 'ooo'));
         // doc.save(function(err){
         //     console.log(result)
         // });
         //doc.save();
+
+        doc.save(function(err, result){
+             console.log(result);
+             console.log(err);
         res.write(JSON.stringify({err:1, message:' Se guardo'}));
         res.end();
+         });
+        
       }else{
         res.write(JSON.stringify({err:1, message:' Error'}));
         res.end();

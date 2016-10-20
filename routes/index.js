@@ -147,6 +147,8 @@ router.get('/listorders/:limit', function(req, res) {
     } 
     else {
       console.log('No se encontraron pedidos');
+      res.setHeader('Content-Type', 'application/json');
+      res.send(JSON.stringify({}));  
     }
    
   }).select('imagecount numorder status date specid').sort('-date').limit(parseInt(req.params.limit));
@@ -170,6 +172,8 @@ router.get('/listorders', function(req, res) {
     } 
     else {
       console.log('No se encontraron pedidos');
+      res.setHeader('Content-Type', 'application/json');
+      res.send(JSON.stringify({})); 
     }
    
   }).select('imagecount numorder status date').sort('-date');
@@ -193,6 +197,8 @@ router.get('/packagesforwork', function(req, res) {
     } 
     else {
       console.log('No se encontraron paquetes de pedidos');
+      res.setHeader('Content-Type', 'application/json');
+      res.send(JSON.stringify({})); 
     }
    
   }).select('_id numorder imagecount').sort('numorder');
@@ -216,6 +222,8 @@ router.get('/listallorders', function(req, res) {
     } 
     else {
       console.log('No se encontraron pedidos');
+      res.setHeader('Content-Type', 'application/json');
+      res.send(JSON.stringify({})); 
     }
    
   }).select('imagecount numorder status date');
@@ -238,6 +246,8 @@ router.get('/listallorderpacks', function(req, res) {
     } 
     else {
       console.log('No se encontraron paquetes de pedidos');
+      res.setHeader('Content-Type', 'application/json');
+      res.send(JSON.stringify({})); 
     }
    
   }).select('_id imagecount numorder status date name userid isworking').sort({date:-1});
@@ -260,6 +270,8 @@ router.get('/listorderpack/:orderpackid', function(req, res) {
     } 
     else {
       console.log('No se encontró el paquete del pedido ' + req.params.orderpackid);
+      res.setHeader('Content-Type', 'application/json');
+      res.send(JSON.stringify({})); 
     }
    
   }).select('_id imagecount numorder status date name userid isworking images');
@@ -283,6 +295,8 @@ router.get('/listspecs', function(req, res) {
     } 
     else {
       console.log('No se encontraron especificaciones');
+      res.setHeader('Content-Type', 'application/json');
+      res.send(JSON.stringify({})); 
     }
   }).select('_id name date totalprice totalpriceMXN').sort('-date');
 });
@@ -305,6 +319,8 @@ router.get('/listspecs/:limit', function(req, res) {
     } 
     else {
       console.log('No se encontraron especificaciones');
+      res.setHeader('Content-Type', 'application/json');
+      res.send(JSON.stringify({})); 
     }
   }).select('_id name date totalprice totalpriceMXN typespec').sort('-date').limit(parseInt(req.params.limit));
 });

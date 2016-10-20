@@ -147,6 +147,8 @@ router.get('/listorders/:limit', function(req, res) {
     } 
     else {
       console.log('No se encontraron pedidos');
+      res.setHeader('Content-Type', 'application/json');
+      res.send(JSON.stringify({}));  
     }
    
   }).select('imagecount numorder status date specid').sort('-date').limit(parseInt(req.params.limit));

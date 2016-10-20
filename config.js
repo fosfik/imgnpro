@@ -23,25 +23,13 @@ if ( app.get('env') === 'production') {
 		callbackURL: 'http://www.imgnpro.com/login/google/return'
 	},
 	prices:{
-
-		// hasta el el dia de hoy:
-
-		// $1.50 Recorte / Remover Fondo a Imagen
-
-		// -Extras-
-
-		// $0.55 Sombra Natural
-		// $0.20 Drop Shadow
-		// $0.40 Correction Color
-		// $2.40 Clipping Path
-		// $0.60 Retoque Básico
 		cutandremove:'1.50',
 		naturalshadow:'0.55',
 		dropshadow:'0.20',
 		correctcolor:'0.40',
 		clippingpath:'2.40',
 		basicretouch:'0.60',
-		dollar:'19.04'
+		dollar:'18.94'
 	},
 		register:{
 			usermustactivate: false,
@@ -51,18 +39,6 @@ if ( app.get('env') === 'production') {
 			length: 20
 	}
 
-
-	// // Prueba
-	// // facebook:{
-	// // 	key:'1709249819339885',
-	// // 	secret:'4894456da8d734e0aa2685d202e9d489',
-	// // 	callbackURL: 'http://localhost:3000/login/facebook/return'
-	// // },
-	// cloudinary:{ 
- //        cloud_name: 'dmpmxfwwt', 
- //        api_key: '225134126558414', 
- //        api_secret: 'Fewu645wVZ_dGSN76IAYXgDt7m8' 
- //    }
 	};
 }
 else{
@@ -83,25 +59,13 @@ else{
 			callbackURL: 'http://localhost:3000/login/google/return'
 		},
 		prices:{
-
-			// hasta el el dia de hoy:
-
-			// $1.50 Recorte / Remover Fondo a Imagen
-
-			// -Extras-
-
-			// $0.55 Sombra Natural
-			// $0.20 Drop Shadow
-			// $0.40 Correction Color
-			// $2.40 Clipping Path
-			// $0.60 Retoque Básico
 			cutandremove:'1.50',
 			naturalshadow:'0.55',
 			dropshadow:'0.20',
 			correctcolor:'0.40',
 			clippingpath:'2.40',
 			basicretouch:'0.60',
-			dollar:'19.04'
+			dollar:'18.94'
 		},
 		register:{
 			usermustactivate: false,
@@ -149,7 +113,7 @@ else{
 			correctcolor:'0.40',
 			clippingpath:'2.40',
 			basicretouch:'0.60',
-			dollar:'19.04'
+			dollar:'18.94'
 		},
 		register:{
 			usermustactivate: false,

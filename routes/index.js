@@ -389,6 +389,38 @@ router.get('/listspecs/:limit', function(req, res) {
   });
 
 
+router.post('/confirmPackage', function(req, res) {
+  try{
+      var orderpackid = req.body.orderpackid;
+      OrderPacks
+      .findOne({_id:orderpackid})
+      //.populate('specid', 'totalprice')
+      .exec(function(err,OrderPack){
+        if(err){
+          res.setHeader('Content-Type', 'application/json');
+          return res.send(JSON.stringify({ error: 1, message: 'No se pudo confirmar el paquete'})); 
+        }
+        if (OrderPack){
+          OrderPack.status = 'Terminado';
+          OrderPack.save(function(err){
+            if (err){
+              res.setHeader('Content-Type', 'application/json');
+              res.send(JSON.stringify({ error: 1, message: 'No se pudo guardar la confirmación del paquete'})); 
+            }
+            else{
+              res.setHeader('Content-Type', 'application/json');
+              res.send(JSON.stringify({ error: 0, message: 'Se confirmó el paquete'})); 
+            }
+          });
+        }
+      });
+  }
+  catch(err){
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify({ error: 1, message: 'No se pudo confirmar el paquete'})); 
+  }
+});
+
 /* Crea un nuevo pedido. */
   router.post('/neworder', function(req, res) {
     // Display the Login page with any flash message, if any
@@ -2692,57 +2724,6 @@ function doConfirmPayOrder(req,cb){
       //}
     //});
 }
-
-
-
-router.get('/testorder', function (req,res) {
-    //console.log('testorder');
-    Orders.findOne({ numorder: 17}, function (err, doc){
-
-    console.log(err);
-    if (err){
-        console.log('Error : '+err);
-        res.write(JSON.stringify({err:1, message:' Error'}));
-        res.end();
-
-    }
-    else{
-      
-      if (doc) {
-        //doc.disabled = false;
-       
-        //doc.specid = req.user.specid;
-        //console.log(doc);
-        //console.log(doc.images[0].push('position1', 'ooo'));
-        doc.images[0].de_imagename= 'paptito.jpg';
-        //doc.images[0].deimagename= 'paptito.jpg';
-        console.log(doc);
-        // doc.save(function(err){
-        //     console.log(result)
-        // });
-        //doc.save();
-
-        doc.save(function(err, result){
-             console.log(result);
-             console.log(err);
-        res.write(JSON.stringify({err:1, message:' Se guardo'}));
-        res.end();
-         });
-        
-      }else{
-        res.write(JSON.stringify({err:1, message:' Error'}));
-        res.end();
-      }
-      
-    }  
-
-  });
-});    
-
-
-
-
-
 
 function countorders(userid,cb){
 

@@ -253,6 +253,30 @@ router.get('/listallorderpacks', function(req, res) {
   }).select('_id imagecount numorder status date name userid isworking').sort({date:-1});
 });
 
+// TODO agregar seguridad a esta ruta
+router.get('/listallorderpacks/:numorder', function(req, res) {
+  OrderPacks.find({numorder:req.params.numorder},function(err, orderpacks) {
+    // In case of any error return
+     if (err){
+       console.log('Error al consultar');
+     }
+     //console.log("prueba 2");
+   // already exists
+    if (orderpacks.length > 0) {
+      //console.log('se encontraron pedidos');
+      res.setHeader('Content-Type', 'application/json');
+      res.send(orderpacks); 
+
+    } 
+    else {
+      console.log('No se encontraron paquetes de pedidos');
+      res.setHeader('Content-Type', 'application/json');
+      res.send(JSON.stringify({})); 
+    }
+   
+  }).select('_id imagecount numorder status date name userid isworking').sort({date:-1});
+});
+
 router.get('/listorderpack/:orderpackid', function(req, res) {
   OrderPacks.find({'_id':req.params.orderpackid},function(err, orderpack) {
     // In case of any error return
@@ -716,7 +740,7 @@ router.post('/confirmPackage', function(req, res) {
 
  router.get('/downloadimages/:numorder', function(req, res) {
     // Display the Login page with any flash message, if any
-    res.render('downloadimages', {numorder: req.params.numorder, countorders:ordersinproc});
+    res.render('downloadimages', {numorder: req.params.numorder, countorders:ordersinproc, user: req.user});
   });
 
 

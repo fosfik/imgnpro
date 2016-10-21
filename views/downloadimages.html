@@ -57,21 +57,70 @@
         $(document).ready(function(){
                     $.ajax({
                         type: 'get',
-                        url: '/listallorderpacks',
+                        url: '/listallorderpacks/<%= numorder %>',
                         success: function (data) {
                             for (var i = 0; i < data.length; i++){
                                 console.log(data[i]._id);
-                                // var row = $("<tr>");
-                                // row.append($("<td>" + data[i].numorder + "</td>"))
-                                //      .append($("<td>" + data[i].imagecount + "</td>"))
-                                //      .append($("<td>" + data[i].date + "</td>"))
-                                //      .append($("<td>" + data[i].status + "</td>"))
-                                //      .append($("<td><a href='/de_package_get/" + data[i]._id + "'>" + data[i].name + "</a></td>"))
-                                //      .append($("<td>" + data[i].userid + "</td>"))
-                                //      .append($("<td>" + data[i].isworking + "</td>"))
-                                //      .append($('<td><a id="icontable" href="/de_uploadimages/'+ data[i]._id +'"><img src="../images/icon_cloud.png" height="20px" width="20px"></a></td>'))
-                                //      .append($("<td><a href='/de_package_review/" + data[i]._id + "'>Revisar paquete</a></td>"));
-                                // $("#orderstable tbody").append(row);
+
+                                $.ajax({
+                                    type: 'get',
+                                    url: '/listorderpack/' + data[i]._id,
+                                    success: function (data) {
+                                        // console.log(data[0]);
+                                        // console.log(data.images);
+                                        $.getJSON('/findaorder/' + <%= numorder %>).done(function(order) {
+                                                    if (order) {
+                                                    //console.log(order);
+                                                        //$("#specLink").attr("href","/de_especificaciones2/" + order.specid );
+                                                        $("#imageCount").html(order.imagecount);
+                                                    }
+                                        });
+
+                                        
+                                        $.each(data, function(index, value) {
+                                            // console.log(value);
+                                            $.each(value.images, function(index, valueimg) {
+                                                // console.log(valueimg);
+
+                                                var params = {
+                                                    filename: valueimg.imagename,
+                                                    userid: value.userid
+                                                };
+                                                $.getJSON('/sign-s3get', params).done(function(data) {
+                                                                            //console.log(data);
+                                                    var url ='';
+                                                    var urlthumb ='';
+                                                    if (data.signedRequest) {
+                                                        url = data.signedRequest;
+                                                        urlthumb = data.signedthumbRequest;
+                                                    }
+                                                    var row = $("<tr>");
+                                                    row.append($("<td>" + value.numorder + "</td>"))
+                                                         .append($("<td><a href='" + url + "' download>" + valueimg.imagename + "</a></td>"))
+                                                         .append($("<td><img src='" + urlthumb + "'></td>"));       
+
+                                                         
+                                                    $("#orderstable tbody").append(row);
+
+                                                });
+                                                
+
+                                            });
+                                        }); 
+
+
+                                        //console.log(data.images[0].imagename);
+                                        //console.log(data.images[0].length);
+                                        // for (var i = 0; i < data.length; i++){
+                                        
+                                        //}
+                                          
+
+                                    }
+                                });
+
+
+
                             }
                               
 
@@ -86,7 +135,7 @@
     <body>
         <header class="bienvenida">
             <ul>
-                <li>Hola <a id="user" class="bold">%= user.userlongname %></a><a class="bold">!</a></li>
+                <li>Hola <a id="user" class="bold"><%= user.userlongname %></a><a class="bold">!</a></li>
                 <li>Órdenes en Proceso <a id="orders" class="bold"><%= countorders %></a></li>
                 <li><a id="salir" class="bold" href="/logout">Salir</a></li>
             </ul>
@@ -112,7 +161,9 @@
                 <table>
                     <tr>
                         <th>Orden</th>
-                        <th>Imagen</th>
+                        <th>Imagen para descargar</th>
+                        <th>Imagen original</th>
+
                     </tr>
                 </table>
             </div>

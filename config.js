@@ -29,7 +29,7 @@ if ( app.get('env') === 'production') {
 		correctcolor:'0.40',
 		clippingpath:'2.40',
 		basicretouch:'0.60',
-		dollar:'18.94'
+		dollar:'19.01'
 	},
 		register:{
 			usermustactivate: false,
@@ -65,7 +65,7 @@ else{
 			correctcolor:'0.40',
 			clippingpath:'2.40',
 			basicretouch:'0.60',
-			dollar:'18.94'
+			dollar:'19.01'
 		},
 		register:{
 			usermustactivate: false,
@@ -113,7 +113,7 @@ else{
 			correctcolor:'0.40',
 			clippingpath:'2.40',
 			basicretouch:'0.60',
-			dollar:'18.94'
+			dollar:'19.01'
 		},
 		register:{
 			usermustactivate: false,

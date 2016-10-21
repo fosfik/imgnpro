@@ -408,8 +408,20 @@ router.post('/confirmPackage', function(req, res) {
               res.send(JSON.stringify({ error: 1, message: 'No se pudo guardar la confirmación del paquete'})); 
             }
             else{
-              res.setHeader('Content-Type', 'application/json');
-              res.send(JSON.stringify({ error: 0, message: 'Se confirmó el paquete'})); 
+
+              doneOrder(OrderPack.numorder, function(err,message){
+
+                if (err == 1){
+                  res.setHeader('Content-Type', 'application/json');
+                  res.send(JSON.stringify({ error: 0, message: message})); 
+                }
+                else{
+                  res.setHeader('Content-Type', 'application/json');
+                  res.send(JSON.stringify({ error: 0, message: 'Se confirmó el paquete'})); 
+                }
+              });
+
+              
             }
           });
         }
@@ -2723,6 +2735,40 @@ function doConfirmPayOrder(req,cb){
 
       //}
     //});
+}
+
+function doneOrder(numorder, cb){
+    OrderPacks.find({} ,function(err,OrderPack){
+      if(err){
+        cb( 1,'error al consultar paquetes de pedido');
+      }
+      if(!OrderPack){
+        cb( 1,'error al consultar paquetes de pedido');
+      }
+
+      if (OrderPack){
+        console.log(OrderPack.length);
+        var bDone = true;
+        // OrderPack.cursor( function(err,doc){
+        //   if (err) return cb (1, 'Error');
+        //   if (!doc) return cb (1, 'Error doc');
+        //   if (doc.status=='En Proceso'){
+        //       bDone = false;
+        //       console.log(doc);
+        //   }
+        // });
+        for (var i = 0; i < OrderPack.length; i++ ){
+          console.log(OrderPack[0].status);
+          if (OrderPack[0].status == 'En Proceso'){
+            bDone = false;
+          }
+        }
+        if (bDone == true){
+
+        }
+        cb( 0,'se confirmó el pedido');
+      }
+    });
 }
 
 function countorders(userid,cb){

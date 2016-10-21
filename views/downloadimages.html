@@ -81,25 +81,25 @@
                                             // console.log(value);
                                             $.each(value.images, function(index, valueimg) {
                                                 // console.log(valueimg);
-
                                                 var params = {
                                                     filename: valueimg.imagename,
-                                                    userid: value.userid
+                                                    userid: value.userid,
+                                                    orderpackid: value._id
                                                 };
                                                 $.getJSON('/sign-s3review', params).done(function(data) {
-                                                                            //console.log(data);
                                                     var url ='';
                                                     var urlthumb ='';
+                                                    var revimagename = '';
                                                     if (data.signedRequest) {
                                                         url = data.signedRequest;
                                                         urlthumb = data.signedthumbRequest;
+                                                        revimagename = data.signedFileName;
                                                     }
+
                                                     var row = $("<tr>");
                                                     row.append($("<td>" + value.numorder + "</td>"))
-                                                         .append($("<td><a href='" + url + "' download>" + valueimg.imagename + "</a></td>"))
+                                                         .append($("<td><a href='" + url + "' download>" + revimagename + "</a></td>"))
                                                          .append($("<td><img src='" + urlthumb + "'></td>"));       
-
-                                                         
                                                     $("#orderstable tbody").append(row);
 
                                                 });

@@ -9,49 +9,76 @@
         <script src="../js/google.js"></script>
         <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
         <script type="text/javascript">
-            $(document).ready(function(){
-                $.getJSON('/findaorder/<%= numorder %>').done(function(order) {
-                    if (order) {
-                        $("#imageCount").html(order.imagecount);
-                     console.log(order);
-                    //     $("#specLink").attr("href","/de_especificaciones2/" + order.specid );
-                        $.each(order.images, function(index, valueimg) {
-                            //console.log(valueimg);
+            // $(document).ready(function(){
+            //     $.getJSON('/findaorder/<%= numorder %>').done(function(order) {
+            //         if (order) {
+            //             $("#imageCount").html(order.imagecount);
+            //          console.log(order);
+            //         //     $("#specLink").attr("href","/de_especificaciones2/" + order.specid );
+            //             $.each(order.images, function(index, valueimg) {
+            //                 //console.log(valueimg);
 
-                             var params = {
-                                 filename: valueimg.imagename,
-                                 userid: order.userid
-                             };
-                            $.getJSON('/sign-s3down', params).done(function(data) {
-                                                        //console.log(data);
-                                var url ='';
-                                //var urlthumb ='';
-                                var revimagename = '';
-                                if (data.signedRequest) {
-                                    url = data.signedRequest;
-                                    //urlthumb = data.signedthumbRequest;
-                                    revimagename = data.signedFileName;
-                                }
-                                var row = $("<tr>");
-                                row.append($("<td>" + value.numorder + "</td>"))
-                                     .append($("<td>" + value.name + "</td>"))
-                                     .append($("<td><a href='" + url + "' download>" + revimagename + "</a></td>"));
+            //                  var params = {
+            //                      filename: valueimg.imagename,
+            //                      userid: order.userid
+            //                  };
+            //                 $.getJSON('/sign-s3down', params).done(function(data) {
+            //                                             //console.log(data);
+            //                     var url ='';
+            //                     //var urlthumb ='';
+            //                     var revimagename = '';
+            //                     if (data.signedRequest) {
+            //                         url = data.signedRequest;
+            //                         //urlthumb = data.signedthumbRequest;
+            //                         revimagename = data.signedFileName;
+            //                     }
+            //                     var row = $("<tr>");
+            //                     row.append($("<td>" + value.numorder + "</td>"))
+            //                          .append($("<td>" + value.name + "</td>"))
+            //                          .append($("<td><a href='" + url + "' download>" + revimagename + "</a></td>"));
                                         
 
                                      
-                                $("#orderstable tbody").append(row);
+            //                     $("#orderstable tbody").append(row);
 
-                            });
+            //                 });
                             
 
-                        });
+            //             });
 
-                    }
-                });
+            //         }
+            //     });
                 //$.each(data, function(index, value) {
                     // console.log(value);
                   
-            }); 
+            // }); 
+
+
+        $(document).ready(function(){
+                    $.ajax({
+                        type: 'get',
+                        url: '/listallorderpacks',
+                        success: function (data) {
+                            for (var i = 0; i < data.length; i++){
+                                console.log(data[i]._id);
+                                // var row = $("<tr>");
+                                // row.append($("<td>" + data[i].numorder + "</td>"))
+                                //      .append($("<td>" + data[i].imagecount + "</td>"))
+                                //      .append($("<td>" + data[i].date + "</td>"))
+                                //      .append($("<td>" + data[i].status + "</td>"))
+                                //      .append($("<td><a href='/de_package_get/" + data[i]._id + "'>" + data[i].name + "</a></td>"))
+                                //      .append($("<td>" + data[i].userid + "</td>"))
+                                //      .append($("<td>" + data[i].isworking + "</td>"))
+                                //      .append($('<td><a id="icontable" href="/de_uploadimages/'+ data[i]._id +'"><img src="../images/icon_cloud.png" height="20px" width="20px"></a></td>'))
+                                //      .append($("<td><a href='/de_package_review/" + data[i]._id + "'>Revisar paquete</a></td>"));
+                                // $("#orderstable tbody").append(row);
+                            }
+                              
+
+                        }
+                    });
+
+            });
         </script>
        
 

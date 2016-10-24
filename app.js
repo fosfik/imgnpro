@@ -620,7 +620,7 @@ function createfreespec(userid,cb){
       var newSpec = new Spec();
       // set the user's local credentials
       newSpec.name = 'GRATIS';
-      newSpec.naturalshadow = config.prices.naturalshadow;
+      //newSpec.naturalshadow = config.prices.naturalshadow;
       newSpec.marginnone = 'none';
       newSpec.sizenone = 'none';
       newSpec.alignnone = 'none';

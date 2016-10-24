@@ -140,13 +140,15 @@ router.get('/listorders/:limit', function(req, res) {
      //console.log("prueba 2");
    // already exists
     if (orders.length > 0) {
-      console.log('se encontraron pedidos');
+      //console.log('se encontraron pedidos');
       res.setHeader('Content-Type', 'application/json');
       res.send(orders); 
 
     } 
     else {
       console.log('No se encontraron pedidos');
+      res.setHeader('Content-Type', 'application/json');
+      res.send(JSON.stringify({}));  
     }
    
   }).select('imagecount numorder status date specid').sort('-date').limit(parseInt(req.params.limit));
@@ -156,7 +158,7 @@ router.get('/listorders/:limit', function(req, res) {
 router.get('/listorders', function(req, res) {
   Orders.find({'userid':req.user._id},function(err, orders) {
     // In case of any error return
-    console.log(orders);
+    //console.log(orders);
      if (err){
        console.log('Error al consultar');
      }
@@ -170,6 +172,8 @@ router.get('/listorders', function(req, res) {
     } 
     else {
       console.log('No se encontraron pedidos');
+      res.setHeader('Content-Type', 'application/json');
+      res.send(JSON.stringify({})); 
     }
    
   }).select('imagecount numorder status date').sort('-date');
@@ -179,7 +183,7 @@ router.get('/listorders', function(req, res) {
 router.get('/packagesforwork', function(req, res) {
   OrderPacks.find({'status':'En Proceso', 'isworking':false},function(err, OrderPacks) {
     // In case of any error return
-    console.log(OrderPacks);
+    //console.log(OrderPacks);
      if (err){
        console.log('Error al consultar ' + err);
      }
@@ -193,6 +197,8 @@ router.get('/packagesforwork', function(req, res) {
     } 
     else {
       console.log('No se encontraron paquetes de pedidos');
+      res.setHeader('Content-Type', 'application/json');
+      res.send(JSON.stringify({})); 
     }
    
   }).select('_id numorder imagecount').sort('numorder');
@@ -216,6 +222,8 @@ router.get('/listallorders', function(req, res) {
     } 
     else {
       console.log('No se encontraron pedidos');
+      res.setHeader('Content-Type', 'application/json');
+      res.send(JSON.stringify({})); 
     }
    
   }).select('imagecount numorder status date');
@@ -238,6 +246,32 @@ router.get('/listallorderpacks', function(req, res) {
     } 
     else {
       console.log('No se encontraron paquetes de pedidos');
+      res.setHeader('Content-Type', 'application/json');
+      res.send(JSON.stringify({})); 
+    }
+   
+  }).select('_id imagecount numorder status date name userid isworking').sort({date:-1});
+});
+
+// TODO agregar seguridad a esta ruta
+router.get('/listallorderpacks/:numorder', function(req, res) {
+  OrderPacks.find({numorder:req.params.numorder},function(err, orderpacks) {
+    // In case of any error return
+     if (err){
+       console.log('Error al consultar');
+     }
+     //console.log("prueba 2");
+   // already exists
+    if (orderpacks.length > 0) {
+      //console.log('se encontraron pedidos');
+      res.setHeader('Content-Type', 'application/json');
+      res.send(orderpacks); 
+
+    } 
+    else {
+      console.log('No se encontraron paquetes de pedidos');
+      res.setHeader('Content-Type', 'application/json');
+      res.send(JSON.stringify({})); 
     }
    
   }).select('_id imagecount numorder status date name userid isworking').sort({date:-1});
@@ -260,6 +294,8 @@ router.get('/listorderpack/:orderpackid', function(req, res) {
     } 
     else {
       console.log('No se encontró el paquete del pedido ' + req.params.orderpackid);
+      res.setHeader('Content-Type', 'application/json');
+      res.send(JSON.stringify({})); 
     }
    
   }).select('_id imagecount numorder status date name userid isworking images');
@@ -283,6 +319,8 @@ router.get('/listspecs', function(req, res) {
     } 
     else {
       console.log('No se encontraron especificaciones');
+      res.setHeader('Content-Type', 'application/json');
+      res.send(JSON.stringify({})); 
     }
   }).select('_id name date totalprice totalpriceMXN').sort('-date');
 });
@@ -305,6 +343,8 @@ router.get('/listspecs/:limit', function(req, res) {
     } 
     else {
       console.log('No se encontraron especificaciones');
+      res.setHeader('Content-Type', 'application/json');
+      res.send(JSON.stringify({})); 
     }
   }).select('_id name date totalprice totalpriceMXN typespec').sort('-date').limit(parseInt(req.params.limit));
 });
@@ -334,7 +374,7 @@ router.get('/listspecs/:limit', function(req, res) {
                 html: '<html>' + 'Hola, mi nombre es ' + newContact.name + '<br><b>' + 
                 newContact.message + '</b><br>' + 'Mi correo electrónico es: <b>' + newContact.email + '</b></html>'  // html body
             };
-            console.log(mailOptions);
+            //console.log(mailOptions);
             //send mail with defined transport object
             transporter.sendMail(mailOptions, function(error, info){
                 if(error){
@@ -355,10 +395,10 @@ router.get('/listspecs/:limit', function(req, res) {
          function(req, res){
               //res.render('historial', {message: req.flash('message'), user: req.user, countorders:count });
            findaorder(req.params.numorder,function(error,order){ 
-              console.log(order); 
+              //console.log(order); 
               findanyorderspec(order[0].specid, function(error, spec){
                 //console.log(spec);
-                console.log(req.user);
+                //console.log(req.user);
                 doConfirmOrder(req.params.numorder, req, spec[0].typespec ,function(tipomsg,message,href){
                     //console.log(spec);
                     //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id , countorders:ordersinproc});
@@ -373,17 +413,61 @@ router.get('/listspecs/:limit', function(req, res) {
   });
 
 
+router.post('/confirmPackage', function(req, res) {
+  try{
+      var orderpackid = req.body.orderpackid;
+      OrderPacks
+      .findOne({_id:orderpackid})
+      //.populate('specid', 'totalprice')
+      .exec(function(err,OrderPack){
+        if(err){
+          res.setHeader('Content-Type', 'application/json');
+          return res.send(JSON.stringify({ error: 1, message: 'No se pudo confirmar el paquete'})); 
+        }
+        if (OrderPack){
+          OrderPack.status = 'Terminado';
+          OrderPack.save(function(err){
+            if (err){
+              res.setHeader('Content-Type', 'application/json');
+              res.send(JSON.stringify({ error: 1, message: 'No se pudo guardar la confirmación del paquete'})); 
+            }
+            else{
+
+              doneOrder(OrderPack.numorder, function(err,message){
+
+                if (err == 1){
+                  res.setHeader('Content-Type', 'application/json');
+                  res.send(JSON.stringify({ error: 0, message: message})); 
+                }
+                else{
+                  res.setHeader('Content-Type', 'application/json');
+                  res.send(JSON.stringify({ error: 0, message: 'Se confirmó el paquete'})); 
+                }
+              });
+
+              
+            }
+          });
+        }
+      });
+  }
+  catch(err){
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify({ error: 1, message: 'No se pudo confirmar el paquete'})); 
+  }
+});
+
 /* Crea un nuevo pedido. */
   router.post('/neworder', function(req, res) {
     // Display the Login page with any flash message, if any
    // todo: modificar este try catch
    try {
-    console.log(req.body['imageUploadInfos']);
-    console.log(req.params);
+    //console.log(req.body['imageUploadInfos']);
+    //console.log(req.params);
     var imageUploadInfos = JSON.parse(req.body['imageUploadInfos']);
 
 //findaspecfull(specid, disabled,
-console.log('ID:' + req.body.specid);
+//console.log('ID:' + req.body.specid);
     findaspecfull(req.body.specid,true,function(error,message,spec){
     // console.log(imageUploadInfos.length);
     if (error == 1){
@@ -401,7 +485,7 @@ console.log('ID:' + req.body.specid);
         }
         else{
 
-            console.log(spec);
+            //console.log(spec);
             var newOrderSpec = new OrderSpec();
             newOrderSpec.name = spec[0].name;
             newOrderSpec.format = spec[0].format;
@@ -440,7 +524,7 @@ console.log('ID:' + req.body.specid);
             newOrderSpec.disabled =spec[0].disabled;
             newOrderSpec.maxfiles =spec[0].maxfiles;
             newOrderSpec.save(); // Se clona la spec
-            console.log(newOrderSpec._id);
+            //console.log(newOrderSpec._id);
 
           // todo bien
         var numorderstr="";
@@ -464,14 +548,14 @@ console.log('ID:' + req.body.specid);
 
         // todo: recorrer el req.body para obtener los datos de las imagenes
         
-        console.log(imageUploadInfos);
+        //console.log(imageUploadInfos);
 
         for (var i=0; i < imageUploadInfos.length; i++){
             //i === 0: arr[0] === undefined;
             //i === 1: arr[1] === 'hola';
             //i === 2: arr[2] === 'chau';
             imageUploadInfos[i].position = i+1;
-            console.log(imageUploadInfos[i].position);
+            //console.log(imageUploadInfos[i].position);
             newOrder.images.push(imageUploadInfos[i]);
 
         }
@@ -490,12 +574,12 @@ console.log('ID:' + req.body.specid);
 
           }
           else{
-            console.log(' Se guardó el pedido'); 
-            console.log(newOrder.numorder);
+            //console.log(' Se guardó el pedido'); 
+            //console.log(newOrder.numorder);
             
             // res.render('como2', {message: req.flash('message')});
             numorderstr = String(newOrder.numorder);
-            console.log(numorderstr);
+            //console.log(numorderstr);
             // inhabilitar la especificacion gratuita para que el cliente no la pueda volver a usar
             disableSpec(req.body.specid,function(err,message_spec){});
 
@@ -520,7 +604,7 @@ console.log('ID:' + req.body.specid);
                   newOrderPack.date = Date();
                   newOrderPack.imagecount = (highnumber - lownumber) + 1;
                    // almacenar los datos del paquete
-                   console.log(lownumber + ', ' + highnumber); 
+                   //console.log(lownumber + ', ' + highnumber); 
                    for (var y=lownumber; y <= highnumber; y++){
                       newOrderPack.images.push(imageUploadInfos[y-1]);
                    } 
@@ -531,8 +615,8 @@ console.log('ID:' + req.body.specid);
                         }
                         else
                         {
-                          console.log(' Se guardó el paquete ' + y + ' del pedido');
-                          console.log(newOrderPack); 
+                          //console.log(' Se guardó el paquete ' + y + ' del pedido');
+                          //console.log(newOrderPack); 
                         }
                     });
                    lownumber = lownumber + packagelenght;
@@ -541,7 +625,7 @@ console.log('ID:' + req.body.specid);
             }
             if (otherfiles > 0){
                 highnumber = lownumber + (otherfiles-1);
-                console.log(lownumber + ', ' + highnumber);
+                //console.log(lownumber + ', ' + highnumber);
                 var newOrderPack = new OrderPacks();
                 newOrderPack.status = newOrder.status;  
                 newOrderPack.userid = newOrder.userid;
@@ -560,8 +644,8 @@ console.log('ID:' + req.body.specid);
                     }
                     else
                     {
-                      console.log(' Se guardó el paquete' + y + ' del pedido'); 
-                      console.log(newOrderPack);
+                      //console.log(' Se guardó el paquete' + y + ' del pedido'); 
+                      //console.log(newOrderPack);
                     }
                 });
                
@@ -577,7 +661,7 @@ console.log('ID:' + req.body.specid);
     });
   }
   catch(err) {
-    console.log(err.message);
+    //console.log(err.message);
     res.setHeader('Content-Type', 'application/json');
     res.send(JSON.stringify({ error: 1, message: 'No se pudo guardar el pedido'})); 
   }
@@ -656,7 +740,7 @@ console.log('ID:' + req.body.specid);
 
  router.get('/downloadimages/:numorder', function(req, res) {
     // Display the Login page with any flash message, if any
-    res.render('downloadimages', {numorder: req.params.numorder, countorders:ordersinproc});
+    res.render('downloadimages', {numorder: req.params.numorder, countorders:ordersinproc, user: req.user});
   });
 
 
@@ -666,7 +750,7 @@ console.log('ID:' + req.body.specid);
 
             OrderPacks.find({'_id':req.params.packageid },function(err, OrderPack) {
                 // In case of any error return
-                console.log(OrderPack);
+                //console.log(OrderPack);
                  if (err){
                    console.log('Error al consultar ' + err);
                  }
@@ -674,11 +758,11 @@ console.log('ID:' + req.body.specid);
                // already exists
                 if (OrderPack.length > 0) {
                   //console.log(OrderPack);
-                  console.log(OrderPack[0].numorder);
-                  console.log('Cantidad:' + OrderPack[0].imagecount);
+                  //console.log(OrderPack[0].numorder);
+                  //console.log('Cantidad:' + OrderPack[0].imagecount);
 
                   findaorder(OrderPack[0].numorder,function(error,order){
-                     console.log(order);
+                     //console.log(order);
 
                       findanyorderspec(order[0].specid,function(error,spec){
                                 //console.log(spec);
@@ -796,7 +880,7 @@ router.get('/de_designers',
   router.get('/principal', 
      require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){
-          console.log(req.user);
+          //console.log(req.user);
           
 
           countorders(req.user._id,function(count){
@@ -978,7 +1062,7 @@ router.get('/de_designers',
      require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){
           findaorder(req.params.numorder,function(error,order){
-               console.log(order);
+               //console.log(order);
                //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id });
                res.render('confirmpayorder', {message: req.flash('message'), user: req.user, numorder:req.params.numorder, order:order[0],  config:config, countorders:ordersinproc});             
           });
@@ -988,7 +1072,7 @@ router.get('/de_designers',
      //require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){
           findaorder(req.params.numorder,function(error,order){
-               console.log(order);
+               //console.log(order);
                res.setHeader('Content-Type', 'application/json');
                res.send(JSON.stringify({ order:order[0].numorder, specid: order[0].specid, imagecount:order[0].imagecount, images:order[0].images, userid: order[0].userid}));
                //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id });
@@ -999,7 +1083,7 @@ router.get('/de_designers',
      require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){
           findaorder(req.params.numorder,function(error,order){
-               console.log(order);
+               //console.log(order);
                //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id });
                res.render('thankyou', {message: req.flash('message'), user: req.user, numorder:req.params.numorder, order:order[0], countorders:ordersinproc});             
           });
@@ -1009,7 +1093,7 @@ router.get('/de_designers',
      require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){
           findaorder(req.params.numorder,function(error,order){
-               console.log(order);
+               //console.log(order);
                //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id });
                res.render('denytransaction', {message: req.flash('message'), user: req.user, numorder:req.params.numorder, order:order[0], countorders:ordersinproc});             
           });
@@ -1019,7 +1103,7 @@ router.get('/de_designers',
      require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){
           findaorder(req.params.numorder,function(error,order){
-               console.log(order);
+               //console.log(order);
                //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id });
                res.render('error', {message: 'No se pudo completar la orden', user: req.user, numorder:req.params.numorder, order:order[0], countorders:ordersinproc});             
           });
@@ -1055,7 +1139,7 @@ router.get('/de_designers',
 
               
               //findaorder(req.params.numorder,function(error,order){
-                 console.log(order);
+                 //console.log(order);
                  //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id });
                  res.render('receipt', {message: req.flash('message'), user: req.user, numorder:req.params.numorder, order:order, countorders:ordersinproc, user_details:user_details});             
               });
@@ -1155,7 +1239,7 @@ router.get('/de_designers',
   router.get('/signup_error', function(req, res) {
     var msjres = req.flash('error');
     if (msjres[0]!= undefined){
-         console.log(msjres[0]);
+         //console.log(msjres[0]);
          res.setHeader('Content-Type', 'application/json');
          res.send(JSON.stringify({ error: 1, message: msjres[0]}));
     }
@@ -1178,7 +1262,7 @@ router.get('/de_designers',
   router.get('/de_signup_error', function(req, res) {
     var msjres = req.flash('error');
     if (msjres[0]!= undefined){
-         console.log(msjres[0]);
+         //console.log(msjres[0]);
          res.setHeader('Content-Type', 'application/json');
          res.send(JSON.stringify({ error: 1, message: msjres[0]}));
     }
@@ -1235,7 +1319,7 @@ router.get('/de_designers',
 
       // pasar el req specInfo
       spectotalprice(specInfos[0],function(total,totalMXN){
-          console.log(total);
+          //console.log(total);
         //res.setHeader('Content-Type', 'application/json');
         //res.send(JSON.stringify({ error: 0, ntotal:total , message: 'Se guardó la especificación'})); 
           newSpec.totalprice = total;
@@ -1248,7 +1332,7 @@ router.get('/de_designers',
               res.send(JSON.stringify({ error: 1, message: 'No se pudo guardar la especificación'})); 
               throw err;  
             }
-            console.log('Se guardó correctamente la especificación');
+            //console.log('Se guardó correctamente la especificación');
 
             Spec.find({'userid': newSpec.userid ,'typespec':'free', 'disabled':false},function(err, specrecord) {
                // already exists
@@ -1296,7 +1380,7 @@ router.post('/updateuserdetails', require('connect-ensure-login').ensureLoggedIn
     newUserDet.factterminacion = req.body.factterminacion;
     User_details.findOne({ userid: req.user._id}, function (err, doc){
         //console.log(req.body.name);
-        console.log(err);
+        //console.log(err);
         if (err){
             console.log('Se presentó un problema al buscar los detalles del usuario: '+err);
             //res.setHeader('Content-Type', 'application/json');
@@ -1327,7 +1411,7 @@ router.post('/updateuserdetails', require('connect-ensure-login').ensureLoggedIn
             doc.factemail2 = req.body.factemail2;
             doc.factterminacion = req.body.factterminacion;
             //doc.specid = req.user.specid;
-            console.log(doc);
+            //console.log(doc);
             doc.save( function(err){
                if (err){
                   //newSpec.save();
@@ -1371,11 +1455,11 @@ router.post('/updateuserdetails', require('connect-ensure-login').ensureLoggedIn
  /* Handle new specification POST */
   router.post('/newspec', function (req,res) {
     // body...
-    console.log(req.body);
+    //console.log(req.body);
 
-    console.log(req.user._id);
+    //console.log(req.user._id);
     
-    console.log(req.body.specid);
+    //console.log(req.body.specid);
     var specid = req.body.specid;
       var newSpec = new Spec();
       // set the user's local credentials
@@ -1434,8 +1518,8 @@ router.post('/updateuserdetails', require('connect-ensure-login').ensureLoggedIn
             //console.log('Update');
             //console.log(specid);
             Spec.findOne({ _id: specid, typespec:'normal'  }, function (err, doc){
-              console.log(req.body.name);
-              console.log(err);
+              //console.log(req.body.name);
+              //console.log(err);
               if (err){
                   console.log('Error al guardar la especificación: '+err);
                   res.setHeader('Content-Type', 'application/json');
@@ -1479,7 +1563,7 @@ router.post('/updateuserdetails', require('connect-ensure-login').ensureLoggedIn
                   doc.totalpriceMXN = newSpec.totalpriceMXN;
 
                   //doc.specid = req.user.specid;
-                  console.log(doc);
+                  //console.log(doc);
 
                   doc.save();
                   
@@ -1507,13 +1591,13 @@ router.post('/updateuserdetails', require('connect-ensure-login').ensureLoggedIn
           res.send(JSON.stringify({ error: 1, message:'No se encontró el pedido', sign: ''})); 
       }
       else{
-          console.log(order);
+          //console.log(order);
           var CSSB = process.env.CSSB || '5634ytyertewrg';
           var paymentsign = '';
 
           var totalpayPesos = order[0].totalpay  * parseFloat(config.prices.dollar);
           totalpayPesos = setDecimals (totalpayPesos,2);
-          console.log(totalpayPesos); 
+          //console.log(totalpayPesos); 
           var Ds_Merchant_Amount = totalpayPesos.toString().replace('.', ''); //req.param('Ds_Merchant_Amount');
           var Ds_Merchant_Order = fillzero(req.params.numorder, '0000000');
           var Ds_Merchant_MerchantCode = 4093847; //req.param('Ds_Merchant_MerchantCode');
@@ -1525,17 +1609,17 @@ router.post('/updateuserdetails', require('connect-ensure-login').ensureLoggedIn
           var Ds_Merchant_MerchantName = 'IMAGEN PRO';
           var Ds_Merchant_Terminal = 1;
           var Ds_Merchant_ProductDescription = order[0].imagecount + ' IMÁGEN(ES)';
-          console.log('A pagar:' + Ds_Merchant_Amount);
-          console.log('Pedido:' + Ds_Merchant_Order);
-          console.log('Codigo comercio:' + Ds_Merchant_MerchantCode);
-          console.log('Moneda:' + Ds_Merchant_Currency);
-          console.log('Tipo transacción:' + Ds_Merchant_TransactionType);
+          //console.log('A pagar:' + Ds_Merchant_Amount);
+          //console.log('Pedido:' + Ds_Merchant_Order);
+          //console.log('Codigo comercio:' + Ds_Merchant_MerchantCode);
+          //console.log('Moneda:' + Ds_Merchant_Currency);
+          //console.log('Tipo transacción:' + Ds_Merchant_TransactionType);
 
 
 
 
           paymentsign = sha1(Ds_Merchant_Amount + Ds_Merchant_Order + Ds_Merchant_MerchantCode + Ds_Merchant_Currency + Ds_Merchant_TransactionType + CSSB);
-          console.log(paymentsign);
+          //console.log(paymentsign);
 
              //SHA-1()
                  
@@ -1554,13 +1638,13 @@ router.post('/updateuserdetails', require('connect-ensure-login').ensureLoggedIn
           res.send(JSON.stringify({ error: 1, message:'No se encontró el pedido', sign: ''})); 
       }
       else{
-          console.log(order);
+          //console.log(order);
           var CSSB = process.env.CSSB || '5634ytyertewrg';
           var paymentsign = '';
 
           var totalpayPesos = order[0].totalpay  * parseFloat(config.prices.dollar);
           totalpayPesos = setDecimals (totalpayPesos,2);
-          console.log(totalpayPesos); 
+          //console.log(totalpayPesos); 
           var Ds_Merchant_Amount = totalpayPesos.toString().replace('.', ''); //req.param('Ds_Merchant_Amount');
           var Ds_Merchant_Order = fillzero(req.params.numorder, '0000000');
           var Ds_Merchant_MerchantCode = 4093847; //req.param('Ds_Merchant_MerchantCode');
@@ -1572,17 +1656,17 @@ router.post('/updateuserdetails', require('connect-ensure-login').ensureLoggedIn
           var Ds_Merchant_MerchantName = 'IMAGEN PRO';
           var Ds_Merchant_Terminal = 1;
           var Ds_Merchant_ProductDescription = order[0].imagecount + ' IMÁGEN(ES)';
-          console.log('A pagar:' + Ds_Merchant_Amount);
-          console.log('Pedido:' + Ds_Merchant_Order);
-          console.log('Codigo comercio:' + Ds_Merchant_MerchantCode);
-          console.log('Moneda:' + Ds_Merchant_Currency);
-          console.log('Tipo transacción:' + Ds_Merchant_TransactionType);
+          //console.log('A pagar:' + Ds_Merchant_Amount);
+          //console.log('Pedido:' + Ds_Merchant_Order);
+          //console.log('Codigo comercio:' + Ds_Merchant_MerchantCode);
+          //console.log('Moneda:' + Ds_Merchant_Currency);
+          //console.log('Tipo transacción:' + Ds_Merchant_TransactionType);
 
 
 
 
           paymentsign = sha1(Ds_Merchant_Amount + Ds_Merchant_Order + Ds_Merchant_MerchantCode + Ds_Merchant_Currency + Ds_Merchant_TransactionType + CSSB);
-          console.log(paymentsign);
+          //console.log(paymentsign);
 
              //SHA-1()
                  
@@ -1702,7 +1786,7 @@ router.get('/profile',
 
 router.get('/delete-s3', (req, res) => {
   const s3 = new aws.S3();
-  console.log(req.query['filename']);
+  //console.log(req.query['filename']);
   const fileName = req.user._id +'/' + req.query['filename']; 
   var params = {
     Bucket: S3_BUCKET_NAME, /* required */
@@ -1718,24 +1802,22 @@ router.get('/delete-s3', (req, res) => {
         error: 1,
         message: `Error al borrar`
       };
+      res.setHeader('Content-Type', 'application/json');
       res.write(JSON.stringify(returnData));
       res.end();
     
     }// an error occurred
     else{     
-      console.log(data);           // successful response
+      //console.log(data);           // successful response
       var returnData = {
           error: 0,
           message: `se borró`
         };
+        res.setHeader('Content-Type', 'application/json');
         res.write(JSON.stringify(returnData));
         res.end();
         }
       });
-
-
-
-
 });
 
 router.get('/sign-s3', (req, res) => {
@@ -1781,8 +1863,8 @@ router.get('/sign-s3', (req, res) => {
     expires: new Date(Date.now() + 60000),
     acl: 'public-read'
   });
-  console.log(p.policy);
-  console.log(p.signature);
+  //console.log(p.policy);
+  //console.log(p.signature);
   var result = {
     AWSAccessKeyId: process.env.AWS_ACCESS_KEY_ID,
     key: fileName,
@@ -1790,7 +1872,8 @@ router.get('/sign-s3', (req, res) => {
     signature: p.signature,
     url: `https://${S3_BUCKET_NAME}.s3.amazonaws.com/${fileName}`
   };
-  console.log(result);
+  //console.log(result);
+  res.setHeader('Content-Type', 'application/json');
   res.write(JSON.stringify(result));
   res.end();
 
@@ -1813,7 +1896,7 @@ router.get('/sign-s3', (req, res) => {
 router.get('/sign-s3get', (req, res) => {
         const s3 = new aws.S3();
         const fileName = req.query['userid'] +'/' + req.query['filename'];
-        console.log('File:' + fileName);
+        //console.log('File:' + fileName);
         const s3Params = {Bucket: S3_BUCKET_NAME, Key: fileName, Expires: 100000};
         const s3Paramsthumb = {Bucket: S3_BUCKET_NAME_THUMB, Key: fileName, Expires: 100000};
 
@@ -1823,6 +1906,8 @@ router.get('/sign-s3get', (req, res) => {
         //console.log("The URL is", url);
           if(err){
             console.log("error");
+            res.setHeader('Content-Type', 'application/json');
+            res.write(JSON.stringify({}));
             return res.end();
           }
           const returnData = {
@@ -1830,7 +1915,8 @@ router.get('/sign-s3get', (req, res) => {
             signedthumbRequest: urlthumb
             //url: `https://${S3_BUCKET_NAME}.s3.amazonaws.com/${fileName}`
           };
-          console.log(returnData);
+          //console.log(returnData);
+          res.setHeader('Content-Type', 'application/json');
           res.write(JSON.stringify(returnData));
           res.end();
 
@@ -1841,7 +1927,7 @@ router.get('/sign-s3get', (req, res) => {
 router.get('/sign-s3down', (req, res) => {
         const s3 = new aws.S3();
         const fileName = req.query['userid'] +'/' + req.query['filename'];
-        console.log('File:' + fileName);
+        //console.log('File:' + fileName);
         const s3Params = {Bucket: S3_BUCKET_NAME_DONE, Key: fileName, Expires: 100000};
         //const s3Paramsthumb = {Bucket: S3_BUCKET_NAME_THUMB, Key: fileName, Expires: 100000};
 
@@ -1851,6 +1937,8 @@ router.get('/sign-s3down', (req, res) => {
         //console.log("The URL is", url);
           if(err){
             console.log("error");
+            res.setHeader('Content-Type', 'application/json');
+            res.write(JSON.stringify({}));
             return res.end();
           }
           const returnData = {
@@ -1858,7 +1946,8 @@ router.get('/sign-s3down', (req, res) => {
             //signedthumbRequest: urlthumb
             //url: `https://${S3_BUCKET_NAME}.s3.amazonaws.com/${fileName}`
           };
-          console.log(returnData);
+          //console.log(returnData);
+          res.setHeader('Content-Type', 'application/json');
           res.write(JSON.stringify(returnData));
           res.end();
 
@@ -1871,7 +1960,7 @@ router.get('/sign-s3review', (req, res) => {
       var sFname = req.query['filename'];
       var sFext = sFname.match(/\.([^.]*)$/);
       var sFNameComp = "";
-      console.log(sFext);
+      //console.log(sFext);
       var returnData = {};
       if(sFext){
         sFNameComp = sFname.substring(0, sFname.length - sFext[1].length );
@@ -1883,7 +1972,7 @@ router.get('/sign-s3review', (req, res) => {
             error: 1
             //url: `https://${S3_BUCKET_NAME}.s3.amazonaws.com/${fileName}`
           };
-          
+        res.setHeader('Content-Type', 'application/json');  
         res.write(JSON.stringify(returnData));
         //res.write(JSON.stringify({err:2,message:'El archivo no tiene extensión'}));
         return res.end();
@@ -1893,14 +1982,14 @@ router.get('/sign-s3review', (req, res) => {
     .populate('specid','format_ext')
     .exec(function(err,OrderPack){
 
-      console.log('OrderPack');
-      console.log(OrderPack);
-      console.log("SpecID: " + OrderPack.specid.format_ext);
-      console.log(sFext);
+      //console.log('OrderPack');
+      //console.log(OrderPack);
+      //console.log("SpecID: " + OrderPack.specid.format_ext);
+      //console.log(sFext);
 
         sFNameComp = sFNameComp + OrderPack.specid.format_ext;
         const fileName = req.query['userid'] +'/' + sFNameComp;
-        console.log('File:' + fileName);
+        //console.log('File:' + fileName);
         const s3Params = {Bucket: S3_BUCKET_NAME_DONE, Key: fileName, Expires: 100000};
         const s3Paramsthumb = {Bucket: S3_BUCKET_NAME_THUMB, Key: fileName, Expires: 100000};
 
@@ -1913,6 +2002,7 @@ router.get('/sign-s3review', (req, res) => {
               signedthumbRequest: urlthumb
               //url: `https://${S3_BUCKET_NAME}.s3.amazonaws.com/${fileName}`
             };
+            res.setHeader('Content-Type', 'application/json');
             res.write(JSON.stringify(returnData));
             return res.end();
           }
@@ -1923,7 +2013,8 @@ router.get('/sign-s3review', (req, res) => {
             signedFileName: sFNameComp
             //url: `https://${S3_BUCKET_NAME}.s3.amazonaws.com/${fileName}`
           };
-          console.log(returnData);
+          //console.log(returnData);
+          res.setHeader('Content-Type', 'application/json');
           res.write(JSON.stringify(returnData));
           res.end();
 
@@ -1956,24 +2047,22 @@ router.get('/delete-s3done', (req, res) => {
         error: 1,
         message: `Error al borrar`
       };
+      res.setHeader('Content-Type', 'application/json');
       res.write(JSON.stringify(returnData));
       res.end();
     
     }// an error occurred
     else{     
-      console.log(data);           // successful response
+      //console.log(data);           // successful response
       var returnData = {
           error: 0,
           message: `se borró`
         };
+        res.setHeader('Content-Type', 'application/json');
         res.write(JSON.stringify(returnData));
         res.end();
         }
       });
-
-
-
-
 });
 
 // Para solicitar una llave para que el diseñador suba un archivo terminado
@@ -1988,13 +2077,14 @@ router.get('/sign-s3done', (req, res) => {
   var sFname = req.query['filename'];
   var sFext = sFname.match(/\.([^.]*)$/);
   var sFNameComp = "";
-  console.log(sFext);
+  //console.log(sFext);
 
   if(sFext){
     sFNameComp = sFname.substring(0, sFname.length - sFext[1].length );
-    console.log('archivo subido por el diseñador:' + sFNameComp);
+    //console.log('archivo subido por el diseñador:' + sFNameComp);
   }else{
     console.log("error");
+    res.setHeader('Content-Type', 'application/json');
     res.write(JSON.stringify({err:2,message:'El archivo no tiene extensión'}));
     return res.end();
  }
@@ -2002,43 +2092,44 @@ router.get('/sign-s3done', (req, res) => {
   .findOne({'_id': req.query['orderpackid']})
   .populate('specid','format_ext')
   .exec(function(err,OrderPack){
-    console.log('OrderPack');
-    console.log(OrderPack);
-    console.log("SpecID: " + OrderPack.specid.format_ext);
-    console.log(sFext);
+    //console.log('OrderPack');
+    //console.log(OrderPack);
+    //console.log("SpecID: " + OrderPack.specid.format_ext);
+    //console.log(sFext);
 
-    if(OrderPack.specid.format_ext == "tif" && (sFext[1] != 'tiff' && sFext[1] != 'tif' && sFext[1] != 'zip' )  ){
-        console.log('1');
+    if(OrderPack.specid.format_ext == "tif" && (sFext[1] != 'tiff' && sFext[1] != 'tif')  ){
+        //console.log('1');
+        res.setHeader('Content-Type', 'application/json');
         res.write(JSON.stringify({err:2, message:'La extensión o el tipo del archivo no coincide con la especificación'}));
         return res.end();
     }
     
     if (OrderPack.specid.format_ext == "tif" && sFext[1] == 'tiff'){
-      sFext[1] = 'tif' ;
+        sFext[1] = 'tif' ;
     }
 
-console.log(sFext[1] !== 'zip');
-console.log(sFext[1] != 'zip');
-    if(sFext[1] != OrderPack.specid.format_ext  && sFext[1] != 'zip'){
-            res.write(JSON.stringify({err:2, message:'La extensión o el tipo del archivo no coincide con la especificación'}));
-            return res.end();
-    }
+//console.log(sFext[1] !== 'zip');
+//console.log(sFext[1] != 'zip');
+    // if(sFext[1] != OrderPack.specid.format_ext  && sFext[1] != 'zip'){
+    //         res.write(JSON.stringify({err:2, message:'La extensión o el tipo del archivo no coincide con la especificación'}));
+    //         return res.end();
+    // }
 
     
     var orderpackimgs = OrderPack.images;
     var b_findimg = false;
-    console.log(orderpackimgs[0].imagename);
+    //console.log(orderpackimgs[0].imagename);
      
     var sFnameU = "";
     var sFNameCompU = ""; 
     for(var i=0;i < OrderPack.images.length; i++ ){
 
 
-     console.log(OrderPack.images[i].imagename);
+     //console.log(OrderPack.images[i].imagename);
      
      sFnameU = OrderPack.images[i].imagename;
      var sFextU = sFnameU.match(/\.([^.]*)$/);
-     console.log(sFextU);
+     //console.log(sFextU);
 
       if(sFextU){
         sFNameCompU = sFnameU.substring(0, sFnameU.length - sFextU[1].length );
@@ -2046,11 +2137,11 @@ console.log(sFext[1] != 'zip');
       }else{
         sFNameCompU = sFnameU;
      }
-      console.log('archivo subido usuario:' + sFNameCompU);
+      //console.log('archivo subido usuario:' + sFNameCompU);
 
       //if(OrderPack.images[i].imagename == req.query['filename'] ){
       if(sFNameCompU == sFNameComp ){
-        console.log('Se econtró archivo');
+        //console.log('Se econtró archivo');
         b_findimg = true;
         break;
       }
@@ -2096,8 +2187,8 @@ console.log(sFext[1] != 'zip');
       });
        
  // };
-      console.log(p.policy);
-      console.log(p.signature);
+      //console.log(p.policy);
+      //console.log(p.signature);
       var result = {
         AWSAccessKeyId: process.env.AWS_ACCESS_KEY_ID,
         key: fileName,
@@ -2106,7 +2197,8 @@ console.log(sFext[1] != 'zip');
         url: `https://${S3_BUCKET_NAME_DONE}.s3.amazonaws.com/${fileName}`
       };
 
-      console.log(result);
+      //console.log(result);
+        res.setHeader('Content-Type', 'application/json');
         res.write(JSON.stringify(result));
         res.end();
 
@@ -2128,6 +2220,7 @@ console.log(sFext[1] != 'zip');
       // });
 
     }else{
+      res.setHeader('Content-Type', 'application/json');
       res.write(JSON.stringify({err:1, message:' Imagen no válida'}));
       return res.end();
     }
@@ -2140,7 +2233,7 @@ console.log(sFext[1] != 'zip');
 
 
 router.post('/transactionok', function (req,res) {
-  console.log(req.params);
+  //console.log(req.params);
   doConfirmPayOrder(req,function(tipomsg, message,href){
     //res.setHeader('Content-Type', 'application/json');
     //res.send(JSON.stringify({ error: tipomsg, message: message, href:href}));
@@ -2176,7 +2269,7 @@ function spectotalprice(req, cb){
   // se agrega a nTotal el costo mínimo 
 
   //console.log(req.param('background'));
-  console.log(req); 
+  //console.log(req); 
   //console.log(parseFloat(req.body.naturalshadow));
   // se multiplica por 100 para quitar los decimales y evitar errores de precision
   var nTotal = (config.prices.cutandremove) * 100;
@@ -2212,8 +2305,8 @@ function findaspec(specid, cb){
      }
    // already exists
     if (specrecord.length > 0) {
-      console.log('se encontró  la especificación');
-      console.log(specrecord);
+      //console.log('se encontró  la especificación');
+      //console.log(specrecord);
       cb( 0, specrecord);
     } 
     else {
@@ -2248,7 +2341,7 @@ function findaspec(specid, cb){
 // }
 
 function findanyorderspec(specid, cb){
-  console.log(specid);
+  //console.log(specid);
   OrderSpec.find({'_id':specid},function(err, specrecord) {
     // In case of any error return
      if (err){
@@ -2258,8 +2351,8 @@ function findanyorderspec(specid, cb){
      }
    // already exists
     if (specrecord.length > 0) {
-      console.log('se encontró  la especificación');
-      console.log(specrecord);
+      //console.log('se encontró  la especificación');
+      //console.log(specrecord);
       cb( 0, specrecord);
     } 
     else {
@@ -2289,8 +2382,8 @@ function findaspecfull(specid, disabled, cb){
        else{
     // already exists
           if (specrecord.length > 0) {
-            console.log('Se encontró  la especificación');
-            console.log(specrecord);
+            //console.log('Se encontró  la especificación');
+            //console.log(specrecord);
             cb( 0,'Se encontró  la especificación', specrecord);
           } 
           else {
@@ -2317,8 +2410,8 @@ function findauser_details(userid, cb){
        else{
     // already exists
           if (userrecord.length > 0) {
-            console.log('Se encontraron los detalles del usuario');
-            console.log(userrecord);
+            //console.log('Se encontraron los detalles del usuario');
+            //console.log(userrecord);
             cb( 0,'Se encontraron los detalles del usuario', userrecord);
           } 
           else {
@@ -2335,7 +2428,7 @@ function findauser(userid, cb){
     cb(1, 'Error al consultar al usuario, longitud 0');
   }
   else{
-      console.log(userid);
+      //console.log(userid);
       User.find({'_id':userid},function(err, user) {
       // In case of any error return
        if (err){
@@ -2346,8 +2439,8 @@ function findauser(userid, cb){
        else{
     // already exists
           if (user.length > 0) {
-            console.log('Se encontró el usuario');
-            console.log(user);
+            //console.log('Se encontró el usuario');
+            //console.log(user);
             cb( 0,'Se encontró el usuario', user);
           } 
           else {
@@ -2360,7 +2453,7 @@ function findauser(userid, cb){
 }
 
 function findaorder(orderid, cb){
-  console.log(orderid);
+  //console.log(orderid);
   Orders.find({'numorder':orderid},function(err, orderrecord) {
     // In case of any error return
      if (err){
@@ -2371,7 +2464,7 @@ function findaorder(orderid, cb){
      //console.log("prueba 2");
    // already exists
     if (orderrecord.length > 0) {
-      console.log('Se encontró  el pedido');
+      //console.log('Se encontró  el pedido');
       //console.log(orderrecord);
       //res.setHeader('Content-Type', 'application/json');
       //res.send(orders); 
@@ -2463,7 +2556,7 @@ function doConfirmOrder(numorder,req,typespec,cb){
                         if(error){
                             return console.log(error);
                         }
-                        console.log('Message sent: ' + info.response);
+                        //console.log('Message sent: ' + info.response);
                     });
                   }
               } 
@@ -2472,7 +2565,7 @@ function doConfirmOrder(numorder,req,typespec,cb){
           Orders.update(conditions, update, options, function (err, numAffected) {
             // numAffected is the number of updated documents
            
-            console.log(numAffected);
+            //console.log(numAffected);
             if (err){
                 console.log(err);
                 cb( 1,'No fue posible actualizar el estatus del pedido');
@@ -2483,7 +2576,7 @@ function doConfirmOrder(numorder,req,typespec,cb){
                 OrderPacks.update(conditions, update, options, function (err, numAffected) {
                   // numAffected is the number of updated documents
                  
-                  console.log(numAffected);
+                  //console.log(numAffected);
                   if (err){
                       console.log(err);
                       cb( 1,'No fue posible actualizar el estatus del pedido');
@@ -2515,7 +2608,7 @@ function doConfirmPayOrder(req,cb){
   var Ds_Response = req.params.Ds_Response;
   var numorder = req.params.Ds_Order;
   numorder = numorder.replace(/0/g, ''); // quita los ceros del pedido
-  console.log(req.user);
+  //console.log(req.user);
   //findauser(req.user._id,function(error,message,user){
       //console.log(spec);
       //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id , countorders:ordersinproc});
@@ -2554,7 +2647,7 @@ function doConfirmPayOrder(req,cb){
               console.log('No se pudo guardar la transacción del pedido: '+ req.params.numorder +' '+err); 
           }
           else{
-            console.log('Se guardó la transacción del pedido:' + req.params.numorder); 
+            //console.log('Se guardó la transacción del pedido:' + req.params.numorder); 
           }
      });     
 
@@ -2619,7 +2712,7 @@ function doConfirmPayOrder(req,cb){
                         if(error){
                             return console.log(error);
                         }
-                        console.log('Message sent: ' + info.response);
+                        //console.log('Message sent: ' + info.response);
                     });
                   }
               } 
@@ -2630,7 +2723,7 @@ function doConfirmPayOrder(req,cb){
           Orders.update(conditions, update, options, function (err, numAffected) {
             // numAffected is the number of updated documents
            
-            console.log(numAffected);
+            //console.log(numAffected);
             if (err){
                 console.log(err);
                 cb( 1,'No fue posible actualizar el estatus del pedido');
@@ -2641,7 +2734,7 @@ function doConfirmPayOrder(req,cb){
                 OrderPacks.update(conditions, update, options, function (err, numAffected) {
                   // numAffected is the number of updated documents
                  
-                  console.log(numAffected);
+                  //console.log(numAffected);
                   if (err){
                       console.log(err);
                       cb( 1,'No fue posible actualizar el estatus del pedido');
@@ -2668,6 +2761,40 @@ function doConfirmPayOrder(req,cb){
     //});
 }
 
+function doneOrder(numorder, cb){
+    OrderPacks.find({} ,function(err,OrderPack){
+      if(err){
+        cb( 1,'error al consultar paquetes de pedido');
+      }
+      if(!OrderPack){
+        cb( 1,'error al consultar paquetes de pedido');
+      }
+
+      if (OrderPack){
+        console.log(OrderPack.length);
+        var bDone = true;
+        // OrderPack.cursor( function(err,doc){
+        //   if (err) return cb (1, 'Error');
+        //   if (!doc) return cb (1, 'Error doc');
+        //   if (doc.status=='En Proceso'){
+        //       bDone = false;
+        //       console.log(doc);
+        //   }
+        // });
+        for (var i = 0; i < OrderPack.length; i++ ){
+          console.log(OrderPack[0].status);
+          if (OrderPack[0].status == 'En Proceso'){
+            bDone = false;
+          }
+        }
+        if (bDone == true){
+
+        }
+        cb( 0,'se confirmó el pedido');
+      }
+    });
+}
+
 function countorders(userid,cb){
 
   Orders.count({'userid':userid, 'status':'En Proceso'}, function( err, count){
@@ -2689,11 +2816,11 @@ function toDateString(date,cb){
 function doConfirmUser(userid,cb){
  //var confirmUser = new User();
 
-  console.log('Confirm user');
-  console.log(userid);
+  //console.log('Confirm user');
+  //console.log(userid);
   User.findOne({ _id: userid  }, function (err, doc){
 
-    console.log(err);
+    //console.log(err);
     if (err){
         console.log('Error al confimar usuario: '+err);
         cb(1,'Error al confimar usuario: '+err);
@@ -2705,7 +2832,7 @@ function doConfirmUser(userid,cb){
         doc.disabled = false;
        
         //doc.specid = req.user.specid;
-        console.log(doc);
+        //console.log(doc);
 
         doc.save();
         cb(0,'usuario confirmado, favor de ingresar');
@@ -2723,10 +2850,10 @@ function doConfirmUser(userid,cb){
 }
 
 function disableSpec(specid,cb){
-    console.log(specid);
+    //console.log(specid);
     Spec.findOne({ _id: specid, typespec:'free'  }, function (err, doc){
       //console.log(req.body.name);
-      console.log(err);
+      //console.log(err);
       if (err){
           console.log('Error al guardar la especificación: '+err);
           //res.setHeader('Content-Type', 'application/json');
@@ -2738,7 +2865,7 @@ function disableSpec(specid,cb){
           
           doc.disabled = true;
           //doc.specid = req.user.specid;
-          console.log(doc);
+          //console.log(doc);
 
           doc.save();
           cb(0,'Error al guardar la especificación: '+err);

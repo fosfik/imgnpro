@@ -27,11 +27,18 @@ var bCrypt = require('bcrypt');
 // mailer
 var nodemailer = require('nodemailer');
 
+
+
+
+
+
 // create reusable transporter object using the default SMTP transport
 //var transporter = nodemailer.createTransport('smtps://jerh56%40gmail.com:1J79ol4f*3@smtp.gmail.com');
 
 var transporter = require("nodemailer-smtp-transport")
 var app = express();
+//app.io = require('socket.io')();
+
 var session = require('express-session'); // Manejo de sesiones
 var RedisStore = require('connect-redis')(session); // conexión a REDIS para almacenar sesiones de usuario
 
@@ -639,7 +646,7 @@ function createfreespec(userid,cb){
       spectotalprice(newSpec,function(total){
         //res.setHeader('Content-Type', 'application/json');
         //res.send(JSON.stringify({ error: 0, ntotal:total , message: 'Se guardó la especificación'})); 
-          newSpec.totalprice = total;
+          newSpec.totalprice = 0;
           newSpec.save(function(err) {
             if (err){
               console.log('No se pudo guardar la especificación: ' + err); 

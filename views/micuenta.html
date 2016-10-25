@@ -42,6 +42,12 @@
 
             $('#btn_savedetails').click(function (ev) {
                 // recuperar las variables localStorage
+
+                if ($('#emailconfirm').val() !== $('#contactemail').val()){
+
+                    alert("El correo electrónico no coincide");
+                    return ev.preventDefault();
+                }
                 var formdata = $('form').serialize();
                 $.ajax({
                         type: 'post',
@@ -68,6 +74,17 @@
                     $('#factForm2').find('input, textarea, button, select').prop('disabled',!chk_factura);
                }  
             });
+        </script>
+        <script type="text/javascript">
+            function check(input,input2,message) {
+                if (input.value != document.getElementById(input2).value) {
+                    console.log("ok");
+                    input.setCustomValidity(message);
+                } else {
+                    // input is valid -- reset the error message
+                    input.setCustomValidity('');
+                }
+            }
         </script>
     </head>
     <body>
@@ -98,7 +115,10 @@
                     <label for="contactname">Nombre</label><br>
                     <input tabindex=1 id="contactname" type="text" name="contactname" value="" placeholder="Nombre completo" required><br>
                     <label for="contactemail">Email</label><br>
-                    <input tabindex=2 type="email" name="contactemail" value="" placeholder="ej. nombre@empresa.com" required><br>
+                    <input tabindex=2 type="email" id= "contactemail" name="contactemail" value="" placeholder="ej. nombre@empresa.com" required><br>
+                    <label for="contactemailconfirm">Confirmar Email</label><br>
+                    <input tabindex=2 type="email" id ="emailconfirm" name="contactemailconfirm" value="" placeholder="ej. nombre@empresa.com" required><br>
+                   
                     <label for="contactcountry">País</label><br>
                     <select tabindex=3 name="sel_contactcountry" >
                         <option value="" disabled selected>Seleccione un País</option>

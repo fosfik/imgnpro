@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
     <head>
-        <script src="../js/google.js"></script>
-       <% include partials/head.html %>
-        <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script> -->
+        <meta charset="utf-8">
+        <title>IMGNpro, hagamos que tu producto destaque</title>
         <link rel="stylesheet" href="../stylesheets/imgncss_landing.css">
+        <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico"/>
         <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
@@ -47,22 +47,6 @@
                     });
                     ev.preventDefault();
                 });
-                $('#a_freetest').click(function (ev) {
-                    $.ajax({
-                        type: 'post',
-                        url: '/signup',
-                        data: {'userlongname':'demoimgnpro', 'email':'demoimgnpro', 'password':'demoimgnpro', 'accept_terms':true },
-                        success: function (data) {
-                            if (data.error == 1 ){
-                               alert(data.message);    
-                            }
-                            else{
-                                setTimeout(window.location='/principal',500);    
-                            }
-                        }
-                    });
-                    ev.preventDefault();
-                });
 
 
                 $(window).on('scroll', function() {
@@ -70,11 +54,19 @@
                         $('header').addClass("sticky");
                         $('#slogan').addClass("sticky");
                         $('#botonintro').addClass("sticky");
+                        $('#contregistro').addClass("sticky");
+                        $('#contenedor1').addClass("sticky");
+                        $('#contregistro2').addClass("sticky");
+                        $('#contenedor1a').addClass("sticky");
                     }
                     else {
                         $('header').removeClass("sticky");
                         $('#slogan').removeClass("sticky");
                         $('#botonintro').removeClass("sticky");
+                        $('#contregistro').removeClass("sticky");
+                        $('#contenedor1').removeClass("sticky");
+                        $('#contregistro2').removeClass("sticky");
+                        $('#contenedor1a').removeClass("sticky");
                     }
                 });
                 
@@ -94,7 +86,7 @@
             }
         </script>
         <script>
-            $(window).load(function() { //start after HTML, images have loaded
+            $(window).load(function() {	//start after HTML, images have loaded
 
                 var InfiniteRotator1 = 
                 {
@@ -118,7 +110,7 @@
                         //show first item
                         $('.rotating-item1').eq(currentItem).fadeIn(initialFadeIn);
 
-                        //loop through the items        
+                        //loop through the items		
                         var infiniteLoop = setInterval(function(){
                             $('.rotating-item1').eq(currentItem).fadeOut(fadeTime);
 
@@ -129,8 +121,8 @@
                             }
                             $('.rotating-item1').eq(currentItem).fadeIn(fadeTime);
 
-                        }, itemInterval);   
-                    }   
+                        }, itemInterval);	
+                    }	
                 };
 
                 InfiniteRotator1.init();
@@ -157,7 +149,7 @@
                         //show first item
                         $('.rotating-item2').eq(currentItem).fadeIn(initialFadeIn);
 
-                        //loop through the items        
+                        //loop through the items		
                         var infiniteLoop = setInterval(function(){
                             $('.rotating-item2').eq(currentItem).fadeOut(fadeTime);
 
@@ -168,8 +160,8 @@
                             }
                             $('.rotating-item2').eq(currentItem).fadeIn(fadeTime);
 
-                        }, itemInterval);   
-                    }   
+                        }, itemInterval);	
+                    }	
                 };
 
                 InfiniteRotator2.init();
@@ -196,7 +188,7 @@
                         //show first item
                         $('.rotating-item3').eq(currentItem).fadeIn(initialFadeIn);
 
-                        //loop through the items        
+                        //loop through the items		
                         var infiniteLoop = setInterval(function(){
                             $('.rotating-item3').eq(currentItem).fadeOut(fadeTime);
 
@@ -207,8 +199,8 @@
                             }
                             $('.rotating-item3').eq(currentItem).fadeIn(fadeTime);
 
-                        }, itemInterval);   
-                    }   
+                        }, itemInterval);	
+                    }	
                 };
 
                 InfiniteRotator3.init();
@@ -235,7 +227,7 @@
                         //show first item
                         $('.rotating-item4').eq(currentItem).fadeIn(initialFadeIn);
 
-                        //loop through the items        
+                        //loop through the items		
                         var infiniteLoop = setInterval(function(){
                             $('.rotating-item4').eq(currentItem).fadeOut(fadeTime);
 
@@ -246,26 +238,21 @@
                             }
                             $('.rotating-item4').eq(currentItem).fadeIn(fadeTime);
 
-                        }, itemInterval);   
-                    }   
+                        }, itemInterval);	
+                    }	
                 };
 
                 InfiniteRotator4.init();
 
             });
         </script>
-
+        
     </head>
     <body>
-    <div id="contenedor">
         <header>
-
             <a href="//www.imgnpro.com"><img id="logohead" src="../images/logowslogan.png" height="100%" width="auto"></a>
             <span id="slogan">the background remover</span>
             <a id="botonintro" href="//www.imgnpro.com">Ir al Intro</a>
-
-            
-            <% include partials/menutop.html %>
         </header>
         <section id="contenedor1">
             <div id="contregistro">
@@ -280,15 +267,8 @@
                         <br>
                         <br>
                         <input type="checkbox" name="accept_terms" required><label class="postcheck">Acepto los <a class="terms" href="../pdfs/tems.pdf" target="_blank">Términos y Condiciones de IMGNpro</a>.</label>
-                        <input class="buttonreg" type="submit" value="Quiero mis 3 fotos Gratis!">
-                        <br>
-                        <div class="button2">
-                            <a id="a_freetest">PRUEBA GRATIS</a>
-                        </div>
-
+                        <input class="buttonreg" type="submit" value="¡Quiero mis 3 fotos Gratis!">
                         <p class="texto_plano">o bien regístrate Gratis con tu cuenta de</p>
-                        
-
                         <div class="button3">
                             <img class="redes_icon" src="../images/icon_f.png"><a href="/login/facebook">Facebook</a>
                         </div>
@@ -298,8 +278,26 @@
                     </form> 
                 </div>
             </div>
+            <div id="contregistro2">
+                <div class="registro1">
+                    <form id="contactForm2"  action="/signup" method="post" name="registro_form">
+                        <input type="text" name="userlongname2" placeholder="Nombre" required>
+                        <input type="email" name="email2" placeholder="Correo Electrónico" required>
+                        <input type="password" name="password2" id="password2"  placeholder="Contraseña" required>
+                        <input type="password" name="confirmpass2"  id="confirmpass" oninput="check(this, 'password2')" placeholder="Confirmar Contraseña" required>
+                        <input type="checkbox" name="accept_terms" required><label class="postcheck">Acepto los <a class="terms" href="../pdfs/tems.pdf" target="_blank">Términos y Condiciones</a>.</label>
+                        <input class="buttonreg" type="submit" value="¡Quiero mis 3 fotos Gratis!">
+                        <div class="button5">
+                            <img class="redes_icon" src="../images/icon_f.png"><a href="/login/facebook">Facebook</a>
+                        </div>
+                        <div class="button6">
+                            <img class="redes_icon" src="../images/icon_g.png"><a href="/login/google">Google</a>
+                        </div>
+                    </form> 
+                </div>
+            </div>
         </section>
-        <section id="contenedor1">
+        <section id="contenedor1a">
             <div class="textcont">
                 <p class="supertext">Olvídate de recortar y editar tus fotos</p>
                 <br>
@@ -313,16 +311,16 @@
             </div>
         </section>
         <section id="contenedor1">
-            <div class="textcont">
-                <p class="supertext">Tus fotos como tu las quieras o necesites</p>
-                <br>
-                <p class="notsupertext">Te ofrecemos múltiples opciones que se adaptan a tu eCommerce, Catálogo, Revista, publicidad, etc.</p>
-            </div>
             <div id="wrapwrapper">
                 <div id="rotating-item-wrapper">
                     <img src="../images/foto_antes.jpg" class="rotating-item2 fotoad"/>
                     <img src="../images/foto_despues.jpg" class="rotating-item2 fotoad"/>
                 </div>
+            </div>
+             <div class="textcont">
+                <p class="supertext">Tus fotos como tu las quieras o necesites</p>
+                <br>
+                <p class="notsupertext">Te ofrecemos múltiples opciones que se adaptan a tu eCommerce, Catálogo, Revista, publicidad, etc.</p>
             </div>
         </section>
         <section id="contenedor1">
@@ -340,11 +338,6 @@
             </div>
         </section>
         <section id="contenedor1">
-            <div class="textcont">
-                <p class="supertext">Tus Creativos se dedicarán a crear</p>
-                <br>
-                <p class="notsupertext">Al usar nuestro sistema les das más tiempo de creatividad, ya que se ahorran la parte tediosa de recortar y optimizar las fotos.</p>
-            </div>
             <div id="wrapwrapper">
                 <div id="rotating-item-wrapper">
                     <img src="../images/foto_antes4.jpg" class="rotating-item4 fotoad"/>
@@ -353,6 +346,7 @@
                     <img src="../images/foto_despues5.jpg" class="rotating-item4 fotoad"/>
                 </div>
             </div>
+<<<<<<< HEAD
         </section>
         <section id="contenedor1">
             <div id="contregistro2">
@@ -366,8 +360,8 @@
                         <input type="password" name="confirmpass"  id="confirmpass" oninput="check(this, 'password2','La contraseña no coincide.')" placeholder="Confirmar Contraseña" required>
                         <br>
                         <br>
-                        <input type="checkbox" name="accept_terms" required><label class="postcheck">Acepto los <a class="terms" href="../pdfs/tems.pdf" target="_blank">Términos y Condiciones de IMGNpro</a>.</label>
-                        <input class="buttonreg" type="submit" value="Quiero mis 3 fotos Gratis!">
+                        <input type="checkbox" name="accept_terms" required><label class="postcheck">Acepto los <a class="terms" href="../pdfs/tems.pdf" target="_blank">Terminos y Condiciones de IMGNpro</a>.</label>
+                        <input class="buttonreg" type="submit" value="Quiero mis 3 fótos Gratis!">
                         <p class="texto_plano">o bien regístrate Gratis con tu cuenta de</p>
                         <div class="button3">
                             <img class="redes_icon" src="../images/icon_f.png"><a href="/login/facebook">Facebook</a>
@@ -377,11 +371,17 @@
                         </div>
                     </form> 
                 </div>
+=======
+            <div class="textcont">
+                <p class="supertext">Tus Creativos se dedicarán a crear</p>
+                <br>
+                <p class="notsupertext">Al usar nuestro sistema les das más tiempo de creatividad, ya que se ahorran la parte tediosa de recortar y optimizar las fotos.</p>
+>>>>>>> f42a36f4c0f8e694e025aea72884558cce20f493
             </div>
         </section>
-    </div>
-        <footer class="certificate">
-              <% include partials/footer.html %>
+        <footer>
+            <hr>
+            IMGNpro, the background remover
         </footer>
     </body>
 </html>

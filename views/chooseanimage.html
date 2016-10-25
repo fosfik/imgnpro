@@ -11,8 +11,19 @@
         <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
         <script type="text/javascript">
             $(document).ready(function(){
+
+                var v_specname = localStorage.getItem("specname");
+                var v_typespec = localStorage.getItem("typespec");
+                
                 localStorage.clear(); // limpia el localstorage
-                   
+                localStorage.setItem("specname", '<%= specname %>');
+                localStorage.setItem("typespec", '<%= typespec %>');
+
+                if (v_typespec == 'free'){
+                    localStorage.setItem("specname", v_specname);
+                    localStorage.setItem("typespec", v_typespec);
+                }
+
                 $('#buttoncontorder').click(function (ev) {
                     var imageselected = localStorage.getItem('imageselected');
                     if (imageselected === null){

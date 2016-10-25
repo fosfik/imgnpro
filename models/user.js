@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
- 
-module.exports = mongoose.model('User',{
+var demousercounter = require('./demousercounter.js');
+var userSchema = mongoose.Schema({
     userlongname: String,
     username: String,
     password: String,
@@ -16,12 +16,23 @@ module.exports = mongoose.model('User',{
     disabled: {type:Boolean, default: true}
 });
 
+userSchema.pre('save', function(next) {
+    var doc = this;
 
-// var mongoose = require('mongoose');
-// var userSchema = new mongoose.Schema({
-//     userlongname: String,
-//     password: String,
-//     email: String,
-//     accept_terms: Boolean
-// });
-// mongoose.model('User', userSchema);
+    if (doc.userlongname == 'demoimgnpro'){
+        console.log(doc);
+        demousercounter.findByIdAndUpdate({_id: 'entityId'}, {$inc: { seq: 1} },{upsert:true, new: true}, function(error, counter)   {
+            if(error)
+                return next(error);
+            doc.userlongname  = 'demoimgnpro' + counter.seq;
+            console.log(doc);
+            next();
+        });
+    } 
+    else{
+        next();
+    }
+});
+
+module.exports = mongoose.model('User', userSchema);
+

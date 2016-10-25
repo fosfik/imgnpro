@@ -420,7 +420,8 @@ passport.use('signup', new LocalStrategy({
          }
          //console.log("prueba 2");
        // already exists
-        if (user) {
+        var v_userlongname = req.param('userlongname');
+        if (user  && v_userlongname !== 'demoimgnpro' ) {
           console.log('User already exists');
           return done(null, false,{message:'El correo ya existe'});
         } 
@@ -442,6 +443,7 @@ passport.use('signup', new LocalStrategy({
             newUser.disabled = false;
           }
           
+
  
           // save the user
           newUser.save(function(err) {

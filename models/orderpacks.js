@@ -11,6 +11,8 @@ var orderSchema = mongoose.Schema({
     imagecount: {type:Number, default:0},
     designerid: {type: String},
     specid:{type: String, ref: 'Orderspecs'},
+    date_reserve: {type: Date},
+    reserve_byid: {type: String},
     images: [{  imagename: String, width: Number, height: Number, length: Number, position: Number }]
 });
 

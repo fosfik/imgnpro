@@ -33,6 +33,16 @@
                         $('#box_conversation').scrollTop(sHeight);
                 });
 
+                 socket.on('err', function(msg){
+                    //$('#messages').append($('<li>').text(msg));
+                    var jsMsg = JSON.parse(msg);
+                    console.log(jsMsg);
+                    if (jsMsg.userid == '<%= user._id %>'){
+                        alert(jsMsg.msg);
+
+                    }
+                });
+
                 socket.on('packs_list', function(msg){
                     //$('#messages').append($('<li>').text(msg));
                     var jsMsg = JSON.parse(msg);
@@ -180,7 +190,7 @@
                     <li><a href="../htmls/de_micuenta.html">Mi Cuenta</a></li>
                     <li><a href="../htmls/de_historial.html">Historial</a></li>
                     <li><a href="../htmls/de_contacto.html">Soporte</a></li>
-                    <li><a href="/logout">Cerrar Sesión</a></li>
+                    <li><a href="/de_logout">Cerrar Sesión</a></li>
                 </ul>
             </nav>
         </section>

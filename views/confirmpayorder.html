@@ -106,7 +106,14 @@
                     }
                     else
                     {
-                        bValor = true;
+                        if ($('#emailconfirm').val() !== $('#contactemail').val()){
+                            alert("El correo electrónico no coincide");
+                            $('#emailconfirm').focus(); 
+                        }
+                        else{
+                             bValor = true;
+                        }
+                       
                     } 
                 }
 
@@ -151,6 +158,9 @@
                     <input tabindex=1 id="contactname" type="text" name="contactname" value="" placeholder="Nombre completo" required><br>
                     <label for="contactemail">Email</label><br>
                     <input tabindex=2 id= "contactemail" type="email" name="contactemail" value="" placeholder="ej. nombre@empresa.com" required><br>
+                    <label for="contactemailconfirm">Confirmar Email</label><br>
+                    <input tabindex=2 id= "emailconfirm" type="email" name="contactemailconfirm" value="" placeholder="ej. nombre@empresa.com" required><br>
+
                     <label for="contactcountry">País</label><br>
                     <select tabindex=3 name="sel_contactcountry" >
                         <option value="" disabled selected>Seleccione un País</option>

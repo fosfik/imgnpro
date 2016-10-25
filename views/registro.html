@@ -4,9 +4,14 @@
         <script src="../js/google.js"></script>
        <% include partials/head.html %>
         <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script> -->
+        <link rel="stylesheet" href="../stylesheets/imgncss_landing.css">
         <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
-        <script type="text/javascript">
-            $(document).ready(function(){
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+        <script src="../js/google.js"></script>
+        <script>
+            $(document).ready(function() {
+
                 var frm = $('#contactForm1');
                 frm.submit(function (ev) {
                     $.ajax({
@@ -15,7 +20,7 @@
                         data: frm.serialize(),
                         success: function (data) {
                             if (data.error == 1 ){
-                                document.getElementById('res_message').innerHTML= data.message;    
+                               alert(data.message);    
                             }
                             else{
                                 setTimeout(window.location='/principal',500);    
@@ -24,103 +29,333 @@
                     });
                     ev.preventDefault();
                 });
+
+                var frm2 = $('#contactForm2');
+                frm2.submit(function (ev) {
+                    $.ajax({
+                        type: frm2.attr('method'),
+                        url: frm2.attr('action'),
+                        data: frm2.serialize(),
+                        success: function (data) {
+                            if (data.error == 1 ){
+                               alert(data.message);    
+                            }
+                            else{
+                                setTimeout(window.location='/principal',500);    
+                            }
+                        }
+                    });
+                    ev.preventDefault();
+                });
+
+
+                $(window).on('scroll', function() {
+                    if (Math.round($(window).scrollTop()) > 100) {
+                        $('header').addClass("sticky");
+                        $('#slogan').addClass("sticky");
+                        $('#botonintro').addClass("sticky");
+                    }
+                    else {
+                        $('header').removeClass("sticky");
+                        $('#slogan').removeClass("sticky");
+                        $('#botonintro').removeClass("sticky");
+                    }
+                });
+                
+
+                
+                      
             });
         </script>
+        <script type="text/javascript">
+            function check(input,input2,message) {
+                if (input.value != document.getElementById(input2).value) {
+                    input.setCustomValidity(message);
+                } else {
+                    // input is valid -- reset the error message
+                    input.setCustomValidity('');
+                }
+            }
+        </script>
+        <script>
+            $(window).load(function() { //start after HTML, images have loaded
+
+                var InfiniteRotator1 = 
+                {
+                    init: function()
+                    {
+                        //initial fade-in time (in milliseconds)
+                        var initialFadeIn = 2000;
+
+                        //interval between items (in milliseconds)
+                        var itemInterval = 3000;
+
+                        //cross-fade time (in milliseconds)
+                        var fadeTime = 2500;
+
+                        //count number of items
+                        var numberOfItems = $('.rotating-item1').length;
+
+                        //set current item
+                        var currentItem = 0;
+
+                        //show first item
+                        $('.rotating-item1').eq(currentItem).fadeIn(initialFadeIn);
+
+                        //loop through the items        
+                        var infiniteLoop = setInterval(function(){
+                            $('.rotating-item1').eq(currentItem).fadeOut(fadeTime);
+
+                            if(currentItem == numberOfItems -1){
+                                currentItem = 0;
+                            }else{
+                                currentItem++;
+                            }
+                            $('.rotating-item1').eq(currentItem).fadeIn(fadeTime);
+
+                        }, itemInterval);   
+                    }   
+                };
+
+                InfiniteRotator1.init();
+                
+                var InfiniteRotator2 = 
+                {
+                    init: function()
+                    {
+                        //initial fade-in time (in milliseconds)
+                        var initialFadeIn = 2000;
+
+                        //interval between items (in milliseconds)
+                        var itemInterval = 3000;
+
+                        //cross-fade time (in milliseconds)
+                        var fadeTime = 2500;
+
+                        //count number of items
+                        var numberOfItems = $('.rotating-item2').length;
+
+                        //set current item
+                        var currentItem = 0;
+
+                        //show first item
+                        $('.rotating-item2').eq(currentItem).fadeIn(initialFadeIn);
+
+                        //loop through the items        
+                        var infiniteLoop = setInterval(function(){
+                            $('.rotating-item2').eq(currentItem).fadeOut(fadeTime);
+
+                            if(currentItem == numberOfItems -1){
+                                currentItem = 0;
+                            }else{
+                                currentItem++;
+                            }
+                            $('.rotating-item2').eq(currentItem).fadeIn(fadeTime);
+
+                        }, itemInterval);   
+                    }   
+                };
+
+                InfiniteRotator2.init();
+                
+                var InfiniteRotator3 = 
+                {
+                    init: function()
+                    {
+                        //initial fade-in time (in milliseconds)
+                        var initialFadeIn = 2000;
+
+                        //interval between items (in milliseconds)
+                        var itemInterval = 3000;
+
+                        //cross-fade time (in milliseconds)
+                        var fadeTime = 2500;
+
+                        //count number of items
+                        var numberOfItems = $('.rotating-item3').length;
+
+                        //set current item
+                        var currentItem = 0;
+
+                        //show first item
+                        $('.rotating-item3').eq(currentItem).fadeIn(initialFadeIn);
+
+                        //loop through the items        
+                        var infiniteLoop = setInterval(function(){
+                            $('.rotating-item3').eq(currentItem).fadeOut(fadeTime);
+
+                            if(currentItem == numberOfItems -1){
+                                currentItem = 0;
+                            }else{
+                                currentItem++;
+                            }
+                            $('.rotating-item3').eq(currentItem).fadeIn(fadeTime);
+
+                        }, itemInterval);   
+                    }   
+                };
+
+                InfiniteRotator3.init();
+                
+                var InfiniteRotator4 = 
+                {
+                    init: function()
+                    {
+                        //initial fade-in time (in milliseconds)
+                        var initialFadeIn = 2000;
+
+                        //interval between items (in milliseconds)
+                        var itemInterval = 3000;
+
+                        //cross-fade time (in milliseconds)
+                        var fadeTime = 2500;
+
+                        //count number of items
+                        var numberOfItems = $('.rotating-item4').length;
+
+                        //set current item
+                        var currentItem = 0;
+
+                        //show first item
+                        $('.rotating-item4').eq(currentItem).fadeIn(initialFadeIn);
+
+                        //loop through the items        
+                        var infiniteLoop = setInterval(function(){
+                            $('.rotating-item4').eq(currentItem).fadeOut(fadeTime);
+
+                            if(currentItem == numberOfItems -1){
+                                currentItem = 0;
+                            }else{
+                                currentItem++;
+                            }
+                            $('.rotating-item4').eq(currentItem).fadeIn(fadeTime);
+
+                        }, itemInterval);   
+                    }   
+                };
+
+                InfiniteRotator4.init();
+
+            });
+        </script>
+
     </head>
     <body>
     <div id="contenedor">
         <header>
-            <section id="logo">
-            <h1><a href="/"><img src="../images/logo_black.png" alt="logo"></a></h1>
-            </section>
-            <% include partials/menutop.html %>
-        </header>
-        <section id="registro">
-            <div class="registro1">
-                <p class="encabezado" id="cabeza">Regístrate</p>
-                <p class="texto_plano">Crea tu cuenta para acceder a tus 3 primeras fotos Gratis</p>
-                <br>
-                <p class="texto_plano">regístrate con tu cuenta de</p>
-            </div>
-        </section>
-        <section id="botones_redesReg">
-            <div class="button3">
-                <img class="redes_icon" src="../images/icon_f.png"><a href="/login/facebook">Facebook</a>
-            </div>
-            <div class="button4">
-                <img class="redes_icon" src="../images/icon_g.png"><a href="/login/google">Google</a>
-            </div>
-            <!-- <div class="button5">
-                <img class="redes_icon" src="../images/icon_l.png"><a>Linkedin</a>
-            </div> -->
-        </section>
-        <section id="registro">
-            <div class="registro1">
-            <p class="texto_plano">o bien, regístrate con <a id="paraabrirmodal2" href="#openRegistroModal">tu dirección de correo electrónico</a></p>
-            </div>
-        </section>
-        <section id="registro_boton">
-            <div class="registro1">
-                <p class="texto_plano">¿Ya tienes cuenta?</p>
-                <div class="button6"><a href="/login">Empieza Ya!</a></div>
-            </div>
-        </section>
-        <section id="registro_boton">
-            <div class="registro1">
-                <p class="texto_plano">¿Eres una empresa?</p>
-                <p class="temporalcenter">Temporalmente sólo en México</p>
-                <div class="button7"><a href="mailto:businessplan@mail-imgnpro.com">Contáctanos</a></div>
-            </div>
-        </section>
-    </div>
-        
-    <div id="openRegistroModal" class="modalDialogRegistro">
-        <div>
-            <a href="#close" title="Close" Class="close">X</a>
-            <h1 class="encabezado">Introduce tus datos</h1>
-            <form id="contactForm1" class="registro_form" action="/signup" method="post" name="registro_form">
-                <ul>
-                    <li>
-                        <label id="etiquetas">Nombre de Usuario</label>
-                        <input type="text" name="userlongname" placeholder="Lupito Pérez" maxlength="20" required>
-                    </li>
-                    <li>
-                        <label id="etiquetas">eMail</label>
-                        <input type="email" name="email" placeholder="lupito@industriaspatito.com" maxlength="50" required>
-                    </li>
-                    <li>
-                        <label id="etiquetas">Contraseña</label>
-                        <input type="password" name="password" id="password" maxlength="20" required>
-                    </li>
-                    <li>
-                        <label id="etiquetas">Confirmar Contraseña</label>
-                        <input type="password" id="confirmarpassword" maxlength="20" oninput="check(this)" required>
-                        <script>
-                        function check(input) {
-                            if (input.value != document.getElementById('password').value) {
-                                input.setCustomValidity('La contraseña no coincide.');
-                            } else {
-                                // input is valid -- reset the error message
-                                input.setCustomValidity('');
-                            }
-                        }
-                        </script>
-                    </li>
-                    <li id="checkbox">
-                        <input type="checkbox" name="accept_terms" required><label id="terminos"><a href="terminosycondiciones">Acepto términos y condiciones</a></label>
-                    </li>
-                </ul>
-                <div>
-                    <h1 id="res_message"></h1>
-                </div>   
-                <div class="button2">
-                    <input type="submit" value="Quiero mis 3 imágenes Gratis!">
-                </div>   
-                             
-            </form>
+
+            <a href="//www.imgnpro.com"><img id="logohead" src="../images/logowslogan.png" height="100%" width="auto"></a>
+            <span id="slogan">the background remover</span>
+            <a id="botonintro" href="//www.imgnpro.com">Ir al Intro</a>
 
             
-        </div>
+            <% include partials/menutop.html %>
+        </header>
+        <section id="contenedor1">
+            <div id="contregistro">
+                <div class="registro1">
+                    <form id="contactForm1"  action="/signup" method="post" name="registro_form">
+                        <input type="text" name="userlongname" placeholder="Nombre" required>
+                        <br>
+                        <input type="email" name="email" placeholder="Correo Electrónico" required>
+                        <br>
+                        <input type="password" name="password" id="password1"  placeholder="Contraseña" required>
+                        <input type="password" name="confirmpass"  id="confirmpass" oninput="check(this, 'password1','La contraseña no coincide.')" placeholder="Confirmar Contraseña" required>
+                        <br>
+                        <br>
+                        <input type="checkbox" name="accept_terms" required><label class="postcheck">Acepto los <a class="terms" href="../pdfs/tems.pdf" target="_blank">Términos y Condiciones de IMGNpro</a>.</label>
+                        <input class="buttonreg" type="submit" value="Quiero mis 3 fotos Gratis!">
+                        <p class="texto_plano">o bien regístrate Gratis con tu cuenta de</p>
+                        <div class="button3">
+                            <img class="redes_icon" src="../images/icon_f.png"><a href="/login/facebook">Facebook</a>
+                        </div>
+                        <div class="button4">
+                            <img class="redes_icon" src="../images/icon_g.png"><a href="/login/google">Google</a>
+                        </div>
+                    </form> 
+                </div>
+            </div>
+        </section>
+        <section id="contenedor1">
+            <div class="textcont">
+                <p class="supertext">Olvídate de recortar y editar tus fotos</p>
+                <br>
+                <p class="notsupertext">Sin importar que sea una o mil imágenes, somos la plataforma web que lo hace por ti en tiempo record.</p>
+            </div>
+            <div id="wrapwrapper">
+                <div id="rotating-item-wrapper">
+                    <img src="../images/foto_antes2.jpg" class="rotating-item1 fotoad"/>
+                    <img src="../images/foto_despues2.jpg" class="rotating-item1 fotoad"/>
+                </div>
+            </div>
+        </section>
+        <section id="contenedor1">
+            <div class="textcont">
+                <p class="supertext">Tus fotos como tu las quieras o necesites</p>
+                <br>
+                <p class="notsupertext">Te ofrecemos múltiples opciones que se adaptan a tu eCommerce, Catálogo, Revista, publicidad, etc.</p>
+            </div>
+            <div id="wrapwrapper">
+                <div id="rotating-item-wrapper">
+                    <img src="../images/foto_antes.jpg" class="rotating-item2 fotoad"/>
+                    <img src="../images/foto_despues.jpg" class="rotating-item2 fotoad"/>
+                </div>
+            </div>
+        </section>
+        <section id="contenedor1">
+            <div class="textcont">
+                <p class="supertext">Rápido, Fácil y Seguro!</p>
+                <br>
+                <p class="notsupertext">Nuestro método consta sólo de 3 pasos, <b>Captura</b> la imagen, la <b>Subes</b> a nuestro sistema y <b>Recibe</b> tu foto justo como tu la necesites.</p>
+            </div>
+            <div id="wrapwrapper">
+                <div id="rotating-item-wrapper">
+                    <img src="../images/paso1.jpg" class="rotating-item3 fotoad"/>
+                    <img src="../images/paso2.jpg" class="rotating-item3 fotoad"/>
+                    <img src="../images/paso3.jpg" class="rotating-item3 fotoad"/>
+                </div>
+            </div>
+        </section>
+        <section id="contenedor1">
+            <div class="textcont">
+                <p class="supertext">Tus Creativos se dedicarán a crear</p>
+                <br>
+                <p class="notsupertext">Al usar nuestro sistema les das más tiempo de creatividad, ya que se ahorran la parte tediosa de recortar y optimizar las fotos.</p>
+            </div>
+            <div id="wrapwrapper">
+                <div id="rotating-item-wrapper">
+                    <img src="../images/foto_antes4.jpg" class="rotating-item4 fotoad"/>
+                    <img src="../images/foto_despues4.jpg" class="rotating-item4 fotoad"/>
+                    <img src="../images/foto_antes5.jpg" class="rotating-item4 fotoad"/>
+                    <img src="../images/foto_despues5.jpg" class="rotating-item4 fotoad"/>
+                </div>
+            </div>
+        </section>
+        <section id="contenedor1">
+            <div id="contregistro2">
+                <div class="registro1">
+                    <form id="contactForm2"  action="/signup" method="post" name="registro_form">
+                        <input type="text" name="userlongname" placeholder="Nombre" required>
+                        <br>
+                        <input type="email" name="email" placeholder="Correo Electrónico" required>
+                        <br>
+                        <input type="password" name="password" id="password2"  placeholder="Contraseña" required>
+                        <input type="password" name="confirmpass"  id="confirmpass" oninput="check(this, 'password2','La contraseña no coincide.')" placeholder="Confirmar Contraseña" required>
+                        <br>
+                        <br>
+                        <input type="checkbox" name="accept_terms" required><label class="postcheck">Acepto los <a class="terms" href="../pdfs/tems.pdf" target="_blank">Términos y Condiciones de IMGNpro</a>.</label>
+                        <input class="buttonreg" type="submit" value="Quiero mis 3 fotos Gratis!">
+                        <p class="texto_plano">o bien regístrate Gratis con tu cuenta de</p>
+                        <div class="button3">
+                            <img class="redes_icon" src="../images/icon_f.png"><a href="/login/facebook">Facebook</a>
+                        </div>
+                        <div class="button4">
+                            <img class="redes_icon" src="../images/icon_g.png"><a href="/login/google">Google</a>
+                        </div>
+                    </form> 
+                </div>
+            </div>
+        </section>
     </div>
         <footer class="certificate">
               <% include partials/footer.html %>

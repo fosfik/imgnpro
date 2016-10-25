@@ -14,14 +14,17 @@
 
                 var v_specname = localStorage.getItem("specname");
                 var v_typespec = localStorage.getItem("typespec");
-                
+                var v_specid = localStorage.getItem("specid");
+
                 localStorage.clear(); // limpia el localstorage
                 localStorage.setItem("specname", '<%= specname %>');
                 localStorage.setItem("typespec", '<%= typespec %>');
+                 localStorage.setItem("specid", '<%= specid %>');
 
                 if (v_typespec == 'free'){
                     localStorage.setItem("specname", v_specname);
                     localStorage.setItem("typespec", v_typespec);
+                    localStorage.setItem("specid", v_specid);
                 }
 
                 $('#buttoncontorder').click(function (ev) {

@@ -941,16 +941,17 @@ router.get('/de_designers',
               if (typeof(req.query['specid']) == 'undefined'){
                 console.log('indefinido');
                 // Pedido normal
-                res.render('chooseanimage', {message: req.flash('message'), user: req.user, countorders:count, typespec:'', specname:'' });
+                res.render('chooseanimage', {message: req.flash('message'), user: req.user, countorders:count, typespec:'', specname:'', specid:'' });
               }else{
                 Spec.findOne({_id:req.query['specid']},function(err,specrecord){
                     if (err){
-                      res.render('chooseanimage', {message: req.flash('message'), user: req.user, countorders:count,typespec:'', specname:'' });
+                      res.render('chooseanimage', {message: req.flash('message'), user: req.user, countorders:count,typespec:'', specname:'', specid:'' });
                     }
                     else if (specrecord) {
                       console.log(specrecord);
+                      console.log(specrecord._id);
 
-                      res.render('chooseanimage', {message: req.flash('message'), user: req.user, countorders:count,typespec:specrecord.typespec, specname:specrecord.name });
+                      res.render('chooseanimage', {message: req.flash('message'), user: req.user, countorders:count,typespec:specrecord.typespec, specname:specrecord.name , specid: specrecord._id });
                     }
                     else{
                       res.render('chooseanimage', {message: req.flash('message'), user: req.user, countorders:count,typespec:'', specname:'' });
@@ -1318,6 +1319,13 @@ router.get('/de_designers',
   router.post('/newstepspec', function (req,res) {
     // body...
       var specInfos = JSON.parse(req.body['specInfos']);
+      console.log(specInfos[0].typespec);
+
+      if (specInfos[0].typespec == 'free'){
+         res.setHeader('Content-Type', 'application/json');
+         res.send(JSON.stringify({ error: 0, newSpecid: specInfos[0].specid, message: 'Ahora puedes subir tus 3 imágenes gratis'})); 
+         return;
+      }
       var newSpec = new Spec();
       // set the user's local credentials
       // recibir el array de datos

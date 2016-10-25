@@ -8,9 +8,11 @@
         <script src="../js/google.js"></script>
         <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
         <script type="text/javascript">
+
             $(document).ready(function(){
                 var imageselected = localStorage.getItem("imageselected");
                 var currentMarginnone =  localStorage.getItem("marginnone");
+                var v_typespec = localStorage.getItem("typespec");
                 $("#imgportaimage").attr("src",imageselected);
                 if (currentMarginnone !== null){
                     if (currentMarginnone === 'none'){
@@ -38,6 +40,11 @@
                     ev.preventDefault();
                 }); 
 
+
+                if (v_typespec == 'free'){
+                    desactForm('marginForm1');       
+
+                }
                 $("#chkmarginone").change(function(){
                     var chkmarginone = document.getElementById('chkmarginone').checked;
                     if (chkmarginone == false){
@@ -56,6 +63,10 @@
                     $('input[name=marginleft]').prop('disabled', chkmarginone);
                     $('input[name=marginright]').prop('disabled', chkmarginone);
                 }
+
+               function desactForm(formName){
+                    $('#' + formName).find('input, textarea, button, select').prop('disabled',true);
+               }
             });
         </script>
     </head>

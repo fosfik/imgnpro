@@ -92,25 +92,77 @@ header.sticky {
     text-align: center;
     padding: 30px;
     display: inline-block;
-    width: 100%; 
+    width: 100%;
+    -webkit-transition: all .5s ease;
+    transition: all .5s ease;
+}
+
+#contenedor1.sticky {
+    text-align: center;
+    display: inline-block;
+    width: 100%;
+    padding: 0px;
+}
+
+#contenedor1a {
+    text-align: center;
+    padding: 30px;
+    display: inline-block;
+    width: 100%;
+}
+
+#contenedor1a.sticky {
+    text-align: center;
+    display: inline-block;
+    width: 100%;
+    padding: 30px;
+    margin-top: 400px;
 }
 
 #contregistro {
     display: inline-block;
     border: solid 2px #ccc;
     border-radius: 20px;
+    background: #E5E5E5;
+    width: 400px;
+    padding: 20px;
+    margin-top: 150px;
+    -webkit-transition: all .5s ease;
+    transition: all .5s ease;
+}
+
+#contregistro.sticky {
+    display: none;
+    border: solid 2px #ccc;
+    border-radius: 20px;
+    background: #E5E5E5;
     width: 400px;
     padding: 20px;
     margin-top: 150px;
 }
 
 #contregistro2 {
-    display: inline-block;
+    display: none;
     border: solid 2px #ccc;
     border-radius: 20px;
+    background: #E5E5E5;
     width: 400px;
     padding: 20px;
     margin-top: 50px;
+    -webkit-transition: all .5s ease;
+    transition: all .5s ease;
+}
+
+#contregistro2.sticky {
+    display: block;
+    position: fixed;
+    border: solid 2px #ccc;
+    border-radius: 0px;
+    background: #0055;
+    width: 100%;
+    padding: 10px;
+    margin-top: 48px;
+    z-index: 99;
 }
 
 .redes_icon{
@@ -124,6 +176,9 @@ header.sticky {
     padding: 5px;
     text-decoration: none;
 }
+
+.registro1 :-moz-placeholder {color: #ccc; font-size: 12px; font-style: italic; font-weight: lighter;}
+.registro1 ::-webkit-input-placeholder {color: #ccc; font-size: 12px; font-style: italic; font-weight: lighter;}
 
 input[name="userlongname"], input[name="email"] {
     display: inline-block;
@@ -164,6 +219,21 @@ input[name="confirmpass"] {
     border: solid 1px #CCC;
 }
 
+input[name="userlongname2"], input[name="email2"], input[name="password2"], input[name="confirmpass2"] {
+    display: inline-block;
+    width: 10%;
+    height: 15px;
+    margin: 5px;
+    padding: 5px;
+    text-align: center;
+    font-size: 12px;
+    color: #000;
+    background: #EEE;
+    border: solid 1px #CCC;
+}
+
+
+
 .postcheck {
     display: inline-block;
     font-size: 10px;
@@ -174,7 +244,7 @@ input[name="confirmpass"] {
 
 .terms {
     text-decoration: none;
-    color: #00B4FF
+    color: #00B4FF;
 }
 
 .buttonreg {
@@ -206,23 +276,37 @@ input[name="confirmpass"] {
     transition: .1s;
 }
 
-.button3 {
+.button5, .button6{
+    display: inline-block;
+    color: #FFFFFF;
+    padding: 5px;
+    text-decoration: none;
+    font-size: 12px;
+    margin: 10px 10px;
+    cursor: pointer;
+    float: none;
+    width: auto;
+    height: auto;
+    transition: .1s;
+}
+
+.button3, .button5 {
     background-color: #0952b8;
     transition: .1s;
 }
 
-.button4 {
+.button4, .button6 {
     background-color: #d60000;
     transition: .1s;
 }
 
-.button3 a, .button4 a {
+.button3 a, .button4 a, .button5 a, .button6 a {
     text-decoration: none;
     font: 16px;
     color: #FFFFFF;
 }
 
-.button3:hover, .button4:hover, .buttonreg:hover {
+.button3:hover, .button4:hover, .button5:hover, .button6:hover, .buttonreg:hover {
     box-shadow: 2px 2px 2px rgba(20, 20, 20, 0.4);
     transition: .2s
 }

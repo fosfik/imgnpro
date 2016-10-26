@@ -11,44 +11,6 @@
         <script src="../js/google.js"></script>
         <script>
             $(document).ready(function() {
-
-//                var frm = $('#contactForm1');
-//                frm.submit(function (ev) {
-//                    $.ajax({
-//                        type: frm.attr('method'),
-//                        url: frm.attr('action'),
-//                        data: frm.serialize(),
-//                        success: function (data) {
-//                            if (data.error == 1 ){
-//                               alert(data.message);    
-//                            }
-//                            else{
-//                                setTimeout(window.location='/principal',500);    
-//                            }
-//                        }
-//                    });
-//                    ev.preventDefault();
-//                });
-//
-//                var frm2 = $('#contactForm2');
-//                frm2.submit(function (ev) {
-//                    $.ajax({
-//                        type: frm2.attr('method'),
-//                        url: frm2.attr('action'),
-//                        data: frm2.serialize(),
-//                        success: function (data) {
-//                            if (data.error == 1 ){
-//                               alert(data.message);    
-//                            }
-//                            else{
-//                                setTimeout(window.location='/principal',500);    
-//                            }
-//                        }
-//                    });
-//                    ev.preventDefault();
-//                });
-
-
                 $(window).on('scroll', function() {
                     if (Math.round($(window).scrollTop()) > 100) {
                         $('#header').addClass("sticky");
@@ -69,7 +31,43 @@
                         $('#contenedor1a').removeClass("sticky");
                     }
                 });
-                
+
+                $('#a_freetest1').click(function (ev) {
+                    demoSignup();
+                    ev.preventDefault();
+                });
+                $('#a_freetest2').click(function (ev) {
+                    demoSignup();
+                    ev.preventDefault();
+                });
+                $('#a_freetest3').click(function (ev) {
+                    demoSignup();
+                    ev.preventDefault();
+                });
+                $('#a_freetest4').click(function (ev) {
+                    demoSignup();
+                    ev.preventDefault();
+                });
+                $('#a_freetest5').click(function (ev) {
+                    demoSignup();
+                    ev.preventDefault();
+                });
+
+                function demoSignup(){
+                     $.ajax({
+                        type: 'post',
+                        url: '/signup',
+                        data: {'userlongname':'demoimgnpro', 'email':'demoimgnpro', 'password':'demoimgnpro', 'accept_terms':true },
+                        success: function (data) {
+                            if (data.error == 1 ){
+                               alert(data.message);    
+                            }
+                            else{
+                                setTimeout(window.location='/principal',500);    
+                            }
+                        }
+                    });
+                }
 
                 
                       
@@ -252,59 +250,14 @@
         <header id="header">
             <a href="//www.imgnpro.com"><img id="logohead" src="../images/logowslogan.png" height="100%" width="auto"></a>
             <span id="slogan">the background remover</span>
-            <div id="botonintro"><a id="a_freetest">Ir al Demo</a></div>
+            <div id="botonintro"><a id="a_freetest1">Ir al Demo</a></div>
         </header>
-<!--
-        <section id="contenedor1">
-            <div id="contregistro">
-                <div class="registro1">
-                    <form id="contactForm1"  action="/signup" method="post" name="registro_form">
-                        <input type="text" name="userlongname" placeholder="Nombre" required>
-                        <br>
-                        <input type="email" name="email" placeholder="Correo Electrónico" required>
-                        <br>
-                        <input type="password" name="password" id="password1"  placeholder="Contraseña" required>
-                        <input type="password" name="confirmpass"  id="confirmpass" oninput="check(this, 'password1')" placeholder="Confirmar Contraseña" required>
-                        <br>
-                        <br>
-                        <input type="checkbox" name="accept_terms" required><label class="postcheck">Acepto los <a class="terms" href="../pdfs/tems.pdf" target="_blank">Términos y Condiciones de IMGNpro</a>.</label>
-                        <input class="buttonreg" type="submit" value="¡Quiero mis 3 fotos Gratis!">
-                        <p class="texto_plano">o bien regístrate Gratis con tu cuenta de</p>
-                        <div class="button3">
-                            <img class="redes_icon" src="../images/icon_f.png"><a href="/login/facebook">Facebook</a>
-                        </div>
-                        <div class="button4">
-                            <img class="redes_icon" src="../images/icon_g.png"><a href="/login/google">Google</a>
-                        </div>
-                    </form> 
-                </div>
-            </div>
-            <div id="contregistro2">
-                <div class="registro1">
-                    <form id="contactForm2"  action="/signup" method="post" name="registro_form">
-                        <input type="text" name="userlongname2" placeholder="Nombre" required>
-                        <input type="email" name="email2" placeholder="Correo Electrónico" required>
-                        <input type="password" name="password2" id="password2"  placeholder="Contraseña" required>
-                        <input type="password" name="confirmpass2"  id="confirmpass" oninput="check(this, 'password2')" placeholder="Confirmar Contraseña" required>
-                        <input type="checkbox" name="accept_terms" required><label class="postcheck">Acepto los <a class="terms" href="../pdfs/tems.pdf" target="_blank">Términos y Condiciones</a>.</label>
-                        <input class="buttonreg" type="submit" value="¡Quiero mis 3 fotos Gratis!">
-                        <div class="button5">
-                            <img class="redes_icon" src="../images/icon_f.png"><a href="/login/facebook">Facebook</a>
-                        </div>
-                        <div class="button6">
-                            <img class="redes_icon" src="../images/icon_g.png"><a href="/login/google">Google</a>
-                        </div>
-                    </form> 
-                </div>
-            </div>
-        </section>
--->
         <section id="contenedor1a">
             <div class="textcont">
                 <p class="supertext">Olvídate de recortar y editar tus fotos</p>
                 <br>
                 <p class="notsupertext">Sin importar que sea una o mil imágenes, somos la plataforma web que lo hace por ti en tiempo record.</p>
-                <a class="button1" id="a_freetest">Haz click aquí para una prueba ¡Gratis!</a>
+                <a class="button1" id="a_freetest2">Haz click aquí para una prueba ¡Gratis!</a>
             </div>
             <div id="wrapwrapper">
                 <div id="rotating-item-wrapper">
@@ -324,7 +277,7 @@
                 <p class="supertext">Tus fotos como tu las quieras o necesites</p>
                 <br>
                 <p class="notsupertext">Te ofrecemos múltiples opciones que se adaptan a tu eCommerce, Catálogo, Revista, publicidad, etc.</p>
-                <a class="button1" id="a_freetest">Inicia ahora ¡Sin Registro!</a>
+                <a class="button1" id="a_freetest3">Inicia ahora ¡Sin Registro!</a>
             </div>
         </section>
         <section id="contenedor1">
@@ -332,7 +285,7 @@
                 <p class="supertext">Rápido, Fácil y Seguro!</p>
                 <br>
                 <p class="notsupertext">Nuestro método consta sólo de 3 pasos, <b>Captura</b> la imagen, la <b>Subes</b> a nuestro sistema y <b>Recibe</b> tu foto justo como tu la necesites.</p>
-                <a class="button1" id="a_freetest">Entra ahora ¡Es Gratis!</a>
+                <a class="button1" id="a_freetest4">Entra ahora ¡Es Gratis!</a>
             </div>
             <div id="wrapwrapper">
                 <div id="rotating-item-wrapper">
@@ -355,7 +308,7 @@
                 <p class="supertext">Tus Creativos se dedicarán a crear</p>
                 <br>
                 <p class="notsupertext">Al usar nuestro sistema les das más tiempo de creatividad, ya que se ahorran la parte tediosa de recortar y optimizar las fotos.</p>
-                <a class="button1" id="a_freetest">Haz una prueba ¡Sin Registrarte!</a>
+                <a class="button1" id="a_freetest5">Haz una prueba ¡Sin Registrarte!</a>
             </div>
         </section>
         <footer>

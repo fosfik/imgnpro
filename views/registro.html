@@ -47,23 +47,7 @@
                     });
                     ev.preventDefault();
                 });
-                $('#a_freetest').click(function (ev) {
-                    $.ajax({
-                        type: 'post',
-                        url: '/signup',
-                        data: {'userlongname':'demoimgnpro', 'email':'demoimgnpro', 'password':'demoimgnpro', 'accept_terms':true },
-                        success: function (data) {
-                            if (data.error == 1 ){
-                               alert(data.message);    
-                            }
-                            else{
-                                setTimeout(window.location='/principal',500);    
-                            }
-                        }
-                    });
-                    ev.preventDefault();
-                });
-
+                
 
                 $(window).on('scroll', function() {
                     if (Math.round($(window).scrollTop()) > 100) {

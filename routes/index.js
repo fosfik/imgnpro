@@ -9,6 +9,7 @@ var sha1 = require('sha1');
 var config = require('../config');
 var path = require('path');
 var Orders = require('../models/order.js');
+//var Orders_alt = require('../models/order_alt.js');
 var Order_transaction = require('../models/order_transaction.js');
 var OrderPacks = require('../models/orderpacks.js');
 var OrderSpec = require('../models/orderspecs.js');
@@ -127,7 +128,6 @@ var transporter = nodemailer.createTransport(transporter({
 // console.log(process.env.AWS_SECRET_ACCESS_KEY);
 //console.log(fillzero(23456, '0000000'));
 // TODO agregar seguridad a esta ruta
-
 
 
 
@@ -426,6 +426,7 @@ router.post('/confirmPackage', function(req, res) {
         }
         if (OrderPack){
           OrderPack.status = 'Terminado';
+          OrderPack.designerid = req.body.designerid;
           OrderPack.save(function(err){
             if (err){
               res.setHeader('Content-Type', 'application/json');
@@ -433,7 +434,7 @@ router.post('/confirmPackage', function(req, res) {
             }
             else{
 
-              doneOrder(OrderPack.numorder, function(err,message){
+              doneOrder(OrderPack.numorder, OrderPack.name,  function(err,message){
 
                 if (err == 1){
                   res.setHeader('Content-Type', 'application/json');
@@ -819,6 +820,19 @@ router.post('/confirmPackage', function(req, res) {
      }, 1000);
   });
 
+ router.get('/de_logout',
+  function(req, res){
+     
+     //res.redirect('https://www.facebook.com/logout.php?next=localhost:3000/&access_token='+passport.accessToken);
+     req.logOut();
+     req.session.destroy();
+     res.clearCookie('connect.sid');
+
+     setTimeout(function() {
+        res.redirect("/de_login");
+     }, 1000);
+  });
+
 /* Maneja la página micuenta */
   router.get('/micuenta', 
      require('connect-ensure-login').ensureLoggedIn('/login'),
@@ -923,7 +937,31 @@ router.get('/de_designers',
      require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){
             countorders(req.user._id,function(count){
-               res.render('chooseanimage', {message: req.flash('message'), user: req.user, countorders:count });
+              console.log(req.query['specid']);
+              if (typeof(req.query['specid']) == 'undefined'){
+                console.log('indefinido');
+                // Pedido normal
+                res.render('chooseanimage', {message: req.flash('message'), user: req.user, countorders:count, typespec:'', specname:'', specid:'' });
+              }else{
+                Spec.findOne({_id:req.query['specid']},function(err,specrecord){
+                    if (err){
+                      res.render('chooseanimage', {message: req.flash('message'), user: req.user, countorders:count,typespec:'', specname:'', specid:'' });
+                    }
+                    else if (specrecord) {
+                      console.log(specrecord);
+                      console.log(specrecord._id);
+
+                      res.render('chooseanimage', {message: req.flash('message'), user: req.user, countorders:count,typespec:specrecord.typespec, specname:specrecord.name , specid: specrecord._id });
+                    }
+                    else{
+                      res.render('chooseanimage', {message: req.flash('message'), user: req.user, countorders:count,typespec:'', specname:'' });
+                    }
+
+                });
+                
+              }
+              //Spec.find({ _id: })
+               
            });
   });
 
@@ -971,7 +1009,7 @@ router.get('/de_designers',
          function(req, res){
             findaspec(req.params.newSpecid,function(error,spec){
               //console.log(spec);
-              res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id , config:config, countorders:ordersinproc, S3_BUCKET_NAME:S3_BUCKET_NAME});
+              res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, spectype:spec[0]._id ,specid:spec[0]._id , config:config, countorders:ordersinproc, S3_BUCKET_NAME:S3_BUCKET_NAME});
             });
   });
 
@@ -1281,6 +1319,13 @@ router.get('/de_designers',
   router.post('/newstepspec', function (req,res) {
     // body...
       var specInfos = JSON.parse(req.body['specInfos']);
+      console.log(specInfos[0].typespec);
+
+      if (specInfos[0].typespec == 'free'){
+         res.setHeader('Content-Type', 'application/json');
+         res.send(JSON.stringify({ error: 0, newSpecid: specInfos[0].specid, message: 'Ahora puedes subir tus 3 imágenes gratis'})); 
+         return;
+      }
       var newSpec = new Spec();
       // set the user's local credentials
       // recibir el array de datos
@@ -2761,8 +2806,8 @@ function doConfirmPayOrder(req,cb){
     //});
 }
 
-function doneOrder(numorder, cb){
-    OrderPacks.find({} ,function(err,OrderPack){
+function doneOrder(numorder, packname, cb){
+    OrderPacks.find({numorder:numorder} ,function(err,OrderPack){
       if(err){
         cb( 1,'error al consultar paquetes de pedido');
       }
@@ -2788,9 +2833,35 @@ function doneOrder(numorder, cb){
           }
         }
         if (bDone == true){
+          // buscar el pedido
+          Orders.findOne({numorder:numorder},function(err,orderrecord){
+            if (err){
+               cb( 1,'error al consultar pedido');
+             }
+             else
+             {
+                if(orderrecord){
+                    orderrecord.status = 'Terminado';
+                    orderrecord.save(function(err){
+                        if (err){
+                          cb( 1,'error al guardar el status del pedido');
+                        }
+                        else
+                        {
+                          console.log('Se confirmó el pedido');
+                          cb( 0,'se confirmó el paquete ' + packname + ' del pedido ' + numorder);
+                        }
+                    });
+                }
+                else
+                {
+                   cb( 1,'error al consultar pedido');
+                }
 
+             }
+
+          });
         }
-        cb( 0,'se confirmó el pedido');
       }
     });
 }

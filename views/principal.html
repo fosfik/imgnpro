@@ -57,7 +57,7 @@
                             for (var i = 0; i < data.length; i++){
 
                                 if (data[i].typespec == 'free'){
-                                    document.location.href="/chooseanimage";
+                                    document.location.href="/chooseanimage?specid=" + data[i]._id;
                                     break;
                                 }
                                 var row = $("<tr>");

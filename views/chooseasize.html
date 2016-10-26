@@ -9,7 +9,7 @@
         <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
         <script type="text/javascript">
             $(document).ready(function(){
-
+                var v_typespec = localStorage.getItem("typespec");
                 $('#buttoncont').click(function (ev) {
                     var imagesize = localStorage.getItem('imagesize');
                     if (imagesize=== null){
@@ -65,7 +65,11 @@
                     alert("Este navegador no soporta LocalStorage");
                 } 
 
-           
+                if (v_typespec == 'free'){
+                    desactForm('sizeForm');       
+
+                }
+               
     
                 // $('#cuadro1').change(function() {
                 //     if($(this).is(":checked")) {
@@ -86,6 +90,10 @@
                 //         //$('#select-table > .roomNumber').attr('enabled',false);
                 //     }
                 });
+
+               function desactForm(formName){
+                    $('#' + formName).find('input, textarea, button, select, radio').prop('disabled',true);
+               } 
 
             });
         </script>

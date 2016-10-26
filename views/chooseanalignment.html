@@ -15,7 +15,7 @@
 
                 // Desactivar las opciones de alineación 
                 desactAllNext();
-
+                var v_typespec = localStorage.getItem("typespec");
                 if (typeof(Storage) !== "undefined") {
                     // Code for localStorage/sessionStorage.
                     var imageselected = localStorage.getItem("imageselected");
@@ -64,6 +64,10 @@
                     alert("Este navegador no soporta LocalStorage");
                 } 
 
+                if (v_typespec == 'free'){
+                    desactForm('alignForm1');       
+
+                }
 
                 $("#alignForm1 input[name='alignhor']").click(function(){
                     //alert('Diste clic en una opción horizontal!');
@@ -99,6 +103,10 @@
                     $('input:radio[name=alignhor]').prop('disabled', chkalgnnone);
                     $('input:radio[name=alignver]').prop('disabled', chkalgnnone);
                 }
+
+               function desactForm(formName){
+                    $('#' + formName).find('input, textarea, button, select').prop('disabled',true);
+               } 
 
             });
         </script>

@@ -69,11 +69,8 @@
                             var sFname = file.name;
                             var sFext = sFname.match(/\.([^.]*)$/);
                             var sFNameComp = "";
-                            console.log(sFext);
-
                             if(sFext){
                                 sFNameComp = sFname.substring(0, sFname.length - sFext[1].length );
-                                console.log('archivo subido por el diseñador:' + sFNameComp);
                               }else{
                                 return cb("El archivo no tiene extensión");
                             }
@@ -107,8 +104,6 @@
 
                         //path to S3 signature
                         $.getJSON('/sign-s3done', params).done(function(res) {
-                            //console.log(data);
-
                             if(res.err == 1){
                                 return cb('Esta imagen no pertenece a este paquete:' + res.message);
                             }
@@ -140,7 +135,6 @@
 //         formData.append(k, v);
 //     });
 // };
-                        console.log('sending')
                         // var _send = xhr.send;
                         // xhr.setRequestHeader('x-amz-acl', 'public-read');
                         // xhr.send = function() {
@@ -181,7 +175,6 @@
                                     length: file.size
                                 });
 
-                                console.log(imageUploadInfos);
                              }
                         }
                     },
@@ -190,7 +183,6 @@
                             //alert(file.fail);
                             imageCount--;
                             deleteitemfile(file.name);
-                            console.log(imageUploadInfos);
                             $("div#imageCount").html(imageCount);
                             //caltotalpay();
                         }
@@ -213,7 +205,6 @@
                                 });
                             }  
 
-                           //console.log(this.files);
                             return(_ref.parentNode.removeChild(file.previewElement));
                         }
                         else{
@@ -234,7 +225,7 @@
                     $.ajax({
                         type: 'post',
                         url: '/confirmPackage',
-                        data: { 'orderpackid':'<%= orderpackid %>' },
+                        data: { 'orderpackid':'<%= orderpackid %>', 'designerid': '<%= userid %>' },
                         //contentType: "application/json",
                         success: function (data) {
                             if (data.error == 1 ){

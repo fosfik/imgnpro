@@ -15,6 +15,7 @@ var url = process.env.MONGODB_URI;
 //  		var  url = 'mongodb://admin:123456@ds051903.mlab.com:51903/heroku_554zpg9r';	
 // 	}
 // }
+mongoose.Promise = global.Promise;
 mongoose.connect(url, function(err) {
     if (err){
     	console.log('Hay un error al conectar:' + err);

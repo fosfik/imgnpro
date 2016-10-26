@@ -11,6 +11,7 @@
             $(document).ready(function(){
 
                 var strspecname = localStorage.getItem("specname");
+                var v_typespec = localStorage.getItem("typespec");
                 var nDPI = localStorage.getItem("DPI");
                 var currentdpinone = localStorage.getItem("dpinone");
                 $('#specname').focus();
@@ -31,6 +32,11 @@
                     //$('#marco').removeClass(currentClassName).addClass(currentAlignHor);  
                     //$('#' + currentAlignHor).prop("checked", true);
                 }
+                if (v_typespec == 'free'){
+                    desactForm('specForm');       
+
+                }
+
                 $('#buttonspec').click(function (ev) {
                     var imageselected = localStorage.getItem('imageselected');
                     if ($('#specname').val().trim() === ''){
@@ -130,6 +136,12 @@
                        }
                   
                 });
+
+              function desactForm(formName){
+                    $('#' + formName).find('input, textarea, button, select').prop('disabled',true);
+               } 
+
+
             });
         </script>
     </head>

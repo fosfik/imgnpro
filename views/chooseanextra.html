@@ -9,6 +9,13 @@
         <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
         <script src="../js/general.js"></script>
         <script type="text/javascript">
+
+
+       
+               // function desactForm(formName){
+               //      $('#' + formName).find('input, textarea, button, select').prop('disabled',true);
+               // } 
+
             $(document).ready(function(){
 
                 var newbuttonspec = $('#savebuttonspec');
@@ -91,7 +98,9 @@
                         marginright:localStorage.getItem('marginright'),
                         marginleft:localStorage.getItem('marginleft'),
                         date:Date.now(),
-                        spectype:'stepbystep'
+                        spectype:'stepbystep',
+                        specid:localStorage.getItem("specid"),
+                        typespec:localStorage.getItem("typespec")
                     });
                     $.ajax({
                             type: 'post',
@@ -230,37 +239,40 @@
 
                 // }
                 function sumallextras(){
-                    var ntotalMXN =0;
-                    var ntotal = <%= config.prices.cutandremove%>; 
-                    ntotal = ntotal * 100;
+                    var v_typespec = localStorage.getItem("typespec");
+                    if (v_typespec !== 'free'){
+                                   
+                        var ntotalMXN =0;
+                        var ntotal = <%= config.prices.cutandremove%>; 
+                        ntotal = ntotal * 100;
 
-                    
-                    if(localStorage.getItem('naturalshadow')!== null){
-                        //alert("naturalshadow");  
-                         ntotal = ntotal + (localStorage.getItem('naturalshadow') * 100);
-                    }
+                        
+                        if(localStorage.getItem('naturalshadow')!== null){
+                            //alert("naturalshadow");  
+                             ntotal = ntotal + (localStorage.getItem('naturalshadow') * 100);
+                        }
 
-                    if(localStorage.getItem('dropshadow')!== null){
-                         ntotal = ntotal + (localStorage.getItem('dropshadow') * 100);
-                    }
+                        if(localStorage.getItem('dropshadow')!== null){
+                             ntotal = ntotal + (localStorage.getItem('dropshadow') * 100);
+                        }
 
-                    if(localStorage.getItem('correctcolor')!== null){
-                         ntotal = ntotal + (localStorage.getItem('correctcolor') * 100);
-                    }
-                    
-                    if(localStorage.getItem('clippingpath')!== null){
-                         ntotal = ntotal + (localStorage.getItem('clippingpath') * 100);
-                    }
+                        if(localStorage.getItem('correctcolor')!== null){
+                             ntotal = ntotal + (localStorage.getItem('correctcolor') * 100);
+                        }
+                        
+                        if(localStorage.getItem('clippingpath')!== null){
+                             ntotal = ntotal + (localStorage.getItem('clippingpath') * 100);
+                        }
 
-                    if(localStorage.getItem('basicretouch')!== null){
-                         ntotal = ntotal + (localStorage.getItem('basicretouch') * 100);
-                    }
-                                
-                    ntotal = ntotal / 100;
-                    ntotalMXN = ntotal * <%= config.prices.dollar %>;;
-                    $("#totalprice").html(setDecimals(ntotal,2));
-                    $("#totalpriceMXN").html(ntotalMXN.toFixed(2));
-
+                        if(localStorage.getItem('basicretouch')!== null){
+                             ntotal = ntotal + (localStorage.getItem('basicretouch') * 100);
+                        }
+                                    
+                        ntotal = ntotal / 100;
+                        ntotalMXN = ntotal * <%= config.prices.dollar %>;;
+                        $("#totalprice").html(setDecimals(ntotal,2));
+                        $("#totalpriceMXN").html(ntotalMXN.toFixed(2));
+                     }       
                 }
 
             });
@@ -322,9 +334,9 @@
             </form>
             <div class="labelito">
                 <p class="texto_plano4">Precio por Imagen</p>
-                <p class="texto_precio2"><span class="prefixmoney">USD</span>$<span id="totalprice">1.50</span></p>
+                <p class="texto_precio2"><span class="prefixmoney">USD</span>$<span id="totalprice">0</span></p>
                 <p class="textoplanotemp2">Precio por Imagen</p>
-                <p class="textopreciotemp2"><span class="prefijopeso2">MXN</span>$<span id="totalpriceMXN"></span></p>
+                <p class="textopreciotemp2"><span class="prefijopeso2">MXN</span>$<span id="totalpriceMXN">0</span></p>
             </div>
         </div>
         <div class="picnum2">Las opciones Extras no están disponibles en la versión Demo</div>

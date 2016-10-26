@@ -51,22 +51,22 @@
 
                 $(window).on('scroll', function() {
                     if (Math.round($(window).scrollTop()) > 100) {
-                        $('header').addClass("sticky");
+                        $('#header').addClass("sticky");
                         $('#slogan').addClass("sticky");
                         $('#botonintro').addClass("sticky");
-//                        $('#contregistro').addClass("sticky");
-//                        $('#contenedor1').addClass("sticky");
-//                        $('#contregistro2').addClass("sticky");
-//                        $('#contenedor1a').addClass("sticky");
+                        $('#contregistro').addClass("sticky");
+                        $('#contenedor1').addClass("sticky");
+                        $('#contregistro2').addClass("sticky");
+                        $('#contenedor1a').addClass("sticky");
                     }
                     else {
-                        $('header').removeClass("sticky");
+                        $('#header').removeClass("sticky");
                         $('#slogan').removeClass("sticky");
                         $('#botonintro').removeClass("sticky");
-//                        $('#contregistro').removeClass("sticky");
-//                        $('#contenedor1').removeClass("sticky");
-//                        $('#contregistro2').removeClass("sticky");
-//                        $('#contenedor1a').removeClass("sticky");
+                        $('#contregistro').removeClass("sticky");
+                        $('#contenedor1').removeClass("sticky");
+                        $('#contregistro2').removeClass("sticky");
+                        $('#contenedor1a').removeClass("sticky");
                     }
                 });
                 
@@ -249,7 +249,7 @@
         
     </head>
     <body>
-        <header>
+        <header id="header">
             <a href="//www.imgnpro.com"><img id="logohead" src="../images/logowslogan.png" height="100%" width="auto"></a>
             <span id="slogan">the background remover</span>
             <div id="botonintro"><a id="a_freetest">Ir al Demo</a></div>

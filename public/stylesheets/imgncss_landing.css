@@ -73,7 +73,7 @@ html {
     font-weight: lighter;
 }
 
-header {
+#header {
     position: fixed;
     width: 100%;
     text-align: center;
@@ -84,7 +84,7 @@ header {
     padding: 10px;
 }
 
-header.sticky {
+#header.sticky {
     z-index: 9999;
     margin-top: 0;
     text-align: left;
@@ -156,7 +156,7 @@ header.sticky {
     background: #E5E5E5;
     width: 400px;
     padding: 20px;
-    margin-top: 50px;
+    margin-top: 100px;
     -webkit-transition: all .5s ease;
     transition: all .5s ease;
 }
@@ -169,7 +169,7 @@ header.sticky {
     background: #E5E5E5;
     width: 100%;
     padding: 10px;
-    margin-top: 48px;
+    margin-top: 100px;
     z-index: 99;
 }
 
@@ -299,7 +299,7 @@ input[name="userlongname2"], input[name="email2"], input[name="password2"], inpu
     transition: .1s;
 }
 
-.button5, .button6{
+.button5, .button6, .buttongoog{
     display: inline-block;
     color: #FFFFFF;
     padding: 5px;
@@ -318,18 +318,18 @@ input[name="userlongname2"], input[name="email2"], input[name="password2"], inpu
     transition: .1s;
 }
 
-.button4, .button6 {
+.button4, .button6, .buttongoog {
     background-color: #d60000;
     transition: .1s;
 }
 
-.button3 a, .button4 a, .button5 a, .button6 a {
+.button3 a, .button4 a, .button5 a, .button6 a, .buttongoog a {
     text-decoration: none;
     font: 16px;
     color: #FFFFFF;
 }
 
-.button1:hover, .button3:hover, .button4:hover, .button5:hover, .button6:hover, .buttonreg:hover {
+.button1:hover, .button3:hover, .button4:hover, .button5:hover, .button6:hover, .buttongoog:hover, .buttonreg:hover {
     box-shadow: 2px 2px 2px rgba(20, 20, 20, 0.4);
     transition: .2s
 }

@@ -17,13 +17,23 @@ html {
     width: auto;
 }
 
+.headerregistro {
+    position: fixed;
+    width: 100%;
+    z-index: 99;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #E5E5E5;
+}
+
 #menuhor {
     width:460px;
     height: 20px;
     margin-top: 25px;
     padding: 5px;
     background: #000000;
-    float: right;3
+    float: right;
 }
 
 #menu1 li a{

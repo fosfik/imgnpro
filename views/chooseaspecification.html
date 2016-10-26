@@ -33,6 +33,7 @@
                     //$('#' + currentAlignHor).prop("checked", true);
                 }
                 if (v_typespec == 'free'){
+
                     desactForm('specForm');       
 
                 }
@@ -138,6 +139,7 @@
                 });
 
               function desactForm(formName){
+                    $('#div_msgDemo').show();
                     $('#' + formName).find('input, textarea, button, select').prop('disabled',true);
                } 
 
@@ -220,7 +222,7 @@
             </form>
         </div>
         <div class="picnum">Seleccione las Opciones Adecuadas</div>
-        <div class="picnum2">La versión Demo no puede modificar el nombre de la especificación</div>
+        <div id= "div_msgDemo" style="display:none;" class="picnum2">La versión Demo no puede modificar el nombre de la especificación</div>
         <hr>
         <div class="buttonback">
             <a href="/chooseanimage">Regresar</a>

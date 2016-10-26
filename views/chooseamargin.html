@@ -12,7 +12,6 @@
             $(document).ready(function(){
                 var imageselected = localStorage.getItem("imageselected");
                 var currentMarginnone =  localStorage.getItem("marginnone");
-                var v_typespec = localStorage.getItem("typespec");
                 $("#imgportaimage").attr("src",imageselected);
                 if (currentMarginnone !== null){
                     if (currentMarginnone === 'none'){
@@ -33,18 +32,9 @@
                     localStorage.setItem("marginbottom", $('input:text[name=marginbottom]').val());
                     localStorage.setItem("marginright", $('input:text[name=marginright]').val());
                     localStorage.setItem("marginleft", $('input:text[name=marginleft]').val());
-
-                    
-
                     document.location.href="/chooseanextra";
                     ev.preventDefault();
                 }); 
-
-
-                if (v_typespec == 'free'){
-                    desactForm('marginForm1');       
-
-                }
                 $("#chkmarginone").change(function(){
                     var chkmarginone = document.getElementById('chkmarginone').checked;
                     if (chkmarginone == false){
@@ -63,10 +53,6 @@
                     $('input[name=marginleft]').prop('disabled', chkmarginone);
                     $('input[name=marginright]').prop('disabled', chkmarginone);
                 }
-
-               function desactForm(formName){
-                    $('#' + formName).find('input, textarea, button, select').prop('disabled',true);
-               }
             });
         </script>
     </head>

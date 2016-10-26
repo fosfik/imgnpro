@@ -8,14 +8,9 @@
         <script src="../js/google.js"></script>
         <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
         <script type="text/javascript">
-
-            
-
             $(document).ready(function(){
-
                 // Desactivar las opciones de alineación 
                 desactAllNext();
-                var v_typespec = localStorage.getItem("typespec");
                 if (typeof(Storage) !== "undefined") {
                     // Code for localStorage/sessionStorage.
                     var imageselected = localStorage.getItem("imageselected");
@@ -63,12 +58,6 @@
                 } else {
                     alert("Este navegador no soporta LocalStorage");
                 } 
-
-                if (v_typespec == 'free'){
-                    desactForm('alignForm1');       
-
-                }
-
                 $("#alignForm1 input[name='alignhor']").click(function(){
                     //alert('Diste clic en una opción horizontal!');
                     // localStorage.imagesize = $('input:radio[name=size]:checked').val();
@@ -78,7 +67,6 @@
                     localStorage.setItem("alignhor", newClassName);
                     
                 });
-
                 $("#alignForm1 input[name='alignver']").click(function(){
                     //alert('Diste clic en una opción vertical!');
                     // localStorage.imagesize = $('input:radio[name=size]:checked').val();
@@ -103,11 +91,6 @@
                     $('input:radio[name=alignhor]').prop('disabled', chkalgnnone);
                     $('input:radio[name=alignver]').prop('disabled', chkalgnnone);
                 }
-
-               function desactForm(formName){
-                    $('#' + formName).find('input, textarea, button, select').prop('disabled',true);
-               } 
-
             });
         </script>
 

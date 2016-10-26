@@ -9,7 +9,6 @@
         <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
         <script type="text/javascript">
             $(document).ready(function(){
-                var v_typespec = localStorage.getItem("typespec");
                 $('#buttoncont').click(function (ev) {
                     var imagesize = localStorage.getItem('imagesize');
                     if (imagesize=== null){
@@ -21,41 +20,14 @@
                     else{
                         localStorage.removeItem("sizenone");
                     }
-
-                    // if ($('#specnombre').val().trim() === ''){
-                    //     alert("Favor de capturar el nombre de la especificación");    
-                    //     $('#specnombre').focus();
-                    // }
-                    // else{
                     if (imagesize==='customize'){
                         localStorage.setItem("measuresize", $('select[name="measuresize"]').val());
                         localStorage.setItem("widthsize", $('input:text[name=widthsize]').val());
                         localStorage.setItem("heightsize", $('input:text[name=heightsize]').val());
                     }
-                          
                     document.location.href="/chooseanalignment";
-                   // }
                     ev.preventDefault();
                 });
-            
-                //var buttonspec = $('#buttonspec');
-                // var frm = $('#specForm');
-                // buttonspec.click(function (ev) {
-                //     $.ajax({
-                //         type: frm.attr('method'),
-                //         url: frm.attr('action'),
-                //         data: frm.serialize(),
-                //         success: function (data) {
-                //             if (data.error == 1 ){
-                //                 document.getElementById('res_message').innerHTML= data.message;    
-                //             }
-                //             else{
-                //                 setTimeout(window.location='/subirimagen4.html',500);
-                //             }
-                //         }
-                //     });
-                //     ev.preventDefault();
-                // }); 
 
                 if (typeof(Storage) !== "undefined") {
                     // Code for localStorage/sessionStorage.
@@ -65,36 +37,10 @@
                     alert("Este navegador no soporta LocalStorage");
                 } 
 
-                if (v_typespec == 'free'){
-                    desactForm('sizeForm');       
-
-                }
-               
-    
-                // $('#cuadro1').change(function() {
-                //     if($(this).is(":checked")) {
-                //         var returnVal = confirm("Are you sure?");
-                //         $(this).attr("checked", returnVal);
-                //     }
-                //     //$('#textbox1').val($(this).is(':checked'));        
-                // });
-
                $("#sizeForm input[name='size']").click(function(){
                     //alert('Diste clic en una opción!');
                     localStorage.imagesize = $('input:radio[name=size]:checked').val();
-
-
-
-                // if($('input:radio[name=size]:checked').val() == "cuadro1"){
-                //         alert($('input:radio[name=size]:checked').val());
-                //         //$('#select-table > .roomNumber').attr('enabled',false);
-                //     }
                 });
-
-               function desactForm(formName){
-                    $('#' + formName).find('input, textarea, button, select, radio').prop('disabled',true);
-               } 
-
             });
         </script>
 

@@ -12,41 +12,41 @@
         <script>
             $(document).ready(function() {
 
-                var frm = $('#contactForm1');
-                frm.submit(function (ev) {
-                    $.ajax({
-                        type: frm.attr('method'),
-                        url: frm.attr('action'),
-                        data: frm.serialize(),
-                        success: function (data) {
-                            if (data.error == 1 ){
-                               alert(data.message);    
-                            }
-                            else{
-                                setTimeout(window.location='/principal',500);    
-                            }
-                        }
-                    });
-                    ev.preventDefault();
-                });
-
-                var frm2 = $('#contactForm2');
-                frm2.submit(function (ev) {
-                    $.ajax({
-                        type: frm2.attr('method'),
-                        url: frm2.attr('action'),
-                        data: frm2.serialize(),
-                        success: function (data) {
-                            if (data.error == 1 ){
-                               alert(data.message);    
-                            }
-                            else{
-                                setTimeout(window.location='/principal',500);    
-                            }
-                        }
-                    });
-                    ev.preventDefault();
-                });
+//                var frm = $('#contactForm1');
+//                frm.submit(function (ev) {
+//                    $.ajax({
+//                        type: frm.attr('method'),
+//                        url: frm.attr('action'),
+//                        data: frm.serialize(),
+//                        success: function (data) {
+//                            if (data.error == 1 ){
+//                               alert(data.message);    
+//                            }
+//                            else{
+//                                setTimeout(window.location='/principal',500);    
+//                            }
+//                        }
+//                    });
+//                    ev.preventDefault();
+//                });
+//
+//                var frm2 = $('#contactForm2');
+//                frm2.submit(function (ev) {
+//                    $.ajax({
+//                        type: frm2.attr('method'),
+//                        url: frm2.attr('action'),
+//                        data: frm2.serialize(),
+//                        success: function (data) {
+//                            if (data.error == 1 ){
+//                               alert(data.message);    
+//                            }
+//                            else{
+//                                setTimeout(window.location='/principal',500);    
+//                            }
+//                        }
+//                    });
+//                    ev.preventDefault();
+//                });
 
 
                 $(window).on('scroll', function() {
@@ -54,19 +54,19 @@
                         $('header').addClass("sticky");
                         $('#slogan').addClass("sticky");
                         $('#botonintro').addClass("sticky");
-                        $('#contregistro').addClass("sticky");
-                        $('#contenedor1').addClass("sticky");
-                        $('#contregistro2').addClass("sticky");
-                        $('#contenedor1a').addClass("sticky");
+//                        $('#contregistro').addClass("sticky");
+//                        $('#contenedor1').addClass("sticky");
+//                        $('#contregistro2').addClass("sticky");
+//                        $('#contenedor1a').addClass("sticky");
                     }
                     else {
                         $('header').removeClass("sticky");
                         $('#slogan').removeClass("sticky");
                         $('#botonintro').removeClass("sticky");
-                        $('#contregistro').removeClass("sticky");
-                        $('#contenedor1').removeClass("sticky");
-                        $('#contregistro2').removeClass("sticky");
-                        $('#contenedor1a').removeClass("sticky");
+//                        $('#contregistro').removeClass("sticky");
+//                        $('#contenedor1').removeClass("sticky");
+//                        $('#contregistro2').removeClass("sticky");
+//                        $('#contenedor1a').removeClass("sticky");
                     }
                 });
                 
@@ -252,8 +252,9 @@
         <header>
             <a href="//www.imgnpro.com"><img id="logohead" src="../images/logowslogan.png" height="100%" width="auto"></a>
             <span id="slogan">the background remover</span>
-            <a id="botonintro" href="//www.imgnpro.com">Ir al Intro</a>
+            <div id="botonintro"><a id="a_freetest">Ir al Demo</a></div>
         </header>
+<!--
         <section id="contenedor1">
             <div id="contregistro">
                 <div class="registro1">
@@ -297,11 +298,13 @@
                 </div>
             </div>
         </section>
+-->
         <section id="contenedor1a">
             <div class="textcont">
                 <p class="supertext">Olvídate de recortar y editar tus fotos</p>
                 <br>
                 <p class="notsupertext">Sin importar que sea una o mil imágenes, somos la plataforma web que lo hace por ti en tiempo record.</p>
+                <a class="button1" id="a_freetest">Haz click aquí para una prueba ¡Gratis!</a>
             </div>
             <div id="wrapwrapper">
                 <div id="rotating-item-wrapper">
@@ -321,6 +324,7 @@
                 <p class="supertext">Tus fotos como tu las quieras o necesites</p>
                 <br>
                 <p class="notsupertext">Te ofrecemos múltiples opciones que se adaptan a tu eCommerce, Catálogo, Revista, publicidad, etc.</p>
+                <a class="button1" id="a_freetest">Inicia ahora ¡Sin Registro!</a>
             </div>
         </section>
         <section id="contenedor1">
@@ -328,6 +332,7 @@
                 <p class="supertext">Rápido, Fácil y Seguro!</p>
                 <br>
                 <p class="notsupertext">Nuestro método consta sólo de 3 pasos, <b>Captura</b> la imagen, la <b>Subes</b> a nuestro sistema y <b>Recibe</b> tu foto justo como tu la necesites.</p>
+                <a class="button1" id="a_freetest">Entra ahora ¡Es Gratis!</a>
             </div>
             <div id="wrapwrapper">
                 <div id="rotating-item-wrapper">
@@ -350,6 +355,7 @@
                 <p class="supertext">Tus Creativos se dedicarán a crear</p>
                 <br>
                 <p class="notsupertext">Al usar nuestro sistema les das más tiempo de creatividad, ya que se ahorran la parte tediosa de recortar y optimizar las fotos.</p>
+                <a class="button1" id="a_freetest">Haz una prueba ¡Sin Registrarte!</a>
             </div>
         </section>
         <footer>

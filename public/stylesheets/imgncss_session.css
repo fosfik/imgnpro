@@ -407,6 +407,17 @@ hr {
     margin-bottom: 15px;
 }
 
+.picnum2 {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: bold;
+    color: red;
+    float: left;
+    padding: 2px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+}
+
 .columna {
     display: inline-block;
     border: 2px solid #000000;
@@ -487,9 +498,8 @@ hr {
 }
 
 .buttoncont a{
-    border: 2px solid;
-    border-color: #000000;
-    color: #000000;
+    background: #00A0FF;
+    color: #FFFFFF;
     padding: 10px 10px;
     text-align: center;
     text-decoration: none;

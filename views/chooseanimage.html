@@ -5,6 +5,7 @@
         <title>IMGNpro, hagamos que tu producto destaque</title>
         <link rel="stylesheet" href="../stylesheets/imgncss_session.css">
         <link rel="stylesheet" href="../stylesheets/dropzone.css">
+        <link rel="stylesheet" href="../stylesheets/welcomemodal.css">
         <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico"/>
         <script src="../js/google.js"></script>
         <script type="text/javascript" src="../js/dropzone.js"></script>
@@ -28,12 +29,10 @@
                     //var imageselected = $('input:radio[name=image]:checked').attr('src');
                     localStorage.setItem("imageselected", imageselected);
                 });
-
-
+                
             });
             
         </script>
-
     </head>
     <body>
         <header class="bienvenida">
@@ -56,7 +55,7 @@
             </nav>
         </section>
     <section id="contenedor">
-        <p class="encabezado">Subir Imágenes</p>
+        <p class="encabezado">Paso 1: Selecciona una imagen y da click en continuar</p>
         <a class="ruta_on">Escoge una imagen</a>
         <a class="slash">/</a>
         <a class="ruta">Especificación</a>
@@ -116,5 +115,20 @@
             <a href="/faq">Ver más</a> 
             </div>
         </aside>
+        <div id="welcome_modal">
+            <div class="contwelcome">
+                <p class="welcomebig">Bienvenido</p>
+                <hr class="hrwelcome">
+                <br>
+                <p class="welcomenormal">Estás a punto de iniciar el proceso de mejora de fotografías.</p>
+                <br>
+                <p class="welcomenormal">Sigue paso a paso las instrucciones, y en tiempo record, recibirás tus imágenes editadas con la mejor calidad.</p>
+                <br>
+                <br>
+                <div class="buttoncontwelcome">
+                    <a href="#welcome_modal">Continuar</a>
+                </div>
+            </div>
+        </div>
     </body>
 </html>

@@ -42,6 +42,13 @@ html {
     float: right;
     margin-right: 40px;
     margin-top: 5px;
+    cursor: pointer;
+}
+
+#botonintro:hover {
+    border-color: #888;
+    color: #888;
+    transition: .3s;
 }
 
 #slogan {
@@ -109,6 +116,7 @@ header.sticky {
     padding: 30px;
     display: inline-block;
     width: 100%;
+    margin-top: 200px;
 }
 
 #contenedor1a.sticky {
@@ -262,6 +270,21 @@ input[name="userlongname2"], input[name="email2"], input[name="password2"], inpu
     transition: .1s;
 }
 
+.button1 {
+    display: inline-block;
+    color: #FFFFFF;
+    padding: 10px;
+    text-decoration: none;
+    font-size: 16px;
+    margin: 20px 10px;
+    cursor: pointer;
+    float: none;
+    width: auto;
+    height: auto;
+    background-color: #00B4FF;
+    transition: .1s;
+}
+
 .button3, .button4{
     display: inline-block;
     color: #FFFFFF;
@@ -306,7 +329,7 @@ input[name="userlongname2"], input[name="email2"], input[name="password2"], inpu
     color: #FFFFFF;
 }
 
-.button3:hover, .button4:hover, .button5:hover, .button6:hover, .buttonreg:hover {
+.button1:hover, .button3:hover, .button4:hover, .button5:hover, .button6:hover, .buttonreg:hover {
     box-shadow: 2px 2px 2px rgba(20, 20, 20, 0.4);
     transition: .2s
 }

@@ -1,0 +1,69 @@
+* {
+    border: 0px;
+    margin: 0px;
+    padding: 0px;
+    font-family: helvetica, arial, sans-serif;
+}
+
+#welcome_modal {
+    color: #FFF;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background:  rgba(0,0,0,0.6);
+    z-index: 99999;
+    opacity: 1;
+    -webkit-transition: opacity 400ms ease-in;
+    -moz-transition: opacity 400ms ease-in;
+    transition: opacity 400ms ease-in;
+    pointer-events: auto;
+}
+
+#welcome_modal:target {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.contwelcome {
+    width: 400px;
+    position: relative;
+    margin: 20% auto;
+    padding: 40px;
+    background: #000;
+}
+
+.welcomebig {
+    font-size: 24px;
+    font-weight: lighter;
+}
+
+.welcomenormal {
+    font-size: 14px;
+    font-weight: lighter;
+}
+
+.hrwelcome {
+    background: #FFF;
+    height: 1px;
+    opacity: .3;
+}
+
+.buttoncontwelcome {
+    text-align: center;
+}
+
+.buttoncontwelcome a{
+    background: #00A0FF;
+    color: #FFFFFF;
+    padding: 10px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    transition: .2s;
+    margin-top: 0px;
+}

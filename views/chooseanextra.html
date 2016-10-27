@@ -103,7 +103,6 @@
                         marginleft:localStorage.getItem('marginleft'),
                         date:Date.now(),
                         spectype:'stepbystep',
-                        specid:localStorage.getItem("specid"),
                         typespec:localStorage.getItem("typespec")
                     });
                     $.ajax({
@@ -120,17 +119,23 @@
                                     //setTimeout(window.location='/subirimagen4.html',500);
                                     alert(data.message);
                                     if (data.freeSpecid){
-                                        if(confirm("¿Quieres tus 3 IMÁGENES GRATIS?")){
-                                            document.location.href="/uploadimages/" + data.freeSpecid;
-                                        }
-                                        else
-                                        {
-                                            document.location.href="/uploadimages/" + data.newSpecid;
-                                        }
+                                        alert("Ahora puedes subir tus 3 imágenes GRATIS");
+                                        //if(confirm("¿Quieres tus 3 IMÁGENES GRATIS?")){
+                                        document.location.href="/uploadimages/" + data.freeSpecid;
+                                        //}
+                                        //else
+                                        //{
+                                        //    document.location.href="/uploadimages/" + data.newSpecid;
+                                        //}
                                     }
                                     else
                                     {
-                                        document.location.href="/uploadimages/" + data.newSpecid;
+                                        if (data.newSpecid==0){
+                                            alert("Sucedió un error inesperado, favor de contactarse con el administrador");
+                                        }else{
+                                            document.location.href="/uploadimages/" + data.newSpecid;
+                                        }
+                                        
                                     }
                                     
                                     

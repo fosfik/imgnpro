@@ -941,11 +941,11 @@ router.get('/de_designers',
               if (typeof(req.query['specid']) == 'undefined'){
                 console.log('indefinido');
                 // Pedido normal
-                res.render('chooseanimage', {message: req.flash('message'), user: req.user, countorders:count, typespec:'', specname:'', specid:'' });
+                res.render('chooseanimage', {message: req.flash('message'), user: req.user, countorders:count, typespec:'normal', specname:'', specid:'' });
               }else{
                 Spec.findOne({_id:req.query['specid']},function(err,specrecord){
                     if (err){
-                      res.render('chooseanimage', {message: req.flash('message'), user: req.user, countorders:count,typespec:'', specname:'', specid:'' });
+                      res.render('chooseanimage', {message: req.flash('message'), user: req.user, countorders:count,typespec:'normal', specname:'', specid:'' });
                     }
                     else if (specrecord) {
                       console.log(specrecord);
@@ -954,7 +954,7 @@ router.get('/de_designers',
                       res.render('chooseanimage', {message: req.flash('message'), user: req.user, countorders:count,typespec:specrecord.typespec, specname:specrecord.name , specid: specrecord._id });
                     }
                     else{
-                      res.render('chooseanimage', {message: req.flash('message'), user: req.user, countorders:count,typespec:'', specname:'' });
+                      res.render('chooseanimage', {message: req.flash('message'), user: req.user, countorders:count,typespec:'normal', specname:'' });
                     }
 
                 });
@@ -1019,6 +1019,43 @@ router.get('/de_designers',
   /* Maneja la pagina que tiene el dropzone para subir imágenes 
    Cuando es llamada desde la creación de una especificación
 */
+
+
+  router.get('/getFreeSpec', require('connect-ensure-login').ensureLoggedIn('/login'),
+   function(req, res){
+    
+    console.log(req.user._id);
+
+    var v_disabled = true;
+    console.log(req.query['disabled']);
+    if (typeof(req.query['disabled']) == 'undefined'){
+      v_disabled = false;        
+    }    
+    console.log(v_disabled);
+                // Pedido normal
+
+    Spec.findOne({userid:req.user._id, typespec:'free', disabled:v_disabled},function(err,specrecord){
+        if (err){
+          //res.render('chooseanimage', {message: req.flash('message'), user: req.user, countorders:count,typespec:'', specname:'', specid:'' });
+          res.setHeader('Content-Type', 'application/json');
+          res.send(JSON.stringify({ err: 1, message: err})); 
+        }
+        else if (specrecord) {
+          console.log(specrecord);
+          console.log(specrecord._id);
+          res.setHeader('Content-Type', 'application/json');
+          res.send(JSON.stringify({ err: 0, message: 'Free', email:req.user.email}));
+          //res.render('chooseanimage', {message: req.flash('message'), user: req.user, countorders:count,typespec:specrecord.typespec, specname:specrecord.name , specid: specrecord._id });
+        }
+        else{
+          res.setHeader('Content-Type', 'application/json');
+          res.send(JSON.stringify({ err: 1, message: '404'}));
+          //res.render('chooseanimage', {message: req.flash('message'), user: req.user, countorders:count,typespec:'', specname:'' });
+        }
+
+    });
+          
+  });
   router.get('/getSpec/:specid/:disabled', 
      require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){
@@ -1322,8 +1359,68 @@ router.get('/de_designers',
       console.log(specInfos[0].typespec);
 
       if (specInfos[0].typespec == 'free'){
-         res.setHeader('Content-Type', 'application/json');
-         res.send(JSON.stringify({ error: 0, newSpecid: specInfos[0].specid, message: 'Ahora puedes subir tus 3 imágenes gratis'})); 
+            Spec.findOne({'userid': req.user._id ,'typespec':'free', 'disabled':false},function(err, specrecord) {
+               // already exists
+                if (err){
+                  console.log(err);
+                  res.setHeader('Content-Type', 'application/json');
+                  res.send(JSON.stringify({ error: 1, newSpecid: 0, message: 'Ya utilizaste tus 3 imágenes GRATIS'})); 
+                }
+                else if (specrecord) {
+
+                  //specrecord.name = specInfos[0].specname;
+                  //specrecord.format = specInfos[0].format;
+                  //specrecord.format_ext = specInfos[0].format;
+                  //if(specInfos[0].format==='jpg_web'){specrecord.format_ext = 'jpg'}
+                  //if(specInfos[0].format==='tiff'){specrecord.format_ext = 'tif'}
+                  //specrecord.colormode = specInfos[0].colormode;
+                  //specrecord.background = specInfos[0].background;
+                  //specrecord.backgrndcolor = specInfos[0].backgrndcolor;
+                  //specrecord.dpi = specInfos[0].DPI;
+                  //specrecord.dpinone = specInfos[0].dpinone;
+                  //specrecord.userid = req.user._id;  
+                  specrecord.alignnone = specInfos[0].alignnone;
+                  specrecord.alignhor = specInfos[0].alignhor;
+                  specrecord.alignver = specInfos[0].alignver;
+                  specrecord.imagesize = specInfos[0].imagesize;
+                  specrecord.sizenone = specInfos[0].sizenone;
+                  specrecord.measuresize = specInfos[0].measuresize;
+                  specrecord.marginnone = specInfos[0].marginnone;
+                  specrecord.marginmeasure = specInfos[0].marginmeasure;
+                  specrecord.margintop = specInfos[0].margintop; //??
+                  specrecord.marginbottom = specInfos[0].marginbottom; //??
+                  specrecord.marginright = specInfos[0].marginright; //??
+                  specrecord.marginleft = specInfos[0].marginleft; //??
+                  //specrecord.naturalshadow = specInfos[0].naturalshadow;
+                  //specrecord.dropshadow = specInfos[0].dropshadow;
+                  //specrecord.correctcolor = specInfos[0].correctcolor;
+                  //specrecord.clippingpath = specInfos[0].clippingpath;
+                  //specrecord.basicretouch = specInfos[0].basicretouch;
+                  specrecord.widthsize = specInfos[0].widthsize;
+                  specrecord.heightsize = specInfos[0].heightsize;
+                  //specrecord.spectype = specInfos[0].spectype;
+                  //specrecord.date = specInfos[0].date;
+                  console.log(specrecord);
+                  specrecord.save(function(err,specsave){
+                    if(err){
+                      res.setHeader('Content-Type', 'application/json');
+                      res.send(JSON.stringify({ error: 1, newSpecid: 0, message: 'No se pudo guardar la especificación'})); 
+                    }
+                    else if(specsave){
+                      res.setHeader('Content-Type', 'application/json');
+                      res.send(JSON.stringify({ error: 0, freeSpecid: specrecord._id, message: 'Se guardó correctamente la especificación'})); 
+                    }
+                  });
+                } 
+                else {
+                  res.setHeader('Content-Type', 'application/json');
+                  res.send(JSON.stringify({ error: 1, newSpecid: 0, message: 'Ya utilizaste tus 3 imágenes GRATIS'})); 
+                }
+              });
+
+
+         //res.setHeader('Content-Type', 'application/json');
+         //res.send(JSON.stringify({ error: 0, newSpecid: specInfos[0].specid, message: 'Ahora puedes subir tus 3 imágenes gratis'})); 
          return;
       }
       var newSpec = new Spec();
@@ -1375,21 +1472,14 @@ router.get('/de_designers',
               console.log('No se pudo guardar la especificación: ' + err); 
               res.setHeader('Content-Type', 'application/json');
               res.send(JSON.stringify({ error: 1, message: 'No se pudo guardar la especificación'})); 
-              throw err;  
+              return;
+              //throw err;  
             }
+
+            res.setHeader('Content-Type', 'application/json');
+            res.send(JSON.stringify({ error: 0, newSpecid: newSpec._id, message: 'Se guardó correctamente la especificación'})); 
             //console.log('Se guardó correctamente la especificación');
 
-            Spec.find({'userid': newSpec.userid ,'typespec':'free', 'disabled':false},function(err, specrecord) {
-               // already exists
-                if (specrecord.length > 0) {
-                  res.setHeader('Content-Type', 'application/json');
-                  res.send(JSON.stringify({ error: 0, freeSpecid: specrecord[0]._id, newSpecid: newSpec._id, message: 'Se guardó correctamente la especificación'})); 
-                } 
-                else {
-                  res.setHeader('Content-Type', 'application/json');
-                  res.send(JSON.stringify({ error: 0, newSpecid: newSpec._id, message: 'Se guardó correctamente la especificación'})); 
-                }
-              }).select('_id').limit(1);
           });
     });
   });

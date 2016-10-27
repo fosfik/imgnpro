@@ -10,9 +10,8 @@
         <!-- <script src="../js/general.js"></script> -->
         <script type="text/javascript">
             $(document).ready(function(){
-
-
                 calcPrices();
+                activatePassOnFree();
                 $.ajax({
                         type: 'get',
                         url: '/getUser_details/<%= user._id %>',
@@ -63,6 +62,7 @@
                                              $('#contactname').focus();
                                         }
                                         else{ 
+                                            localStorage.clear();
                                             document.location.href= "/" + data.href  + "/<%= numorder %>";
                                         }
                                     }
@@ -84,6 +84,39 @@
                 
                 ev.preventDefault();
                });
+
+               function activatePassOnFree(){
+                    $.getJSON('/getFreeSpec', {disabled:true}).done(function(res) {
+                            alert(res.email);
+                            if (res.err == 0 && res.email == 'demoimgnpro' ){
+                                $('#lbl_password').show();
+                                $('#lbl_confirmpassword').show();
+                                $('#i_password').show();
+                                $('#i_confirmpassword').show();
+                                $('#div_accept_terms').show();
+                                localStorage.setItem('hasSpecFree',true);
+                            }
+                        }).fail(function() {
+                           
+
+                        });
+
+               }
+                function hasSpecFree(){
+
+
+
+
+                    // $.getJSON('/getFreeSpec', {disabled:true}).done(function(res) {
+                    //         if (res.err == 0 && res.email == 'demoimgnpro' ){
+                    //            return true;
+                    //         }
+                    //     }).fail(function() {
+                           
+                    //         return false;
+                    // });
+
+               }
 
                function calcPrices(){
                     var ntotal = <%= order.totalpay %>;
@@ -111,11 +144,37 @@
                             $('#emailconfirm').focus(); 
                         }
                         else{
-                             bValor = true;
+                            
+                            if (localStorage.getItem('hasSpecFree')=='true'){
+                                if ($('#i_password').val().trim() === ''){
+                                    alert("favor de capturar una contraseña");
+                                    $('#i_password').focus(); 
+                                    bValor = false;
+                                }
+                                else if ($('#i_confirmpassword').val().trim() !== $('#i_password').val().trim() ){
+                                    alert("La contraseña no coincide");
+                                    $('#i_confirmpassword').focus(); 
+                                    bValor = false;
+                                }
+                                else if($('#chk_accept_terms').prop('checked') !== true){
+
+                                    alert("Por favor, acepte los términos y condiciones");
+                                    $('#chk_accept_terms').focus(); 
+                                    bValor = false;
+                                }
+                                else{
+                                    bValor = true;
+
+                                }
+
+                            }
+                             
                         }
                        
                     } 
                 }
+
+               
 
                 return bValor;
               }   
@@ -151,7 +210,7 @@
                 <p class="texto_precio2"><span class="prefixmoney">USD</span>$ <span><%= order.totalpay %></span></p>
                 <br><br><br>
                 <p class="textoplanotemp">Costo total</p>
-                <p class="textopreciotemp"><span class="prefijopeso">MXN</span>$<span id="totalpriceMXN">19.35</span></p>
+                <p class="textopreciotemp"><span class="prefijopeso">MXN</span>$<span id="totalpriceMXN">0</span></p>
             </div>
             <section class="col1">
                 <form class="contactForm">
@@ -161,6 +220,13 @@
                     <input tabindex=2 id= "contactemail" type="email" name="contactemail" value="" placeholder="ej. nombre@empresa.com" required><br>
                     <label for="contactemailconfirm">Confirmar Email</label><br>
                     <input tabindex=2 id= "emailconfirm" type="email" name="contactemailconfirm" value="" placeholder="ej. nombre@empresa.com" required><br>
+                    <label for="password" style="display:none;" id ="lbl_password">Contraseña nueva</label><br>
+                    <input tabindex=2 style="display:none;" id= "i_password" type="password" name="password" value="" placeholder="Contraseña" required><br>
+                    <label for="confirmpassword" style="display:none;" id ="lbl_confirmpassword">Confirmar Contraseña</label><br>
+                    <input tabindex=2 style="display:none;" id= "i_confirmpassword" type="password" name="confirmpassword" value="" placeholder="Contraseña" required><br>
+                    <div id="div_accept_terms" style="display:none;">
+                    <input type="checkbox" id="chk_accept_terms" name="accept_terms" required><label class="postcheck">Acepto los <a class="terms" href="../pdfs/tems.pdf" target="_blank">Términos y Condiciones de IMGNpro</a>.</label>
+                    </div>
 
                     <label for="contactcountry">País</label><br>
                     <select tabindex=3 name="sel_contactcountry" >

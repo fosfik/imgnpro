@@ -207,6 +207,26 @@
                 return bValor;
               }   
             });
+                      
+            $(document).ready(function(){
+                var ckbox = $('#quieroFac');
+                
+                $('input').on('click',function (){
+                    if (ckbox.is(':checked')) {
+                        $('#facturacion1').addClass("want");
+                        $('#facturacion2').addClass("want");
+                        $('#facturacion3').addClass("want");
+                        $('#hrfac').addClass("want");
+                    } else {
+                        $('#facturacion1').removeClass("want");
+                        $('#facturacion2').removeClass("want");
+                        $('#facturacion3').removeClass("want");
+                        $('#hrfac').removeClass("want");
+                    }
+                })
+            
+            });
+            
         </script>
     </head>
     <body>
@@ -496,12 +516,12 @@
                         <option value="ZW">Zimbabue</option>
                     </select><br><br>
                     <label for="chkfactura">Requiero Factura</label>
-                    <input tabindex=4 name="chk_factura" type="checkbox" value="chk_factura">
+                    <input id="quieroFac" tabindex=4 name="chk_factura" type="checkbox" value="chk_factura">
                 </form>
             </section>
             <hr>
-            <p class="encabezado2">Datos de Facturación</p>
-            <section class="col6">
+            <p id="facturacion1" class="encabezado2">Datos de Facturación</p>
+            <section id="facturacion2" class="col6">
                 <form class="factForm">
                     <label for="factrfc">R.F.C.</label><br>
                     <input tabindex=5 type="text" name="factrfc" value="" placeholder="ej. IMG010909PRO"><br>
@@ -759,7 +779,7 @@
                     </select>
                 </form>
             </section>
-            <section class="col6">
+            <section id="facturacion3" class="col6">
                 <form class="factForm">
                     <label for="factrazonsocial">Nombre o Razón Social</label><br>
                     <input tabindex=6 type="text" name="factrazonsocial" value="" placeholder="Nombre o razón social completa"><br>
@@ -779,7 +799,7 @@
                 </form>
             </section>
         </section>
-        <hr>
+        <hr id="hrfac">
         <div class="button2">
             <a id="buttonpay" href="">Confirmar</a>
         </div>

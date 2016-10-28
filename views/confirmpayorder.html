@@ -34,49 +34,70 @@
 
             $('#buttonpay').click(function (ev) {
                 // recuperar las variables localStorage
+                
               if (validInput()){
-                var formdata = $('form').serialize();
-                $.ajax({
-                        type: 'post',
-                        url: '/updateuserdetails',
-                        data: formdata,
-                        success: function (data) {
-                            if (data.error == 1 ){
-                                //document.getElementById('res_message').innerHTML= data.message;    
+                    $.ajax({ 
+                        url: '/getUserEnable', 
+                        type: 'get',
+                        dataType: 'json', 
+                        data: {'email':$('#contactemail').val().trim()},  
+                        success: function(data){ 
+                            //Proceso de los datos recibidos
+                            if (data.err == 1){
                                 alert(data.message);
-                                 $('#contactname').focus();
+                                
                             }
                             else{
-                                //setTimeout(window.location='/subirimagen4.html',500);
-                                alert(data.message);
                                 
-
+                                var formdata = $('form').serialize();
                                 $.ajax({
-                                    type: 'post',
-                                    url: '/confirmOrder/<%= numorder %>',
-                                    data: formdata,
-                                    success: function (data) {
-                                       if (data.error == 1 ){
-                                            //document.getElementById('res_message').innerHTML= data.message;    
-                                            alert(data.message);
-                                             $('#contactname').focus();
-                                        }
-                                        else{ 
-                                            localStorage.clear();
-                                            document.location.href= "/" + data.href  + "/<%= numorder %>";
-                                        }
-                                    }
+                                        type: 'post',
+                                        url: '/updateuserdetails',
+                                        data: formdata,
+                                        success: function (data) {
+                                            if (data.error == 1 ){
+                                                //document.getElementById('res_message').innerHTML= data.message;    
+                                                alert(data.message);
+                                                 $('#contactname').focus();
+                                            }
+                                            else{
+                                                //setTimeout(window.location='/subirimagen4.html',500);
+                                                alert(data.message);
+                                                
 
-                                });
-                                //if(confirm("¿Quieres subir imágenes?")){
-                                
-                                //}
-                                // else{
-                                //     document.getElementById("specForm").reset();
+                                                $.ajax({
+                                                    type: 'post',
+                                                    url: '/confirmOrder/<%= numorder %>',
+                                                    data: formdata,
+                                                    success: function (data) {
+                                                       if (data.error == 1 ){
+                                                            //document.getElementById('res_message').innerHTML= data.message;    
+                                                            alert(data.message);
+                                                             $('#contactname').focus();
+                                                        }
+                                                        else{ 
+                                                            localStorage.clear();
+                                                            document.location.href= "/" + data.href  + "/<%= numorder %>";
+                                                        }
+                                                    }
+
+                                                });
+                                                //if(confirm("¿Quieres subir imágenes?")){
+                                                
+                                                //}
+                                                // else{
+                                                //     document.getElementById("specForm").reset();
+                                            }
+                                        }
+                                 });
+
                             }
-                        }
-                 });
+                        } 
+                    });
 
+
+
+                
 
               }
 
@@ -95,12 +116,19 @@
                                 $('#i_confirmpassword').show();
                                 $('#div_accept_terms').show();
                                 localStorage.setItem('hasSpecFree',true);
+                                $('#hasSpecFree').val('true');
                             }
                         }).fail(function() {
                            
 
                         });
 
+               }
+
+               function validEmail(){
+                   
+
+                 
                }
                 function hasSpecFree(){
 
@@ -246,6 +274,7 @@
                     <input tabindex=2 style="display:none;" id= "i_confirmpassword" type="password" name="confirmpassword" value="" placeholder="Contraseña" required><br>
                     <div id="div_accept_terms" style="display:none;">
                     <input type="checkbox" id="chk_accept_terms" name="accept_terms" required><label class="postcheck">Acepto los <a class="terms" href="../pdfs/tems.pdf" target="_blank">Términos y Condiciones de IMGNpro</a>.</label>
+                    <input type="hidden" id="hasSpecFree"  name="hasSpecFree" value="false">
                     </div>
 
                     <label for="contactcountry">País</label><br>

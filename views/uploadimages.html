@@ -155,7 +155,9 @@
                     removedfile: function(file) {
                         if(file.status !== 'error'){
                             //alert(file.fail);
-                            imageCount--;
+                            if (file.accepted===true){
+                                imageCount--;
+                            }
                             deleteitemfile(normFileName(file.name));
                             $("div#imageCount").html(imageCount);
                             caltotalpay();

@@ -1369,15 +1369,15 @@ router.get('/de_designers',
                 else if (specrecord) {
 
                   //specrecord.name = specInfos[0].specname;
-                  //specrecord.format = specInfos[0].format;
-                  //specrecord.format_ext = specInfos[0].format;
-                  //if(specInfos[0].format==='jpg_web'){specrecord.format_ext = 'jpg'}
-                  //if(specInfos[0].format==='tiff'){specrecord.format_ext = 'tif'}
-                  //specrecord.colormode = specInfos[0].colormode;
-                  //specrecord.background = specInfos[0].background;
-                  //specrecord.backgrndcolor = specInfos[0].backgrndcolor;
-                  //specrecord.dpi = specInfos[0].DPI;
-                  //specrecord.dpinone = specInfos[0].dpinone;
+                  specrecord.format = specInfos[0].format;
+                  specrecord.format_ext = specInfos[0].format;
+                  if(specInfos[0].format==='jpg_web'){specrecord.format_ext = 'jpg'}
+                  if(specInfos[0].format==='tiff'){specrecord.format_ext = 'tif'}
+                  specrecord.colormode = specInfos[0].colormode;
+                  specrecord.background = specInfos[0].background;
+                  specrecord.backgrndcolor = specInfos[0].backgrndcolor;
+                  specrecord.dpi = specInfos[0].DPI;
+                  specrecord.dpinone = specInfos[0].dpinone;
                   //specrecord.userid = req.user._id;  
                   specrecord.alignnone = specInfos[0].alignnone;
                   specrecord.alignhor = specInfos[0].alignhor;

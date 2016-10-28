@@ -87,7 +87,7 @@
 
                function activatePassOnFree(){
                     $.getJSON('/getFreeSpec', {disabled:true}).done(function(res) {
-                            alert(res.email);
+                            
                             if (res.err == 0 && res.email == 'demoimgnpro' ){
                                 $('#lbl_password').show();
                                 $('#lbl_confirmpassword').show();

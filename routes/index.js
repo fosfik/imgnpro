@@ -17,6 +17,7 @@ var User = require('../models/user.js');
 var User_details = require('../models/user_details.js');
 var Spec = require('../models/specification.js');
 var Contact = require('../models/contact.js');
+var bCrypt = require('bcrypt');
 var ordersinproc  = 0;
 
 aws.config.region = 'us-east-1';
@@ -1015,6 +1016,42 @@ router.get('/de_designers',
 
 
   
+  router.get('/getUserEnable', require('connect-ensure-login').ensureLoggedIn('/login'),
+   function(req, res){
+    
+    console.log(req.user._id);
+
+    
+    console.log(req.query['email']);
+    if (typeof(req.query['email']) == 'undefined'){
+        res.setHeader('Content-Type', 'application/json');
+        res.send(JSON.stringify({ err: 1, message: 'Petición inválida'})); 
+        return;        
+    }    
+    
+
+    User.findOne({email:req.query['email']},function(err,userrecord){
+        if (err){
+          //res.render('chooseanimage', {message: req.flash('message'), user: req.user, countorders:count,typespec:'', specname:'', specid:'' });
+          res.setHeader('Content-Type', 'application/json');
+          res.send(JSON.stringify({ err: 1, message: err})); 
+        }
+        else if (userrecord) {
+          console.log(userrecord);
+          res.setHeader('Content-Type', 'application/json');
+          res.send(JSON.stringify({ err: 1, message: 'Este correo está siendo usado por otro usuario'}));
+          //res.render('chooseanimage', {message: req.flash('message'), user: req.user, countorders:count,typespec:specrecord.typespec, specname:specrecord.name , specid: specrecord._id });
+        }
+        else{
+          console.log(userrecord);
+          res.setHeader('Content-Type', 'application/json');
+          res.send(JSON.stringify({ err: 0, message: 'Correo disponible'}));
+          //res.render('chooseanimage', {message: req.flash('message'), user: req.user, countorders:count,typespec:'', specname:'' });
+        }
+
+    });
+          
+  });
 
   /* Maneja la pagina que tiene el dropzone para subir imágenes 
    Cuando es llamada desde la creación de una especificación
@@ -1488,7 +1525,56 @@ router.get('/de_designers',
 
 router.post('/updateuserdetails', require('connect-ensure-login').ensureLoggedIn('/login'),
     function(req, res){
+    console.log(req.body);
+
+if (req.body.hasSpecFree=='true'){
+  User.findOne({_id:req.user._id},function(err,userrecord){
+        if (err){
+          //res.render('chooseanimage', {message: req.flash('message'), user: req.user, countorders:count,typespec:'', specname:'', specid:'' });
+          res.setHeader('Content-Type', 'application/json');
+          res.send(JSON.stringify({ error: 1, message: 'No se pudieron guardar los cambios, favor de contactar al administrador'}));
+          return;
+        }
+        else if (userrecord) {
+          console.log(typeof(req.body.factrazonsocial));
+          console.log(typeof(req.body.contactemail));
+          console.log(userrecord);
+          //res.setHeader('Content-Type', 'application/json');
+          //res.send(JSON.stringify({ err: 1, message: 'Este correo está siendo usado por otro usuario'}));
+          //res.render('chooseanimage', {message: req.flash('message'), user: req.user, countorders:count,typespec:specrecord.typespec, specname:specrecord.name , specid: specrecord._id });
+          userrecord.email = req.body.contactemail;
+          userrecord.userlongname = req.body.contactname;
+          userrecord.password = createHash(req.body.password);
+          req.user.userlongname = req.body.contactname;
+          userrecord.save(function(err){
+            if(err){
+              res.setHeader('Content-Type', 'application/json');
+              res.send(JSON.stringify({ error: 1, message: 'No se pudieron guardar los cambios, favor de contactar al administrador'}));
+              return;
+            }
+            else
+            {
+              //res.setHeader('Content-Type', 'application/json');
+              //res.send(JSON.stringify({ error: 0, message: 'Se confirmó tu usuario: ' + req.body.contactemail }));
+              //return;
+
+            }
+          });
+        }
+        else{
+          console.log(userrecord);
+          res.setHeader('Content-Type', 'application/json');
+          res.send(JSON.stringify({ error: 1, message: 'No se pudieron guardar los cambios, favor de contactar al administrador'}));
+          return;
+
+          //res.render('chooseanimage', {message: req.flash('message'), user: req.user, countorders:count,typespec:'', specname:'' });
+        }
+
+    });
+
+}
     
+
   // body...
     //var user_details_id = req.body.specid;
     var newUserDet = new User_details();
@@ -3059,5 +3145,11 @@ function setDecimals(sVal, nDec){
   } 
   return s; 
 }
+
+// Generates hash using bCrypt
+var createHash = function(password){
+ return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
+}
+
 
 module.exports = router;

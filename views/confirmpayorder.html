@@ -43,7 +43,7 @@
                         data: {'email':$('#contactemail').val().trim()},  
                         success: function(data){ 
                             //Proceso de los datos recibidos
-                            if (data.err == 1){
+                            if (data.err == 1 && localStorage.getItem('hasSpecFree')=='true'){
                                 alert(data.message);
                                 
                             }
@@ -195,8 +195,9 @@
 
                                 }
 
+                            }else{
+                                bValor = true;
                             }
-                             
                         }
                        
                     } 

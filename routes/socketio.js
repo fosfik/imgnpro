@@ -3,6 +3,9 @@ module.exports = function(io){
   var User = require('../models/user.js');
   var OrderPacks = require('../models/orderpacks.js');
   var app = require('express');
+
+
+  
   var router = app.Router();
   // io.on('connection',function(socket){
   //   console.log("entro usuario");
@@ -11,73 +14,79 @@ module.exports = function(io){
 
 
 io.on('connection', function(socket){
+  console.log(socket.request.user);
   console.log('a user connected');
   socket.broadcast.emit('Se conectó un usuario');
-  
   // se desconecta el usuario
   socket.on('disconnect', function(){
     console.log('user disconnected');
+    console.log(socket.request.user);
   });
   // llega un mensaje
   socket.on('chat_msg', function(msg){
-    console.log('message: ' + msg);
-    var jsMsg = JSON.parse(msg);
-    console.log(jsMsg);
-    console.log(jsMsg.userid);
-    User.findOne({_id: jsMsg.userid}, function(err,user){
-        console.log(err);
-        if (err){
-            console.log(err);
-        }else{
-          if (user){
-            io.emit('chat_msg', '{"msg":"' + jsMsg.msg +'","username":"' + user.userlongname +  '"}'  );
+    if (isLoggedIn(socket)){
+      console.log(socket.request.user);
+      console.log(socket.request.user._id);
+      console.log('message: ' + msg);
+      var jsMsg = JSON.parse(msg);
+      console.log(jsMsg);
+      console.log(jsMsg.userid);
+      //io.emit('chat_msg', '{"msg":"' + jsMsg.msg +'","username":"' + socket.request.user.userlongname +  '"}'  );
+      User.findOne({_id: socket.request.user._id}, function(err,user){
+          console.log(err);
+          if (err){
+              console.log(err);
           }else{
-            console.log('Nada');
+            if (user){
+              io.emit('chat_msg', '{"msg":"' + jsMsg.msg +'","username":"' + user.userlongname +  '"}'  );
+            }else{
+              console.log('Nada');
+            }
+
           }
 
-        }
-
-    });
-    
-
-    
+      });
+    }
   });
 
   socket.on('reserve_pack', function(msg){
-    console.log('message: ' + msg);
-    var jsMsg = JSON.parse(msg);
-    console.log(jsMsg);
-    console.log(jsMsg.userid);
-    User.findOne({_id: jsMsg.userid}, function(err,user){
-        console.log(err);
-        if (user.usertype !== 'designer'){
-          socket.emit('err', '{"msg":"Solamente los diseñadores pueden reservar paquetes", "userid":"'+ jsMsg.userid + '"}');
-          return;
-        }
-        if (err){
-            console.log(err);
-        }else{
-          if (user){
-            OrderPacks.findOne({_id: jsMsg.orderpackid}, function(err, orderpack){
-              if (err){
-                console.log(err);
-              }else{
-                if (user){
-                   io.emit('chat_msg', '{"msg":" Reservé el paquete: ' + orderpack.name + ', del pedido: ' + orderpack.numorder + '","username":"' + user.userlongname +  '"}'  );
-                }
-              }
 
-            });
+    if (isLoggedIn(socket)){
+      console.log('message: ' + msg);
+      var jsMsg = JSON.parse(msg);
+      console.log(jsMsg);
+      console.log(jsMsg.userid);
+      User.findOne({_id: jsMsg.userid}, function(err,user){
+          console.log(err);
+          if (user.usertype !== 'designer'){
+            socket.emit('err', '{"msg":"Solamente los diseñadores pueden reservar paquetes", "userid":"'+ jsMsg.userid + '"}');
+            return;
+          }
+          if (err){
+              console.log(err);
           }else{
-            console.log('Nada');
+            if (user){
+              OrderPacks.findOne({_id: jsMsg.orderpackid}, function(err, orderpack){
+                if (err){
+                  console.log(err);
+                }else{
+                  if (orderpack){
+                     io.emit('chat_msg', '{"msg":" Reservé el paquete: ' + orderpack.name + ', del pedido: ' + orderpack.numorder + '","username":"' + user.userlongname +  '"}'  );
+                  }
+                }
+
+              });
+            }else{
+              console.log('Nada');
+            }
+
           }
 
-        }
-
-    });
-    
-
-    
+      });
+    }
+    else{
+      return;
+    }
   });
   
   
@@ -101,7 +110,7 @@ io.on('connection', function(socket){
               if (err){
                 console.log(err);
               }else{
-                if (user){
+                if (orderpack){
                    io.emit('chat_msg', '{"msg":" Confirmé el paquete: ' + orderpack.name + ', del pedido: ' + orderpack.numorder + '","username":"' + user.userlongname +  '"}'  );
                 }
               }
@@ -137,7 +146,9 @@ io.on('connection', function(socket){
   });
 });
 
-
+function isLoggedIn(socket){
+  return (socket.request.user && socket.request.user.logged_in);
+}
 
   return router;
 }

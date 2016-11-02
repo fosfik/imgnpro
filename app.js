@@ -27,7 +27,7 @@ var bCrypt = require('bcrypt');
 // mailer
 var nodemailer = require('nodemailer');
 
-
+var passportSocketIo = require('passport.socketio');
 
 
 
@@ -37,11 +37,19 @@ var nodemailer = require('nodemailer');
 
 var transporter = require("nodemailer-smtp-transport")
 var app = express();
-//app.io = require('socket.io')();
+app.io = require('socket.io')();
+
+
 
 var session = require('express-session'); // Manejo de sesiones
 var RedisStore = require('connect-redis')(session); // conexión a REDIS para almacenar sesiones de usuario
 
+var sessionRedis = new RedisStore({
+   host: 'redis-10291.c8.us-east-1-2.ec2.cloud.redislabs.com',
+   port: 10291,
+   db: 0,
+   pass: '1j79ol4f'
+ });
 var transporter = nodemailer.createTransport(transporter({
     host : "mail.mail-imgnpro.com",
     ignoreTLS : true,
@@ -68,18 +76,19 @@ app.use(express.static(path.join(__dirname, 'public/htmls')));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(session({  store: new RedisStore({
-   host: 'redis-10291.c8.us-east-1-2.ec2.cloud.redislabs.com',
-   port: 10291,
-   db: 0,
-   pass: '1j79ol4f'
- }), secret: 'keyboard cat', resave: true, saveUninitialized: true }));
+app.use(session({  store: sessionRedis, secret: 'keyboard cat', resave: true, saveUninitialized: true }));
 //app.use(session({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
-
+app.io.use(passportSocketIo.authorize({
+  key: 'connect.sid',
+  secret: 'keyboard cat',
+  store: sessionRedis,
+  passport: passport,
+  cookieParser: cookieParser
+}));
 
 // para redirigir a https
 if (app.get('env') !== 'development') {

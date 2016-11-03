@@ -37,10 +37,10 @@
                     //$('#messages').append($('<li>').text(msg));
                     var jsMsg = JSON.parse(msg);
                     console.log(jsMsg);
-                    if (jsMsg.userid == '<%= user._id %>'){
+                    //if (jsMsg.userid == '<%= user._id %>'){
                         alert(jsMsg.msg);
 
-                    }
+                    //}
                 });
 
                 socket.on('packs_list', function(msg){

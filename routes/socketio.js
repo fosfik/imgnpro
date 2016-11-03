@@ -56,10 +56,10 @@ io.on('connection', function(socket){
       var jsMsg = JSON.parse(msg);
       console.log(jsMsg);
       console.log(jsMsg.userid);
-      User.findOne({_id: jsMsg.userid}, function(err,user){
+      User.findOne({_id: socket.request.user._id}, function(err,user){
           console.log(err);
           if (user.usertype !== 'designer'){
-            socket.emit('err', '{"msg":"Solamente los diseñadores pueden reservar paquetes", "userid":"'+ jsMsg.userid + '"}');
+            socket.emit('err', '{"msg":"Solamente los diseñadores pueden reservar paquetes", "userid":"'+ socket.request.user._id + '"}');
             return;
           }
           if (err){
@@ -71,7 +71,38 @@ io.on('connection', function(socket){
                   console.log(err);
                 }else{
                   if (orderpack){
-                     io.emit('chat_msg', '{"msg":" Reservé el paquete: ' + orderpack.name + ', del pedido: ' + orderpack.numorder + '","username":"' + user.userlongname +  '"}'  );
+                    console.log(orderpack.isreserve);
+                    var b_canReserve = false;
+                    if ( orderpack.isreserve !== undefined || orderpack.isreserve === false ){
+                       secondsPast = timeElapsed( orderpack.date_reserve );
+                       console.log( secondsPast );
+                       // if ( secondsPast > 30 && ( orderpack.reserve_byid === socket.request.user._id ) ){
+                       //    socket.emit('err', '{"msg":"Debes confirmar el paquete antes de 30 segundos", "userid":"'+ socket.request.user._id + '"}');
+                       //    return;
+                       // }
+                       if ( (secondsPast > 30) && orderpack.date_start_work === undefined ){
+                          b_canReserve = true;
+                       }
+                     }
+
+                    if ( b_canReserve === true){
+                       orderpack.isreserve = true;
+                       orderpack.date_reserve = Date();
+                       orderpack.reserve_byid = socket.request.user._id;
+                       orderpack.save(function(err){
+                          if ( err ){
+                            socket.emit('err', '{"msg":"Debido a un problema no se pudo reservar el paquete", "userid":"'+ socket.request.user._id + '"}');
+                            return;
+                          }
+                          socket.emit( 'package_reserve' , '{"msg:"Paquete reservado con éxito", "orderpackid":"'+ orderpack._id +'"}' );
+                          io.emit('chat_msg', '{"msg":" Reservé el paquete: ' + orderpack.name + ', del pedido: ' + orderpack.numorder + '","username":"' + user.userlongname +  '"}'  );
+                       }); 
+
+                    }
+                    else{
+                        console.log("Paquete ya reservado");
+                        socket.emit( 'err' , '{"msg":"Paquete ya ha sido reservado o ya se está trabajando, por favor actualiza tu navegador", "orderpackid":"'+ orderpack._id +'"}' );
+                    }
                   }
                 }
 
@@ -96,10 +127,10 @@ io.on('connection', function(socket){
     var jsMsg = JSON.parse(msg);
     console.log(jsMsg);
     console.log(jsMsg.userid);
-    User.findOne({_id: jsMsg.userid}, function(err,user){
+    User.findOne({_id: socket.request.user._id}, function(err,user){
         console.log(err);
         if (user.usertype !== 'designer'){
-          socket.emit('err', '{"msg":"Solamente los diseñadores pueden confirmar paquetes", "userid":"'+ jsMsg.userid + '"}');
+          socket.emit('err', '{"msg":"Solamente los diseñadores pueden confirmar paquetes", "userid":"'+ socket.request.user._id + '"}');
           return;
         }
         if (err){
@@ -111,15 +142,27 @@ io.on('connection', function(socket){
                 console.log(err);
               }else{
                 if (orderpack){
-                   io.emit('chat_msg', '{"msg":" Confirmé el paquete: ' + orderpack.name + ', del pedido: ' + orderpack.numorder + '","username":"' + user.userlongname +  '"}'  );
+                   secondsPast = timeElapsed( orderpack.date_reserve );
+                   console.log( secondsPast );
+                   if ( secondsPast > 30 && ( orderpack.reserve_byid === socket.request.user._id ) ){
+                      socket.emit('err', '{"msg":"Debes confirmar el paquete antes de 30 segundos", "userid":"'+ socket.request.user._id + '"}');
+                      return;
+                   }
+                   if ( secondsPast > 30 && ( orderpack.reserve_byid !== socket.request.user._id ) ){
+                      socket.emit( 'package_confirm' , '{"msg:"Paquete confirmado con éxito", "orderpackid":"'+ orderpack._id +'"}' );
+                      io.emit('chat_msg', '{"msg":" Confirmé el paquete: ' + orderpack.name + ', del pedido: ' + orderpack.numorder + '","username":"' + user.userlongname +  '"}'  );
+                      return;
+                   }
+                   if ( secondsPast <= 30  && (orderpack.reserve_byid === socket.request.user._id) ){
+                      socket.emit( 'package_confirm' , '{"msg:"Paquete confirmado con éxito", "orderpackid":"'+ orderpack._id +'"}' );
+                      io.emit('chat_msg', '{"msg":" Confirmé el paquete: ' + orderpack.name + ', del pedido: ' + orderpack.numorder + '","username":"' + user.userlongname +  '"}'  );
+                   } 
                 }
               }
-
             });
           }else{
             console.log('Nada');
           }
-
         }
 
     });
@@ -146,9 +189,19 @@ io.on('connection', function(socket){
   });
 });
 
-function isLoggedIn(socket){
+// Obtiene un true si el usuario existe y está logueado
+function isLoggedIn( socket ){
   return (socket.request.user && socket.request.user.logged_in);
+}
+
+// Obtiene la diferencia en seundos entre dos fechas
+function timeElapsed( date_to_compare){
+  var d_to_compare = new Date(date_to_compare);
+  var d_actual = new Date();
+  var diff_dates_sec = (d_actual / 1000) - (d_to_compare.getTime() / 1000);
+  return ( Math.floor(diff_dates_sec) );
 }
 
   return router;
 }
+

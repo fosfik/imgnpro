@@ -8,6 +8,7 @@ var orderSchema = mongoose.Schema({
     date_end_end: { type: Date},
     status: {type: String, default:'Por pagar'},
     isworking: {type: Boolean, default: false},
+    isreserve: {type: Boolean, default: false},
     imagecount: {type:Number, default:0},
     designerid: {type: String},
     specid:{type: String, ref: 'Orderspecs'},

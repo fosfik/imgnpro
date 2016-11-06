@@ -13,7 +13,8 @@ var userSchema = mongoose.Schema({
     googletoken: String,
     createdAt: {type:Date, default: Date.now},
     usertype:{type:String},
-    disabled: {type:Boolean, default: true}
+    disabled: {type:Boolean, default: true},
+    isworking: {type:Boolean, default: false},
 });
 
 userSchema.pre('save', function(next) {

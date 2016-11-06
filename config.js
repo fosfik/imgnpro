@@ -36,7 +36,8 @@ if ( app.get('env') === 'production') {
 			designermustactivate: true
 	},
 		package:{
-			length: 20
+			length: 20,
+			timetofinish: 28800
 	}
 
 	};
@@ -72,7 +73,8 @@ else{
 			designermustactivate: true
 		},
 		package:{
-			length: 20
+			length: 20,
+			timetofinish: 28800
 		}
 	  };
 
@@ -120,7 +122,8 @@ else{
 			designermustactivate: true
 		},
 		package:{
-			length: 20
+			length: 20,
+			timetofinish: 28800
 		}
 	  };
 

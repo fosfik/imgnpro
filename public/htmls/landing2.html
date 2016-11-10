@@ -9,9 +9,29 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
         <script src="../js/google.js"></script>
-<!-- SCRIPT HEADER y BOTONES DEMO-->
+<!-- SCRIPT HEADER y BOTONES DEMO
         <script>
             $(document).ready(function() {
+                $(window).on('scroll', function() {
+                    if (Math.round($(window).scrollTop()) > 100) {
+                        $('#header').addClass("sticky");
+                        $('#slogan').addClass("sticky");
+                        $('#botonintro').addClass("sticky");
+                        $('#contregistro').addClass("sticky");
+                        $('#contenedor1').addClass("sticky");
+                        $('#contregistro2').addClass("sticky");
+                        $('#contenedor1a').addClass("sticky");
+                    }
+                    else {
+                        $('#header').removeClass("sticky");
+                        $('#slogan').removeClass("sticky");
+                        $('#botonintro').removeClass("sticky");
+                        $('#contregistro').removeClass("sticky");
+                        $('#contenedor1').removeClass("sticky");
+                        $('#contregistro2').removeClass("sticky");
+                        $('#contenedor1a').removeClass("sticky");
+                    }
+                });
 
                 $('#a_freetest1').click(function (ev) {
                     demoSignup();
@@ -48,11 +68,14 @@
                             }
                         }
                     });
-                }      
+                }
+
+                
+                      
             });
         </script>
-
-<!-- SCRIPT CONTRASEÑA-->
+-->
+<!-- SCRIPT CONTRASEÑA
         <script type="text/javascript">
             function check(input,input2) {
                 if (input.value != document.getElementById(input2).value) {
@@ -63,7 +86,7 @@
                 }
             }
         </script>
-<!--SCRIPT ROTACION DE IMAGENES-->
+-->
         <script>
             $(window).load(function() {	//start after HTML, images have loaded
 
@@ -115,7 +138,7 @@
             <div id="contheader">
                 <a href="//www.imgnpro.com"><img id="logohead" src="../images/logowslogan.png"></a>
                 <span id="slogan">the background remover</span>
-                <div id="botonintro"><a id="a_freetest1">ir al demo</a></div>
+                <div id="botonintro"><a href="mailto:hi@mail-imgnpro.com">ir al demo</a></div>
             </div>
             <div id="backheader">
             </div>
@@ -160,7 +183,7 @@
                 <p class="notsupertext"><b>Corregimos</b> el color e iluminación de tus fotos.</p><br>
                 <p class="notsupertext"><b>Agregamos Sombra</b>, natural o sombra paralela.</p><br>
                 <p class="notsupertext"><b>Enviamos</b> tus imágenes con calidad Profesional y en 24 horas*.</p><br>
-                <a class="button1" id="a_freetest3">Entra ahora haz una Prueba Gratis</a>
+                <a class="button1" id="a_freetest4">Entra ahora haz una Prueba Gratis</a>
             </div>
         </section>
         <section id="contenedor1">
@@ -168,7 +191,7 @@
                 <p class="supertext">Llena o Cambia los productos de tu eStore Rapidísimo</p>
                 <br>
                 <p class="notsupertext">Contamos con una capacidad y tiempo de entrega de hasta 1,000 fotografías diarias*, todas y cada una entregadas con calidad premium.</p>
-                <a class="button1" id="a_freetest4">ir al demo</a>
+                <a class="button1" id="a_freetest2">ir al demo</a>
             </div>
             <div class="picwrapper1">
                 <div>
@@ -212,7 +235,7 @@
                 <p class="supertext">Tus fotos, como profesional, hasta con el celular.</p>
                 <br>
                 <p class="notsupertext">No te preocupes por comprar equipos caros, nosotros mejoramos tus fotos y seguimos los lineamientos que nos pidas y así cumplas los requerimientos de tiendas como Ebay<sup>®</sup>, Mercadolibre<sup>®</sup>, Linio<sup>®</sup>, etc.</p>
-                <a class="button1" id="a_freetest5">ir al demo</a>
+                <a class="button1" id="a_freetest2">ir al demo</a>
             </div>
             <div class="picwrapper1">
                 <div>
@@ -246,7 +269,54 @@
         </section>
         
         <footer>
-            <p class="texto_plano2">®IMGNpro 2016</p>
+            <section class="contenedorfootnav">
+                <span class="titulo">IMGNpro</span>
+                <ul class="footnav">
+                    <li><a>Acerca de</a></li>
+                    <li><a>Precios</a></li>
+                    <li><a>Cómo Funciona</a></li>
+                    <li><a>Seguridad</a></li>
+                </ul>
+            </section>
+            <section class="contenedorfootnav">
+                <span class="titulo">Compañia</span>
+                <ul class="footnav">
+                    <li><a>Nosotros</a></li>
+                    <li><a>Trabajo</a></li>
+                    <li><a>Prensa</a></li>
+                    <li><a>Blog</a></li>
+                </ul>
+            </section>
+            <section class="contenedorfootnav">
+                <span class="titulo">Soporte</span>
+                <ul class="footnav">
+                    <li><a>Ayuda</a></li>
+                    <li><a>Preguntas Frecuentes</a></li>
+                    <li><a>Cookies</a></li>
+                    <li><a>Términos y Condiciones</a></li>
+                    <li><a>Anuncio de Privacidad</a></li>
+                </ul>
+            </section>
+            <section class="contenedorfootnav">
+                <span class="titulo">Contacto</span>
+                <ul class="footnav">
+                    <li><a>Mail</a></li>
+                    <li><a>Facebook</a></li>
+                    <li><a>Twitter</a></li>
+                    <li><a>Instagram</a></li>
+                </ul>
+            </section>
+            <section class="contenedorfootnav">
+                <span class="titulo">Dirección</span>
+                <p class="footnavtext">Matías Lazcano 1329-2</p>
+                <p class="footnavtext">Col. Chapultepec</p>
+                <p class="footnavtext">C.P. 80040</p>
+                <p class="footnavtext">Culiacán, Sin, México.</p>
+                <p class="footnavtext">Tel. +52 (667) 7121230.</p>
+            </section>
+            <section class="contentpayforms">
+                <img class="payforms" src="../images/logospayform.png">
+            </section>
         </footer>
         
         <!-- Go to www.addthis.com/dashboard to customize your tools -->

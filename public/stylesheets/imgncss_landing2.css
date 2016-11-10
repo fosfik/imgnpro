@@ -1,0 +1,527 @@
+* {
+    border: 0px;
+    margin: 0px;
+    padding: 0px;
+    font-family: helvetica, arial, sans-serif;
+}
+
+html {
+    background: #f2f2f2 no-repeat center center fixed;
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+}
+
+#botonintro a {
+    color: #FFF;
+    text-decoration: none;
+}
+
+#botonintro {
+    display: inline-block;
+    color: #FFF;
+    line-height: 70px;
+    vertical-align: bottom;
+    font-size: 18px;
+    font-weight: lighter;
+    text-decoration: none;
+    float: right;
+    cursor: pointer;
+    padding: 13px 10px 15px 10px;
+    width: 160px;
+    height: 72px;
+}
+
+#botonintro:hover > a {
+    color: #0591ab;
+    transition: .3s;
+}
+
+#logohead {
+    width: 92px;
+    height: 72px;
+    margin-left: 30px;
+    float: left;
+    padding: 13px 10px 15px 10px;
+}
+
+#slogan {
+    display: inline-block;
+    color: #FFF;
+    line-height: 70px;
+    vertical-align: bottom;
+    font-size: 18px;
+    font-weight: lighter;
+    padding: 13px 10px 15px 10px;
+    height: 72px;
+}
+
+#header {
+    z-index: 9999;
+    margin-top: 0;
+    text-align: center;
+    position: fixed;
+    height: 100px;
+    width: 100%;
+    background: #000;
+}
+
+#contheader{
+    z-index: 1;
+    text-align: center;
+    height: 100px;
+    width: 100%;
+    position: absolute;
+}
+
+#backheader {
+    display: inline-block;
+    background: #00badc;
+    height: 100px;
+    width: 180px;
+    float: right;
+    margin-right: 0px;
+}
+
+#contenedor1 {
+    text-align: center;
+    padding: 30px;
+    display: inline-block;
+    width: 100%;
+    -webkit-transition: all .5s ease;
+    transition: all .5s ease;
+}
+
+/*
+#contenedor1.sticky {
+    text-align: center;
+    display: inline-block;
+    width: 100%;
+    padding: 0px;
+}
+*/
+
+#contenedor1a {
+    text-align: center;
+    padding: 30px;
+    display: inline-block;
+    width: 100%;
+    margin-top: 200px;
+}
+
+/*
+#contenedor1a.sticky {
+    text-align: center;
+    display: inline-block;
+    width: 100%;
+    padding: 30px;
+    margin-top: 400px;
+}
+*/
+
+#contregistro {
+    display: inline-block;
+    width: 400px;
+    padding: 20px;
+    margin-top: 100px;
+    -webkit-transition: all .5s ease;
+    transition: all .5s ease;
+    text-align: left;
+}
+
+.redes_icon{
+    margin-right: 5px;
+    float: left;
+    height: 16px;
+}
+
+.texto_plano {
+    font-size: 12px;
+    padding: 5px;
+    text-decoration: none;
+    font-weight: lighter;
+    text-align: center;
+}
+
+.registro1 :-moz-placeholder {color: #ccc; font-size: 12px; font-style: italic; font-weight: lighter;}
+.registro1 ::-webkit-input-placeholder {color: #ccc; font-size: 12px; font-style: italic; font-weight: lighter;}
+
+input[name="userlongname"], input[name="email"] {
+    display: inline-block;
+    width: 370px;
+    height: 20px;
+    margin: 5px;
+    padding: 10px;
+    text-align: left;
+    font-size: 12px;
+    color: #000;
+    background: #fff;
+    border: solid 1px #CCC;
+}
+
+input[name="password"] {
+    display: inline-block;
+    width: 41%;
+    height: 20px;
+    margin: 5px;
+    padding: 10px;
+    text-align: left;
+    font-size: 12px;
+    color: #000;
+    background: #fff;
+    border: solid 1px #CCC;
+}
+
+input[name="confirmpass"] {
+    display: inline-block;
+    width: 41%;
+    height: 20px;
+    margin: 5px;
+    padding: 10px;
+    text-align: left;
+    font-size: 12px;
+    color: #000;
+    background: #fff;
+    border: solid 1px #CCC;
+    float: right
+}
+
+#check {
+    margin: 5px;
+}
+
+.postcheck {
+    display: inline-block;
+    font-size: 12px;
+    color: #000;
+    text-align: left;
+    margin: 5px;
+    font-weight: lighter;
+}
+
+.terms {
+    text-decoration: none;
+    color: #00badc;
+}
+
+.buttonreg {
+    display: inline-block;
+    color: #FFFFFF;
+    background: #00badc;
+    padding: 10px;
+    text-decoration: none;
+    font-size: 12px;
+    margin: 5px;
+    cursor: pointer;
+    width: 98%;
+    height: auto;
+    transition: .1s;
+    font-weight: lighter;
+}
+
+.button1 {
+    display: inline-block;
+    color: #FFFFFF;
+    padding: 15px;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: lighter;
+    margin: 20px 10px;
+    cursor: pointer;
+    float: right;
+    width: auto;
+    height: auto;
+    background-color: #00badc;
+    transition: .1s;
+}
+
+.button3 {
+    display: inline-block;
+    padding: 10px;
+    text-decoration: none;
+    font-size: 12px;
+    margin: 5px;
+    cursor: pointer;
+    width: 42%;
+    height: auto;
+    transition: .1s;
+    text-align: center;
+    border: solid 1px #c2c2c2
+}
+
+.button4 {
+    display: inline-block;
+    padding: 10px;
+    text-decoration: none;
+    font-size: 12px;
+    margin: 5px;
+    cursor: pointer;
+    width: 42%;
+    height: auto;
+    transition: .1s;
+    text-align: center;
+    border: solid 1px #c2c2c2;
+    float: right
+}
+
+.button3 a, .button4 a {
+    text-decoration: none;
+    font: 16px;
+    font-weight: lighter;
+    color: #000;
+}
+
+.button5, .button6, .buttongoog{
+    display: inline-block;
+    color: #FFFFFF;
+    padding: 5px;
+    text-decoration: none;
+    font-size: 12px;
+    margin: 10px 10px;
+    cursor: pointer;
+    float: none;
+    width: auto;
+    height: auto;
+    transition: .1s;
+}
+
+.button5 {
+    background-color: #0952b8;
+    transition: .1s;
+}
+
+.button6, .buttongoog {
+    background-color: #d60000;
+    transition: .1s;
+}
+
+.button5 a, .button6 a, .buttongoog a {
+    text-decoration: none;
+    font: 16px;
+    color: #FFFFFF;
+}
+
+.button1:hover, .button3:hover, .button4:hover, .button5:hover, .button6:hover, .buttongoog:hover, .buttonreg:hover {
+    box-shadow: 2px 2px 2px rgba(20, 20, 20, 0.4);
+    transition: .2s
+}
+
+hr {
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    height: 1px;
+    background: #CCC;
+}
+
+.supertext {
+    font-size: 32px;
+    font-weight: lighter;
+    text-align: left;
+    padding: 5px;
+    margin-left: 15px;
+    color: #000;
+}
+
+.supertextcenter {
+    font-size: 32px;
+    font-weight: lighter;
+    text-align: center;
+    padding: 5px;
+    margin-left: 15px;
+    color: #000;
+}
+
+.supertext2 {
+    font-size: 36px;
+    font-weight: lighter;
+    text-align: center;
+    padding: 5px;
+    color: #000;
+}
+
+.supertext3 {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    padding: 5px;
+    color: #000;
+    margin-top: 40px;
+}
+
+.notsupertext {
+    font-size: 18px;
+    font-weight: lighter;
+    text-align: left;
+    padding: 5px;
+    margin-left: 15px;
+    color: #000;
+}
+
+.textnormal {
+    font-size: 14px;
+    text-align: left;
+    padding: 5px;
+    margin-left: 30px;
+    color: #000;
+}
+
+.texto_plano {
+    display: inline-block;
+    font-size: 14px;
+    text-align:right;
+    padding: 5px;
+    color: #c2c2c2;
+    vertical-align: top;
+    line-height: 30px;
+    width: 12px;
+}
+
+.texto_plano2 {
+    display: inline-block;
+    font-size: 14px;
+    text-align:center;
+    padding: 5px;
+    color: #c2c2c2;
+    vertical-align: top;
+    line-height: 30px;
+}
+
+.hro1 {
+    background: #c2c2c2;
+    display: inline-block;
+    width: 47%;
+    float: left;
+}
+
+.hro2 {
+    background: #c2c2c2;
+    display: inline-block;
+    width: 47%;
+    float: right;
+}
+
+.textcont {
+    width: 40%;
+    padding: 10px;
+    display: inline-block;
+    margin-right: 20px
+}
+
+.textcont2 {
+    margin-top: 20px;
+    width: 40%;
+    padding: 10px;
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.fotoad {
+    display: inline-block;
+    width: 320px;
+    float: right;
+    margin-top: 20px;
+}
+
+.fotoad2 {
+    display: inline-block;
+    width: 180px;
+    height: 180px;
+    border-radius: 90px;
+    box-shadow: 4px 4px 3px rgba(20, 20, 20, 0.4);
+}
+
+.picwrapper1 {
+    margin-left: 40px;
+    width: 340px;
+    height: 340px;
+    text-align: center;
+    display: inline-block;
+    vertical-align: bottom;
+    background: #00badc;
+}
+
+.picwrapper2 {
+    margin-top: 40px;
+    margin-right: 40px;
+    width: 340px;
+    height: 340px;
+    display: inline-block;
+    vertical-align: top;
+    background: #00badc;
+}
+
+.picwrapper3 {
+    width: 180px;
+    height: 180px;
+    border-radius: 90px;
+    text-align: center;
+    display: inline-block;
+    vertical-align: bottom;
+    background: #00badc;
+}
+
+.picandfooter {
+    display: inline-block;
+    width: 200px;
+    padding: 20px;
+    vertical-align: top;
+}
+
+#rotating-item-wrapper {
+    position: relative;
+	display: inline-block;
+    width: 300px;
+}
+
+.rotating-item1 {
+	display: none;
+	position: absolute;
+	top: -14px;
+	left: 0;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    width: 100%;
+    height: auto;
+    background: #e2e2e2;
+}
+
+.contenedorfootnav {
+    display: inline-block;
+    text-align: left;
+    width: 18%;
+    vertical-align: top;
+}
+
+.titulo {
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 24px;
+}
+
+.footnav {
+    list-style: none;
+    font-size: 12px;
+    line-height: 24px;
+}
+
+.footnavtext {
+    font-size: 12px;
+}
+
+.contentpayforms {
+    display: inline-block;
+    width: 100%;
+    height: 60px;
+    margin-top: 20px;
+}
+
+.payforms {
+    padding: 10px;
+    width: 440px;
+    display: inline-block;
+    float: left;
+}

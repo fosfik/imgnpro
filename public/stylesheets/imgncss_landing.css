@@ -12,6 +12,11 @@ html {
     width: 100%;
 }
 
+#botonintro a {
+    color: #FFF;
+    text-decoration: none;
+}
+
 #botonintro {
     display: none;
     border: solid 1px #FFF;

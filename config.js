@@ -29,14 +29,15 @@ if ( app.get('env') === 'production') {
 		correctcolor:'0.40',
 		clippingpath:'2.40',
 		basicretouch:'0.60',
-		dollar:'19.11'
+		dollar:'19.60'
 	},
 		register:{
 			usermustactivate: false,
 			designermustactivate: true
 	},
 		package:{
-			length: 20
+			length: 20,
+			timetofinish: 28800
 	}
 
 	};
@@ -65,14 +66,15 @@ else{
 			correctcolor:'0.40',
 			clippingpath:'2.40',
 			basicretouch:'0.60',
-			dollar:'19.11'
+			dollar:'19.60'
 		},
 		register:{
 			usermustactivate: false,
 			designermustactivate: true
 		},
 		package:{
-			length: 20
+			length: 20,
+			timetofinish: 28800
 		}
 	  };
 
@@ -113,14 +115,15 @@ else{
 			correctcolor:'0.40',
 			clippingpath:'2.40',
 			basicretouch:'0.60',
-			dollar:'19.11'
+			dollar:'19.60'
 		},
 		register:{
 			usermustactivate: false,
 			designermustactivate: true
 		},
 		package:{
-			length: 20
+			length: 20,
+			timetofinish: 28800
 		}
 	  };
 

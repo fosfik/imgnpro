@@ -34,12 +34,12 @@ var server = http.createServer(app);
 // var http = require('http').Server(app);
 
 //var io = require('socket.io')(server);
-//var io = app.io;
+var io = app.io;
 
-var io = require('socket.io')();
+//var io = require('socket.io')();
 io.attach(server);
 
-var routes = require('../routes/chat.js')(io);
+var routes = require('../routes/socketio.js')(io); // Se agrega modulo donde se encuentran las rutas para sockets
 // app.get('/', function(req, res){
 //   res.sendfile('index.html');
 // });

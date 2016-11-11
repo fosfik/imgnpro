@@ -9,18 +9,9 @@
         <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
         <script src="../js/general.js"></script>
         <script type="text/javascript">
-
-
-       
-               // function desactForm(formName){
-               //      $('#' + formName).find('input, textarea, button, select').prop('disabled',true);
-               // } 
-
             $(document).ready(function(){
-
                 var newbuttonspec = $('#savebuttonspec');
                 var v_typespec = localStorage.getItem("typespec");
-
                 var iniformat = localStorage.getItem("format");
                 if(iniformat ==='jpg_web' || iniformat ==='png'){
                     //$('#cuadroxtra4').prop('disabled',true);
@@ -121,13 +112,7 @@
                                     if (data.freeSpecid){
                                         
                                         //Se quitó este mensaje para poner Bread toast alert("Ahora puedes subir tus 3 imágenes GRATIS");
-                                        //if(confirm("¿Quieres tus 3 IMÁGENES GRATIS?")){
                                         document.location.href="/uploadimages/" + data.freeSpecid;
-                                        //}
-                                        //else
-                                        //{
-                                        //    document.location.href="/uploadimages/" + data.newSpecid;
-                                        //}
                                     }
                                     else
                                     {
@@ -138,44 +123,11 @@
                                         }
                                         
                                     }
-                                    
-                                    
-                                    //}
-                                    // else{
-                                    //     document.getElementById("specForm").reset();
-                                    //     desactAllNext();
-                                    //     desactSizeAllNext();
-                                    //     sumallextras(); 
-                                    // }    
-
                                 }
                             }
                         });
-                        
-
-                    //}
                     ev.preventDefault();
-    
                 }); 
-
-                //var buttonspec = $('#buttonspec');
-                // var frm = $('#specForm');
-                // buttonspec.click(function (ev) {
-                //     $.ajax({
-                //         type: frm.attr('method'),
-                //         url: frm.attr('action'),
-                //         data: frm.serialize(),
-                //         success: function (data) {
-                //             if (data.error == 1 ){
-                //                 document.getElementById('res_message').innerHTML= data.message;    
-                //             }
-                //             else{
-                //                 setTimeout(window.location='/subirimagen4.html',500);
-                //             }
-                //         }
-                //     });
-                //     ev.preventDefault();
-                // }); 
 
                 if (typeof(Storage) !== "undefined") {
                     // Code for localStorage/sessionStorage.
@@ -187,15 +139,6 @@
                 } else {
                     alert("Este navegador no soporta LocalStorage");
                 } 
-               
-    
-                // $('#cuadro1').change(function() {
-                //     if($(this).is(":checked")) {
-                //         var returnVal = confirm("Are you sure?");
-                //         $(this).attr("checked", returnVal);
-                //     }
-                //     //$('#textbox1').val($(this).is(':checked'));        
-                // });
 
                $("#buttonshadow").click(function(){
                     var shadowsel = $('input:radio[name="shadow"]:checked');

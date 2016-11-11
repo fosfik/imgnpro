@@ -9,7 +9,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
         <script src="../js/google.js"></script>
-<!-- SCRIPT HEADER y BOTONES DEMO-->
+<!-- SCRIPT BOTONES DEMO-->
         <script>
             $(document).ready(function() {
 
@@ -63,52 +63,6 @@
                 }
             }
         </script>
-<!--SCRIPT ROTACION DE IMAGENES-->
-        <script>
-            $(window).load(function() {	//start after HTML, images have loaded
-
-                var InfiniteRotator1 = 
-                {
-                    init: function()
-                    {
-                        //initial fade-in time (in milliseconds)
-                        var initialFadeIn = 2000;
-
-                        //interval between items (in milliseconds)
-                        var itemInterval = 4000;
-
-                        //cross-fade time (in milliseconds)
-                        var fadeTime = 2500;
-
-                        //count number of items
-                        var numberOfItems = $('.rotating-item1').length;
-
-                        //set current item
-                        var currentItem = 0;
-
-                        //show first item
-                        $('.rotating-item1').eq(currentItem).fadeIn(initialFadeIn);
-
-                        //loop through the items		
-                        var infiniteLoop = setInterval(function(){
-                            $('.rotating-item1').eq(currentItem).fadeOut(fadeTime);
-
-                            if(currentItem == numberOfItems -1){
-                                currentItem = 0;
-                            }else{
-                                currentItem++;
-                            }
-                            $('.rotating-item1').eq(currentItem).fadeIn(fadeTime);
-
-                        }, itemInterval);	
-                    }	
-                };
-
-                InfiniteRotator1.init();
-            });
-        </script>
-
-        
     </head>
     <body>
         <header id="header">
@@ -142,25 +96,32 @@
         </section>
         <section id="contenedor1">
             <p class="supertextcenter">Trabajamos por ti, relájate, ¡Somos profesionales!</p>
-            <div class="picwrapper2">
-                <div id="rotating-item-wrapper">
-                    <img src="../images/foto10.jpg" class="rotating-item1 fotoad">
-                    <img src="../images/foto11.jpg" class="rotating-item1 fotoad">
-                    <img src="../images/foto12.jpg" class="rotating-item1 fotoad">
-                    <img src="../images/foto13.jpg" class="rotating-item1 fotoad">
-                    <img src="../images/foto14.jpg" class="rotating-item1 fotoad">
-                    <img src="../images/foto15.jpg" class="rotating-item1 fotoad">
+            <div class="cycle">
+                <div class="picwrapper2">
+                    <div class="fotos">
+                        <ul>
+                            <li class=""><img src="../images/foto10.jpg" class="rotating-item1 fotoad"></li>
+                            <li class=""><img src="../images/foto11.jpg" class="rotating-item1 fotoad"></li>
+                            <li class=""><img src="../images/foto12.jpg" class="rotating-item1 fotoad"></li>
+                            <li class=""><img src="../images/foto13.jpg" class="rotating-item1 fotoad"></li>
+                            <li class=""><img src="../images/foto14.jpg" class="rotating-item1 fotoad"></li>
+                            <li class=""><img src="../images/foto15.jpg" class="rotating-item1 fotoad"></li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-            <div class="textcont2">
-                <br>
-                <p class="notsupertext"><b>Recortamos</b>, tus fotografías.</p><br>
-                <p class="notsupertext"><b>Editamos</b> cada una de ellas según tus especificaciones.</p><br>
-                <p class="notsupertext"><b>Retocamos</b> y eliminamos imperfecciones.</p><br>
-                <p class="notsupertext"><b>Corregimos</b> el color e iluminación de tus fotos.</p><br>
-                <p class="notsupertext"><b>Agregamos Sombra</b>, natural o sombra paralela.</p><br>
-                <p class="notsupertext"><b>Enviamos</b> tus imágenes con calidad Profesional y en 24 horas*.</p><br>
-                <a class="button1" id="a_freetest3">Entra ahora haz una Prueba Gratis</a>
+                <div class="textcont2">
+                    <br>
+                    <ul>
+                        <li class="notsupertext"><b>Recortamos</b>, tus fotografías.</li>
+                        <li class="notsupertext"><b>Editamos</b> cada una de ellas según tus especificaciones.</li>
+                        <li class="notsupertext"><b>Retocamos</b> y eliminamos imperfecciones.</li>
+                        <li class="notsupertext"><b>Corregimos</b> el color e iluminación de tus fotos.</li>
+                        <li class="notsupertext"><b>Agregamos Sombra</b>, natural o sombra paralela.</li>
+                        <li class="notsupertext"><b>Enviamos</b> tus imágenes con calidad Profesional y en 24 horas*.</li>
+                    </ul>
+                    <br>
+                    <a class="button1" id="a_freetest3">Entra ahora haz una Prueba Gratis</a>
+                </div>
             </div>
         </section>
         <section id="contenedor1">
@@ -248,7 +209,20 @@
         <footer>
             <p class="texto_plano2">®IMGNpro 2016</p>
         </footer>
-        
+        <script>
+            $(document).ready(function(){
+               $(".cycle ul li:first-child").addClass("active");
+                setTimeout(autoAddClass, 4000);
+            });
+            function autoAddClass(){
+                var next = $(".cycle .active").removeClass("active").next();
+                if(next.length)
+                    $(next).addClass('active');
+                else
+                    $('.cycle ul li:first-child').addClass('active');
+                setTimeout(autoAddClass, 4000);
+            };
+        </script>
         <!-- Go to www.addthis.com/dashboard to customize your tools -->
         <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5813ed1e3adeb4fd"></script>
     </body>

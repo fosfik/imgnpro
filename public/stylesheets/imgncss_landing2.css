@@ -416,6 +416,19 @@ hr {
     margin-right: 20px;
 }
 
+.textcont2 li {
+    list-style: none;
+    margin-top: 10px;
+}
+
+.cycle ul li b {
+    color: black;
+}
+
+.cycle ul li.active b {
+    color: #00badc;
+}
+
 .fotoad {
     display: inline-block;
     width: 320px;
@@ -468,17 +481,26 @@ hr {
     vertical-align: top;
 }
 
-#rotating-item-wrapper {
+.fotos {
     position: relative;
 	display: inline-block;
-    width: 300px;
+}
+
+.fotos ul li {
+    list-style: none;
+    display: none;
+}
+
+.fotos ul li.active {
+    list-style: none;
+    display: block;
 }
 
 .rotating-item1 {
-	display: none;
+	display: block;
 	position: absolute;
 	top: -14px;
-	left: 0;
+	right: -170px
 }
 
 footer {

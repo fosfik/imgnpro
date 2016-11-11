@@ -1010,7 +1010,12 @@ router.get('/de_designers',
          function(req, res){
             findaspec(req.params.newSpecid,function(error,spec){
               //console.log(spec);
-              res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, spectype:spec[0]._id ,specid:spec[0]._id , config:config, countorders:ordersinproc, S3_BUCKET_NAME:S3_BUCKET_NAME});
+              if (error == 1){
+                res.render('error', {message: 'No se encontró especificación', user: req.user, numorder:0, order:0, countorders:0});             
+              }else
+              {
+                res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, spectype:spec[0]._id ,specid:spec[0]._id , config:config, countorders:ordersinproc, S3_BUCKET_NAME:S3_BUCKET_NAME});
+              }
             });
   });
 
@@ -2519,22 +2524,24 @@ function spectotalprice(req, cb){
 function findaspec(specid, cb){
   Spec.find({'_id':specid, 'disabled':false},function(err, specrecord) {
     // In case of any error return
+     console.log(specrecord);
      if (err){
        console.log('Error al consultar la especificación');
-
-      cb(1);
+       console.log(err);
+       cb(1);
      }
-   // already exists
-    if (specrecord.length > 0) {
-      //console.log('se encontró  la especificación');
-      //console.log(specrecord);
-      cb( 0, specrecord);
-    } 
-    else {
-      console.log('No se encontró la especificación');
-        cb(2);
-    }
-   
+     else{
+        // already exists
+        if (specrecord.length > 0) {
+          //console.log('se encontró  la especificación');
+          //console.log(specrecord);
+          cb( 0, specrecord);
+        } 
+        else {
+          console.log('No se encontró la especificación');
+          cb(2);
+        }
+     }
   }).select('name totalprice totalpriceMXN date maxfiles typespec').limit(1);
 }
 

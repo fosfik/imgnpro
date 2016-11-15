@@ -2475,6 +2475,13 @@ router.post('/transactionok', function (req,res) {
 });
 
 
+router.get('/transactionok', function (req,res) {
+  console.log(req.params);
+  console.log(req.body);
+  console.log(req.query);
+  console.log(req);
+});
+
 /*
  * Respond to POST requests to /submit_form.
  * This function needs to be completed to handle the information in

@@ -63,7 +63,7 @@
                                             }
                                             else{
                                                 //setTimeout(window.location='/subirimagen4.html',500);
-                                                alert(data.message);
+                                                //alert(data.message); Usar Toast Bread
                                                 
 
                                                 $.ajax({
@@ -116,8 +116,10 @@
                                 $('#i_password').show();
                                 $('#i_confirmpassword').show();
                                 $('#div_accept_terms').show();
+                                $('#gratis_modal').show();
                                 localStorage.setItem('hasSpecFree',true);
                                 $('#hasSpecFree').val('true');
+                                
                             }
                         }).fail(function() {
                            
@@ -819,11 +821,11 @@
             <a href="/faq">Ver más</a> 
             </div>
         </aside>
-        <div id="gratis_modal">
+        <div style="display:none" id="gratis_modal">
             <div class="contgratis">
                 <p class="gratisbig">Gracias por completar el Demo</p>
                 <hr class="hrgratis">
-                <p class="gratisnormal">Si deseas recibir estas fotografías editadas <span class="textogratisazul">completamente gratis,</span> déjanos tus datos, y recibirás un correo cuando esten listas.</p>
+                <p class="gratisnormal">Si deseas recibir estas fotografías editadas <span class="textogratisazul">completamente gratis,</span> déjanos tus datos, y recibirás un correo cuando estén listas.</p>
                  <br>
                 <div class="buttoncontgratis">
                     <a href="#gratis_modal">¡Si quiero mis fotos Gratis!</a>

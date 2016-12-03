@@ -358,6 +358,39 @@ hr {
     color: #000;
 }
 
+.notsupertextList {
+    font-size: 18px;
+    font-weight: lighter;
+    text-align: left;
+    padding: 5px;
+    margin-left: 15px;
+    color: #000;
+    list-style: none;
+}
+
+li.notsupertextList:before {
+    content: '\2022';
+    color: #00badc;
+    margin-right: 10px;
+}
+
+.subtext {
+    text-align: left;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 5px;
+    margin-left: 15px;
+    color: #aaa
+}
+
+.blueText {
+    color: #00badc;
+}
+
+.rightVertLine {
+    border-right: 1px solid #00badc;
+}
+
 .textnormal {
     font-size: 14px;
     text-align: left;
@@ -419,6 +452,33 @@ hr {
 .textcont2 li {
     list-style: none;
     margin-top: 10px;
+}
+
+.textcont3 {
+    width: 40%;
+    padding: 10px;
+    display: inline-block;
+    margin-right: 20px;
+    vertical-align: top;
+}
+
+.textcont4 {
+    width: 25%;
+    padding: 10px;
+    display: inline-block;
+    margin-right: 20px;
+    vertical-align: top;
+}
+
+.vidCont {
+    text-align: center;
+    padding: 20px;
+    width: 60%;
+    margin: 0 auto;
+}
+
+.imgHow {
+    text-align: left;
 }
 
 .cycle ul li b {
@@ -534,16 +594,99 @@ footer {
     font-size: 12px;
 }
 
+.footnav a {
+    text-decoration: none;
+    color: #000;
+}
+
+.footnav a:hover {
+    color: #00badc;
+    cursor: pointer;
+    font-weight: bold;
+}
+
 .contentpayforms {
     display: inline-block;
-    width: 100%;
+    width: 50%;
     height: 60px;
     margin-top: 20px;
+    float: left;
 }
 
 .payforms {
     padding: 10px;
     width: 440px;
     display: inline-block;
-    float: left;
+}
+
+.contentlang {
+    display: inline-block;
+    width: 50%;
+    height: 60px;
+    margin-top: 20px;
+}
+
+.selectLang select {
+    background: transparent;
+    width: 140px;
+    padding: 5px;
+    font-size: 12px;
+    font-weight: lighter;
+    line-height: 1;
+    border: 0;
+    border-radius: 0;
+    height: 34px;
+    color: #000;
+    -webkit-appearance: none;
+}
+
+.selectLang select:hover {
+    color: #00badc;
+    cursor: pointer;
+}
+
+.selectLang {
+    width: 180px;
+    height: 34px;
+    overflow: hidden;
+    background: url(../images/dropdownArrow.png) no-repeat right;
+    display: inline-block;
+}
+
+#mundo {
+    height: 24px;
+    width: 24px;
+    vertical-align: middle;
+    border-right: solid 1px #00badc;
+    padding-right: 10px;
+}
+
+button.accordion {
+    background: #f2f2f2;
+    color: #444;
+    cursor: pointer;
+    padding: 20px;
+    width: 80%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 24px;
+    transition: 0.4s;
+}
+
+button.accordion.active, button.accordion:hover {
+    background: #00badc;
+    color: #FFF
+}
+
+div.panel {
+    padding: 20px 0;
+    display: none;
+    background: #f2f2f2;
+    border-bottom: 2px solid #ddd;
+}
+
+div.panel.show {
+    display: inline-block;
+    width: 80%;
 }

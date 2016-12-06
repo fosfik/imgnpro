@@ -81,68 +81,26 @@
         <header id="header2">
         </header>
         <section id="contenedor1a">
-            <p class="supertext2">El Plan de pago ideal para ti</p>
-        </section>
-        <section id="contenedor1">
-            <div class="textcont3 rightVertLine plans">
-                <p class="supertext blueText">Plan Personal</p>
-                <p class="subtext">Nuestro plan mas popular</p>
-                <br>
-                <ul>
-                    <li class="notsupertextList">Servicio desde una imagen.</li>
-                    <li class="notsupertextList">Prueba Gratis las 3 primeras imágenes.</li>
-                    <li class="notsupertextList">Entrega de imágenes en 24 horas.</li>
-                    <li class="notsupertextList">Múltiples opciones de edición de imágenes.</li>
-                    <li class="notsupertextList">La mejor calidad.</li>
-                    <li class="notsupertextList">Garantía al 100%</li>
-                    <li class="notsupertextList nobullet"></li>
-                    <li class="notsupertextList nobullet"></li>
-                </ul>
-                <a class="button7" href="#contregistro">desde USD$1.50 por imagen</a>
-            </div>
-            <div class="textcont3 plans">
-                <p class="supertext">Plan Empresarial</p>
-                <p class="subtext">Ideal para grandes volúmenes</p>
-                <br>
-                <ul>
-                    <li class="notsupertextList">Más de 2,500 imágenes mensuales.</li>
-                    <li class="notsupertextList">Cuenta empresarial.</li>
-                    <li class="notsupertextList">Atención personalizada.</li>
-                    <li class="notsupertextList">Entrega de imágenes en 24 horas.</li>
-                    <li class="notsupertextList">Múltiples opciones de edición de imágenes</li>
-                    <li class="notsupertextList">La mejor calidad.</li>
-                    <li class="notsupertextList">Garantía al 100%</li>
-                    <li class="notsupertextList">Facturación mensual</li>
-                </ul>
-                <a class="button7" href="mailto:businessplan@mail-imgnpro.com">Contáctanos</a>
-            </div>
+            <p class="supertext2">¿Tienes Dudas? ¿En qué Podemos Ayudarte?</p>
         </section>
         
         <section id="contenedor1">
-            <div id="contregistro">
-                <div class="registro1">
-                    <p class="supertext2 blueText">¡Regístrate Gratis!</p>
-                    <br>
-                    <form id="contactForm1"  action="/signup" method="post" name="registro_form">
-                        <input type="text" name="userlongname" placeholder="Nombre" required>
-                        <br>
-                        <input type="email" name="email" placeholder="Correo Electrónico" required>
-                        <br>
-                        <input type="password" name="password" id="password1"  placeholder="Contraseña" required>
-                        <input type="password" name="confirmpass"  id="confirmpass" oninput="check(this, 'password1')" placeholder="Confirmar Contraseña" required>
-                        <br>
-                        <input id="check" type="checkbox" name="accept_terms" required><label class="postcheck">Acepto los <a class="terms" href="../pdfs/tems.pdf" target="_blank">Términos y Condiciones de IMGNpro</a>.</label>
-                        <input class="buttonreg" type="submit" value="¡Quiero mis 3 fotos Gratis!">
-                        <hr class="hro1"><span class="texto_plano">o</span><hr class="hro2">
-                        <div class="button3">
-                            <img class="redes_icon" src="../images/icon_f2.png"><a href="/login/facebook">Facebook</a>
-                        </div>
-                        <div class="button4">
-                            <img class="redes_icon" src="../images/icon_g2.png"><a href="/login/google">Google</a>
-                        </div>
-                    </form> 
-                </div>
+            <div id="contHelp">
+                <p class="notsupertextHelp">Mándanos un email a <a href="mailto:hi@mail-imgnpro.com">hi@mail-imgnpro.com</a>, llámanos al tel: <b>+52 667 7121230</b></p>
+                <p class="notsupertextHelp">o platícanos tus dudas, sugerencias o necesidades por este medio.</p>
             </div>
+            <section class="contactform1">
+                <div class="registro1">
+                    <form id = "contactForm" class="accedeForm" action="/newcontact" method = "post">
+                        <input type="text" name="name" placeholder="Nombre" required>
+                        <br>
+                        <input type="email" name="emailcontact" placeholder="Correo Electrónico" required>
+                        <br>
+                        <textarea cols="40" rows="6" name="message" placeholder="Escribe tu mensaje, nuestro personal se pondrá en contacto a la brevedad."></textarea>
+                        <input class="buttonreg" type="submit" value="Aceptar">
+                    </form>
+                </div>
+            </section>
         </section>
         
         <footer>

@@ -22,6 +22,10 @@ if ( app.get('env') === 'production') {
 		secret:'7naFjeqHyO1ZG6xEV8Vw9EYI',
 		callbackURL: 'http://www.imgnpro.com/login/google/return'
 	},
+	paypal:{
+		return_url: 'https://www.imgnpro.com/paypalr/return',
+        cancel_url: 'https://www.imgnpro.com/paypalr/cancel'
+	},
 	prices:{
 		cutandremove:'1.50',
 		naturalshadow:'0.55',
@@ -59,6 +63,10 @@ else{
 			secret:'7naFjeqHyO1ZG6xEV8Vw9EYI',
 			callbackURL: 'http://localhost:3000/login/google/return'
 		},
+		paypal:{
+			return_url: 'http://localhost:3000/paypalr/return',
+	        cancel_url: 'http://localhost:3000/paypalr/cancel'
+		},
 		prices:{
 			cutandremove:'1.50',
 			naturalshadow:'0.55',
@@ -95,6 +103,10 @@ else{
 			key:'812259967962-gcvtg69gr1grfhbhi09poagqmjb1gkrl.apps.googleusercontent.com',
 			secret:'7naFjeqHyO1ZG6xEV8Vw9EYI',
 			callbackURL: 'https://imgnprotest.herokuapp.com/login/google/return'
+		},
+		paypal:{
+			return_url: 'https://imgnprotest.herokuapp.com/paypalr/return',
+	        cancel_url: 'https://imgnprotest.herokuapp.com/paypalr/cancel'
 		},
 		prices:{
 

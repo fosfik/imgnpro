@@ -78,7 +78,15 @@
                                                         }
                                                         else{ 
                                                             localStorage.clear();
-                                                            document.location.href= "/" + data.href  + "/<%= numorder %>";
+                                                            //document.location.href= "/" + data.href  + "/<%= numorder %>";
+                                                            console.log(data.href);
+                                                            if (data.href.indexOf("http") == -1){
+                                                                document.location.href = "/" + data.href;
+                                                            }
+                                                            else{
+                                                                document.location.href = data.href;
+                                                            } 
+                                                            
                                                         }
                                                     }
 

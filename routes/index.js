@@ -28,6 +28,10 @@ var S3_BUCKET_NAME_THUMB = process.env.S3_BUCKET_NAME_THUMB|| 'imgnprothumb';
 
 var nodemailer = require('nodemailer');
 
+// PAYPAL
+var paypal = require('paypal-rest-sdk');
+require('../config_paypal');
+
 // create reusable transporter object using the default SMTP transport
 //var transporter = nodemailer.createTransport('smtps://jerh56%40gmail.com:1J79ol4f*3@smtp.gmail.com');
 
@@ -129,6 +133,7 @@ var transporter = nodemailer.createTransport(transporter({
 // console.log(process.env.AWS_SECRET_ACCESS_KEY);
 //console.log(fillzero(23456, '0000000'));
 // TODO agregar seguridad a esta ruta
+
 
 
 
@@ -400,7 +405,7 @@ router.get('/listspecs/:limit', function(req, res) {
               findanyorderspec(order[0].specid, function(error, spec){
                 //console.log(spec);
                 //console.log(req.user);
-                doConfirmOrder(req.params.numorder, req, spec[0].typespec ,function(tipomsg,message,href){
+                doConfirmOrder(req.params.numorder, order[0], req, spec[0].typespec ,function(tipomsg,message,href){
                     //console.log(spec);
                     //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id , countorders:ordersinproc});
                   
@@ -1205,8 +1210,7 @@ router.get('/de_designers',
                res.render('thankyou', {message: req.flash('message'), user: req.user, numorder:req.params.numorder, order:order[0], countorders:ordersinproc});             
           });
   });
-
- router.get('/denytransaction/:numorder', 
+  router.get('/denytransaction/:numorder', 
      require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){
           findaorder(req.params.numorder,function(error,order){
@@ -1271,16 +1275,18 @@ router.get('/de_designers',
           
   });
 
- router.get('/payorder/:numorder', 
-     require('connect-ensure-login').ensureLoggedIn('/login'),
-         function(req, res){
+ // Ya no se llamará a esta página porque los pagos no se harán por bancomer
+ // router.get('/payorder/:numorder', 
+ //     require('connect-ensure-login').ensureLoggedIn('/login'),
+ //         function(req, res){
           
-               //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id });
-               //var numorder_zero = fillzero(req.params.numorder, '0000000');
+ //               //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id });
+ //               //var numorder_zero = fillzero(req.params.numorder, '0000000');
 
-               res.render('payorder', {message: req.flash('message'), user: req.user, numorder:req.params.numorder, countorders:ordersinproc});             
+ //               res.render('payorder', {message: req.flash('message'), user: req.user, numorder:req.params.numorder, countorders:ordersinproc});             
          
-  });
+ //  });
+
  router.get('/cancelorder/:numorder', 
      require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){
@@ -2715,7 +2721,7 @@ function findaorder(orderid, cb){
   }).select('date status totalpay totalpayMXN specid imagecount images userid').limit(1);
 }
 
-function doConfirmOrder(numorder,req,typespec,cb){
+function doConfirmOrder(numorder,order,req,typespec,cb){
   //console.log(req.user);
   findauser(req.user._id,function(error,message,user){
       //console.log(spec);
@@ -2731,17 +2737,15 @@ function doConfirmOrder(numorder,req,typespec,cb){
        //console.log(user);
 
         var statusorder ='';
-       
+       // Si el tipo de usuario es de negocio o gratis, no lo manda a pagar el pedido
         if (user[0].usertype=='business' || typespec=='free' ){
             statusorder ='En Proceso';
             href = 'thankyou';
-
-
         }
         else
         {
            statusorder ='Por pagar';
-            href = 'payorder';
+            //href = 'payorder';
         }
         //console.log(user);
         //console.log(statusorder);
@@ -2830,10 +2834,90 @@ function doConfirmOrder(numorder,req,typespec,cb){
         }
         else
         {
-            cb( 2,'Pedido normal', href);
-        }
-          
+          console.log(order);
+          var create_payment_json = {
+              "intent": "sale",
+              "payer": {
+                  "payment_method": "paypal"
+              },
+              "redirect_urls": {
+                  "return_url": config.paypal.return_url,
+                  "cancel_url": config.paypal.cancel_url
+              },
+              "transactions": [{
+                  "item_list": {
+                      "items": [{
+                          "name": "Images",
+                          "sku": "00001",
+                          "price": order.totalpay,
+                          "currency": "USD",
+                          "quantity": 1
+                      }]
+                  },
+                  "amount": {
+                      "currency": "USD",
+                      "total": order.totalpay
+                  },
+                  "description": "Images"
+              }]
+          };
+          console.log(create_payment_json);
+          paypal.payment.create(create_payment_json, function (error, payment) {
+              if (error) {
+                  console.log(error);
+                  cb( 1,'Problema al crear el pago', 'error');
+                     // throw error;
+                  //res.setHeader('Content-Type', 'application/json');
+                  //res.send(error); 
 
+              } else {
+              
+                  console.log("Create Payment Response");
+                  console.log(payment);
+                  //res.setHeader('Content-Type', 'application/json');
+                  //res.send(payment);  
+                  var href;
+                  console.log(href);
+                  for (var index = 0; index < payment.links.length; index++) {
+                  //Redirect user to this endpoint for redirect url
+                      if (payment.links[index].rel === 'approval_url') {
+                          console.log(payment.links[index].href);
+                          href = payment.links[index].href;
+                      }
+                  }
+
+                  if (href != null){
+                    //res.redirect(href);
+                    //Actualizar Pedido
+
+                     numorder = numorder.replace(/0/g, ''); // quita los ceros del pedido
+
+                     var conditions = { numorder: numorder }
+                      , update = { $set: { paymentId: payment.id }}
+                      , options = { multi: true };
+                    Orders.update(conditions, update, options, function (err, numAffected) {
+                      // numAffected is the number of updated documents
+                     
+                      //console.log(numAffected);
+                      if (err){
+                          console.log(err);
+                          cb( 1,'No fue posible actualizar el id del pedido');
+                      }
+                      else{
+                          // actualizar paquetes
+                          cb( 2,'Pedido normal', href);
+                      }
+                    });
+                  }
+                  else
+                  {
+                    // res.setHeader('Content-Type', 'application/json');
+                    // res.send(payment); 
+                     cb( 1,'Problema al crear el pago', 'error'); 
+                  }
+              }
+          });
+        }
       }
     });
 }

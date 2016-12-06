@@ -14,8 +14,10 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var routes = require('./routes/index');
 var users = require('./routes/users');
+var routes = require('./routes/index');
+var paypalr = require('./routes/paypal');
+
 var Spec = require('./models/specification.js');
 
 //MongoDB 
@@ -103,6 +105,7 @@ if (app.get('env') !== 'development') {
 }
 app.use('/', routes);
 app.use('/users', users);
+app.use('/paypalr', paypalr);
 
 // Usar compresión de archivos para mejorar rendimiento
 app.use(compression());

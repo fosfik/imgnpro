@@ -40,7 +40,7 @@ var passportSocketIo = require('passport.socketio');
 var transporter = require("nodemailer-smtp-transport")
 var app = express();
 app.io = require('socket.io')();
-
+var helmet = require('helmet');
 
 
 var session = require('express-session'); // Manejo de sesiones
@@ -72,6 +72,7 @@ app.set('view engine', 'html');
 app.engine('html', ejs.renderFile);
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(helmet());
 app.use(logger('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public/htmls')));

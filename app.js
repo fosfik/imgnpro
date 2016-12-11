@@ -27,7 +27,8 @@ var User = require('./models/user.js');
 var bCrypt = require('bcrypt');
 
 // mailer
-var nodemailer = require('nodemailer');
+// var nodemailer = require('nodemailer');
+var mailer = require('./modules/send_email.js');
 
 var passportSocketIo = require('passport.socketio');
 
@@ -37,7 +38,7 @@ var passportSocketIo = require('passport.socketio');
 // create reusable transporter object using the default SMTP transport
 //var transporter = nodemailer.createTransport('smtps://jerh56%40gmail.com:1J79ol4f*3@smtp.gmail.com');
 
-var transporter = require("nodemailer-smtp-transport")
+// var transporter = require("nodemailer-smtp-transport")
 var app = express();
 app.io = require('socket.io')();
 var helmet = require('helmet');
@@ -52,17 +53,20 @@ var sessionRedis = new RedisStore({
    db: 0,
    pass: '1j79ol4f'
  });
-var transporter = nodemailer.createTransport(transporter({
-    host : "mail.mail-imgnpro.com",
-    ignoreTLS : true,
-    secureConnection : false,
-    port: 2525,
-    auth : {
-        user : "becomeapartner@mail-imgnpro.com",
-        //pass: "m0r3n0"
-        pass : "1m4g3npr0"
-    }
-}));
+// var transporter = nodemailer.createTransport(transporter({
+//     host : "mail.mail-imgnpro.com",
+//     ignoreTLS : true,
+//     secureConnection : false,
+//     port: 2525,
+//     auth : {
+//         user : "becomeapartner@mail-imgnpro.com",
+//         //pass: "m0r3n0"
+//         pass : "1m4g3npr0"
+//     }
+// }));
+
+
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 // manejador de vistas ejs para usar HTML en lugas de archivos .jade
@@ -475,13 +479,14 @@ passport.use('signup', new LocalStrategy({
                 html: '<html>Hi '+ newUser.userlongname  +  '.<br><b>To confirm your account please click the link below</b><br><a href="' + req.headers.host + '/confirmuser/' + newUser._id+'">Confirm acccount</a><br>' + req.headers.host + '/confirmuser/' + newUser._id + '</html>' // html body
             };
             console.log(mailOptions);
+            mailer.sendEmail(mailOptions);
             //send mail with defined transport object
-            transporter.sendMail(mailOptions, function(error, info){
-                if(error){
-                    return console.log(error);
-                }
-                console.log('Message sent: ' + info.response);
-            });
+            // transporter.sendMail(mailOptions, function(error, info){
+            //     if(error){
+            //         return console.log(error);
+            //     }
+            //     console.log('Message sent: ' + info.response);
+            // });
             createfreespec(newUser._id,function(err,message_spec){
               console.log(message_spec);
               return done(null, newUser, {message:'Se registró correctamente el usuario'});

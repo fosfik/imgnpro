@@ -1,15 +1,11 @@
 var express = require('express');
 var aws = require('aws-sdk');
 var router = express.Router();
-//var cloudinary = require('cloudinary');
 var passport = require('passport');
 var sha1 = require('sha1');
-//var passport = require('passport-local');
-//var Strategy = require('passport-facebook').Strategy;
 var config = require('../config');
 var path = require('path');
 var Orders = require('../models/order.js');
-//var Orders_alt = require('../models/order_alt.js');
 var Order_transaction = require('../models/order_transaction.js');
 var OrderPacks = require('../models/orderpacks.js');
 var OrderSpec = require('../models/orderspecs.js');
@@ -19,124 +15,14 @@ var Spec = require('../models/specification.js');
 var Contact = require('../models/contact.js');
 var bCrypt = require('bcrypt');
 var ordersinproc  = 0;
-
 aws.config.region = 'us-east-1';
 var S3_BUCKET_NAME = process.env.S3_BUCKET_NAME || 'imgnpro';
 var S3_BUCKET_NAME_DONE = process.env.S3_BUCKET_NAME_DONE || 'imgnprodone';
 var S3_BUCKET_NAME_THUMB = process.env.S3_BUCKET_NAME_THUMB|| 'imgnprothumb';
-
-
-var nodemailer = require('nodemailer');
-
+var mailer = require('../modules/send_email.js'); // Módulo para enviar correo
 // PAYPAL
 var paypal = require('paypal-rest-sdk');
 require('../config_paypal');
-
-// create reusable transporter object using the default SMTP transport
-//var transporter = nodemailer.createTransport('smtps://jerh56%40gmail.com:1J79ol4f*3@smtp.gmail.com');
-
-var transporter = require("nodemailer-smtp-transport")
-
-var transporter = nodemailer.createTransport(transporter({
-    host : "mail.mail-imgnpro.com",
-    ignoreTLS : true,
-    secureConnection : false,
-    port: 2525,
-    auth : {
-        user : "becomeapartner@mail-imgnpro.com",
-        //pass: "m0r3n0"
-        pass : "1m4g3npr0"
-    }
-}));
-
-
-/* SOAP */
-
-// var easysoap = require('easysoap');
-//   //http://www.banxico.org.mx/DgieWSWeb/DgieWS
-//     // define soap params
-//     var params = {
-//     host   : 'http://www.banxico.org.mx',
-//     path   : '/DgieWSWeb/DgieWS',
-//     wsdl   : '/DgieWSWeb/DgieWS?WSDL'
-
-    // set soap headers (optional)
-    // headers: [{
-    //         'name'     : 'item_name',
-    //         'value'    : 'item_value',
-    //         'namespace': 'item_namespace'
-    //     }]
-    //}
-  
-    /*
-     * create the client
-     */ 
-//       var clientOptions = {
-//                    secure : false 
-//     };
-//     var soapClient = easysoap.createClient(params,clientOptions);
-
-//     soapClient.getAllFunctions()
-//     .then((functionArray) => { console.log(functionArray); })
-//     .catch((err) => { throw new Error(err); });
-
-// // ,
-// //                     '' : {
-// //                                  'ExecuteXML' : 1
-// //
-
-// soapClient.getMethodParamsByName('tasasDeInteresBanxico', function(err,mm){
-//   console.log("OK");
-// });
-// // .then((methodParams) => { 
-// //         console.log(methodParams);
-// //         console.log(methodParams.response); 
-// //       })
-// // .catch((err) => { throw new Error(err); });
-//            //         }
-
-// soapClient.call({method: 'tiposDeCambioBanxico',
-//       attributes: {
-//               xmlns: 'http://ws.dgie.banxico.org.mx'
-//             },
-//        params: {
-        
-//             } 
-//         })
-//       // .done((data, header) => {
-
-//       //   console.log(data, header);
-//       // })
-//         .then((callResponse) => { 
-//           console.log('ok');
-//       console.log(callResponse.data); // response data as json
-//             console.log(callResponse.body); // response body
-//       console.log(callResponse.header);  //response header
-//         })
-//     .catch((err) => { throw new Error(err); });
-
-    // soapClient.call({'tiposDeCambioBanxico' : 'Execute'})
-    // .then(function (callResponse) {
-    //         console.log(callResponse);
-    //     })
-    // .catch(function (err) {
-    //     console.log("Got an error making SOAP call: ", err);
-    // });
-
-    /*
-     * get the method params by given methodName
-         */
-
-
-
-// console.log(process.env.AWS_ACCESS_KEY_ID);
-// console.log(process.env.AWS_SECRET_ACCESS_KEY);
-//console.log(fillzero(23456, '0000000'));
-// TODO agregar seguridad a esta ruta
-
-
-
-
 router.get('/listorders/:limit', function(req, res) {
   Orders.find({'userid':req.user._id},function(err, orders) {
     // In case of any error return
@@ -371,24 +257,16 @@ router.get('/listspecs/:limit', function(req, res) {
       }
       else{
 
-            var mailOptions = {
-                from: '"Contact" <server@mail-imgnpro.com>', // sender address
-                to: 'hi@mail-imgnpro.com, jerh56@gmail.com, jmoreno@mail-imgnpro.com', // list of receivers
-                subject: 'Hola', // Subject line
-                text: '', // plaintext body
-                //html: '<a href="www.imgnpro.com/confirmuser"</a>' // html body
-                html: '<html>' + 'Hola, mi nombre es ' + newContact.name + '<br><b>' + 
-                newContact.message + '</b><br>' + 'Mi correo electrónico es: <b>' + newContact.email + '</b></html>'  // html body
-            };
-            //console.log(mailOptions);
-            //send mail with defined transport object
-            transporter.sendMail(mailOptions, function(error, info){
-                if(error){
-                    return console.log(error);
-                }
-                console.log('Message sent: ' + info.response);
-            });
-
+          var mailOptions = {
+              from: '"Contact" <server@mail-imgnpro.com>', // sender address
+              to: 'hi@mail-imgnpro.com, jerh56@gmail.com, jmoreno@mail-imgnpro.com', // list of receivers
+              subject: 'Hola', // Subject line
+              text: '', // plaintext body
+              //html: '<a href="www.imgnpro.com/confirmuser"</a>' // html body
+              html: '<html>' + 'Hola, mi nombre es ' + newContact.name + '<br><b>' + 
+              newContact.message + '</b><br>' + 'Mi correo electrónico es: <b>' + newContact.email + '</b></html>'  // html body
+          };
+          mailer.sendEmail(mailOptions);
           res.setHeader('Content-Type', 'application/json');
           res.send(JSON.stringify({ error: 0, message: 'Se guardó el contacto'})); 
       }
@@ -2751,14 +2629,7 @@ function doConfirmOrder(numorder,order,req,typespec,cb){
                       'Terminación de la tarjeta:' + user_details.factterminacion + '<br>' +
                       'e-mail:  <span>' + user_details.factemail2 + '</span><br></b></html>'  // html body
                     };
-                    //console.log(mailOptions);
-                    //send mail with defined transport object
-                    transporter.sendMail(mailOptions, function(error, info){
-                        if(error){
-                            return console.log(error);
-                        }
-                        //console.log('Message sent: ' + info.response);
-                    });
+                    mailer.sendEmail(mailOptions);
                   }
               } 
             });          
@@ -2986,14 +2857,7 @@ function doConfirmPayOrder(req,cb){
                       'Terminación de la tarjeta:' + user_details.factterminacion + '<br>' +
                       'e-mail:  <span>' + user_details.factemail2 + '</span><br></b></html>'  // html body
                     };
-                    //console.log(mailOptions);
-                    //send mail with defined transport object
-                    transporter.sendMail(mailOptions, function(error, info){
-                        if(error){
-                            return console.log(error);
-                        }
-                        //console.log('Message sent: ' + info.response);
-                    });
+                    mailer.sendEmail(mailOptions);
                   }
               } 
             });          

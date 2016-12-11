@@ -1,8 +1,6 @@
 var mongoose = require('mongoose');
 var express = require('express');
 var app = express();
-
-
 var url = process.env.MONGODB_URI;
 // if (app.get('env') === 'production') {
 //  var  url = 'mongodb://admin:123456@ds051903.mlab.com:51903/heroku_554zpg9r';
@@ -22,8 +20,11 @@ mongoose.connect(url, function(err) {
 		throw err;
     } 
     else{
-    	console.log('Se conectó a la BD');
+    	console.log('Se conectó a la BD: ' + app.get('env'));
     }
 });
        
  
+
+
+

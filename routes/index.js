@@ -328,7 +328,7 @@ router.get('/listspecs', function(req, res) {
       res.setHeader('Content-Type', 'application/json');
       res.send(JSON.stringify({})); 
     }
-  }).select('_id name date totalprice totalpriceMXN').sort('-date');
+  }).select('_id name date totalprice').sort('-date');
 });
 
 // TODO agregar seguridad a esta ruta
@@ -352,7 +352,7 @@ router.get('/listspecs/:limit', function(req, res) {
       res.setHeader('Content-Type', 'application/json');
       res.send(JSON.stringify({})); 
     }
-  }).select('_id name date totalprice totalpriceMXN typespec').sort('-date').limit(parseInt(req.params.limit));
+  }).select('_id name date totalprice typespec').sort('-date').limit(parseInt(req.params.limit));
 });
 
 /* Crea un nuevo contacto. */
@@ -526,7 +526,6 @@ router.post('/confirmPackage', function(req, res) {
             newOrderSpec.typespec =spec[0].typespec;
             newOrderSpec.date =spec[0].date;
             newOrderSpec.totalprice =spec[0].totalprice;
-            newOrderSpec.totalpriceMXN =spec[0].totalpriceMXN;
             newOrderSpec.numorder =spec[0].numorder;
             newOrderSpec.disabled =spec[0].disabled;
             newOrderSpec.maxfiles =spec[0].maxfiles;
@@ -543,7 +542,6 @@ router.post('/confirmPackage', function(req, res) {
         
         // modificar esto 
         newOrder.totalpay = req.body.totalpay;
-        newOrder.totalpayMXN = req.body.totalpay * parseFloat(config.prices.dollar);
 
         if (spec[0].typespec == 'free'){
           newOrder.status = 'Por pagar';
@@ -1508,12 +1506,11 @@ router.get('/de_designers',
       newSpec.date = specInfos[0].date;
 
       // pasar el req specInfo
-      spectotalprice(specInfos[0],function(total,totalMXN){
+      spectotalprice(specInfos[0],function(total){
           //console.log(total);
         //res.setHeader('Content-Type', 'application/json');
         //res.send(JSON.stringify({ error: 0, ntotal:total , message: 'Se guardó la especificación'})); 
           newSpec.totalprice = total;
-          newSpec.totalpriceMXN = totalMXN;
           // save the user
           newSpec.save(function(err) {
             if (err){
@@ -1728,11 +1725,10 @@ if (req.body.hasSpecFree=='true'){
       newSpec.heightsize = req.body.heightsize;
       newSpec.spectype = req.body.spectype;
       newSpec.date = req.body.date;
-      spectotalprice(req.body,function(total, totalMXN){
+      spectotalprice(req.body,function(total){
         //res.setHeader('Content-Type', 'application/json');
         //res.send(JSON.stringify({ error: 0, ntotal:total , message: 'Se guardó la especificación'})); 
           newSpec.totalprice = total;
-          newSpec.totalpriceMXN = totalMXN;
           // guarda los cambios de una especificacion
           if (specid === null || specid === ''){
             // crea una nueva especificacion
@@ -1792,7 +1788,6 @@ if (req.body.hasSpecFree=='true'){
                   doc.spectype = req.body.spectype;
                   doc.date = req.body.date;
                   doc.totalprice = newSpec.totalprice;
-                  doc.totalpriceMXN = newSpec.totalpriceMXN;
 
                   //doc.specid = req.user.specid;
                   //console.log(doc);
@@ -2504,15 +2499,7 @@ router.post('/save-details', (req, res) => {
     // basicretouch:0.60
 
 function spectotalprice(req, cb){
-  
-  // se agrega a nTotal el costo mínimo 
-
-  //console.log(req.param('background'));
-  //console.log(req); 
-  //console.log(parseFloat(req.body.naturalshadow));
-  // se multiplica por 100 para quitar los decimales y evitar errores de precision
   var nTotal = (config.prices.cutandremove) * 100;
-  var ntotalMXN = 0;
   if (parseFloat(req.naturalshadow ) > 0){
     nTotal = nTotal + (config.prices.naturalshadow * 100);
   }
@@ -2529,8 +2516,7 @@ function spectotalprice(req, cb){
     nTotal = nTotal + (config.prices.basicretouch * 100);
   }
   nTotal = nTotal / 100;
-  ntotalMXN = nTotal * parseFloat(config.prices.dollar);
-  cb(nTotal, ntotalMXN);
+  cb(nTotal);
 }
 
 
@@ -2555,31 +2541,8 @@ function findaspec(specid, cb){
           cb(2);
         }
      }
-  }).select('name totalprice totalpriceMXN date maxfiles typespec').limit(1);
+  }).select('name totalprice date maxfiles typespec').limit(1);
 }
-
-// function findanyspec(specid, cb){
-//   console.log(specid);
-//   Spec.find({'_id':specid},function(err, specrecord) {
-//     // In case of any error return
-//      if (err){
-//        console.log('Error al consultar la especificación');
-
-//       cb(1);
-//      }
-//    // already exists
-//     if (specrecord) {
-//       console.log('se encontró  la especificación');
-//       console.log(specrecord);
-//       cb( 0, specrecord);
-//     } 
-//     else {
-//       console.log('No se encontró la especificación');
-//         cb(2);
-//     }
-   
-//   }).select('name totalprice totalpriceMXN date maxfiles typespec').limit(1);
-// }
 
 function findanyorderspec(specid, cb){
   //console.log(specid);
@@ -2718,7 +2681,7 @@ function findaorder(orderid, cb){
 
         cb(2);
     }
-  }).select('date status totalpay totalpayMXN specid imagecount images userid').limit(1);
+  }).select('date status totalpay specid imagecount images userid').limit(1);
 }
 
 function doConfirmOrder(numorder,order,req,typespec,cb){
@@ -2783,7 +2746,6 @@ function doConfirmOrder(numorder,order,req,typespec,cb){
                                      user_details.sel_factcountry + ',' + '<br>' +
                       'Número de pedido:' + numorder + '<br>' +
                       'Monto total: USD ' + order[0].totalpay + '<br>' +
-                      'Monto total: MXN ' + order[0].totalpayMXN + '<br>' +
                       'Estatus del pedido: ' + statusorder + '<br>' +
                       'Método de pago:' + user_details.factpaymethod + '<br>' +
                       'Terminación de la tarjeta:' + user_details.factterminacion + '<br>' +
@@ -3019,7 +2981,6 @@ function doConfirmPayOrder(req,cb){
                                      user_details.sel_factcountry + ',' + '<br>' +
                       'Número de pedido:' + numorder + '<br>' +
                       'Monto total: USD ' + order[0].totalpay + '<br>' +
-                      'Monto total: MXN ' + order[0].totalpayMXN + '<br>' +
                       'Estatus del pedido: ' + statusorder + '<br>' +
                       'Método de pago:' + user_details.factpaymethod + '<br>' +
                       'Terminación de la tarjeta:' + user_details.factterminacion + '<br>' +

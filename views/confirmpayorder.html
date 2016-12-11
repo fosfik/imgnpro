@@ -11,7 +11,6 @@
         <!-- <script src="../js/general.js"></script> -->
         <script type="text/javascript">
             $(document).ready(function(){
-                calcPrices();
                 activatePassOnFree();
                 $.ajax({
                         type: 'get',
@@ -157,13 +156,6 @@
 
                }
 
-               function calcPrices(){
-                    var ntotal = <%= order.totalpay %>;
-                    var ntotalMXN = ntotal * <%= config.prices.dollar %>;
-                    //$("#totalprice").html(setDecimals(ntotal,2));
-                    $("#totalpriceMXN").html(ntotalMXN.toFixed(2));
-
-               }
               function validInput(){
                 var bValor = false;
                 if ($('#contactname').val().trim() === ''){
@@ -269,8 +261,6 @@
                 <p class="texto_plano4">Costo total</p>
                 <p class="texto_precio2"><span class="prefixmoney">USD</span>$ <span><%= order.totalpay %></span></p>
                 <br><br><br>
-                <p class="textoplanotemp">Costo total</p>
-                <p class="textopreciotemp"><span class="prefijopeso">MXN</span>$<span id="totalpriceMXN">0</span></p>
             </div>
             <section class="col1">
                 <form class="contactForm">

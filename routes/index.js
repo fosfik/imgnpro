@@ -1126,7 +1126,7 @@ router.get('/de_designers',
           .findOne({userid:req.user._id})
           .populate('userid')
           .exec(function(err,user_details){
-
+            console.log(user_details);
             if (err){
               res.render('receipt', {message: '¡Lo sentimos!, No se encontró el número de recibo', user:req.user, numorder:0, countorders:ordersinproc});            
             } 
@@ -1137,7 +1137,7 @@ router.get('/de_designers',
               .findOne({numorder:req.params.numorder})
               .populate('specid', 'totalprice')
               .exec(function(err,order){
-
+              console.log(order);
               
               //findaorder(req.params.numorder,function(error,order){
                  //console.log(order);

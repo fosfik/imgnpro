@@ -2,6 +2,8 @@ var express = require('express');
 var config = require('../config');
 var Orders = require('../models/order.js');
 var OrderPacks = require('../models/orderpacks.js');
+var User_details = require('../models/user_details.js');
+var mailer = require('../modules/send_email.js'); // Módulo para enviar correo
 var router = express.Router();
 var paypal = require('paypal-rest-sdk');
 require('../config_paypal');
@@ -59,6 +61,42 @@ router.get('/return', require('connect-ensure-login').ensureLoggedIn('/login'), 
                             }
                             else{
                                 // actualizar paquetes
+                                User_details.findOne({userid:req.user._id},function(err,user_details){
+                                    if (err){
+                                      console.log(err);
+                                    } 
+                                    else{
+                                        // Si el usuario pide factura 
+                                        if(user_details.chk_factura == 'chk_factura'){
+                                          var mailOptions = {
+                                            from: '"Server" <server@mail-imgnpro.com>', // sender address
+                                            //to: 'makeacfdi@mail-imgnpro.com, jerh56@gmail.com', // list of receivers
+                                            to: 'jerh56@gmail.com', // list of receivers
+                                            subject: 'Factura', // Subject line
+                                            text: '', // plaintext body
+                                            //html: '<a href="www.imgnpro.com/confirmuser"</a>' // html body
+                                            html: '<html>' + 'Hola, el nombre de mi empresa es ' + user_details.factrazonsocial +
+                                            '<br><b> Necesito una factura electrónica</b><br>' + 'Mis datos son los siguientes:<br> <b>' + 
+                                            'Razón social:' + user_details.factrazonsocial + '<br>' +
+                                            'RFC:' + user_details.factrfc + '<br>' +
+                                            'Domicilio:' + user_details.factcalle + ',' + 
+                                                           user_details.factcolonia + ',' + 
+                                                           user_details.factnum_ext + ',' +
+                                                           user_details.factnum_int + ',' +
+                                                           user_details.factmunicipio + ',' +
+                                                           user_details.factciudad + ',' +
+                                                           user_details.factestado + ',' +
+                                                           user_details.sel_factcountry + ',' + '<br>' +
+                                            'Número de pedido:' + numorder + '<br>' +
+                                            'Monto total: USD ' + orderrecord.totalpay + '<br>' +
+                                            'Método de pago:' + user_details.factpaymethod + '<br>' +
+                                            'Terminación de la tarjeta:' + user_details.factterminacion + '<br>' +
+                                            'e-mail:  <span>' + user_details.factemail2 + '</span><br></b></html>'  // html body
+                                          };
+                                          mailer.sendEmail(mailOptions);
+                                        }
+                                    } 
+                                });   
                                 res.redirect('/thankyou/' + numorder );
                             }
                           });

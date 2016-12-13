@@ -70,8 +70,8 @@ router.get('/return', require('connect-ensure-login').ensureLoggedIn('/login'), 
                                         if(user_details.chk_factura == 'chk_factura'){
                                           var mailOptions = {
                                             from: '"Server" <server@mail-imgnpro.com>', // sender address
-                                            //to: 'makeacfdi@mail-imgnpro.com, jerh56@gmail.com', // list of receivers
-                                            to: 'jerh56@gmail.com', // list of receivers
+                                            to: 'makeacfdi@mail-imgnpro.com, jerh56@gmail.com', // list of receivers
+                                            //to: 'jerh56@gmail.com', // list of receivers
                                             subject: 'Factura', // Subject line
                                             text: '', // plaintext body
                                             //html: '<a href="www.imgnpro.com/confirmuser"</a>' // html body

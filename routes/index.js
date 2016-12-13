@@ -286,8 +286,6 @@ router.get('/listspecs/:limit', function(req, res) {
                 doConfirmOrder(req.params.numorder, order[0], req, spec[0].typespec ,function(tipomsg,message,href){
                     //console.log(spec);
                     //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id , countorders:ordersinproc});
-                  
-
                   res.setHeader('Content-Type', 'application/json');
                   res.send(JSON.stringify({ error: tipomsg, message: message, href:href})); 
                     //res.render('especificaciones1', {message: 'Prueba', user: req.user, href:'thankyou'});
@@ -1687,99 +1685,101 @@ if (req.body.hasSpecFree=='true'){
   });
 
 /* Handle get payment sign POST */
-  router.post('/getpaymentsign/:numorder', function (req,res) {
-    //res.setHeader('Content-Type', 'application/json');
-    //res.send(JSON.stringify({ error: error, message: message, user_details: user_details[0]})); 
-    findaorder(req.params.numorder,function(err,order){
-      if (err){
-          res.setHeader('Content-Type', 'application/json');
-          res.send(JSON.stringify({ error: 1, message:'No se encontró el pedido', sign: ''})); 
-      }
-      else{
-          //console.log(order);
-          var CSSB = process.env.CSSB || '5634ytyertewrg';
-          var paymentsign = '';
+  // CÓDIGO OBSOLETO BANCO
+  // router.post('/getpaymentsign/:numorder', function (req,res) {
+  //   //res.setHeader('Content-Type', 'application/json');
+  //   //res.send(JSON.stringify({ error: error, message: message, user_details: user_details[0]})); 
+  //   findaorder(req.params.numorder,function(err,order){
+  //     if (err){
+  //         res.setHeader('Content-Type', 'application/json');
+  //         res.send(JSON.stringify({ error: 1, message:'No se encontró el pedido', sign: ''})); 
+  //     }
+  //     else{
+  //         //console.log(order);
+  //         var CSSB = process.env.CSSB || '5634ytyertewrg';
+  //         var paymentsign = '';
 
-          var totalpayPesos = order[0].totalpay  * parseFloat(config.prices.dollar);
-          totalpayPesos = setDecimals (totalpayPesos,2);
-          //console.log(totalpayPesos); 
-          var Ds_Merchant_Amount = totalpayPesos.toString().replace('.', ''); //req.param('Ds_Merchant_Amount');
-          var Ds_Merchant_Order = fillzero(req.params.numorder, '0000000');
-          var Ds_Merchant_MerchantCode = 4093847; //req.param('Ds_Merchant_MerchantCode');
-          var Ds_Merchant_Currency = 484; // 484 pesos 840 Dólar req.param('Ds_Merchant_Currency');
-          var Ds_Merchant_TransactionType  = 0; //req.param('Ds_Merchant_TransactionType');
-          var Ds_Merchant_UrlOK = 'https://www.imgnpro.com/transactionok';
-          var Ds_Merchant_UrlKO = 'https://www.imgnpro.com/transactiondeny';
-          var Ds_Merchant_MerchantURL = 'https://www.imgnpro.com';
-          var Ds_Merchant_MerchantName = 'IMAGEN PRO';
-          var Ds_Merchant_Terminal = 1;
-          var Ds_Merchant_ProductDescription = order[0].imagecount + ' IMÁGEN(ES)';
-          //console.log('A pagar:' + Ds_Merchant_Amount);
-          //console.log('Pedido:' + Ds_Merchant_Order);
-          //console.log('Codigo comercio:' + Ds_Merchant_MerchantCode);
-          //console.log('Moneda:' + Ds_Merchant_Currency);
-          //console.log('Tipo transacción:' + Ds_Merchant_TransactionType);
+  //         var totalpayPesos = order[0].totalpay  * parseFloat(config.prices.dollar);
+  //         totalpayPesos = setDecimals (totalpayPesos,2);
+  //         //console.log(totalpayPesos); 
+  //         var Ds_Merchant_Amount = totalpayPesos.toString().replace('.', ''); //req.param('Ds_Merchant_Amount');
+  //         var Ds_Merchant_Order = fillzero(req.params.numorder, '0000000');
+  //         var Ds_Merchant_MerchantCode = 4093847; //req.param('Ds_Merchant_MerchantCode');
+  //         var Ds_Merchant_Currency = 484; // 484 pesos 840 Dólar req.param('Ds_Merchant_Currency');
+  //         var Ds_Merchant_TransactionType  = 0; //req.param('Ds_Merchant_TransactionType');
+  //         var Ds_Merchant_UrlOK = 'https://www.imgnpro.com/transactionok';
+  //         var Ds_Merchant_UrlKO = 'https://www.imgnpro.com/transactiondeny';
+  //         var Ds_Merchant_MerchantURL = 'https://www.imgnpro.com';
+  //         var Ds_Merchant_MerchantName = 'IMAGEN PRO';
+  //         var Ds_Merchant_Terminal = 1;
+  //         var Ds_Merchant_ProductDescription = order[0].imagecount + ' IMÁGEN(ES)';
+  //         //console.log('A pagar:' + Ds_Merchant_Amount);
+  //         //console.log('Pedido:' + Ds_Merchant_Order);
+  //         //console.log('Codigo comercio:' + Ds_Merchant_MerchantCode);
+  //         //console.log('Moneda:' + Ds_Merchant_Currency);
+  //         //console.log('Tipo transacción:' + Ds_Merchant_TransactionType);
 
 
 
 
-          paymentsign = sha1(Ds_Merchant_Amount + Ds_Merchant_Order + Ds_Merchant_MerchantCode + Ds_Merchant_Currency + Ds_Merchant_TransactionType + CSSB);
-          //console.log(paymentsign);
+  //         paymentsign = sha1(Ds_Merchant_Amount + Ds_Merchant_Order + Ds_Merchant_MerchantCode + Ds_Merchant_Currency + Ds_Merchant_TransactionType + CSSB);
+  //         //console.log(paymentsign);
 
-             //SHA-1()
+  //            //SHA-1()
                  
-          res.setHeader('Content-Type', 'application/json');
-          res.send(JSON.stringify({ error: 0, Ds_Merchant_MerchantSignature: paymentsign, Ds_Merchant_Amount:Ds_Merchant_Amount, Ds_Merchant_Order:Ds_Merchant_Order, Ds_Merchant_UrlOK:Ds_Merchant_UrlOK, Ds_Merchant_UrlKO:Ds_Merchant_UrlKO, Ds_Merchant_MerchantURL:Ds_Merchant_MerchantURL, Ds_Merchant_MerchantCode:Ds_Merchant_MerchantCode, Ds_Merchant_Currency:Ds_Merchant_Currency, Ds_Merchant_TransactionType:Ds_Merchant_TransactionType, Ds_Merchant_MerchantName:Ds_Merchant_MerchantName, Ds_Merchant_Terminal:Ds_Merchant_Terminal, Ds_Merchant_ProductDescription:Ds_Merchant_ProductDescription})); 
-        }
-    });        
-  });
+  //         res.setHeader('Content-Type', 'application/json');
+  //         res.send(JSON.stringify({ error: 0, Ds_Merchant_MerchantSignature: paymentsign, Ds_Merchant_Amount:Ds_Merchant_Amount, Ds_Merchant_Order:Ds_Merchant_Order, Ds_Merchant_UrlOK:Ds_Merchant_UrlOK, Ds_Merchant_UrlKO:Ds_Merchant_UrlKO, Ds_Merchant_MerchantURL:Ds_Merchant_MerchantURL, Ds_Merchant_MerchantCode:Ds_Merchant_MerchantCode, Ds_Merchant_Currency:Ds_Merchant_Currency, Ds_Merchant_TransactionType:Ds_Merchant_TransactionType, Ds_Merchant_MerchantName:Ds_Merchant_MerchantName, Ds_Merchant_Terminal:Ds_Merchant_Terminal, Ds_Merchant_ProductDescription:Ds_Merchant_ProductDescription})); 
+  //       }
+  //   });        
+  // });
 
-  router.post('/getcancelsign/:numorder', function (req,res) {
-    //res.setHeader('Content-Type', 'application/json');
-    //res.send(JSON.stringify({ error: error, message: message, user_details: user_details[0]})); 
-    findaorder(req.params.numorder,function(err,order){
-      if (err){
-          res.setHeader('Content-Type', 'application/json');
-          res.send(JSON.stringify({ error: 1, message:'No se encontró el pedido', sign: ''})); 
-      }
-      else{
-          //console.log(order);
-          var CSSB = process.env.CSSB || '5634ytyertewrg';
-          var paymentsign = '';
+  // CÓDIGO OBSOLETO BANCO
+  // router.post('/getcancelsign/:numorder', function (req,res) {
+  //   //res.setHeader('Content-Type', 'application/json');
+  //   //res.send(JSON.stringify({ error: error, message: message, user_details: user_details[0]})); 
+  //   findaorder(req.params.numorder,function(err,order){
+  //     if (err){
+  //         res.setHeader('Content-Type', 'application/json');
+  //         res.send(JSON.stringify({ error: 1, message:'No se encontró el pedido', sign: ''})); 
+  //     }
+  //     else{
+  //         //console.log(order);
+  //         var CSSB = process.env.CSSB || '5634ytyertewrg';
+  //         var paymentsign = '';
 
-          var totalpayPesos = order[0].totalpay  * parseFloat(config.prices.dollar);
-          totalpayPesos = setDecimals (totalpayPesos,2);
-          //console.log(totalpayPesos); 
-          var Ds_Merchant_Amount = totalpayPesos.toString().replace('.', ''); //req.param('Ds_Merchant_Amount');
-          var Ds_Merchant_Order = fillzero(req.params.numorder, '0000000');
-          var Ds_Merchant_MerchantCode = 4093847; //req.param('Ds_Merchant_MerchantCode');
-          var Ds_Merchant_Currency = 484; // 484 pesos 840 Dólar req.param('Ds_Merchant_Currency');
-          var Ds_Merchant_TransactionType  = 4; //req.param('Ds_Merchant_TransactionType');
-          var Ds_Merchant_UrlOK = 'https://www.imgnpro.com/transactionok';
-          var Ds_Merchant_UrlKO = 'https://www.imgnpro.com/transactiondeny';
-          var Ds_Merchant_MerchantURL = 'https://www.imgnpro.com';
-          var Ds_Merchant_MerchantName = 'IMAGEN PRO';
-          var Ds_Merchant_Terminal = 1;
-          var Ds_Merchant_ProductDescription = order[0].imagecount + ' IMÁGEN(ES)';
-          //console.log('A pagar:' + Ds_Merchant_Amount);
-          //console.log('Pedido:' + Ds_Merchant_Order);
-          //console.log('Codigo comercio:' + Ds_Merchant_MerchantCode);
-          //console.log('Moneda:' + Ds_Merchant_Currency);
-          //console.log('Tipo transacción:' + Ds_Merchant_TransactionType);
+  //         var totalpayPesos = order[0].totalpay  * parseFloat(config.prices.dollar);
+  //         totalpayPesos = setDecimals (totalpayPesos,2);
+  //         //console.log(totalpayPesos); 
+  //         var Ds_Merchant_Amount = totalpayPesos.toString().replace('.', ''); //req.param('Ds_Merchant_Amount');
+  //         var Ds_Merchant_Order = fillzero(req.params.numorder, '0000000');
+  //         var Ds_Merchant_MerchantCode = 4093847; //req.param('Ds_Merchant_MerchantCode');
+  //         var Ds_Merchant_Currency = 484; // 484 pesos 840 Dólar req.param('Ds_Merchant_Currency');
+  //         var Ds_Merchant_TransactionType  = 4; //req.param('Ds_Merchant_TransactionType');
+  //         var Ds_Merchant_UrlOK = 'https://www.imgnpro.com/transactionok';
+  //         var Ds_Merchant_UrlKO = 'https://www.imgnpro.com/transactiondeny';
+  //         var Ds_Merchant_MerchantURL = 'https://www.imgnpro.com';
+  //         var Ds_Merchant_MerchantName = 'IMAGEN PRO';
+  //         var Ds_Merchant_Terminal = 1;
+  //         var Ds_Merchant_ProductDescription = order[0].imagecount + ' IMÁGEN(ES)';
+  //         //console.log('A pagar:' + Ds_Merchant_Amount);
+  //         //console.log('Pedido:' + Ds_Merchant_Order);
+  //         //console.log('Codigo comercio:' + Ds_Merchant_MerchantCode);
+  //         //console.log('Moneda:' + Ds_Merchant_Currency);
+  //         //console.log('Tipo transacción:' + Ds_Merchant_TransactionType);
 
 
 
 
-          paymentsign = sha1(Ds_Merchant_Amount + Ds_Merchant_Order + Ds_Merchant_MerchantCode + Ds_Merchant_Currency + Ds_Merchant_TransactionType + CSSB);
-          //console.log(paymentsign);
+  //         paymentsign = sha1(Ds_Merchant_Amount + Ds_Merchant_Order + Ds_Merchant_MerchantCode + Ds_Merchant_Currency + Ds_Merchant_TransactionType + CSSB);
+  //         //console.log(paymentsign);
 
-             //SHA-1()
+  //            //SHA-1()
                  
-          res.setHeader('Content-Type', 'application/json');
-          res.send(JSON.stringify({ error: 0, Ds_Merchant_MerchantSignature: paymentsign, Ds_Merchant_Amount:Ds_Merchant_Amount, Ds_Merchant_Order:Ds_Merchant_Order, Ds_Merchant_UrlOK:Ds_Merchant_UrlOK, Ds_Merchant_UrlKO:Ds_Merchant_UrlKO, Ds_Merchant_MerchantURL:Ds_Merchant_MerchantURL, Ds_Merchant_MerchantCode:Ds_Merchant_MerchantCode, Ds_Merchant_Currency:Ds_Merchant_Currency, Ds_Merchant_TransactionType:Ds_Merchant_TransactionType, Ds_Merchant_MerchantName:Ds_Merchant_MerchantName, Ds_Merchant_Terminal:Ds_Merchant_Terminal, Ds_Merchant_ProductDescription:Ds_Merchant_ProductDescription})); 
-        }
-    });        
-  });
+  //         res.setHeader('Content-Type', 'application/json');
+  //         res.send(JSON.stringify({ error: 0, Ds_Merchant_MerchantSignature: paymentsign, Ds_Merchant_Amount:Ds_Merchant_Amount, Ds_Merchant_Order:Ds_Merchant_Order, Ds_Merchant_UrlOK:Ds_Merchant_UrlOK, Ds_Merchant_UrlKO:Ds_Merchant_UrlKO, Ds_Merchant_MerchantURL:Ds_Merchant_MerchantURL, Ds_Merchant_MerchantCode:Ds_Merchant_MerchantCode, Ds_Merchant_Currency:Ds_Merchant_Currency, Ds_Merchant_TransactionType:Ds_Merchant_TransactionType, Ds_Merchant_MerchantName:Ds_Merchant_MerchantName, Ds_Merchant_Terminal:Ds_Merchant_Terminal, Ds_Merchant_ProductDescription:Ds_Merchant_ProductDescription})); 
+  //       }
+  //   });        
+  // });
   /* Handle Registration POST */
   // router.post('/signuplocal', passport.authenticate('signup', {
   //   successRedirect: '/reslocal',
@@ -2755,155 +2755,155 @@ function doConfirmOrder(numorder,order,req,typespec,cb){
     });
 }
 
-
-function doConfirmPayOrder(req,cb){
-  var Ds_Response = req.params.Ds_Response;
-  var numorder = req.params.Ds_Order;
-  numorder = numorder.replace(/0/g, ''); // quita los ceros del pedido
-  //console.log(req.user);
-  //findauser(req.user._id,function(error,message,user){
-      //console.log(spec);
-      //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id , countorders:ordersinproc});
+// // esta función está obsoleta
+// function doConfirmPayOrder(req,cb){
+//   var Ds_Response = req.params.Ds_Response;
+//   var numorder = req.params.Ds_Order;
+//   numorder = numorder.replace(/0/g, ''); // quita los ceros del pedido
+//   //console.log(req.user);
+//   //findauser(req.user._id,function(error,message,user){
+//       //console.log(spec);
+//       //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id , countorders:ordersinproc});
       
-      // if (error){
-      //   cb( 1,'No se encontró el usuario');
-      // }
-      // else
-      // {
-        //console.log('error:' + error);
-       //console.log('user: ');
-       //console.log(user);
+//       // if (error){
+//       //   cb( 1,'No se encontró el usuario');
+//       // }
+//       // else
+//       // {
+//         //console.log('error:' + error);
+//        //console.log('user: ');
+//        //console.log(user);
 
-    var newOrder_transaction = new Order_transaction();
-      // set the user's local credentials
-      //newSpec.specid = req.body.specid;
-    //newOrder_transaction.userid = req.user._id;
+//     var newOrder_transaction = new Order_transaction();
+//       // set the user's local credentials
+//       //newSpec.specid = req.body.specid;
+//     //newOrder_transaction.userid = req.user._id;
     
-    newOrder_transaction.numorder = req.params.numorder;
-    newOrder_transaction.Ds_Amount = req.params.Ds_Amount;
-    newOrder_transaction.Ds_Currency = req.params.Ds_Currency;
-    newOrder_transaction.Ds_Order= req.params.Ds_Order;
-    newOrder_transaction.Ds_MerchantCode = req.params.Ds_MerchantCode;
-    newOrder_transaction.Ds_Terminal = req.params.Ds_Terminal;
-    newOrder_transaction.Ds_Signature = req.params.Ds_Signature;
-    newOrder_transaction.Ds_Response = req.params.Ds_Response;
-    newOrder_transaction.Ds_MerchantData = req.params.Ds_MerchantData;
-    newOrder_transaction.Ds_SecurePayment = req.params.Ds_SecurePayment;
-    newOrder_transaction.Ds_TransactionType = req.params.Ds_TransactionType;
-    newOrder_transaction.Ds_ConsumerLanguage = req.params.Ds_ConsumerLanguage;
-    newOrder_transaction.Ds_ErrorCode = req.params.Ds_ErrorCode;
-    newOrder_transaction.Ds_ErrorMessage = req.params.Ds_ErrorMessage;
+//     newOrder_transaction.numorder = req.params.numorder;
+//     newOrder_transaction.Ds_Amount = req.params.Ds_Amount;
+//     newOrder_transaction.Ds_Currency = req.params.Ds_Currency;
+//     newOrder_transaction.Ds_Order= req.params.Ds_Order;
+//     newOrder_transaction.Ds_MerchantCode = req.params.Ds_MerchantCode;
+//     newOrder_transaction.Ds_Terminal = req.params.Ds_Terminal;
+//     newOrder_transaction.Ds_Signature = req.params.Ds_Signature;
+//     newOrder_transaction.Ds_Response = req.params.Ds_Response;
+//     newOrder_transaction.Ds_MerchantData = req.params.Ds_MerchantData;
+//     newOrder_transaction.Ds_SecurePayment = req.params.Ds_SecurePayment;
+//     newOrder_transaction.Ds_TransactionType = req.params.Ds_TransactionType;
+//     newOrder_transaction.Ds_ConsumerLanguage = req.params.Ds_ConsumerLanguage;
+//     newOrder_transaction.Ds_ErrorCode = req.params.Ds_ErrorCode;
+//     newOrder_transaction.Ds_ErrorMessage = req.params.Ds_ErrorMessage;
 
-    newOrder_transaction.save(function(err) {
-          if (err){
-              console.log('No se pudo guardar la transacción del pedido: '+ req.params.numorder +' '+err); 
-          }
-          else{
-            //console.log('Se guardó la transacción del pedido:' + req.params.numorder); 
-          }
-     });     
+//     newOrder_transaction.save(function(err) {
+//           if (err){
+//               console.log('No se pudo guardar la transacción del pedido: '+ req.params.numorder +' '+err); 
+//           }
+//           else{
+//             //console.log('Se guardó la transacción del pedido:' + req.params.numorder); 
+//           }
+//      });     
 
-        var statusorder ='';
+//         var statusorder ='';
        
-        if (Ds_Response=='000' ){
-            statusorder ='En Proceso';
-            href = 'thankyou';
+//         if (Ds_Response=='000' ){
+//             statusorder ='En Proceso';
+//             href = 'thankyou';
 
 
-        }
-        else
-        {
-           statusorder ='Por pagar';
-            href = 'denytransaction';
-        }
-        //console.log(user);
-        //console.log(statusorder);
+//         }
+//         else
+//         {
+//            statusorder ='Por pagar';
+//             href = 'denytransaction';
+//         }
+//         //console.log(user);
+//         //console.log(statusorder);
 
-        //confirmar pedido y paquetes
+//         //confirmar pedido y paquetes
 
-        if (statusorder =='En Proceso'){
-          var conditions = { numorder: numorder }
-            , update = { $set: { status: statusorder }}
-            , options = { multi: true };
-          findaorder(numorder,function(err,order){
-            User_details.findOne({userid:req.user._id},function(err,user_details){
-              if (err){
-                console.log(err);
-              } 
-              else{
-                  if(user_details.chk_factura == 'chk_factura'){
-                    var mailOptions = {
-                      from: '"Server" <server@mail-imgnpro.com>', // sender address
-                      to: 'makeacfdi@mail-imgnpro.com, jerh56@gmail.com', // list of receivers
-                      subject: 'Factura', // Subject line
-                      text: '', // plaintext body
-                      //html: '<a href="www.imgnpro.com/confirmuser"</a>' // html body
-                      html: '<html>' + 'Hola, el nombre de mi empresa es ' + user_details.factrazonsocial +
-                      '<br><b> Necesito una factura electrónica</b><br>' + 'Mis datos son los siguientes:<br> <b>' + 
-                      'Razón social:' + user_details.factrazonsocial + '<br>' +
-                      'RFC:' + user_details.factrfc + '<br>' +
-                      'Domicilio:' + user_details.factcalle + ',' + 
-                                     user_details.factcolonia + ',' + 
-                                     user_details.factnum_ext + ',' +
-                                     user_details.factnum_int + ',' +
-                                     user_details.factmunicipio + ',' +
-                                     user_details.factciudad + ',' +
-                                     user_details.factestado + ',' +
-                                     user_details.sel_factcountry + ',' + '<br>' +
-                      'Número de pedido:' + numorder + '<br>' +
-                      'Monto total: USD ' + order[0].totalpay + '<br>' +
-                      'Estatus del pedido: ' + statusorder + '<br>' +
-                      'Método de pago:' + user_details.factpaymethod + '<br>' +
-                      'Terminación de la tarjeta:' + user_details.factterminacion + '<br>' +
-                      'e-mail:  <span>' + user_details.factemail2 + '</span><br></b></html>'  // html body
-                    };
-                    mailer.sendEmail(mailOptions);
-                  }
-              } 
-            });          
-          }); 
+//         if (statusorder =='En Proceso'){
+//           var conditions = { numorder: numorder }
+//             , update = { $set: { status: statusorder }}
+//             , options = { multi: true };
+//           findaorder(numorder,function(err,order){
+//             User_details.findOne({userid:req.user._id},function(err,user_details){
+//               if (err){
+//                 console.log(err);
+//               } 
+//               else{
+//                   if(user_details.chk_factura == 'chk_factura'){
+//                     var mailOptions = {
+//                       from: '"Server" <server@mail-imgnpro.com>', // sender address
+//                       to: 'makeacfdi@mail-imgnpro.com, jerh56@gmail.com', // list of receivers
+//                       subject: 'Factura', // Subject line
+//                       text: '', // plaintext body
+//                       //html: '<a href="www.imgnpro.com/confirmuser"</a>' // html body
+//                       html: '<html>' + 'Hola, el nombre de mi empresa es ' + user_details.factrazonsocial +
+//                       '<br><b> Necesito una factura electrónica</b><br>' + 'Mis datos son los siguientes:<br> <b>' + 
+//                       'Razón social:' + user_details.factrazonsocial + '<br>' +
+//                       'RFC:' + user_details.factrfc + '<br>' +
+//                       'Domicilio:' + user_details.factcalle + ',' + 
+//                                      user_details.factcolonia + ',' + 
+//                                      user_details.factnum_ext + ',' +
+//                                      user_details.factnum_int + ',' +
+//                                      user_details.factmunicipio + ',' +
+//                                      user_details.factciudad + ',' +
+//                                      user_details.factestado + ',' +
+//                                      user_details.sel_factcountry + ',' + '<br>' +
+//                       'Número de pedido:' + numorder + '<br>' +
+//                       'Monto total: USD ' + order[0].totalpay + '<br>' +
+//                       'Estatus del pedido: ' + statusorder + '<br>' +
+//                       'Método de pago:' + user_details.factpaymethod + '<br>' +
+//                       'Terminación de la tarjeta:' + user_details.factterminacion + '<br>' +
+//                       'e-mail:  <span>' + user_details.factemail2 + '</span><br></b></html>'  // html body
+//                     };
+//                     mailer.sendEmail(mailOptions);
+//                   }
+//               } 
+//             });          
+//           }); 
 
 
-          Orders.update(conditions, update, options, function (err, numAffected) {
-            // numAffected is the number of updated documents
+//           Orders.update(conditions, update, options, function (err, numAffected) {
+//             // numAffected is the number of updated documents
            
-            //console.log(numAffected);
-            if (err){
-                console.log(err);
-                cb( 1,'No fue posible actualizar el estatus del pedido');
-            }
-            else{
-                // actualizar paquetes
+//             //console.log(numAffected);
+//             if (err){
+//                 console.log(err);
+//                 cb( 1,'No fue posible actualizar el estatus del pedido');
+//             }
+//             else{
+//                 // actualizar paquetes
 
-                OrderPacks.update(conditions, update, options, function (err, numAffected) {
-                  // numAffected is the number of updated documents
+//                 OrderPacks.update(conditions, update, options, function (err, numAffected) {
+//                   // numAffected is the number of updated documents
                  
-                  //console.log(numAffected);
-                  if (err){
-                      console.log(err);
-                      cb( 1,'No fue posible actualizar el estatus del pedido');
-                  }
-                  else{
-                      // actualizar paquetes
-                      cb( 0,'Transacción autorizada', href);
+//                   //console.log(numAffected);
+//                   if (err){
+//                       console.log(err);
+//                       cb( 1,'No fue posible actualizar el estatus del pedido');
+//                   }
+//                   else{
+//                       // actualizar paquetes
+//                       cb( 0,'Transacción autorizada', href);
 
-                  }
-                });
-                //cb( 0,'Se actualizó el estatus del pedido', href);
+//                   }
+//                 });
+//                 //cb( 0,'Se actualizó el estatus del pedido', href);
 
-            }
-          });
+//             }
+//           });
 
-        }
-        else
-        {
-            cb( 2,'Transacción denegada', href);
-        }
+//         }
+//         else
+//         {
+//             cb( 2,'Transacción denegada', href);
+//         }
           
 
-      //}
-    //});
-}
+//       //}
+//     //});
+// }
 
 function doneOrder(numorder, packname, cb){
     OrderPacks.find({numorder:numorder} ,function(err,OrderPack){

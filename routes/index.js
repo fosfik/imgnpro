@@ -1113,6 +1113,12 @@ router.get('/de_designers',
       
   });
 
+  router.get('/cancelpayment', 
+     require('connect-ensure-login').ensureLoggedIn('/login'),
+         function(req, res){
+               res.render('cancelpayment', {message: 'Pago cancelado', user: req.user, numorder:0, order:0, countorders:ordersinproc});             
+  });
+
   router.get('/receipt/:numorder', 
      require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){

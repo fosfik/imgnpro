@@ -126,7 +126,7 @@ router.get('/cancel', require('connect-ensure-login').ensureLoggedIn('/login'), 
   var execute_payment_json = {
         "payer_id": payer_id
   };
-  res.redirect( '/error' );
+  res.redirect( '/cancelpayment' );
 
 });
 

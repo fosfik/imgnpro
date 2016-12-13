@@ -12,6 +12,24 @@
         <script type="text/javascript">
             $(document).ready(function(){
                 activatePassOnFree();
+
+                $('#quieroFac').click(function (){
+                    userWantFact();
+                });
+
+                 $("#sel_contactcountry").change(function() {
+                    if($("#sel_contactcountry option:selected").text() ==='México' ){
+                        $('#quieroFac').show();
+                        $('#lblquieroFac').show();
+                      }
+                    else{
+                        $( "#quieroFac" ).prop( "checked", false );
+                        $('#quieroFac').hide();
+                        $('#lblquieroFac').hide();
+                        userWantFact();
+                    }  
+                  });
+            
                 $.ajax({
                         type: 'get',
                         url: '/getUser_details/<%= user._id %>',
@@ -27,6 +45,11 @@
                                     $('input[name="' + elem +'"]').val(val);
                                     $('select[name="' + elem +'"]').val(val);
                                     $('input[value="' + val + '"]').prop('checked', true);
+                                    userWantFact();
+                                    if($("#sel_contactcountry option:selected").text() ==='México' ){
+                                        $('#quieroFac').show();
+                                        $('#lblquieroFac').show();
+                                    }
                                 });    
                             }
                          }
@@ -140,6 +163,21 @@
 
                  
                }
+
+               function userWantFact(){
+                    var ckbox = $('#quieroFac');
+                    if (ckbox.is(':checked')) {
+                        $('#facturacion1').addClass("want");
+                        $('#facturacion2').addClass("want");
+                        $('#facturacion3').addClass("want");
+                        $('#hrfac').addClass("want");
+                    } else {
+                        $('#facturacion1').removeClass("want");
+                        $('#facturacion2').removeClass("want");
+                        $('#facturacion3').removeClass("want");
+                        $('#hrfac').removeClass("want");
+                    }
+               }
                 function hasSpecFree(){
 
 
@@ -205,32 +243,9 @@
                        
                     } 
                 }
-
-               
-
                 return bValor;
               }   
             });
-                      
-            $(document).ready(function(){
-                var ckbox = $('#quieroFac');
-                
-                $('input').on('click',function (){
-                    if (ckbox.is(':checked')) {
-                        $('#facturacion1').addClass("want");
-                        $('#facturacion2').addClass("want");
-                        $('#facturacion3').addClass("want");
-                        $('#hrfac').addClass("want");
-                    } else {
-                        $('#facturacion1').removeClass("want");
-                        $('#facturacion2').removeClass("want");
-                        $('#facturacion3').removeClass("want");
-                        $('#hrfac').removeClass("want");
-                    }
-                })
-            
-            });
-            
         </script>
     </head>
     <body>
@@ -280,7 +295,7 @@
                     </div>
 
                     <label for="contactcountry">País</label><br>
-                    <select tabindex=3 name="sel_contactcountry" >
+                    <select id='sel_contactcountry' tabindex=3 name="sel_contactcountry" >
                         <option value="" disabled selected>Seleccione un País</option>
                         <option value="AF">Afganistán</option>
                         <option value="AL">Albania</option>
@@ -517,8 +532,8 @@
                         <option value="ZM">Zambia</option>
                         <option value="ZW">Zimbabue</option>
                     </select><br><br>
-                    <label for="chkfactura">Requiero Factura</label>
-                    <input id="quieroFac" tabindex=4 name="chk_factura" type="checkbox" value="chk_factura">
+                    <label id="lblquieroFac" for="chkfactura" style="display:none;">Requiero Factura</label>
+                    <input id="quieroFac" tabindex=4 name="chk_factura" type="checkbox" value="chk_factura" style="display:none;">
                 </form>
             </section>
             <hr>

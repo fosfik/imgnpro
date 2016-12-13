@@ -1100,16 +1100,23 @@ router.get('/de_designers',
           findaorder(req.params.numorder,function(error,order){
                //console.log(order);
                //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id });
-               res.render('error', {message: 'No se pudo completar la orden', user: req.user, numorder:req.params.numorder, order:order[0], countorders:ordersinproc});             
+              var msjres = 'No se pudo completar la orden';
+              if (req.session.message){
+                msjres = req.session.message;
+              }
+              res.render('error', {message: msjres, user: req.user, numorder:req.params.numorder, order:order[0], countorders:ordersinproc});             
           });
   });
 
  router.get('/error', 
      require('connect-ensure-login').ensureLoggedIn('/login'),
          function(req, res){
-          
+              var msjres = 'Ha ocurrido un error inesperado';
+              if (req.session.message){
+                msjres = req.session.message;
+              }
                //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id });
-               res.render('error', {message: 'Ha ocurrido un error inesperado', user: req.user, numorder:0, order:0, countorders:ordersinproc});             
+              res.render('error', {message: msjres , user: req.user, numorder:0, order:0, countorders:ordersinproc});             
       
   });
 
@@ -2729,15 +2736,13 @@ function doConfirmOrder(numorder,order,req,typespec,cb){
                     //res.redirect(href);
                     //Actualizar Pedido
 
-                     numorder = numorder.replace(/0/g, ''); // quita los ceros del pedido
-
+                     //numorder = numorder.replace(/0/g, ''); // quita los ceros del pedido
                      var conditions = { numorder: numorder }
                       , update = { $set: { paymentId: payment.id }}
                       , options = { multi: true };
                     Orders.update(conditions, update, options, function (err, numAffected) {
                       // numAffected is the number of updated documents
-                     
-                      //console.log(numAffected);
+                      
                       if (err){
                           console.log(err);
                           cb( 1,'No fue posible actualizar el id del pedido');

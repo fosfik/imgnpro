@@ -12,6 +12,10 @@ html {
     width: 100%;
 }
 
+section, footer {
+    box-sizing: border-box;
+}
+
 #botonintro a {
     color: #FFF;
     text-decoration: none;
@@ -812,4 +816,43 @@ li.notsupertextList.nobullet:before {
 iframe {
     width: 70%;
     height: 600px;
+}
+
+@media only screen and (max-width: 700px) {
+    html {
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    #header {
+        display: none;
+    }
+    
+    .textcont, .textcont2 {
+        width: 100%;
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+    
+    #contenedor1 {
+        width: 100%;
+        padding: 0px;
+        margin: 0px;
+        float: none;
+        display: block;
+    }
+    
+    .picwrapper1 {
+        text-align: center;
+        width: 100%;
+        height: auto;
+    }
+    
+    .fotoad {
+        width: 94%;
+    }
+    
+    footer {
+        display: none;
+    }
 }

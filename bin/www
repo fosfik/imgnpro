@@ -39,7 +39,8 @@ var io = app.io;
 //var io = require('socket.io')();
 io.attach(server);
 
-var routes = require('../routes/socketio.js')(io); // Se agrega modulo donde se encuentran las rutas para sockets
+var socket_routes = require('../routes/socketio.js')(io); // Se agrega modulo donde se encuentran las rutas para sockets
+//var paypal_routes = require('../routes/paypal.js'); // Se agrega modulo donde se encuentran las rutas para paypal
 // app.get('/', function(req, res){
 //   res.sendfile('index.html');
 // });

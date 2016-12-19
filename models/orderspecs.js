@@ -12,7 +12,6 @@ var SpecSchema = new mongoose.Schema({
 	numorder: {type: String},
 	date: { type: Date, default: Date.now },
 	totalprice: {type: String},
-  totalpriceMXN: {type: String},
 	alignnone: {type: String},
   alignhor: {type: String},
   alignver: {type: String},

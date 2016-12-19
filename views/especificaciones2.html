@@ -311,14 +311,6 @@
 
                 }
 
-                // function putPrices(){
-                //     var ntotal = <%= config.prices.cutandremove %>;
-                //     var ntotalMXN = <%= config.prices.dollar %>;
-                //     $("#totalprice").html(setDecimals(ntotal,2));
-                //     $("#totalpriceMXN").html(setDecimals(ntotalMXN,2));
-
-                // }
-
                 function sumallextras(){
                    
                     var ntotal = <%= config.prices.cutandremove%>; 
@@ -349,9 +341,7 @@
 
 
                     ntotal = ntotal / 100;
-                    ntotalMXN = ntotal * <%= config.prices.dollar %>;;
                     $("#totalprice").html(setDecimals(ntotal,2));
-                    $("#totalpriceMXN").html(ntotalMXN.toFixed(2));
                 }
 
                 function desactAllNext(){
@@ -447,9 +437,6 @@
             <p class="texto_precio2"><span class="prefixmoney">USD</span>$<span
             id="totalprice">1.50</span></p>
             <br><br><br>
-            <p class="textoplanotemp">Precio por Imagen</p>
-            <p class="textopreciotemp"><span class="prefijopeso">MXN</span>$<span id="totalpriceMXN"></span></p>
-
         </div>
             <p class="encabezado">Especificaciones</p>
             <form id = "specForm" class="col1" action="/newspec" method="post">

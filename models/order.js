@@ -7,9 +7,9 @@ var orderSchema = mongoose.Schema({
     date: { type: Date, default: Date.now },
     status: {type: String, default:'Por pagar'},
     imagecount: {type:Number, default:0},
-    specid: {type: String}, //id de la especificación
+    specid: {type: String, ref: 'Orderspecs'}, //id de la especificación
     totalpay: {type:String, default:'0'},
-    totalpayMXN: {type:String, default:'0'},
+    paymentId: {type:String},
     images: [{  imagename: String, width: Number, height: Number, length: Number, position: Number }]
 });
 orderSchema.pre('save', function(next) {

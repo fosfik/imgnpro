@@ -818,10 +818,22 @@ iframe {
     height: 600px;
 }
 
-@media only screen and (max-width: 700px) {
+
+
+/*INICIA MEDIA QUERTY*/
+
+
+@media only screen and (max-width: 768px) {
     html {
         width: 100%;
         box-sizing: border-box;
+        padding: 0px;
+        text-align: center;
+    }
+    
+    body {
+        text-align: center;
+        width: 100%;
     }
     
     #header {
@@ -830,29 +842,175 @@ iframe {
     
     .textcont, .textcont2 {
         width: 100%;
-        margin-left: 0px;
-        margin-right: 0px;
+        margin: 0;
+        float: none;
+        padding: 0px;
+    }
+    
+    .supertext {
+        text-align: center;
+        margin: 0;
+        float: none;
+    }
+    
+    .notsupertext {
+        margin: 0px;
+    }
+    
+    .supertextcenter {
+        text-align: center;
+        margin: 0;
+        margin-bottom: 40px;
     }
     
     #contenedor1 {
         width: 100%;
-        padding: 0px;
+        padding: 20px;
         margin: 0px;
         float: none;
         display: block;
+        text-align: center;
+        box-sizing: border-box;
+    }
+    
+    #contenedor1a {
+        padding: 0px;
+        width: 100%;
+        text-align: center;
     }
     
     .picwrapper1 {
         text-align: center;
         width: 100%;
         height: auto;
+        margin: 0px;
+        margin-bottom: 40px;
     }
     
-    .fotoad {
+    .picwrapper2 {
+        margin: 0;
+        width: 100%;
+        height: auto;
+        text-align: center;
+        display: inline-block;
+        vertical-align: bottom;
+    }
+    
+    .picwrapper3 {
+        width: 100%;
+        margin: 0;
+        height: auto;
+        text-align: center;
+        border-radius: 50%;
+    }
+    
+    .picandfooter {
+        width: 100%;
+        height: auto;
+        margin: 0;
+        padding: 0;
+        margin-bottom: 40px;
+        
+    }
+    
+    .rotating-item1 {
+        display: inline-block;
+        position: relative;
+        top: 0;
+        right: 0;
+    }
+    
+    .fotoad{
         width: 94%;
+    }
+    
+    .fotoad2 {
+        width: 100%;
+        height: auto;
+        border-radius: 50%;
     }
     
     footer {
         display: none;
+        padding: 0px;
+    }
+    
+    #contregistro {
+        width: 100%;
+        margin: 0px;
+        margin-bottom: 100px;
+        padding: 0px;
+        text-align: center;
+        float: none;
+    }
+    
+    .registro1 {
+        width: 100%;
+        text-align: center;
+        padding: 0px;
+    }
+    
+    .contactform1 {
+        width: 100%;
+        padding: 0px;
+        text-align: center;
+    }
+    
+    .hro1, .hro2 {
+        width: 40%;
+    }
+    
+    .button1 {
+        width: 100%;
+        margin: 0px;
+        margin-top: 20px;
+        margin-bottom: 40px;
+        padding: 15px;
+        box-sizing: border-box;
+    }
+    
+    .buttonreg {
+        width: 100%;
+        margin: 0px;
+        margin-top: 20px;
+        padding: 15px;
+        box-sizing: border-box;
+    }
+    
+    .button3, .button4 {
+        width: 40%;
+    }
+    
+    input[name="userlongname"], input[name="email"], input[name="passLogin"], input[name="name"], input[name="emailcontact"] {
+        width: 100%;
+        margin: 0px;
+        margin-bottom: 5px;
+        padding: 15px;
+        box-sizing: border-box;
+    }
+
+    textarea[name="message"] {
+        width: 100%;
+        margin: 0px;
+        margin-bottom: 5px;
+        padding: 15px;
+        box-sizing: border-box;
+    }
+
+    input[name="password"] {
+        width: 100%;
+        margin: 0px;
+        margin-bottom: 5px;
+        padding: 15px;
+        box-sizing: border-box;
+    }
+
+    input[name="confirmpass"] {
+        width: 100%;
+        margin: 0px;
+        margin-bottom: 5px;
+        padding: 15px;
+        box-sizing: border-box;
+        float: none;
     }
 }

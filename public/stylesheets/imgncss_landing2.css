@@ -818,7 +818,9 @@ iframe {
     height: 600px;
 }
 
-
+.navicon {
+    display: none;
+}
 
 /*INICIA MEDIA QUERTY*/
 
@@ -836,7 +838,100 @@ iframe {
         width: 100%;
     }
     
+    #botonintro a {
+        color: #FFF;
+        text-decoration: none;
+    }
+    
+    #botonintro {
+        display: inline-block;
+        background: #00badc;
+        line-height: 40px;
+        vertical-align: bottom;
+        font-size: 18px;
+        font-weight: lighter;
+        text-decoration: none;
+        float: none;
+        cursor: pointer;
+        padding: 10px;
+        width: 100%;
+        height: 40px;
+    }
+
+    #botonintro:hover > a {
+        color: #0591ab;
+        transition: .3s;
+    }
+
+    #logohead {
+        width: 70px;
+        height: auto;
+        margin-left: 10px;
+        float: left;
+        padding: 10px;
+    }
+
+    #slogan {
+        line-height: 60px;
+        font-size: 14px;
+        font-weight: lighter;
+        padding: 10px;
+        height: 60px;
+        float: left;
+    }
+    
+    .navicon {
+        display: inline-block;
+        font-size: 25px;
+        padding: 10px;
+        float: right;
+        margin-right: 10px;
+        line-height: 60px;
+    }
+    
+    .navicon a {
+        text-decoration: none;
+        color: #FFF
+    }
+
+    #loginTag {
+        display: inline-block;
+        color: #FFF;
+        line-height: 40px;
+        vertical-align: bottom;
+        font-size: 14px;
+        font-weight: bold;
+        padding: 10px;
+        height: 40px;
+        float: none;
+        width: 100%;
+        background: #000;
+    }
+
+    #loginTag a {
+        color: #00badc;
+        text-decoration: none;
+    }
+
+    #loginTag a:hover {
+        color: #0591ab;
+        transition: .3s;
+    }
+
     #header {
+        height: 80px;
+    }
+
+    #contheader{
+        z-index: 1;
+        text-align: center;
+        height: 80px;
+        width: 100%;
+        position: absolute;
+        display: block;
+    }
+
+    #backheader {
         display: none;
     }
     
@@ -847,7 +942,7 @@ iframe {
         padding: 0px;
     }
     
-    .supertext {
+    .supertext, .supertext2 {
         text-align: center;
         margin: 0;
         float: none;
@@ -857,10 +952,20 @@ iframe {
         margin: 0px;
     }
     
+    .notsupertextHelp {
+        margin: 0px;
+        margin-bottom: 20px;
+    }
+    
     .supertextcenter {
         text-align: center;
         margin: 0;
         margin-bottom: 40px;
+    }
+    
+    .salto::before, .salto::after {
+        content: ' ';
+        display: block;
     }
     
     #contenedor1 {
@@ -874,9 +979,15 @@ iframe {
     }
     
     #contenedor1a {
-        padding: 0px;
+        padding: 20px;
         width: 100%;
         text-align: center;
+    }
+    
+   #contHelp {
+        width: 100%;
+        padding: 0px;
+        margin-top: 20px;
     }
     
     .picwrapper1 {
@@ -909,8 +1020,7 @@ iframe {
         height: auto;
         margin: 0;
         padding: 0;
-        margin-bottom: 40px;
-        
+        margin-bottom: 40px; 
     }
     
     .rotating-item1 {
@@ -977,6 +1087,26 @@ iframe {
         box-sizing: border-box;
     }
     
+   .button7 {
+        display: inline-block;
+        color: #FFFFFF;
+        padding: 15px;
+        text-decoration: none;
+        font-size: 18px;
+        font-weight: lighter;
+        margin: 0;
+        margin-left: 0;
+        cursor: pointer;
+        float: none;
+        width: 100%;
+        height: auto;
+        background-color: #00badc;
+        transition: .1s;
+       box-sizing: border-box;
+    }
+    
+    
+    
     .button3, .button4 {
         width: 40%;
     }
@@ -1012,5 +1142,70 @@ iframe {
         padding: 15px;
         box-sizing: border-box;
         float: none;
+    }
+    
+    .textcont3 {
+        width: 100%;
+        padding: 10px;
+        display: inline-block;
+        margin: 0px;
+        vertical-align: top;
+        box-sizing: border-box;
+    }
+    
+    .textcont4 {
+        width: 100%;
+        padding: 10px;
+        margin: 0;
+        box-sizing: border-box;
+    }
+    
+    .imgHow {
+        text-align: center;
+    }
+    
+    .vidCont {
+        text-align: center;
+        padding: 20px;
+        width: 100%;
+        margin: 0 auto;
+        box-sizing: border-box;
+    }
+    
+    .rightVertLine {
+        border-right: none;
+    }
+    
+    .plans {
+        height: auto;
+    }
+    
+    .notsupertextList {
+        font-size: 18px;
+        font-weight: lighter;
+        text-align: left;
+        padding: 5px;
+        margin: 0px;
+        color: #000;
+        list-style: none;
+    }
+
+    li.notsupertextList:before {
+        content: '\2022';
+        color: #00badc;
+        margin-right: 10px;
+    }
+
+    .subtext {
+        text-align: center;
+        font-size: 18px;
+        font-weight: bold;
+        padding: 5px;
+        margin-left: 0px;
+        color: #aaa
+    }
+
+    .blueText {
+        color: #00badc;
     }
 }

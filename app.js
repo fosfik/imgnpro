@@ -7,7 +7,6 @@ var passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
 var LocalStrategy = require('passport-local').Strategy;
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-
 var config = require('./config');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -17,41 +16,29 @@ var bodyParser = require('body-parser');
 var users = require('./routes/users');
 var routes = require('./routes/index');
 var paypalr = require('./routes/paypal');
-
 var Spec = require('./models/specification.js');
-
 //MongoDB 
 var dbConfig = require('./models/db.js');
 var mongoose = require('mongoose');
 var User = require('./models/user.js');
 var bCrypt = require('bcrypt');
-
 // mailer
 // var nodemailer = require('nodemailer');
 var mailer = require('./modules/send_email.js');
-
 var passportSocketIo = require('passport.socketio');
-
-
-
-
 // create reusable transporter object using the default SMTP transport
 //var transporter = nodemailer.createTransport('smtps://jerh56%40gmail.com:1J79ol4f*3@smtp.gmail.com');
-
 // var transporter = require("nodemailer-smtp-transport")
 var app = express();
 app.io = require('socket.io')();
-var helmet = require('helmet');
-
-
+var helmet = require('helmet'); // Seguridad 
 var session = require('express-session'); // Manejo de sesiones
 var RedisStore = require('connect-redis')(session); // conexión a REDIS para almacenar sesiones de usuario
-
 var sessionRedis = new RedisStore({
    host: 'redis-10291.c8.us-east-1-2.ec2.cloud.redislabs.com',
    port: 10291,
    db: 0,
-   pass: '1j79ol4f'
+   pass:  process.env.PASS_REDIS
  });
 // var transporter = nodemailer.createTransport(transporter({
 //     host : "mail.mail-imgnpro.com",
@@ -64,9 +51,6 @@ var sessionRedis = new RedisStore({
 //         pass : "1m4g3npr0"
 //     }
 // }));
-
-
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 // manejador de vistas ejs para usar HTML en lugas de archivos .jade
@@ -111,10 +95,8 @@ if (app.get('env') !== 'development') {
 app.use('/', routes);
 app.use('/users', users);
 app.use('/paypalr', paypalr);
-
 // Usar compresión de archivos para mejorar rendimiento
 app.use(compression());
-
 // PASSPORT.
 // Use application-level middleware for common functionality, including
 // logging, parsing, and session handling.

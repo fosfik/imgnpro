@@ -38,7 +38,7 @@ var sessionRedis = new RedisStore({
    host: 'redis-10291.c8.us-east-1-2.ec2.cloud.redislabs.com',
    port: 10291,
    db: 0,
-   pass: '1j79ol4f'
+   pass:  process.env.PASS_REDIS
  });
 // var transporter = nodemailer.createTransport(transporter({
 //     host : "mail.mail-imgnpro.com",

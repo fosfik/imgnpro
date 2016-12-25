@@ -34,23 +34,13 @@ app.io = require('socket.io')();
 var helmet = require('helmet'); // Seguridad 
 var session = require('express-session'); // Manejo de sesiones
 var RedisStore = require('connect-redis')(session); // conexión a REDIS para almacenar sesiones de usuario
+var RedisConf = JSON.parse(process.env.REDIS_CONF);
 var sessionRedis = new RedisStore({
-   host: 'redis-10291.c8.us-east-1-2.ec2.cloud.redislabs.com',
-   port: 10291,
-   db: 0,
-   pass:  process.env.PASS_REDIS
+   host: RedisConf.host,
+   port: RedisConf.port,
+   db: RedisConf.db,
+   pass:  RedisConf.pass
  });
-// var transporter = nodemailer.createTransport(transporter({
-//     host : "mail.mail-imgnpro.com",
-//     ignoreTLS : true,
-//     secureConnection : false,
-//     port: 2525,
-//     auth : {
-//         user : "becomeapartner@mail-imgnpro.com",
-//         //pass: "m0r3n0"
-//         pass : "1m4g3npr0"
-//     }
-// }));
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 // manejador de vistas ejs para usar HTML en lugas de archivos .jade

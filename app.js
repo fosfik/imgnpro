@@ -57,15 +57,16 @@ app.use(express.static(path.join(__dirname, 'public/htmls')));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(session({  store: sessionRedis, secret: 'keyboard cat', resave: true, saveUninitialized: true }));
+var SessionConf = JSON.parse(process.env.SESSION_CONF);
+app.use(session({store: sessionRedis, secret: SessionConf.secret, resave: true, saveUninitialized: true }));
 //app.use(session({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.io.use(passportSocketIo.authorize({
-  key: 'connect.sid',
-  secret: 'keyboard cat',
+  key: SessionConf.key,
+  secret: SessionConf.secret,
   store: sessionRedis,
   passport: passport,
   cookieParser: cookieParser

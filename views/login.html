@@ -1,95 +1,186 @@
 <!DOCTYPE html>
 <html lang="es">
     <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, inicial-scale=1.0">
+        <title>the background remover</title>
+        <link rel="stylesheet" href="../stylesheets/imgncss_landing2.css">
+        <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico"/>
+        <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
         <script src="../js/google.js"></script>
-       <% include partials/head.html %>
+<!-- SCRIPT HEADER y BOTONES DEMO-->
+        <script>
+            $(document).ready(function() {
+
+                $('#a_freetest1').click(function (ev) {
+                    demoSignup();
+                    ev.preventDefault();
+                });
+                $('#a_freetest2').click(function (ev) {
+                    demoSignup();
+                    ev.preventDefault();
+                });
+                $('#a_freetest3').click(function (ev) {
+                    demoSignup();
+                    ev.preventDefault();
+                });
+                $('#a_freetest4').click(function (ev) {
+                    demoSignup();
+                    ev.preventDefault();
+                });
+                $('#a_freetest5').click(function (ev) {
+                    demoSignup();
+                    ev.preventDefault();
+                });
+
+                function demoSignup(){
+                     $.ajax({
+                        type: 'post',
+                        url: '/signup',
+                        data: {'userlongname':'demoimgnpro', 'email':'demoimgnpro', 'password':'demoimgnpro', 'accept_terms':true },
+                        success: function (data) {
+                            if (data.error == 1 ){
+                               alert(data.message);    
+                            }
+                            else{
+                                setTimeout(window.location='/principal',500);    
+                            }
+                        }
+                    });
+                }
+
+                
+                      
+            });
+        </script>
+
+<!-- SCRIPT CONTRASEÑA -->
+        <script type="text/javascript">
+            function check(input,input2) {
+                if (input.value != document.getElementById(input2).value) {
+                    input.setCustomValidity('La contraseña no coincide.');
+                } else {
+                    // input is valid -- reset the error message
+                    input.setCustomValidity('');
+                }
+            }
+        </script>
     </head>
     <body>
-    <div id="contenedor">
-        <header>
-            <section id="logo">
-            <h1><a href="/"><img src="../images/logo_black.png" alt="logo"></a></h1>
-            </section>
-             <% include partials/menutop.html %>
+        <header id="header">
+            <div id="contheader">
+                <a href="../htmls/intro.html"><img id="logohead" src="../images/logowslogan.png"></a>
+                <span id="slogan">the background remover</span>
+                <div id="botonintro"><a></a></div>
+            </div>
+            <div id="backheader">
+            </div>
         </header>
-
-        <section id="login">
-            <div class="login1">
-                <p class="encabezado" id="cabeza">¡Qué gusto verte de nuevo!</p>
-                <p class="texto_plano">ingresa tus datos para realizar una nueva orden</p>
-            </div>
+        <header id="header2">
+        </header>
+        <section id="contenedor1a">
+            <p class="supertext2">¡Empieza ya!</p>
         </section>
-        <section id="botones_redesReg">
-            <div class="button3">
-                <img class="redes_icon" src="../images/icon_f.png"><a href="/login/facebook">Facebook</a>
-            </div>
-            <div class="button4">
-                <img class="redes_icon" src="../images/icon_g.png"><a href="/login/google">Google</a>
-            </div>
-            <!-- <div class="button5">
-                <img class="redes_icon" src="../images/icon_l.png"><a>Linkedin</a>
-            </div> -->
-            <p class="encabezado" id="cabeza"><%= message %></p>
-        </section>
-        <div class="login1"> 
-            <h1></h1>     
-        </div>
-        <section id="login">
-            <form class="accedeForm" action='/signin' method='POST'>
-                <ul>
-                    <li>
-                        <label class="texto_plano">Correo Electrónico</label>
-                        <input type="email" name="email" required>
-                    </li>
-                    <li>
-                        <label class="texto_plano">Contraseña</label>
-                        <input type="password" name="password" required>
-                    </li>
-                    <li>
-                        <a id="paraabrirmodal2" href="#openPassModal">Olvidé mi Contraseña</a>
-                    </li>
-                </ul>
-
-                <div class="button2">
-                    <input type="submit" value="Aceptar">
+        <section id="contenedor1">
+            <div id="contlogin">
+                <div class="registro1">
+                    <form id="contactForm1"  action="/signup" method="post" name="registro_form">
+                        <input type="text" name="userlongname" placeholder="Nombre" required autofocus>
+                        <br>
+                        <input type="password" name="passLogin" placeholder="Contraseña" required>
+                        <br>
+                        <input class="buttonreg" type="submit" value="Iniciar Sesión">
+                        <br>
+                        <input id="check" type="checkbox" name="keeplogin"><label class="postcheck">Mantenerme conectado.</label>
+                        <br>
+                        <hr class="hro1"><span class="texto_plano">o</span><hr class="hro2">
+                        <div class="button3">
+                            <img class="redes_icon" src="../images/icon_f2.png"><a href="/login/facebook">Facebook</a>
+                        </div>
+                        <div class="button4">
+                            <img class="redes_icon" src="../images/icon_g2.png"><a href="/login/google">Google</a>
+                        </div>
+                    </form> 
                 </div>
-                <section id="registro">
-                    <div class="registro1">
-                    <p class="texto_plano">Si no tienes cuenta, regístrate <a id="paraabrirmodal2" href="/registro">AQUÍ</a></p>
-                    </div>
-                </section>
-                
-
-            </form>
-        </section>
-    </div>
-        <footer class="certificate">
-             <% include partials/footer.html %>
-        </footer>
-        <div id="openPassModal" class="modalDialogPass">
-            <div>
-                <a href="#close" title="Close" Class="close">X</a>
-                <h1 class="encabezado">Recupera tu Contraseña</h1>
-                <form id="contactForm1" class="registro_form" action="/signup" method="post" name="registro_form">
-                    <ul>
-                        <li>
-                            <label id="etiquetas">Nombre de Usuario</label>
-                            <input type="text" name="userlongname" placeholder="Lupito Pérez" maxlength="20" required>
-                        </li>
-                        <li>
-                            <label id="etiquetas">eMail</label>
-                            <input type="email" name="email" placeholder="lupito@industriaspatito.com" maxlength="50" required>
-                        </li>
-                    </ul>
-                    <div>
-                        <h1 id="res_message"></h1>
-                    </div>   
-                    <div class="button2">
-                        <input type="submit" value="Aceptar">
-                    </div>             
-                </form>
             </div>
-        </div>
-            
+        </section>
+        
+        <footer>
+            <section class="contenedorfootnav">
+                <span class="titulo">IMGNpro</span>
+                <ul class="footnav">
+                    <li><a href="../htmls/whatis.html">Acerca de</a></li>
+                    <li><a href="../htmls/plans.html">Precios</a></li>
+                    <li><a href="../htmls/howto.html">Cómo Funciona</a></li>
+                    <li><a href="../htmls/security.html">Seguridad</a></li>
+                </ul>
+            </section>
+            <section class="contenedorfootnav">
+                <span class="titulo">Compañia</span>
+                <ul class="footnav">
+                    <li><a>Nosotros</a></li>
+                    <li><a>Trabajo</a></li>
+                    <li><a>Prensa</a></li>
+                    <li><a>Blog</a></li>
+                </ul>
+            </section>
+            <section class="contenedorfootnav">
+                <span class="titulo">Soporte</span>
+                <ul class="footnav">
+                    <li><a href="../htmls/help.html">Ayuda</a></li>
+                    <li><a href="../htmls/faqs.html">Preguntas Frecuentes</a></li>
+                    <li><a href="../htmls/cookies.html">Cookies</a></li>
+                    <li><a href="../htmls/terms.html">Términos y Condiciones</a></li>
+                    <li><a href="../htmls/privacy.html">Anuncio de Privacidad</a></li>
+                </ul>
+            </section>
+            <section class="contenedorfootnav">
+                <span class="titulo">Contacto</span>
+                <ul class="footnav">
+                    <li><a href="mailto:hi@mail-imgnpro.com">Mail</a></li>
+                    <li><a href="https://www.facebook.com/TheBackgroundRemover/">Facebook</a></li>
+                    <li><a href="https://twitter.com/imgn_pro">Twitter</a></li>
+                    <li><a href="https://www.instagram.com/imgnpro/">Instagram</a></li>
+                </ul>
+            </section>
+            <section class="contenedorfootnav">
+                <span class="titulo">Dirección</span>
+                <p class="footnavtext">Matías Lazcano 1329-2</p>
+                <p class="footnavtext">Col. Chapultepec</p>
+                <p class="footnavtext">C.P. 80040</p>
+                <p class="footnavtext">Culiacán, Sin, México.</p>
+                <p class="footnavtext">Tel. +52 (667) 7121230.</p>
+            </section>
+            <section class="contentpayforms">
+                <img class="payforms" src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/cc-badges-ppmcvdam.png">
+            </section>
+            <section class="contentlang">
+                <div class="selectLang">
+                    <img id="mundo" src="../images/mundo.png">
+                    <select>
+                        <option>Spanish</option>
+                        <option>English</option>
+                    </select>
+                </div>
+            </section>
+        </footer>
+        <script>
+            $(document).ready(function(){
+               $(".cycle ul li:first-child").addClass("active");
+                setTimeout(autoAddClass, 4000);
+            });
+            function autoAddClass(){
+                var next = $(".cycle .active").removeClass("active").next();
+                if(next.length)
+                    $(next).addClass('active');
+                else
+                    $('.cycle ul li:first-child').addClass('active');
+                setTimeout(autoAddClass, 4000);
+            };
+        </script>
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+        <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5813ed1e3adeb4fd"></script>
     </body>
 </html>

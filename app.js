@@ -71,7 +71,6 @@ app.io.use(passportSocketIo.authorize({
   passport: passport,
   cookieParser: cookieParser
 }));
-
 // para redirigir a https
 if (app.get('env') !== 'development') {
   app.use (function (req, res, next) {

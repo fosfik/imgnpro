@@ -1,15 +1,16 @@
 var nodemailer = require('nodemailer');
 var transporter = require("nodemailer-smtp-transport")
+var mailSender = JSON.parse(process.env.MAIL_SENDER);
 var transporter = nodemailer.createTransport(transporter({
-    host : "mail.mail-imgnpro.com",
-    ignoreTLS : true,
-    secureConnection : false,
-    port: 2525,
+    host : mailSender.host,
+    ignoreTLS : mailSender.ignoreTLS,
+    secureConnection : mailSender.secureConnection,
+    port: mailSender.port,
     auth : {
-        user : "becomeapartner@mail-imgnpro.com",
-        pass : "1m4g3npr0"
+        user : mailSender.user,
+        pass : mailSender.pass
     }
-}));
+}));  
 var sendEmail = function(emailOptions){
 	transporter.sendMail(emailOptions, function(error, info){
 	    if(error){

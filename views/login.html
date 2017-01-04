@@ -84,9 +84,10 @@
             <p class="supertext2">¡Empieza ya!</p>
         </section>
         <section id="contenedor1">
+            <p class="encabezado" id="cabeza"><%= message %></p>
             <div id="contlogin">
                 <div class="registro1">
-                    <form id="contactForm1"  action="/signup" method="post" name="registro_form">
+                    <form id="contactForm1"  action="/signin" method="post" name="registro_form">
                         <input name="email" placeholder="Correo Electrónico" required="" type="email">
                         <br>
                         <input type="password" name="passLogin" placeholder="Contraseña" required>

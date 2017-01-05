@@ -323,8 +323,16 @@ router.post('/confirmPackage', function(req, res) {
                   res.send(JSON.stringify({ error: 0, message: message})); 
                 }
                 else{
-                  res.setHeader('Content-Type', 'application/json');
-                  res.send(JSON.stringify({ error: 0, message: 'Se confirmó el paquete'})); 
+                    doDesignerFinish(req.user._id, function(err, message){
+                       if (err == 1){
+                          res.setHeader('Content-Type', 'application/json');
+                          res.send(JSON.stringify({ error: 0, message: message})); 
+                       }
+                       else{
+                         res.setHeader('Content-Type', 'application/json');
+                         res.send(JSON.stringify({ error: 0, message: 'Se confirmó el paquete'})); 
+                       }
+                    });           
                 }
               });
 
@@ -1308,7 +1316,7 @@ router.get('/de_designers',
                   specrecord.format = specInfos[0].format;
                   specrecord.format_ext = specInfos[0].format;
                   if(specInfos[0].format==='jpg_web'){specrecord.format_ext = 'jpg'}
-                  if(specInfos[0].format==='tiff'){specrecord.format_ext = 'tif'}
+                  if(specInfos[0].format==='tiff'){specrecord.format_ext = 'tif'};
                   specrecord.colormode = specInfos[0].colormode;
                   specrecord.background = specInfos[0].background;
                   specrecord.backgrndcolor = specInfos[0].backgrndcolor;
@@ -2351,21 +2359,21 @@ router.get('/sign-s3done', (req, res) => {
 });
 
 
-router.post('/transactionok', function (req,res) {
-  //console.log(req.params);
-  doConfirmPayOrder(req,function(tipomsg, message,href){
-    //res.setHeader('Content-Type', 'application/json');
-    //res.send(JSON.stringify({ error: tipomsg, message: message, href:href}));
-    if (tipomsg == 1){
-      res.redirect('/error.html/' + req.params.Ds_Order); 
-    }
-    else{
-      res.redirect('/' + href+ '/' + req.params.Ds_Order); 
-    }
+// router.post('/transactionok', function (req,res) {
+//   //console.log(req.params);
+//   doConfirmPayOrder(req,function(tipomsg, message,href){
+//     //res.setHeader('Content-Type', 'application/json');
+//     //res.send(JSON.stringify({ error: tipomsg, message: message, href:href}));
+//     if (tipomsg == 1){
+//       res.redirect('/error.html/' + req.params.Ds_Order); 
+//     }
+//     else{
+//       res.redirect('/' + href+ '/' + req.params.Ds_Order); 
+//     }
     
-  });
+//   });
                  
-});
+// });
 
 
 router.get('/transactionok', function (req,res) {
@@ -2595,7 +2603,7 @@ function doConfirmOrder(numorder,order,req,typespec,cb){
        // Si el tipo de usuario es de negocio o gratis, no lo manda a pagar el pedido
         if (user[0].usertype=='business' || typespec=='free' ){
             statusorder ='En Proceso';
-            href = 'thankyou';
+            href = 'thankyou/' + numorder;
         }
         else
         {
@@ -3031,6 +3039,35 @@ function doConfirmUser(userid,cb){
   });  
 }
 
+function doDesignerFinish(userid,cb){
+ //var confirmUser = new User();
+
+  //console.log('Confirm user');
+  console.log(userid);
+  User.findOne({ _id: userid, usertype:'designer' }, function (err, doc){
+
+    console.log(err);
+    if (err){
+        console.log('Error al  : '+err);
+        cb(1,'Error al confimar estatus del diseñador: '+err);
+    }
+    else{
+      if (doc) {
+        doc.isworking = false;
+       
+        //doc.specid = req.user.specid;
+        console.log(doc);
+
+        doc.save();
+        cb(0,'Finalizaste el paquete');
+      } 
+      else {
+        cb(1,'No se encontró al diseñador');
+      }
+    }
+  });  
+}
+
 function disableSpec(specid,cb){
     //console.log(specid);
     Spec.findOne({ _id: specid, typespec:'free'  }, function (err, doc){
@@ -3064,6 +3101,7 @@ function disableSpec(specid,cb){
     });  
 }
 
+
 function fillzero(param,pattern){
   return (pattern + param).slice(-7);
 
@@ -3085,6 +3123,8 @@ function setDecimals(sVal, nDec){
 var createHash = function(password){
  return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
 }
+
+
 
 
 module.exports = router;

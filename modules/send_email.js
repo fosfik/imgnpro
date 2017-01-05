@@ -1,5 +1,8 @@
 var nodemailer = require('nodemailer');
-var transporter = require("nodemailer-smtp-transport")
+var transporter = require("nodemailer-smtp-transport");
+console.log(process.env.REDIS_CONF);
+console.log(process.env.SESSION_CONF);
+console.log(process.env.MAIL_SENDER);
 var mailSender = JSON.parse(process.env.MAIL_SENDER);
 var transporter = nodemailer.createTransport(transporter({
     host : mailSender.host,
@@ -18,5 +21,5 @@ var sendEmail = function(emailOptions){
 	    }
 	    console.log('Message sent: ' + info.response);
 	});
-}
+};
 module.exports.sendEmail = sendEmail;

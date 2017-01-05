@@ -679,6 +679,7 @@ router.post('/confirmPackage', function(req, res) {
    
     //res.render('login', {message: 'dfjhdjhsjd'});
     var msjres = req.flash('message');
+    console.log(msjres);
     res.render('login', {message: msjres[0]});
 
   });

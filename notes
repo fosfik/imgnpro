@@ -1,0 +1,56 @@
+
+1.- Para provocar que MongoDB pueda autenticar usuarios, evitar anonymous access.
+
+Cuando instalas MongoDB, el servicio mongod por omisión deja que te conectes sin utilizar usuario y password, 
+para provocar que esto no pase, debe existir un usuario con privilegios de userAdmin en la BD admin o también
+puede ser un super user como "root".
+
+Well, you'll need to take couple of steps in sequence to create user successfully.
+Start your MongoDB server.
+> mongod --port 27017
+
+Once your server is up (in another terminal window), connect to it as anonymous user.
+> mongo <host:port>
+
+First of all, you need to create an administrator user. I prefer creating super user.
+> use admin
+> db.createUser({user: "root", pwd: "123456", roles:["root"]})
+
+Restart your MongoDB server and enable authentication with --auth flag.
+> mongod --auth --port 27017 --dbpath /var/lib/mongodb
+
+Once your server is up, connect to it as administrator
+> mongo <host:port> -u "root" -p "123456" --authenticationDatabase "admin"
+
+Once you are connected, create normal user. Assuming your user database name is cd2.
+> use cd2
+> db.createUser({user: "cd2", pwd: "cd2", roles:["dbOwner"]})
+
+If you see success messsage, disconnect from mongo shell and reconnect with new user credentials.
+> mongo <host:port>/cd2 -u "cd2" -p "cd2"
+
+2.- Para agregar variables de entorno para ambiente local.
+Primero usa el comando touch para crear el archivo de configuración.
+> touch ~/.bash_profile
+
+Después edita el archivo.
+> pico ~/.bash_profile
+
+Teclea las variables usando al principio de la liea la palabra export.
+export MONGODB_URI=mongodb://user:123456@localhost:27017/imgnpro
+export S3_BUCKET_NAME=imgnprotest
+export S3_BUCKET_NAME_DONE=imgnprotestdone
+
+3.- Agregar password al servidor de REDIS.
+
+Ya conectado con redis-cli, Primero prueba un password.
+> 127.0.0.1:6379> AUTH 123456
+(error) ERR Client sent AUTH, but no password is set
+
+Configura un password para el server.
+> 127.0.0.1:6379> CONFIG SET requirepass "123456"
+OK
+
+Vuelve a probar el password.
+>127.0.0.1:6379> AUTH 123456
+OK

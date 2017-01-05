@@ -308,6 +308,7 @@ router.post('/confirmPackage', function(req, res) {
         }
         if (OrderPack){
           OrderPack.status = 'Terminado';
+          OrderPack.isworking = false;
           OrderPack.designerid = req.body.designerid;
           OrderPack.save(function(err){
             if (err){

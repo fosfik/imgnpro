@@ -424,7 +424,7 @@ passport.use('signup', new LocalStrategy({
           newUser.email = username;
           newUser.accept_terms = req.param('accept_terms');
           newUser.usertype = 'user';
-          if(config.register.usermustactivate == true){
+          if(config.register.usermustactivate === true){
             newUser.disabled = true;
           }
           else
@@ -548,7 +548,7 @@ passport.use('de_signup', new LocalStrategy({
           newUser.email = username;
           newUser.accept_terms = req.param('accept_terms');
           newUser.usertype = 'designer';
-          if(config.register.designermustactivate == true){
+          if(config.register.designermustactivate === true){
             newUser.disabled = true;
           }
           else
@@ -583,16 +583,16 @@ console.log(config.facebook.appname);
 
 var isValidPassword = function(user, password){
   return bCrypt.compareSync(password, user.password);
-}
+};
 
 var isDisabled = function(user){
   return  user.disabled;
-}
+};
 
 // Generates hash using bCrypt
 var createHash = function(password){
  return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
-}
+};
 
 
 function createfreespec(userid,cb){

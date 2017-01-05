@@ -324,7 +324,9 @@ input[name="confirmpass"] {
     height: auto;
     transition: .1s;
     text-align: center;
-    border: solid 1px #c2c2c2
+    border: solid 1px #c2c2c2;
+    color: #000;
+    font-weight: lighter;
 }
 
 .button4 {
@@ -339,14 +341,9 @@ input[name="confirmpass"] {
     transition: .1s;
     text-align: center;
     border: solid 1px #c2c2c2;
-    float: right
-}
-
-.button3 a, .button4 a {
-    text-decoration: none;
-    font: 16px;
-    font-weight: lighter;
     color: #000;
+    font-weight: lighter;
+    float: right;
 }
 
 .button5, .button6, .buttongoog{
@@ -1108,7 +1105,8 @@ iframe {
     
     
     .button3, .button4 {
-        width: 40%;
+        width: 35%;
+        float: none;
     }
     
     input[name="userlongname"], input[name="email"], input[name="passLogin"], input[name="name"], input[name="emailcontact"] {

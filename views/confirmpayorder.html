@@ -147,6 +147,7 @@
                                 $('#i_confirmpassword').show();
                                 $('#div_accept_terms').show();
                                 $('#gratis_modal').show();
+                                $('#gratis_msg').show();
                                 localStorage.setItem('hasSpecFree',true);
                                 $('#hasSpecFree').val('true');
                                 
@@ -271,7 +272,7 @@
     <section id="contenedor">
         <p class="encabezado">Paso 8: Llena con tus datos correctos y da click en confirmar</p>
         <section id="confirmOrder">
-            <p class="encabezado">Confirmar Pedido <span><%= numorder %></span></p>
+            <p class="encabezado">Confirmar Pedido <span><%= numorder %></span><span id="gratis_msg" style="display:none;color:#FF0000;font-weight:bold;"> GRATIS</span></p>
             <div class="label2">
                 <p class="texto_plano4">Costo total</p>
                 <p class="texto_precio2"><span class="prefixmoney">USD</span>$ <span><%= order.totalpay %></span></p>

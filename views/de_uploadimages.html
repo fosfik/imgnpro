@@ -225,7 +225,7 @@
                     $.ajax({
                         type: 'post',
                         url: '/confirmPackage',
-                        data: { 'orderpackid':'<%= orderpackid %>', 'designerid': '<%= userid %>' },
+                        data: { 'orderpackid':'<%= orderpackid %>', 'designerid': '<%= designerid %>' },
                         //contentType: "application/json",
                         success: function (data) {
                             if (data.error == 1 ){

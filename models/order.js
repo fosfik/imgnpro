@@ -5,6 +5,7 @@ var orderSchema = mongoose.Schema({
     name: {type: String},
     userid: {type: String, ref: 'User'},
     date: { type: Date, default: Date.now },
+    date_finish_work: { type: Date},
     status: {type: String, default:'Por pagar'},
     imagecount: {type:Number, default:0},
     specid: {type: String, ref: 'Orderspecs'}, //id de la especificación

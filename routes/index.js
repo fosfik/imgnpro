@@ -311,6 +311,7 @@ router.post('/confirmPackage', function(req, res) {
           OrderPack.status = 'Terminado';
           OrderPack.isworking = false;
           OrderPack.designerid = req.body.designerid;
+          OrderPack.date_finish_work = Date();
           OrderPack.save(function(err){
             if (err){
               res.setHeader('Content-Type', 'application/json');
@@ -491,7 +492,7 @@ router.post('/confirmPackage', function(req, res) {
                   newOrderPack.numorder = newOrder.numorder;
                   newOrderPack.specid = newOrderSpec._id;
                   newOrderPack.name = 'Package ' + i;
-                  newOrderPack.userid = newOrder.userid;
+                  //newOrderPack.userid = newOrder.userid;
                   newOrderPack.date = Date();
                   newOrderPack.imagecount = (highnumber - lownumber) + 1;
                    // almacenar los datos del paquete
@@ -523,7 +524,7 @@ router.post('/confirmPackage', function(req, res) {
                 newOrderPack.numorder = newOrder.numorder;
                 newOrderPack.specid = newOrderSpec._id;
                 newOrderPack.name = 'Package ' + (numpacksfull + 1);
-                newOrderPack.userid = newOrder.userid;
+                //newOrderPack.userid = newOrder.userid;
                 newOrderPack.date = Date();
                 newOrderPack.imagecount = (highnumber - lownumber) + 1;
                for (var y=lownumber; y <= highnumber; y++){
@@ -657,7 +658,8 @@ router.post('/confirmPackage', function(req, res) {
 
                       findanyorderspec(order[0].specid,function(error,spec){
                                 //console.log(spec);
-                             res.render('de_uploadimages', {message: req.flash('message'), numorder: OrderPack[0].numorder, user: req.user, packname:OrderPack[0].name ,userid: OrderPack[0].userid, imagecount:OrderPack[0].imagecount, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id , config:config, order:order[0], orderpackid:OrderPack[0]._id, S3_BUCKET_NAME_DONE:S3_BUCKET_NAME_DONE});
+                            // Debido a que el diseñador es un usuario pero son usertype = "designer", se toma el _id como designerid
+                             res.render('de_uploadimages', {message: req.flash('message'), numorder: OrderPack[0].numorder, designerid: req.user._id, packname:OrderPack[0].name ,userid: OrderPack[0].userid, imagecount:OrderPack[0].imagecount, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id , config:config, order:order[0], orderpackid:OrderPack[0]._id, S3_BUCKET_NAME_DONE:S3_BUCKET_NAME_DONE});
                        
                        });
                      //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id });
@@ -3019,6 +3021,7 @@ function doneOrder(numorder, packname,req, cb){
              {
                 if(orderdoc){
                     orderdoc.status = 'Terminado';
+                    orderdoc.date_finish_work = Date();
                     orderdoc.save(function(err){
                         if (err){
                           cb( 1,'error al guardar el status del pedido');

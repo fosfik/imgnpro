@@ -5,7 +5,7 @@ var orderSchema = mongoose.Schema({
     userid: {type: String},
     date: { type: Date, default: Date.now },
     date_start_work: { type: Date},
-    date_end_end: { type: Date},
+    date_finish_work: { type: Date},
     status: {type: String, default:'Por pagar'},
     isworking: {type: Boolean, default: false},
     isreserve: {type: Boolean, default: false},

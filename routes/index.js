@@ -318,7 +318,7 @@ router.post('/confirmPackage', function(req, res) {
             }
             else{
 
-              doneOrder(OrderPack.numorder, OrderPack.name,  function(err,message){
+              doneOrder(OrderPack.numorder, OrderPack.name, req,  function(err,message){
 
                 if (err == 1){
                   res.setHeader('Content-Type', 'application/json');
@@ -2506,7 +2506,7 @@ function findauser_details(userid, cb){
     cb(1, 'Error al consultar los detalles del usuario, longitud 0');
   }
   else{
-      User_details.find({'userid':userid},function(err, userrecord) {
+      User_details.find({'userid':userid},function(err, userdoc) {
       // In case of any error return
        if (err){
          console.log('Error al consultar los detalles del usuario');
@@ -2515,10 +2515,9 @@ function findauser_details(userid, cb){
        }
        else{
     // already exists
-          if (userrecord.length > 0) {
+          if (userdoc.length > 0) {
             //console.log('Se encontraron los detalles del usuario');
-            //console.log(userrecord);
-            cb( 0,'Se encontraron los detalles del usuario', userrecord);
+            cb( 0,'Se encontraron los detalles del usuario', userdoc);
           } 
           else {
             console.log('No se encontraron los detalles del usuario');
@@ -2559,7 +2558,7 @@ function findauser(userid, cb){
   }
   else{
       //console.log(userid);
-      User.find({'_id':userid},function(err, user) {
+      User.find({'_id':userid},function(err, userdoc) {
       // In case of any error return
        if (err){
          console.log('Error al consultar el usuario');
@@ -2568,10 +2567,10 @@ function findauser(userid, cb){
        }
        else{
     // already exists
-          if (user.length > 0) {
+          if (userdoc.length > 0) {
             //console.log('Se encontró el usuario');
             //console.log(user);
-            cb( 0,'Se encontró el usuario', user);
+            cb( 0,'Se encontró el usuario', userdoc);
           } 
           else {
             console.log('No se encontró el usuario');
@@ -2617,7 +2616,7 @@ function doConfirmOrder(numorder,order,req,typespec,cb){
       //console.log(spec);
       //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id , countorders:ordersinproc});
       
-      if (error){
+      if (error == 1 || error == 2){
         cb( 1,'No se encontró el usuario');
       }
       else
@@ -2984,7 +2983,7 @@ function doConfirmOrder(numorder,order,req,typespec,cb){
 //     //});
 // }
 
-function doneOrder(numorder, packname, cb){
+function doneOrder(numorder, packname,req, cb){
     OrderPacks.find({numorder:numorder} ,function(err,OrderPack){
       if(err){
         cb( 1,'error al consultar paquetes de pedido');
@@ -3012,22 +3011,40 @@ function doneOrder(numorder, packname, cb){
         }
         if (bDone == true){
           // buscar el pedido
-          Orders.findOne({numorder:numorder},function(err,orderrecord){
+          Orders.findOne({numorder:numorder},function(err,orderdoc){
             if (err){
                cb( 1,'error al consultar pedido');
              }
              else
              {
-                if(orderrecord){
-                    orderrecord.status = 'Terminado';
-                    orderrecord.save(function(err){
+                if(orderdoc){
+                    orderdoc.status = 'Terminado';
+                    orderdoc.save(function(err){
                         if (err){
                           cb( 1,'error al guardar el status del pedido');
                         }
                         else
                         {
-                          console.log('Se confirmó el pedido');
-                          cb( 0,'se confirmó el paquete ' + packname + ' del pedido ' + numorder);
+                          console.log(orderdoc.userid);
+                          findauser(orderdoc.userid, (err, msg, userdoc) => {
+                             if (err === 0){
+                               console.log(userdoc[0].email, userdoc);
+                                var hostname = req.headers.host;
+                                var mailOptions = {
+                                  from: '"IMGN PRO" <server@mail-imgnpro.com>', // sender address
+                                  to:  userdoc[0].email, //+ ',jerh56@gmail.com', // list of receivers
+                                  subject: 'Pedido terminado', // Subject line
+                                  text: `Hola que tal, se terminó tu pedido, ingresa a http://${hostname}/login para que lo puedas revisar` // plaintext body
+                                  //html: '<a href="www.imgnpro.com/confirmuser"</a>' // html body
+                                };
+                                mailer.sendEmail(mailOptions);
+                                console.log('Se confirmó el pedido');
+                                cb( 0,'se confirmó el pedido con el paquete ' + packname + ' del pedido ' + numorder);
+                             }
+                             else{
+                               cb( 1,'error al guardar el status del pedido, no se encuentra el usuario o cliente');
+                             }
+                          });
                         }
                     });
                 }
@@ -3039,6 +3056,9 @@ function doneOrder(numorder, packname, cb){
              }
 
           });
+        }
+        else{
+          cb( 0,'se confirmó el pedido con el paquete ' + packname + ' del pedido ' + numorder);
         }
       }
     });

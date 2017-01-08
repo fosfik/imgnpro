@@ -21,6 +21,7 @@ var S3_BUCKET_NAME_DONE = process.env.S3_BUCKET_NAME_DONE || 'imgnprodone';
 var S3_BUCKET_NAME_THUMB = process.env.S3_BUCKET_NAME_THUMB|| 'imgnprothumb';
 var mailer = require('../modules/send_email.js'); // Módulo para enviar correo
 // PAYPAL
+
 var paypal = require('paypal-rest-sdk');
 require('../config_paypal');
 router.get('/listorders/:limit', function(req, res) {
@@ -2528,6 +2529,30 @@ function findauser_details(userid, cb){
   }
 }
 
+function findUsers(user, cb){
+  
+      User.find({'usertype':user.usertype, 'disabled': user.disabled},function(err, designers) {
+      // In case of any error return
+       if (err){
+         console.log('Error al consultar diseñadores');
+        cb(1, 'Error al consultar diseñadores');
+       }
+       else{
+    // already exists
+          if (designers.length > 0) {
+            //console.log('Se encontró el usuario');
+            //console.log(user);
+            cb( 0,'Se encontraron diseñadores', designers );
+          } 
+          else {
+            console.log( 'No se encontraron diseñadores' );
+              cb( 2, 'No se encontraron diseñadores' );
+          }
+       }
+    });
+  
+}
+
 function findauser(userid, cb){
   if (userid.length === 0){
     cb(1, 'Error al consultar al usuario, longitud 0');
@@ -2556,6 +2581,7 @@ function findauser(userid, cb){
     }).limit(1);
   }
 }
+
 
 function findaorder(orderid, cb){
   //console.log(orderid);
@@ -2678,6 +2704,38 @@ function doConfirmOrder(numorder,order,req,typespec,cb){
                   }
                   else{
                       // actualizar paquetes
+
+                      // Buscar designers activos
+                      var userDoc = {
+                        'usertype':'designer',
+                        'disabled':false
+                      };
+                      findUsers( userDoc, ( err, msg, designers ) => {
+                         console.log( err, msg,designers ); 
+                         if (err == 2){
+                          var hostname = req.headers.host;
+                          var mailOptions = {
+                             from: '"Server" <server@mail-imgnpro.com>', // sender address
+                             to: 'jerh56@gmail.com', // list of receivers
+                             subject: 'Hay nuevos paquetes por atender', // Subject line
+                             text: `Por favor ingresa al portal http://${hostname}/de_login`
+                           };
+                           mailer.sendEmail(mailOptions);
+                         }else if ( err == 0){
+                           var hostname = req.headers.host;
+                           var useremails = getUserEmails(designers);
+                           var mailOptions = {
+                             from: '"Server" <server@mail-imgnpro.com>', // sender address
+                             to: useremails, // list of receivers
+                             subject: 'Hay nuevos paquetes por atender', // Subject line
+                             text: `Por favor ingresa al portal http://${hostname}/de_login`
+                           };
+                           mailer.sendEmail(mailOptions);
+                         }
+                         
+                      });
+                      
+                      // enviar correo a designers activos
                       cb( 0,'Se actualizó el estatus del pedido', href);
 
                   }
@@ -3118,6 +3176,17 @@ function setDecimals(sVal, nDec){
    s = s.substr(0, s.indexOf(".") + nDec + 1); 
   } 
   return s; 
+}
+// Obtiene los emails de los usuarios desde la colección Users
+function getUserEmails(users){
+  var listEmails = '';
+  for (var i = 0; i < users.length; i++){
+    listEmails = listEmails + users[i].email;
+    if ( i < (users.length - 1)){
+      listEmails = listEmails + ',';
+    }
+  }
+  return listEmails;
 }
 
 // Generates hash using bCrypt

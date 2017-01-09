@@ -11,11 +11,10 @@ module.exports = function(io){
   //   console.log("entro usuario");
   // });
 
-
-
 io.on('connection', function(socket){
   console.log(socket.request.user);
   console.log('a user connected');
+  //getDesigners();
   socket.broadcast.emit('Se conectó un usuario');
   // se desconecta el usuario
   socket.on('disconnect', function(){
@@ -48,6 +47,7 @@ io.on('connection', function(socket){
       });
     }
   });
+
 
   socket.on('reserve_pack', function(msg){
 
@@ -298,8 +298,79 @@ socket.on('get_work_package', function(msg){
   });
 
 
+  socket.on('get_toprankdesigner', function(msg){
+      // if (isLoggedIn(socket)){
+      //   console.log('message: ' + msg);
+      //   var jsMsg = JSON.parse(msg);
+      //   console.log(jsMsg);
+      //   console.log(jsMsg.userid);
+         getTopRankDesigners(function(toprankdocs){
+            console.log(toprankdocs);
+            socket.emit('toprankdesigner', JSON.stringify(toprankdocs));
+         });
+        
+      // }
+  });       
+
+
 
 });
+
+
+//.populate( 'tags', null, { tagName: { $in: ['funny', 'politics'] } } )
+
+function getTopRankDesigners(cb){
+  OrderPacks
+  .find({status:'Terminado'})
+  //.select('imagecount userlongname')
+  .populate('designerid', 'userlongname')
+  .sort('designerid')
+  .exec(function(err,orderpacksdocs){
+    //console.log('error', err, 'Orderpacks', orderpacksdocs);
+    var id_designer = orderpacksdocs[0].designerid._id;
+    var sumimages = 0;
+    var topRankDesigner = [];
+    for ( var i = 0; i < orderpacksdocs.length ; i++){
+      //console.log(orderpacksdocs[i].designerid._id);
+      
+      if (id_designer === orderpacksdocs[i].designerid._id ){
+        sumimages = sumimages + orderpacksdocs[i].imagecount;
+      }
+      else{
+        //console.log(id_designer, sumimages);
+        topRankDesigner.push({name:orderpacksdocs[i].designerid.userlongname, imagecount: sumimages});
+        id_designer = orderpacksdocs[i].designerid._id;
+        sumimages = orderpacksdocs[i].imagecount;
+
+      }
+    }
+    console.log(topRankDesigner);
+    cb(topRankDesigner);
+    // if (err){
+    //   res.render('receipt', {message: '¡Lo sentimos!, No se encontró el número de recibo', user:req.user, numorder:0, countorders:ordersinproc});            
+    // } 
+    // else if (user_details){
+
+
+    //   Orders
+    //   .findOne({numorder:req.params.numorder})
+    //   .populate('specid', 'totalprice')
+    //   .exec(function(err,order){
+    //   console.log(order);
+      
+    //   //findaorder(req.params.numorder,function(error,order){
+    //      //console.log(order);
+    //      //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id });
+    //      res.render('receipt', {message: req.flash('message'), user: req.user, numorder:req.params.numorder, order:order, countorders:ordersinproc, user_details:user_details});             
+    //   });
+
+    // }
+    // else
+    // {
+    //   res.render('receipt', {message: '¡Lo sentimos!, No se encontró el número de recibo', user:req.user, numorder:0, countorders:ordersinproc});            
+    // }
+  });  
+}
 
 // Obtiene un true si el usuario existe y está logueado
 function isLoggedIn( socket ){
@@ -315,5 +386,5 @@ function timeElapsed( date_to_compare){
 }
 
   return router;
-}
+};
 

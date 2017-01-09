@@ -21,8 +21,9 @@
                 }    
                 getPackages(); // obtiene los paquetes que se pueden trabajar.
                 getWorkingPackages();
+                getTopRankdesigners(); // obtiene el ranking de los diseñadores
                 setInterval(function(){ 
-                    console.log("prueba");
+                    //console.log("prueba");
                     if (bIsWorking){
                         var dActual = new Date();
                         var nSecondsPast = Math.floor((dActual.getTime()/1000) - (dDateNow.getTime()/1000));
@@ -101,6 +102,17 @@
                     var jsMsg = JSON.parse(msg);
                     console.log(jsMsg);
                     getPackages();
+                });
+
+                socket.on('toprankdesigner', function(msg){
+                    //$('#messages').append($('<li>').text(msg));
+                    var jsMsg = JSON.parse(msg);
+                    //console.log(jsMsg);
+
+                    $.each(jsMsg, function (index, value) {
+                            $('#toprankdesigner').append('<li class="texto_plano_aside"><span class="encabezado_aside2"> 0. </span> ' + value.name +  ' <span class="imagenum">'+ value.imagecount +' imágenes</span></li>');
+
+                    });
                 });
 
                 $('#p1').click(function(){
@@ -211,6 +223,9 @@
                 function getPackages(){
                     socket.emit('get_packages', '');
                     
+                }
+                function getTopRankdesigners(){
+                   socket.emit('get_toprankdesigner', '');
                 }
 
                 function getTimeinHours(nSeconds){
@@ -536,21 +551,13 @@
             <div id="firstplace">
                 <span class="encabezado_aside">1er Lugar</span>
                 <br>
-                <span class="texto_plano_aside">SuperMario23</span>
+                <span class="texto_plano_aside">AAAAAAAAAA</span>
                 <br>
-                <span class="imagenum">153 imágenes</span>
+                <span class="imagenum">99999 imágenes</span>
             </div>
             <hr class="hraside">
-            <ul class="score">
-                <li class="texto_plano_aside"><span class="encabezado_aside2">2. </span> Pedrito53 <span class="imagenum">153 imágenes</span></li>
-                <li class="texto_plano_aside"><span class="encabezado_aside2">3. </span> Pedrito53 <span class="imagenum">153 imágenes</span></li>
-                <li class="texto_plano_aside"><span class="encabezado_aside2">4. </span> Pedrito53 <span class="imagenum">153 imágenes</span></li>
-                <li class="texto_plano_aside"><span class="encabezado_aside2">5. </span> Pedrito53 <span class="imagenum">153 imágenes</span></li>
-                <li class="texto_plano_aside"><span class="encabezado_aside2">6. </span> Pedrito53 <span class="imagenum">153 imágenes</span></li>
-                <li class="texto_plano_aside"><span class="encabezado_aside2">7. </span> Pedrito53 <span class="imagenum">153 imágenes</span></li>
-                <li class="texto_plano_aside"><span class="encabezado_aside2">8. </span> Pedrito53 <span class="imagenum">153 imágenes</span></li>
-                <li class="texto_plano_aside"><span class="encabezado_aside2">9. </span> Pedrito53 <span class="imagenum">153 imágenes</span></li>
-                <li class="texto_plano_aside"><span class="encabezado_aside2">10. </span> Pedrito53 <span class="imagenum">153 imágenes</span></li>
+            <ul class="score" id="toprankdesigner">
+               
             </ul>
         </aside>
     </body>

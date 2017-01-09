@@ -10,7 +10,7 @@ var orderSchema = mongoose.Schema({
     isworking: {type: Boolean, default: false},
     isreserve: {type: Boolean, default: false},
     imagecount: {type:Number, default:0},
-    designerid: {type: String},
+    designerid: {type: String, ref: 'User'},
     specid:{type: String, ref: 'Orderspecs'},
     date_reserve: {type: Date},
     reserve_byid: {type: String},

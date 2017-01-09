@@ -304,10 +304,10 @@ socket.on('get_work_package', function(msg){
       //   var jsMsg = JSON.parse(msg);
       //   console.log(jsMsg);
       //   console.log(jsMsg.userid);
-         getTopRankDesigners(function(toprankdocs){
-            console.log(toprankdocs);
-            socket.emit('toprankdesigner', JSON.stringify(toprankdocs));
-         });
+        //  getTopRankDesigners(function(toprankdocs){
+        //     console.log(toprankdocs);
+        //     socket.emit('toprankdesigner', JSON.stringify(toprankdocs));
+        //  });
         
       // }
   });       

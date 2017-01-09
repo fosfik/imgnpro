@@ -326,7 +326,7 @@ function getTopRankDesigners(cb){
   .populate('designerid', 'userlongname')
   .sort('designerid')
   .exec(function(err,orderpacksdocs){
-    //console.log('error', err, 'Orderpacks', orderpacksdocs);
+    console.log('error', err, 'Orderpacks', orderpacksdocs);
     var id_designer = orderpacksdocs[0].designerid._id;
     var sumimages = 0;
     var topRankDesigner = [];

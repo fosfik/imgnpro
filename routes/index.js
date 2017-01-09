@@ -146,6 +146,31 @@ router.get('/listallorderpacks', function(req, res) {
   }).select('_id imagecount numorder status date name userid isworking').sort({date:-1});
 });
 
+
+// TODO agregar seguridad a esta ruta
+router.get('/listallorderpacksfinish', function(req, res) {
+  OrderPacks.find({status:'Terminado'},function(err, orderpacks) {
+    // In case of any error return
+     if (err){
+       console.log('Error al consultar');
+     }
+     //console.log("prueba 2");
+   // already exists
+    if (orderpacks.length > 0) {
+      //console.log('se encontraron pedidos');
+      res.setHeader('Content-Type', 'application/json');
+      res.send(orderpacks); 
+
+    } 
+    else {
+      console.log('No se encontraron paquetes de pedidos');
+      res.setHeader('Content-Type', 'application/json');
+      res.send(JSON.stringify({})); 
+    }
+   
+  }).select('_id imagecount numorder status date name userid isworking').sort({date:-1});
+});
+
 // TODO agregar seguridad a esta ruta
 router.get('/listallorderpacks/:numorder', function(req, res) {
   OrderPacks.find({numorder:req.params.numorder},function(err, orderpacks) {
@@ -618,6 +643,11 @@ router.post('/confirmPackage', function(req, res) {
  router.get('/de_packages', function(req, res) {
     // Display the Login page with any flash message, if any
     res.render('de_packages', {message: req.flash('message')});
+  });
+
+  router.get('/de_packages2', function(req, res) {
+    // Display the Login page with any flash message, if any
+    res.render('de_packages2', {message: req.flash('message')});
   });
 
  router.get('/de_package_get/:packageid', function(req, res) {

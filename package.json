@@ -34,6 +34,7 @@
     "s3-policy": "^0.2.0",
     "serve-favicon": "~2.3.0",
     "sha1": "^1.1.1",
-    "socket.io": "^1.4.8"
+    "socket.io": "^1.4.8",
+    "sort-json-array": "^0.1.7"
   }
 }

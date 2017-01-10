@@ -108,10 +108,15 @@
                     //$('#messages').append($('<li>').text(msg));
                     var jsMsg = JSON.parse(msg);
                     //console.log(jsMsg);
-
+                    var i = 1;
                     $.each(jsMsg, function (index, value) {
-                            $('#toprankdesigner').append('<li class="texto_plano_aside"><span class="encabezado_aside2"> 0. </span> ' + value.name +  ' <span class="imagenum">'+ value.imagecount +' imágenes</span></li>');
-
+                        if (i == 1){ 
+                            $('#firstplacename').text(value.name); 
+                            $('#firstplaceimages').text(value.imagecount);     
+                        }else{
+                            $('#toprankdesigner').append('<li class="texto_plano_aside"><span class="encabezado_aside2">' + i + '. </span> ' + value.name +  ' <span class="imagenum">'+ value.imagecount +' imágen(es)</span></li>');
+                        }    
+                        i++;        
                     });
                 });
 
@@ -551,9 +556,9 @@
             <div id="firstplace">
                 <span class="encabezado_aside">1er Lugar</span>
                 <br>
-                <span class="texto_plano_aside">AAAAAAAAAA</span>
+                <span class="texto_plano_aside" id="firstplacename"></span>
                 <br>
-                <span class="imagenum">99999 imágenes</span>
+                <span class="imagenum" id="firstplaceimages"></span> <span>  imágen(es)</span>
             </div>
             <hr class="hraside">
             <ul class="score" id="toprankdesigner">

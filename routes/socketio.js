@@ -4,7 +4,7 @@ module.exports = function(io){
   var OrderPacks = require('../models/orderpacks.js');
   var app = require('express');
   var config = require('../config');
-
+  var sortJsonArray = require('sort-json-array');
   
   var router = app.Router();
   // io.on('connection',function(socket){
@@ -304,10 +304,10 @@ socket.on('get_work_package', function(msg){
       //   var jsMsg = JSON.parse(msg);
       //   console.log(jsMsg);
       //   console.log(jsMsg.userid);
-        //  getTopRankDesigners(function(toprankdocs){
-        //     console.log(toprankdocs);
-        //     socket.emit('toprankdesigner', JSON.stringify(toprankdocs));
-        //  });
+         getTopRankDesigners(function(toprankdocs){
+            //console.log(toprankdocs);
+            socket.emit('toprankdesigner', JSON.stringify(toprankdocs));
+         });
         
       // }
   });       
@@ -321,7 +321,7 @@ socket.on('get_work_package', function(msg){
 
 function getTopRankDesigners(cb){
   OrderPacks
-  .find({status:'Terminado'})
+  .find({status:'Terminado', designerid:{$exists:true}, date_finish_work:{$exists:true}})
   //.select('imagecount userlongname')
   .populate('designerid', 'userlongname')
   .sort('designerid')
@@ -344,7 +344,8 @@ function getTopRankDesigners(cb){
 
       }
     }
-    console.log(topRankDesigner);
+    //console.log(topRankDesigner);
+    topRankDesigner = sortJsonArray(topRankDesigner, 'imagecount', 'des');
     cb(topRankDesigner);
     // if (err){
     //   res.render('receipt', {message: '¡Lo sentimos!, No se encontró el número de recibo', user:req.user, numorder:0, countorders:ordersinproc});            

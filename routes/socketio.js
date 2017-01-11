@@ -314,31 +314,39 @@ socket.on('get_work_package', function(msg){
 });
 function getTopRankDesigners(cb){
   OrderPacks
-  .find({status:'Terminado', designerid:{$exists:true}, date_finish_work:{$exists:true}})
+  .find({status:'Terminado', designerid:{$exists:true}, date_finish_work:{$exists:true}, weekly_cash_out:{$exists:true}, weekly_cash_out: false})
   //.select('imagecount userlongname')
   .populate('designerid', 'userlongname')
   .sort('designerid')
   .exec(function(err,orderpacksdocs){
-    var id_designer = orderpacksdocs[0].designerid._id;
-    var sumimages = 0;
-    var topRankDesigner = [];
-    for ( var i = 0; i < orderpacksdocs.length ; i++){
-      if (id_designer === orderpacksdocs[i].designerid._id ){
-        sumimages = sumimages + orderpacksdocs[i].imagecount;
-      }
-      else{
-        topRankDesigner.push({name:orderpacksdocs[i-1].designerid.userlongname, imagecount: sumimages});
-        id_designer = orderpacksdocs[i].designerid._id;
-        sumimages = orderpacksdocs[i].imagecount;
+    //console.log(orderpacksdocs, orderpacksdocs.length);
+    
+    if (orderpacksdocs.length > 0){
+      var id_designer = orderpacksdocs[0].designerid._id;
+      var sumimages = 0;
+      var topRankDesigner = [];
+      for ( var i = 0; i < orderpacksdocs.length ; i++){
+        if (id_designer === orderpacksdocs[i].designerid._id ){
+          sumimages = sumimages + orderpacksdocs[i].imagecount;
+        }
+        else{
+          topRankDesigner.push({name:orderpacksdocs[i-1].designerid.userlongname, imagecount: sumimages});
+          id_designer = orderpacksdocs[i].designerid._id;
+          sumimages = orderpacksdocs[i].imagecount;
+
+        }
+        if (orderpacksdocs.length === (i+1)){
+          topRankDesigner.push({name:orderpacksdocs[i].designerid.userlongname, imagecount: sumimages});
+        }
 
       }
-      if (orderpacksdocs.length === (i+1)){
-        topRankDesigner.push({name:orderpacksdocs[i].designerid.userlongname, imagecount: sumimages});
-      }
-
+      topRankDesigner = sortJsonArray(topRankDesigner, 'imagecount', 'des');
+      cb(topRankDesigner);
     }
-    topRankDesigner = sortJsonArray(topRankDesigner, 'imagecount', 'des');
-    cb(topRankDesigner);
+    else{
+      cb('[]');
+    }
+
   });  
 }
 

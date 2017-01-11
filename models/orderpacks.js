@@ -14,6 +14,7 @@ var orderSchema = mongoose.Schema({
     specid:{type: String, ref: 'Orderspecs'},
     date_reserve: {type: Date},
     reserve_byid: {type: String},
+    weekly_cash_out: {type: Boolean,  default: false},
     images: [{  imagename: String, width: Number, height: Number, length: Number, position: Number }]
 });
 

@@ -311,14 +311,7 @@ socket.on('get_work_package', function(msg){
         
       // }
   });       
-
-
-
 });
-
-
-//.populate( 'tags', null, { tagName: { $in: ['funny', 'politics'] } } )
-
 function getTopRankDesigners(cb){
   OrderPacks
   .find({status:'Terminado', designerid:{$exists:true}, date_finish_work:{$exists:true}})
@@ -326,50 +319,26 @@ function getTopRankDesigners(cb){
   .populate('designerid', 'userlongname')
   .sort('designerid')
   .exec(function(err,orderpacksdocs){
-    console.log('error', err, 'Orderpacks', orderpacksdocs);
     var id_designer = orderpacksdocs[0].designerid._id;
     var sumimages = 0;
     var topRankDesigner = [];
     for ( var i = 0; i < orderpacksdocs.length ; i++){
-      //console.log(orderpacksdocs[i].designerid._id);
-      
       if (id_designer === orderpacksdocs[i].designerid._id ){
         sumimages = sumimages + orderpacksdocs[i].imagecount;
       }
       else{
-        //console.log(id_designer, sumimages);
-        topRankDesigner.push({name:orderpacksdocs[i].designerid.userlongname, imagecount: sumimages});
+        topRankDesigner.push({name:orderpacksdocs[i-1].designerid.userlongname, imagecount: sumimages});
         id_designer = orderpacksdocs[i].designerid._id;
         sumimages = orderpacksdocs[i].imagecount;
 
       }
+      if (orderpacksdocs.length === (i+1)){
+        topRankDesigner.push({name:orderpacksdocs[i].designerid.userlongname, imagecount: sumimages});
+      }
+
     }
-    //console.log(topRankDesigner);
     topRankDesigner = sortJsonArray(topRankDesigner, 'imagecount', 'des');
     cb(topRankDesigner);
-    // if (err){
-    //   res.render('receipt', {message: '¡Lo sentimos!, No se encontró el número de recibo', user:req.user, numorder:0, countorders:ordersinproc});            
-    // } 
-    // else if (user_details){
-
-
-    //   Orders
-    //   .findOne({numorder:req.params.numorder})
-    //   .populate('specid', 'totalprice')
-    //   .exec(function(err,order){
-    //   console.log(order);
-      
-    //   //findaorder(req.params.numorder,function(error,order){
-    //      //console.log(order);
-    //      //res.render('uploadimages', {message: req.flash('message'), user: req.user, namespec:spec[0].name, totalprice:spec[0].totalprice, specid:spec[0]._id });
-    //      res.render('receipt', {message: req.flash('message'), user: req.user, numorder:req.params.numorder, order:order, countorders:ordersinproc, user_details:user_details});             
-    //   });
-
-    // }
-    // else
-    // {
-    //   res.render('receipt', {message: '¡Lo sentimos!, No se encontró el número de recibo', user:req.user, numorder:0, countorders:ordersinproc});            
-    // }
   });  
 }
 

@@ -819,6 +819,26 @@ iframe {
     display: none;
 }
 
+/* para el menu */
+    .show-menu {
+        text-decoration: none;
+        color: #fff;
+        background: none;
+        text-align: right;
+        font-size: 36px;
+        padding: 15px;
+        float: right;
+        display: none;
+    }
+    
+    input[type=checkbox]{
+        display: none;
+    }
+
+    input[type=checkbox]:checked ~ #botonintro, input[type=checkbox]:checked ~ #loginTag, input[type=checkbox]:checked ~ #backheader {
+        display: inline-block;
+    }
+
 /*INICIA MEDIA QUERTY*/
 
 
@@ -835,13 +855,19 @@ iframe {
         width: 100%;
     }
     
+	.show-menu {
+		display: inline-block;
+        float: right;
+	}
+    
+    
     #botonintro a {
         color: #FFF;
         text-decoration: none;
     }
     
     #botonintro {
-        display: inline-block;
+        display: none;
         background: #00badc;
         line-height: 40px;
         vertical-align: bottom;
@@ -892,7 +918,7 @@ iframe {
     }
 
     #loginTag {
-        display: inline-block;
+        display: none;
         color: #FFF;
         line-height: 40px;
         vertical-align: bottom;

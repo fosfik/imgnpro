@@ -825,8 +825,9 @@ iframe {
         color: #fff;
         background: none;
         text-align: right;
-        font-size: 36px;
+        font-size: 30px;
         padding: 15px;
+        padding-left: 0px;
         float: right;
         display: none;
     }

@@ -6,69 +6,7 @@
         <link rel="stylesheet" href="../stylesheets/imgncss_session.css">
         <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
         <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico"/>
-        <script type="text/javascript">
-            $(document).ready(function(){
-
-                    $.ajax({
-                        type: 'get',
-                        url: '/listorderpack/<%= packageid %>',
-                        success: function (data) {
-                            // console.log(data[0]);
-                            // console.log(data.images);
-                            $.getJSON('/findaorder/' + data[0].numorder).done(function(order) {
-                                        if (order) {
-                                        //console.log(order);
-                                            $("#specLink").attr("href","/de_especificaciones2/" + order.specid );
-                                        }
-                            });
-
-                            
-                            $.each(data, function(index, value) {
-                                // console.log(value);
-                                $.each(value.images, function(index, valueimg) {
-                                    // console.log(valueimg);
-
-                                    var params = {
-                                        filename: valueimg.imagename,
-                                        userid: value.userid
-                                    };
-                                    $.getJSON('/sign-s3get', params).done(function(data) {
-                                                                //console.log(data);
-                                        var url ='';
-                                        var urlthumb ='';
-                                        if (data.signedRequest) {
-                                            url = data.signedRequest;
-                                            urlthumb = data.signedthumbRequest;
-                                        }
-                                        var row = $("<tr>");
-                                        row.append($("<td>" + value.numorder + "</td>"))
-                                             .append($("<td>" + value.name + "</td>"))
-                                             .append($("<td><a href='" + url + "' download>" + valueimg.imagename + "</a></td>"))
-                                             .append($("<td><img src='" + urlthumb + "'></td>"));       
-
-                                             
-                                        $("#orderstable tbody").append(row);
-
-                                    });
-                                    
-
-                                });
-                            }); 
-
-
-                            //console.log(data.images[0].imagename);
-                            //console.log(data.images[0].length);
-                            // for (var i = 0; i < data.length; i++){
-                            
-                            //}
-                              
-
-                        }
-                    });
-
-            });
-
-        </script>
+        <script src="../js/de_package_get.js"></script>
     </head>
     <body>
         <header class="bienvenida">
@@ -78,33 +16,15 @@
     <section id="contenedor">
         <div id= "orderstable" class="tabla">
             <p class="encabezado">Paquete de Pedido </p>(<span><a id="specLink" href>Especificación</a></span>)
-
             <table>
                 <tr>
                     <th>Orden</th>
                     <th>Paquete</th>
                     <th>Imagen</th>
-
                 </tr>
-                
             </table>
         </div>
         <hr>
-        <!-- <div id="specstable" class="tabla">
-            <p class="encabezado">Especificaciones</p>
-            <table>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Fecha</th>
-                    <th></th>
-                </tr>
-                
-            </table>
-        </div> -->
-        <!-- <hr>
-        <div class="button2">
-            <a href="subirimagen1">Subir Imágenes</a>
-        </div> -->
     </section>
         <aside id="menurigth">
             <p class="encabezado"> Tutorial</p>
@@ -119,5 +39,6 @@
             <a href="/faq">Ver más</a> 
             </div>
         </aside>
+        <input id="packageid" type="hidden" name="packageid" value=<%= packageid %>>
     </body>
 </html>

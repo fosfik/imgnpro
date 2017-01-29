@@ -21,7 +21,7 @@ var Spec = require('./models/specification.js');
 var dbConfig = require('./models/db.js');
 var mongoose = require('mongoose');
 var User = require('./models/user.js');
-var bCrypt = require('bcrypt');
+var bCrypt = require('bcryptjs');
 // mailer
 // var nodemailer = require('nodemailer');
 var mailer = require('./modules/send_email.js');

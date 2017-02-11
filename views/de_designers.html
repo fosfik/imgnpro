@@ -107,17 +107,27 @@
                 socket.on('toprankdesigner', function(msg){
                     //$('#messages').append($('<li>').text(msg));
                     var jsMsg = JSON.parse(msg);
-                    //console.log(jsMsg);
+                    //console.log(jsMsg.length, jsMsg.keys.length);
+                    console.log(jsMsg.length);
+                    console.log(msg);
+                    console.log(jsMsg);
+                    
                     var i = 1;
-                    $.each(jsMsg, function (index, value) {
-                        if (i == 1){ 
-                            $('#firstplacename').text(value.name); 
-                            $('#firstplaceimages').text(value.imagecount);     
-                        }else{
-                            $('#toprankdesigner').append('<li class="texto_plano_aside"><span class="encabezado_aside2">' + i + '. </span> ' + value.name +  ' <span class="imagenum">'+ value.imagecount +' imágen(es)</span></li>');
-                        }    
-                        i++;        
-                    });
+                    try{
+                        $.each(jsMsg, function (index, value) {
+                            if (i == 1){ 
+                                $('#firstplacename').text(value.name); 
+                                $('#firstplaceimages').text(value.imagecount);     
+                            }else{
+                                $('#toprankdesigner').append('<li class="texto_plano_aside"><span class="encabezado_aside2">' + i + '. </span> ' + value.name +  ' <span class="imagenum">'+ value.imagecount +' imágen(es)</span></li>');
+                            }    
+                            i++;        
+                        });
+                    }
+                    catch (e){
+                        console.log(e);
+                    }
+                    
                 });
 
                 $('#p1').click(function(){

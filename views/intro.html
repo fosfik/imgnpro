@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, inicial-scale=1.0">
-        <title>the background remover</title>
+        <title>The Background Remover</title>
         <link rel="stylesheet" href="../stylesheets/imgncss_landing2.css">
         <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico"/>
         <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
@@ -11,76 +11,12 @@
         <script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
         <script src="../js/google.js"></script>
 <!-- SCRIPT HEADER y BOTONES DEMO-->
-        <script>
-            $(document).ready(function() {
 
-                $('#a_freetest1').click(function (ev) {
-                    demoSignup();
-                    ev.preventDefault();
-                });
-                $('#a_freetest2').click(function (ev) {
-                    demoSignup();
-                    ev.preventDefault();
-                });
-                $('#a_freetest3').click(function (ev) {
-                    demoSignup();
-                    ev.preventDefault();
-                });
-                $('#a_freetest4').click(function (ev) {
-                    demoSignup();
-                    ev.preventDefault();
-                });
-                $('#a_freetest5').click(function (ev) {
-                    demoSignup();
-                    ev.preventDefault();
-                });
-
-                function demoSignup(){
-                     $.ajax({
-                        type: 'post',
-                        url: '/signup',
-                        data: {'userlongname':'demoimgnpro', 'email':'demoimgnpro', 'password':'demoimgnpro', 'accept_terms':true },
-                        success: function (data) {
-                            if (data.error == 1 ){
-                               alert(data.message);    
-                            }
-                            else{
-                                setTimeout(window.location='/principal',500);    
-                            }
-                        }
-                    });
-                }
-                var frm = $('#contactForm1');
-                frm.submit(function (ev) {
-                    $.ajax({
-                        type: frm.attr('method'),
-                        url: frm.attr('action'),
-                        data: frm.serialize(),
-                        success: function (data) {
-                            if (data.error == 1 ){
-                               alert(data.message);    
-                            }
-                            else{
-                                setTimeout(window.location='/principal',500);    
-                            }
-                        }
-                    });
-                    ev.preventDefault();
-                });
-            });
-        </script>
+        <script src="../js/intro.js"></script>
 
 <!-- SCRIPT CONTRASEÑA -->
-        <script type="text/javascript">
-            function check(input,input2) {
-                if (input.value != document.getElementById(input2).value) {
-                    input.setCustomValidity('La contraseña no coincide.');
-                } else {
-                    // input is valid -- reset the error message
-                    input.setCustomValidity('');
-                }
-            }
-        </script>
+        <script type="text/javascript"></script>
+        <script src="../js/intro.js"></script>
     </head>
     <body>
         <header id="header">
@@ -88,7 +24,7 @@
                 <label for="show-menu" class="show-menu">&#9776;</label>
                 <input type="checkbox" id="show-menu" role="button">
                 <a href="/"><img id="logohead" src="../images/logowslogan.png"></a>
-                <span id="slogan">the background remover</span>
+                <span id="slogan">The Background Remover</span>
                 <div id="botonintro"><a id="a_freetest1">ir al demo</a></div>
                 <span id="loginTag"><a href="/login">Iniciar Sesión</a></span>
             </div>
@@ -283,20 +219,7 @@
                 </div>
             </section>
         </footer>
-        <script>
-            $(document).ready(function(){
-               $(".cycle ul li:first-child").addClass("active");
-                setTimeout(autoAddClass, 4000);
-            });
-            function autoAddClass(){
-                var next = $(".cycle .active").removeClass("active").next();
-                if(next.length)
-                    $(next).addClass('active');
-                else
-                    $('.cycle ul li:first-child').addClass('active');
-                setTimeout(autoAddClass, 4000);
-            };
-        </script>
+        <script src="../js/intro.js"></script>
         <!-- Go to www.addthis.com/dashboard to customize your tools -->
         <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5813ed1e3adeb4fd"></script>
     </body>

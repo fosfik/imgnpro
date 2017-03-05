@@ -7,85 +7,7 @@
         <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico"/>
         <script src="../js/google.js"></script>
         <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
-        <!-- <script src="../js/general.js"></script> -->
-        <script type="text/javascript">
-            $(document).ready(function(){
-                $('#contactname').focus();
-                $.ajax({
-                        type: 'get',
-                        url: '/getUser_details/<%= user._id %>',
-                        //data: frm.serialize(),
-                        success: function (data) {
-                            if (data.error == 1 ){
-                                //document.getElementById('res_message').innerHTML= data.message;    
-                                alert(data.message);
-                                $('#contactname').focus();
-                            }
-                            else{
-                                $.each(data.user_details, function(elem, val) {
-                                    //console.log(elem + ':' + val);
-                                    $('input[name="' + elem +'"]').val(val);
-                                    $('select[name="' + elem +'"]').val(val);
-                                    $('input[value="' + val + '"]').prop('checked', true);
-                                    //desactFormFact();
-                                });    
-                            }
-                         }
-                });
-
-            $('#chk_factura').bind("DOMSubtreeModified",function(){
-              alert('changed');
-            });
-            $("#chk_factura").change(function(){
-                //desactFormFact();
-            }); 
-
-            $('#btn_savedetails').click(function (ev) {
-                // recuperar las variables localStorage
-
-                if ($('#emailconfirm').val() !== $('#contactemail').val()){
-
-                    alert("El correo electrónico no coincide");
-                    return ev.preventDefault();
-                }
-                var formdata = $('form').serialize();
-                $.ajax({
-                        type: 'post',
-                        url: '/updateuserdetails',
-                        data: formdata,
-                        success: function (data) {
-                            if (data.error == 1 ){
-                                //document.getElementById('res_message').innerHTML= data.message;    
-                                alert(data.message);
-                                 $('#contactname').focus();
-                            }
-                            else{
-                                //setTimeout(window.location='/subirimagen4.html',500);
-                                alert(data.message);
-                            }
-                        }
-                 });
-                ev.preventDefault();
-               }); 
-
-               function desactFormFact(){
-                var chk_factura = document.getElementById('chk_factura').checked;
-                    $('#factForm1').find('input, textarea, button, select').prop('disabled',!chk_factura);
-                    $('#factForm2').find('input, textarea, button, select').prop('disabled',!chk_factura);
-               }  
-            });
-        </script>
-        <script type="text/javascript">
-            function check(input,input2,message) {
-                if (input.value != document.getElementById(input2).value) {
-                    console.log("ok");
-                    input.setCustomValidity(message);
-                } else {
-                    // input is valid -- reset the error message
-                    input.setCustomValidity('');
-                }
-            }
-        </script>
+        <script src="../js/micuenta.js"></script>
     </head>
     <body>
         <header class="bienvenida">
@@ -665,5 +587,6 @@
             <a href="/faq">Ver más</a> 
             </div>
         </aside>
+        <input id="idinput" type="hidden" value=/getUser_details/<%= user._id %>>
     </body>
 </html>

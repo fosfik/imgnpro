@@ -4,28 +4,8 @@
         <script src="../js/google.js"></script>
         <% include partials/head.html %>
     <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            var frm = $('#contactForm');
-            frm.submit(function (ev) {
-                $.ajax({
-                    type: frm.attr('method'),
-                    url: frm.attr('action'),
-                    data: frm.serialize(),
-                    success: function (data) {
-                        if (data.error == 1 ){
-                            document.getElementById('res_message').innerHTML= data.message;    
-                        }
-                        else{
-                            console.log(data);
-                            setTimeout(window.location='/',500);    
-                        }
-                    }
-                });
-                ev.preventDefault();
-            })
-        });
-    </script>
+    <script type="text/javascript"></script>
+    <script src="../js/contacto.js"></script>
     </head>
     <body>
     <div id="contenedor">

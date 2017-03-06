@@ -21,7 +21,7 @@
             
                 $.ajax({
                         type: 'get',
-                        url: '/getUser_details/<%= user._id %>',
+                        url: $('#UserDetailsInput').val(),
                         //data: frm.serialize(),
                         success: function (data) {
                             if (data.error == 1 ){
@@ -79,7 +79,7 @@
 
                                                 $.ajax({
                                                     type: 'post',
-                                                    url: '/confirmOrder/<%= numorder %>',
+                                                    url: $('#ConfirmOrderInput').val(),
                                                     data: formdata,
                                                     success: function (data) {
                                                        if (data.error == 1 ){

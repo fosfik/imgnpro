@@ -12,7 +12,6 @@
                 getWorkingPackages();
                 getTopRankdesigners(); // obtiene el ranking de los diseñadores
                 setInterval(function(){ 
-                    //console.log("prueba");
                     if (bIsWorking){
                         var dActual = new Date();
                         var nSecondsPast = Math.floor((dActual.getTime()/1000) - (dDateNow.getTime()/1000));
@@ -78,16 +77,13 @@
 
 
                 socket.on('package_confirm', function(msg){
-                    //$('#messages').append($('<li>').text(msg));
                     var jsMsg = JSON.parse(msg);
                     console.log(jsMsg);
                     getPackages();
                 });
 
                 socket.on('toprankdesigner', function(msg){
-                    //$('#messages').append($('<li>').text(msg));
                     var jsMsg = JSON.parse(msg);
-                    //console.log(jsMsg.length, jsMsg.keys.length);
                     console.log(jsMsg.length);
                     console.log(msg);
                     console.log(jsMsg);
@@ -172,33 +168,7 @@
                     
                 });
 
-            //   function createModal(){
-
-            //     '<div id="openConfirmModal" class="modalDialog"><div><a href="#close" title="Close" Class="close">X</a><h1 class="encabezado">Confirmación de Trabajo</h1><hr class="hrmodal"><form id="colorForm" action="" method="" name="color_form"><ul>';
-            //     '<li>
-            //                 <p class="texto_plano">1. Al bajar el paquete tendré 8 horas para concluir el trabajo asignado.</p>
-            //                 <br>
-            //                 <p class="texto_plano">2. Me comprometo a leer y realizar a cada imagen las especificaciones anexas en el paquete.</p>
-            //                 <br>
-            //                 <p class="texto_plano">3. Acepto las políticas de Imagen Pro y me apego a sus reglas.</p>
-            //             </li>
-            //             <li>
-            //                 <input id="aceptJob" type="checkbox" required>
-            //                 <label class="etiquetasxtras">Acepto</label>
-            //             </li>
-            //         </ul>
-            //         <div>
-            //             <hr class="hrmodal2">
-            //             <h1 class="modalTip">¡Genera mayores ingresos al realizar más de un paquete al día!</h1>
-            //             <hr class="hrmodal2">
-            //             <h1 id="res_message"></h1>
-            //         </div>   
-            //         <div class="buttonModal">
-            //             <a id="buttondownload" href="#close">Bajar Paquete</a>
-            //         </div>                               
-            //     </form>
-            // </div>'
-            //   }
+          
                 function getWorkingPackages(){
                     socket.emit('get_work_package', '');
                 }

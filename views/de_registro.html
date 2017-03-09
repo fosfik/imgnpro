@@ -3,7 +3,7 @@
     <head>
        <% include partials/head.html %>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
-        
+        <script src="../js/de_registro.js"></script>
     </head>
     <body>
     <div id="contenedor">
@@ -82,27 +82,6 @@
                 </div>   
                              
             </form>
-
-            <script type="text/javascript">
-                var frm = $('#contactForm1');
-                frm.submit(function (ev) {
-                    $.ajax({
-                        type: frm.attr('method'),
-                        url: frm.attr('action'),
-                        data: frm.serialize(),
-                        success: function (data) {
-                            if (data.error == 1 ){
-                                document.getElementById('res_message').innerHTML= data.message;    
-                            }
-                            else{
-                                setTimeout(window.location='/de_login',500);    
-                            }
-                        }
-                    });
-
-                    ev.preventDefault();
-                });
-            </script>
         </div>
     </div>
         <footer class="certificate">

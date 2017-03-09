@@ -1,4 +1,5 @@
-var frm = $('#contactForm1');
+$(document).ready(function(){
+   var frm = $('#contactForm1');
                 frm.submit(function (ev) {
                     $.ajax({
                         type: frm.attr('method'),
@@ -16,3 +17,4 @@ var frm = $('#contactForm1');
 
                     ev.preventDefault();
                 });
+});

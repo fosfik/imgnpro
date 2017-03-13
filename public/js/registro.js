@@ -220,7 +220,7 @@
             });
 
 
-               alert("registro en el js");
+            
            
     function check(input,input2,message) {
          if (input.value != document.getElementById(input2).value) {

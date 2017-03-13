@@ -218,3 +218,15 @@
                 InfiniteRotator4.init();
 
             });
+
+
+            
+           
+    function check(input,input2,message) {
+         if (input.value != document.getElementById(input2).value) {
+              input.setCustomValidity(message);
+          } else {
+                    // input is valid -- reset the error message
+         input.setCustomValidity('');
+           }
+    }

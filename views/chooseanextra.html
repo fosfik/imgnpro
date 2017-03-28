@@ -57,6 +57,8 @@
                 <a href="#openRetouchModal" class="cuadroxtra" for="cuadroxtra3">Retoque Básico</a>
                 <input name="path" type="checkbox" id="cuadroxtra4" value="4:3">
                 <a id="a_cuadroxtra4" href="#openPathModal" class="cuadroxtra" for="cuadroxtra4">Clipping Path</a>
+                <input name="description" type="textarea" id="cuadroxtra5">
+                <a id="a_cuadroxtra5" href="#openDescriptionModal" class="cuadroxtra" for="cuadroxtra5">Agregar una Descripcion</a>
             </form>
             <hr>
             <form class="col4">
@@ -232,6 +234,24 @@
             </div>
         </div>
         
+ <!--MODAL PARA DESCRIPTION-->
+        <div id="openDescriptionModal" class="modalDialog">
+            <div>
+                <a href="#close" title="Close" Class="close">X</a>
+                <h1 class="encabezado">Agregar una Descripcion</h1>
+                <hr class="hrmodal">
+                <form id="pathForm" action="" method="" name="path_form">
+                    
+                    <label class="texto_plano">Descripcion Extra</label>
+                        <input id="description" type="text" cols="40" rows="6" name="descriptiontext" placeholder="¿Algun comentario o instruccion adicional para tu pedido?"></input>
+                    <div class="buttonModal">
+                        <a id="buttondescription" href="#close">Aceptar</a>
+                    </div>                               
+                </form>
+            </div>
+        </div>
+
+
         <aside id="menurigth">
             <p class="encabezado"> Tutorial</p>
              <div class="video_med"><a onclick="ponleplay()" href="#openVideoModal"><img src="../images/tumbnail_video.jpg" width="140px"></a></div>

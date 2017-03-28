@@ -441,6 +441,7 @@ router.post('/confirmPackage', function(req, res) {
             newOrderSpec.numorder =spec[0].numorder;
             newOrderSpec.disabled =spec[0].disabled;
             newOrderSpec.maxfiles =spec[0].maxfiles;
+            newOrderSpec.description = spec[0].description;
             newOrderSpec.save(); // Se clona la spec
             //console.log(newOrderSpec._id);
 
@@ -1376,6 +1377,7 @@ router.get('/de_designers',
                   //specrecord.basicretouch = specInfos[0].basicretouch;
                   specrecord.widthsize = specInfos[0].widthsize;
                   specrecord.heightsize = specInfos[0].heightsize;
+                  specrecord.description = specInfos[0].description;
                   //specrecord.spectype = specInfos[0].spectype;
                   //specrecord.date = specInfos[0].date;
                   console.log(specrecord);
@@ -1436,6 +1438,7 @@ router.get('/de_designers',
       newSpec.heightsize = specInfos[0].heightsize;
       newSpec.spectype = specInfos[0].spectype;
       newSpec.date = specInfos[0].date;
+      newSpec.description = specInfos[0].description;
 
       // pasar el req specInfo
       spectotalprice(specInfos[0],function(total){
@@ -1657,6 +1660,7 @@ if (req.body.hasSpecFree=='true'){
       newSpec.heightsize = req.body.heightsize;
       newSpec.spectype = req.body.spectype;
       newSpec.date = req.body.date;
+      newSpec.description = req.body.description;
       spectotalprice(req.body,function(total){
         //res.setHeader('Content-Type', 'application/json');
         //res.send(JSON.stringify({ error: 0, ntotal:total , message: 'Se guardó la especificación'})); 
@@ -1719,6 +1723,7 @@ if (req.body.hasSpecFree=='true'){
                   doc.heightsize = req.body.heightsize;
                   doc.spectype = req.body.spectype;
                   doc.date = req.body.date;
+                  doc.description = req.body.description;
                   doc.totalprice = newSpec.totalprice;
 
                   //doc.specid = req.user.specid;

@@ -38,6 +38,7 @@
                     var basicretouch =  localStorage.getItem('basicretouch');
                     var clippingpath = localStorage.getItem('clippingpath');
                     var alignnone = localStorage.getItem('alignnone');
+                    var description = localStorage.getItem('description');
                     // Si se chekeo sin cambios en alineación
                     if (alignnone === 'none'){
                         localStorage.removeItem('alignhor');
@@ -74,6 +75,7 @@
                         correctcolor:correctcolor,
                         basicretouch:basicretouch,
                         clippingpath:clippingpath,
+                        description:description,
                         marginnone:localStorage.getItem('marginnone'),
                         marginmeasure: localStorage.getItem('marginmeasure'),
                         margintop:localStorage.getItem('margintop'),
@@ -167,6 +169,23 @@
                     sumallextras();
                 });
                 
+
+                  $('#buttondescription').click(function () {
+
+                    if ($('#description').val().trim() === ''){
+                        alert("Favor de capturar el nombre de la especificación");    
+                        $('#description').focus();
+                    }
+                    else{
+
+                          localStorage.setItem("description", $('input:text[name=descriptiontext]').val());
+                    }
+               
+                });
+
+
+
+
                 function desactForm(formName){
                     $('#div_msgDemo').show();
                 } 

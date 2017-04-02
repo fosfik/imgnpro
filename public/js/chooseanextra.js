@@ -173,12 +173,14 @@
                   $('#buttondescription').click(function () {
 
                     if ($('#description').val().trim() === ''){
-                        alert("Favor de capturar el nombre de la especificación");    
-                        $('#description').focus();
+                       
+                       
                     }
                     else{
 
-                          localStorage.setItem("description", $('input:text[name=descriptiontext]').val());
+                        var textocoment = $('#description').val();
+
+                          localStorage.setItem("description",textocoment);
                     }
                
                 });

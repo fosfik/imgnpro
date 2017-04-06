@@ -137,6 +137,9 @@ $(document).ready(function(){
                         if(isNotNullUndefined(data.spec.heightsize)){ 
                             $("#specForm input[name='heightsize']").prop("value", data.spec.heightsize);
                         }
+                        if (data.spec.description !== null && data.spec.description !== undefined){
+                            $('#description').prop('value', data.spec.description);
+                        }
                             
 
 

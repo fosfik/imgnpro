@@ -152,7 +152,9 @@ $(document).ready(function(){
                         if(isNotNullUndefined(data.spec.heightsize)){ 
                             $("#specForm input[name='heightsize']").prop("value", data.spec.heightsize);
                         }
-                            
+                        if (data.spec.description !== null && data.spec.description !== undefined){
+                            $('#description').prop('value', data.spec.description);
+                        }    
 
 
                         //sumallextras();
@@ -285,7 +287,7 @@ $(document).ready(function(){
         $('input:radio[name=alignver]').prop('disabled', chkalgnnone);
     }
 
-        function desactMarginAllNext(){
+    function desactMarginAllNext(){
         var chkmarginone = document.getElementById('chkmarginone').checked;
         $('#marginmeasure').prop('disabled', chkmarginone);
         $('input[name=margintop]').prop('disabled', chkmarginone);

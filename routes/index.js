@@ -44,7 +44,7 @@ router.get('/listorders/:limit', function(req, res) {
       res.send(JSON.stringify({}));  
     }
    
-  }).select('imagecount numorder status date specid').sort('-date').limit(parseInt(req.params.limit));
+  }).select('imagecount numorder status date specid').sort('-date');
 });
 
 // TODO agregar seguridad a esta ruta

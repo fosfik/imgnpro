@@ -44,7 +44,7 @@ router.get('/listorders/:limit', function(req, res) {
       res.send(JSON.stringify({}));  
     }
    
-  }).select('imagecount numorder status date specid').sort('-date').limit(parseInt(req.params.limit));
+  }).select('imagecount numorder status date specid').sort('-date');
 });
 
 // TODO agregar seguridad a esta ruta
@@ -1351,7 +1351,7 @@ router.get('/de_designers',
                   specrecord.format = specInfos[0].format;
                   specrecord.format_ext = specInfos[0].format;
                   if(specInfos[0].format==='jpg_web'){specrecord.format_ext = 'jpg'}
-                  if(specInfos[0].format==='tiff'){specrecord.format_ext = 'tif'};
+                  if(specInfos[0].format==='tiff'){specrecord.format_ext = 'tiff'};
                   specrecord.colormode = specInfos[0].colormode;
                   specrecord.background = specInfos[0].background;
                   specrecord.backgrndcolor = specInfos[0].backgrndcolor;
@@ -1410,7 +1410,7 @@ router.get('/de_designers',
       newSpec.format = specInfos[0].format;
       newSpec.format_ext = specInfos[0].format;
       if(specInfos[0].format==='jpg_web'){newSpec.format_ext = 'jpg'}
-      if(specInfos[0].format==='tiff'){newSpec.format_ext = 'tif'}
+      if(specInfos[0].format==='tiff'){newSpec.format_ext = 'tiff'}
       newSpec.colormode = specInfos[0].colormode;
       newSpec.background = specInfos[0].background;
       newSpec.backgrndcolor = specInfos[0].backgrndcolor;
@@ -1632,7 +1632,7 @@ if (req.body.hasSpecFree=='true'){
       newSpec.format = req.body.format;
       newSpec.format_ext = req.body.format;
       if(req.body.format==='jpg_web'){newSpec.format_ext = 'jpg'}
-      if(req.body.format==='tiff'){newSpec.format_ext = 'tif'}
+      if(req.body.format==='tiff'){newSpec.format_ext = 'tiff'}
       newSpec.colormode = req.body.colormode;
       newSpec.background = req.body.background;
       newSpec.backgrndcolor = req.body.backgrndcolor;
@@ -1695,7 +1695,7 @@ if (req.body.hasSpecFree=='true'){
                   doc.format = req.body.format;
                   doc.format_ext = req.body.format;
                   if(req.body.format==='jpg_web'){doc.format_ext = 'jpg'}
-                  if(req.body.format==='tiff'){doc.format_ext = 'tif'}
+                  if(req.body.format==='tiff'){doc.format_ext = 'tiff'}
                   doc.colormode = req.body.colormode;
                   doc.background = req.body.background;
                   doc.backgrndcolor = req.body.backgrndcolor;

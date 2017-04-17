@@ -1,6 +1,6 @@
 
  Dropzone.autoDiscover = false;
-            var acceptedFileType = ".jpg, .png, .tif, .psd, .tiff";
+            var acceptedFileType = ".jpg, .png, .tiff, .psd";
             var imageCount = 0;
             var imageUploadInfos =[];
             $(document).ready(function(){

@@ -43,63 +43,82 @@
                 </select>
                 <input id="colorselect" type="color" name="backgrndcolor" value="#ffffff" disabled>
                 <br>
-                <label>Tamaño</label><br>
-                <input id="chksizenone" class="checks" type="checkbox" name="sizenone" value="none"  checked><span class="postinput">Sin Cambios</span>
-
                 
-                <input id="radio11" class="radio" name="imagesize" type="radio" value="1:1">
-                <span class="postinput">1:1</span>
-                <input id="radio23" name="imagesize" type="radio" value="2:3">
-                <span class="postinput">2:3</span>
-                <input id="radio32" name="imagesize" type="radio" value="3:2">
-                <span class="postinput">3:2</span>
-                <input id="radio43" name="imagesize" type="radio" value="4:3">
-                <span class="postinput">4:3</span>
-                <input id="optcustomsize" name="imagesize" type="radio" value="customize">
-                <span class="postinput">Personalizado</span>
-                <select name="measuresize" disabled>
-                <option value="px">px</option>
-                <option value="cm">cm</option>
-                </select>
-                <label for="with">Ancho</label>
-                <input type="text" name= "widthsize" value="200" size="4" placeholder="00 " disabled>
-                <label for="">Alto</label>
-                <input type="text" name= "heightsize" value="200" size="4" placeholder="00 " disabled>
-                <br>
-                <label>Alineación</label><br>
-                <input id="chkalgnnone" class="checks" type="checkbox" name="alignnone" value="none"  checked><span class="postinput">Sin Cambios</span><br>        
-                <label>Horizontal</label><br>
-                <input id = "alignHorizontalL" class="radio" type="radio" name="alignhor" value="alignHorizontalL"><span class="postinput">Izquierda</span>
-                <input id = "alignHorizontalC" class="radio" type="radio" name="alignhor" value="alignHorizontalC" checked><span class="postinput">Centrado</span>
-                <input id = "alignHorizontalR" class="radio" type="radio" name="alignhor" value="alignHorizontalR"><span class="postinput">Derecha</span><br>
-                <br>
-                <label>Vertical</label><br>
-                <input id = "alignVerticalT" class="radio" type="radio" name="alignver" value="alignVerticalT"><span class="postinput">Arriba</span>
-                <input id = "alignVerticalM" class="radio" type="radio" name="alignver" value="alignVerticalM" checked><span class="postinput">Centrado</span>
-                <input id = "alignVerticalB" class="radio" type="radio" name="alignver" value="alignVerticalB"><span class="postinput">Abajo</span>
-                <br>
-                <label>Márgenes</label><br>
-                <input id="chkmarginone" class="checkcheck" type="checkbox" name="marginnone" value="none" checked><span class="postinput">Sin Cambios</span>
-                <select id= "marginmeasure" name="marginmeasure" disabled>
-                    <option value="%">%</option>
+                <label>Tamaño</label><br>
+                <div id="divSizeNone">
+                    <input id="chksizenone" class="checks" type="checkbox" name="sizenone" value="none"  checked><span class="postinput">Sin Cambios</span>
+                </div>
+                <div id="divSizeOptions">
+                    <input id="radio11" class="radio" name="imagesize" type="radio" value="1:1">
+                    <span id="spRadio11" class="postinput">1:1</span>
+                    <input id="radio23" name="imagesize" type="radio" value="2:3">
+                    <span id="spRadio23" class="postinput">2:3</span>
+                    <input id="radio32" name="imagesize" type="radio" value="3:2">
+                    <span id="spRadio32" class="postinput">3:2</span>
+                    <input id="radio43" name="imagesize" type="radio" value="4:3">
+                    <span id="spRadio43" class="postinput">4:3</span>
+                </div>
+                <div id="divSizeCustomize">
+                    <input id="optcustomsize" name="imagesize" type="radio" value="customize">
+                    <span class="postinput">Personalizado</span>
+                    <select name="measuresize" disabled>
                     <option value="px">px</option>
                     <option value="cm">cm</option>
-                </select>
-                <span class="postinput">Arriba</span><input class="margin" type="text" value="0" name="margintop" disabled>
-                <span class="postinput">Abajo</span><input class="margin" type="text" value="0" name="marginbottom" disabled>
-                <span class="postinput">Derecha</span><input class="margin" type="text" value="0" name="marginright" disabled>
-                <span class="postinput">Izquierda</span><input class="margin" type="text" value="0" name="marginleft" disabled>
+                    </select>
+                    <label for="with">Ancho</label>
+                    <input type="text" name= "widthsize" value="200" size="4" placeholder="00 " disabled>
+                    <label for="">Alto</label>
+                    <input type="text" name= "heightsize" value="200" size="4" placeholder="00 " disabled>
+                </div>
+                <br>
+                <label>Alineación</label><br>
+                <div id="divAlignNone">
+                    <input id="chkalgnnone" class="checks" type="checkbox" name="alignnone" value="none"  checked><span class="postinput">Sin Cambios</span><br>        
+                </div>
+                <div id="divAlignOptions">
+                    <label>Horizontal</label><br>
+                    <input id = "alignHorizontalL" class="radio" type="radio" name="alignhor" value="alignHorizontalL"><span class="postinput">Izquierda</span>
+                    <input id = "alignHorizontalC" class="radio" type="radio" name="alignhor" value="alignHorizontalC" checked><span class="postinput">Centrado</span>
+                    <input id = "alignHorizontalR" class="radio" type="radio" name="alignhor" value="alignHorizontalR"><span class="postinput">Derecha</span><br>
+                    <br>
+                    <label>Vertical</label><br>
+                    <input id = "alignVerticalT" class="radio" type="radio" name="alignver" value="alignVerticalT"><span class="postinput">Arriba</span>
+                    <input id = "alignVerticalM" class="radio" type="radio" name="alignver" value="alignVerticalM" checked><span class="postinput">Centrado</span>
+                    <input id = "alignVerticalB" class="radio" type="radio" name="alignver" value="alignVerticalB"><span class="postinput">Abajo</span>
+                </div>
+                <br>
+                <label>Márgenes</label><br>
+                <div id="divMarginNone">    
+                    <input id="chkmarginone" class="checkcheck" type="checkbox" name="marginnone" value="none" checked><span class="postinput">Sin Cambios</span>
+                </div>
+                <div id="divMarginOptions">
+                    <select id= "marginmeasure" name="marginmeasure" disabled>
+                        <option value="%">%</option>
+                        <option value="px">px</option>
+                        <option value="cm">cm</option>
+                    </select>
+                    <span class="postinput">Arriba</span><input class="margin" type="text" value="0" name="margintop" disabled>
+                    <span class="postinput">Abajo</span><input class="margin" type="text" value="0" name="marginbottom" disabled>
+                    <span class="postinput">Derecha</span><input class="margin" type="text" value="0" name="marginright" disabled>
+                    <span class="postinput">Izquierda</span><input class="margin" type="text" value="0" name="marginleft" disabled>
+                </div>
                 <br>
                 <label>Extras</label><br>
-                <input  class="checks" type="checkbox" name="naturalshadow" value=<%= config.prices.naturalshadow %>><span class="postinput">Sombra Natural</span>
-                <input class="checks" type="checkbox" name="dropshadow" value=<%= config.prices.dropshadow %>><span class="postinput">Drop Shadow</span>
-                <input class="checks" type="checkbox" name="correctcolor" value=<%= config.prices.correctcolor %>><span class="postinput">Corrección de Color</span>
-                <input  class="checks" type="checkbox" name="clippingpath" value=<%= config.prices.clippingpath %>><span class="postinput">Clipping Path</span>
-                <input  class="checks" type="checkbox" name="basicretouch" value=<%= config.prices.basicretouch %>><span class="postinput"> Retoque Básico</span>
+                <div id="divExtras">
+                    <input  class="checks" type="checkbox" name="naturalshadow" value=<%= config.prices.naturalshadow %>><span id="spNaturalShadow" class="postinput">Sombra Natural</span>
+                    <input class="checks" type="checkbox" name="dropshadow" value=<%= config.prices.dropshadow %>><span id="spDropShadow" class="postinput">Drop Shadow</span>
+                    <input class="checks" type="checkbox" name="correctcolor" value=<%= config.prices.correctcolor %>><span id="spCorrectColor" class="postinput">Corrección de Color</span>
+                    <input  class="checks" type="checkbox" name="clippingpath" value=<%= config.prices.clippingpath %>><span id="spClippingPath" class="postinput">Clipping Path</span>
+                    <input  class="checks" type="checkbox" name="basicretouch" value=<%= config.prices.basicretouch %>><span id="spBasicRetouch" class="postinput"> Retoque Básico</span>
+                </div>
                 <br>
                 <label for="dpi">DPI</label><br>
-                <input id="depeis" type="text" name="DPI" value="72" maxlength="5" disabled><label for="dpi">dpi</label>
-                <input id="chkDPInone" class="checkcheck" type="checkbox" name="dpinone" value="none"  checked onclick="javascript:desactDPI();"><span class="postinput">Sin Cambios</span>
+                <div id="divDPINone">
+                    <input id="chkDPInone" class="checkcheck" type="checkbox" name="dpinone" value="none"  checked onclick="javascript:desactDPI();"><span class="postinput">Sin Cambios</span>
+                </div>
+                <div id="divDPIOptions">
+                    <input id="depeis" type="text" name="dpi" value="72" maxlength="5" disabled><label for="dpi">dpi</label>
+                </div>
                 <input id="specid" type="hidden" name="specid" value=<%= specid %>>
                 <input id="datespec" type="hidden" name="date" value="">
 

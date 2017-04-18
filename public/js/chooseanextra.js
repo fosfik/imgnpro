@@ -58,7 +58,7 @@
                         colormode:colormode,
                         background:background,
                         backgrndcolor:localStorage.getItem("backgrndcolor"),
-                        DPI:DPI,
+                        dpi:DPI,
                         dpinone:localStorage.getItem("dpinone"),
                         alignnone:localStorage.getItem('alignnone'),
                         totalprice:localStorage.getItem("totalprice"),

@@ -412,7 +412,7 @@ router.post('/confirmPackage', function(req, res) {
             newOrderSpec.colormode =spec[0].colormode;
             newOrderSpec.background =spec[0].background;
             newOrderSpec.backgrndcolor =spec[0].backgrndcolor;
-            newOrderSpec.dpi =spec[0].DPI;
+            newOrderSpec.dpi =spec[0].dpi;
             newOrderSpec.dpinone =spec[0].dpinone;
             newOrderSpec.userid =spec[0].userid;  
             newOrderSpec.alignnone =spec[0].alignnone;
@@ -1334,7 +1334,7 @@ router.get('/de_designers',
   router.post('/newstepspec', function (req,res) {
     // body...
       var specInfos = JSON.parse(req.body['specInfos']);
-      console.log(specInfos[0].typespec);
+      console.log(specInfos[0].typespec, specInfos);
 
       if (specInfos[0].typespec == 'free'){
             Spec.findOne({'userid': req.user._id ,'typespec':'free', 'disabled':false},function(err, specrecord) {
@@ -1354,7 +1354,7 @@ router.get('/de_designers',
                   specrecord.colormode = specInfos[0].colormode;
                   specrecord.background = specInfos[0].background;
                   specrecord.backgrndcolor = specInfos[0].backgrndcolor;
-                  specrecord.dpi = specInfos[0].DPI;
+                  specrecord.dpi = specInfos[0].dpi;
                   specrecord.dpinone = specInfos[0].dpinone;
                   //specrecord.userid = req.user._id;  
                   specrecord.alignnone = specInfos[0].alignnone;
@@ -1412,7 +1412,7 @@ router.get('/de_designers',
       newSpec.colormode = specInfos[0].colormode;
       newSpec.background = specInfos[0].background;
       newSpec.backgrndcolor = specInfos[0].backgrndcolor;
-      newSpec.dpi = specInfos[0].DPI;
+      newSpec.dpi = specInfos[0].dpi;
       newSpec.dpinone = specInfos[0].dpinone;
       newSpec.userid = req.user._id;  
       newSpec.alignnone = specInfos[0].alignnone;
@@ -1633,7 +1633,7 @@ if (req.body.hasSpecFree=='true'){
       newSpec.colormode = req.body.colormode;
       newSpec.background = req.body.background;
       newSpec.backgrndcolor = req.body.backgrndcolor;
-      newSpec.dpi = req.body.DPI;
+      newSpec.dpi = req.body.dpi;
       newSpec.dpinone = req.body.dpinone;
       newSpec.userid = req.user._id;  
       newSpec.alignnone = req.body.alignnone;
@@ -1695,7 +1695,7 @@ if (req.body.hasSpecFree=='true'){
                   doc.colormode = req.body.colormode;
                   doc.background = req.body.background;
                   doc.backgrndcolor = req.body.backgrndcolor;
-                  doc.dpi = req.body.DPI;
+                  doc.dpi = req.body.dpi;
                   doc.dpinone = req.body.dpinone;
                   //doc.userid = req.user._id;  
                   doc.alignnone = req.body.alignnone;

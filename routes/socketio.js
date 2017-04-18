@@ -7,9 +7,6 @@ module.exports = function(io){
   var sortJsonArray = require('sort-json-array');
   
   var router = app.Router();
-  // io.on('connection',function(socket){
-  //   console.log("entro usuario");
-  // });
 
 io.on('connection', function(socket){
   console.log(socket.request.user);
@@ -28,9 +25,6 @@ io.on('connection', function(socket){
       console.log(socket.request.user._id);
       console.log('message: ' + msg);
       var jsMsg = JSON.parse(msg);
-      console.log(jsMsg);
-      console.log(jsMsg.userid);
-      //io.emit('chat_msg', '{"msg":"' + jsMsg.msg +'","username":"' + socket.request.user.userlongname +  '"}'  );
       User.findOne({_id: socket.request.user._id}, function(err,user){
           console.log(err);
           if (err){
@@ -80,15 +74,7 @@ io.on('connection', function(socket){
                     console.log(orderpack);
                     console.log(orderpack.isreserve);
                     var b_canReserve = false;
-                    if ( orderpack.isreserve == undefined || orderpack.isreserve == false ){
-                       
-                       // if ( secondsPast > 30 && ( orderpack.reserve_byid === socket.request.user._id ) ){
-                       //    socket.emit('err', '{"msg":"Debes confirmar el paquete antes de 30 segundos", "userid":"'+ socket.request.user._id + '"}');
-                       //    return;
-                       // }
-                       console.log(orderpack.date_start_work);
-                       console.log(orderpack.date_reserve);
-
+                    if ( orderpack.isreserve === undefined || orderpack.isreserve === false ){
 
                        if (orderpack.date_reserve == undefined){
                           b_canReserve = true;
@@ -96,14 +82,14 @@ io.on('connection', function(socket){
                          secondsPast = timeElapsed( orderpack.date_reserve );
                          console.log( secondsPast );
                        }
-                       if ( (secondsPast > 30) && orderpack.date_start_work == undefined ){
+                       if ( (secondsPast > 30) && orderpack.date_start_work === undefined ){
                           b_canReserve = true;
                        }
                      }
 
                     if (orderpack.isreserve === true){
                         var secondsPast = timeElapsed( orderpack.date_reserve );
-                        if ( (secondsPast > 30) && orderpack.date_start_work == undefined ){
+                        if ( (secondsPast > 30) && orderpack.date_start_work === undefined ){
                           b_canReserve = true;
                        }
                     }
@@ -156,7 +142,7 @@ io.on('connection', function(socket){
           socket.emit('err', '{"msg":"Solamente los diseñadores pueden confirmar paquetes", "userid":"'+ socket.request.user._id + '"}');
           return;
         }
-        if ( user.isworking == true ){
+        if ( user.isworking === true ){
             socket.emit('err', '{"msg":"No puedes bajar más de un paquete, hasta que termines el que estás trabajando"}');
             return;
           }
@@ -171,10 +157,7 @@ io.on('connection', function(socket){
                 if (orderpack){
                    secondsPast = timeElapsed( orderpack.date_reserve );
                    console.log( secondsPast );
-                   // if ( secondsPast > 30 && ( orderpack.reserve_byid === socket.request.user._id ) ){
-                   //    socket.emit('err', '{"msg":"Debes confirmar el paquete antes de 30 segundos", "userid":"'+ socket.request.user._id + '"}');
-                   //    return;
-                   // }
+
                    var b_canConfirm = false;
                    if ( orderpack.reserve_byid === socket.request.user._id && orderpack.date_start_work == undefined){
                        b_canConfirm = true;
@@ -182,9 +165,7 @@ io.on('connection', function(socket){
                    if ( secondsPast > 30 && ( orderpack.reserve_byid !== socket.request.user._id ) && orderpack.date_start_work == undefined ){
                       b_canConfirm = true;
                    }
-                   // if ( secondsPast <= 30  && (orderpack.reserve_byid === socket.request.user._id) ){
-                   //    b_canConfirm = true;
-                   // } 
+
                    if (b_canConfirm == true){
 
                       orderpack.date_start_work = Date();
@@ -227,8 +208,6 @@ io.on('connection', function(socket){
     
   });
   socket.on('get_packages', function(msg){
-    console.log(msg);
-    //var jsMsg = JSON.parse(msg);
 
     OrderPacks.find({status:'En Proceso', isworking:false}, function(err, orderpacks){
       if (err){
@@ -246,18 +225,13 @@ io.on('connection', function(socket){
 
 socket.on('get_work_package', function(msg){
 
-    console.log('get_work_package');
-    // socket.emit('act_package', '{"msg":"Hola"}');
-    // socket.emit('err', '{"msg":"Hola"}');
-
-
     User.findOne({_id: socket.request.user._id}, function(err,user){
        
         if (err){
             console.log(err);
         }else{
           if (user){
-              if ( user.isworking == true ){
+              if ( user.isworking === true ){
                 
                 
                 OrderPacks.findOne({reserve_byid: socket.request.user._id, isworking:true}, function(err, orderpack){
@@ -267,8 +241,6 @@ socket.on('get_work_package', function(msg){
                       if (orderpack){
                         console.log(orderpack);
                         socket.emit('act_package', '{"msg":"Se está trabajando", "isworking":true, "secondsLeft":"'+ (config.package.timetofinish - timeElapsed(orderpack.date_start_work) ) +'", "numorder":"'+ orderpack.numorder +'", "name":"'+ orderpack.name +'", "orderpackid":"'+ orderpack._id +'"}');
-                        //socket.emit('act_package', '{"msg":"Se estt trabajando"}');
-                        //io.emit('packs_list', '{"packs":'+ JSON.stringify(orderpacks) + '}'  );
                       }else{
                         socket.emit('err', '{"msg": "No tiene reservado un paquete"}'  );
                       }
@@ -282,34 +254,13 @@ socket.on('get_work_package', function(msg){
           }
         }
       });
-  
-    // OrderPacks.find({status:'En Proceso', isworking:false}, function(err, orderpacks){
-    //   if (err){
-    //         console.log(err);
-    //     }else{
-    //       if (orderpacks){
-    //         console.log(orderpacks);
-    //         io.emit('packs_list', '{"packs":'+ JSON.stringify(orderpacks) + '}'  );
-    //       }else{
-    //         console.log('Nada');
-    //       }
-    //     }
-    // }).select('_id imagecount').limit(6);
   });
 
 
   socket.on('get_toprankdesigner', function(msg){
-      // if (isLoggedIn(socket)){
-      //   console.log('message: ' + msg);
-      //   var jsMsg = JSON.parse(msg);
-      //   console.log(jsMsg);
-      //   console.log(jsMsg.userid);
          getTopRankDesigners(function(toprankdocs){
-            //console.log(toprankdocs);
             socket.emit('toprankdesigner', JSON.stringify(toprankdocs));
          });
-        
-      // }
   });       
 });
 function getTopRankDesigners(cb){
@@ -319,7 +270,7 @@ function getTopRankDesigners(cb){
   .populate('designerid', 'userlongname')
   .sort('designerid')
   .exec(function(err,orderpacksdocs){
-    //console.log(orderpacksdocs, orderpacksdocs.length);
+    console.log(orderpacksdocs, orderpacksdocs.length);
     
     if (orderpacksdocs.length > 0){
       var id_designer = orderpacksdocs[0].designerid._id;
@@ -340,7 +291,9 @@ function getTopRankDesigners(cb){
         }
 
       }
-      topRankDesigner = sortJsonArray(topRankDesigner, 'imagecount', 'des');
+      topRankDesigner.sort(function(a,b) {
+          return b.imagecount-a.imagecount; // Ordena el top
+      });
       cb(topRankDesigner);
     }
     else{

@@ -6,6 +6,7 @@ var User_details = require('../models/user_details.js');
 var mailer = require('../modules/send_email.js'); // Módulo para enviar correo
 var router = express.Router();
 var paypal = require('paypal-rest-sdk');
+var User = require('../models/user.js');
 require('../config_paypal');
 
 
@@ -100,7 +101,36 @@ router.get('/return', require('connect-ensure-login').ensureLoggedIn('/login'), 
                                           mailer.sendEmail(mailOptions);
                                         }
                                     } 
-                                });   
+                                });
+                                var userDoc = {
+                                    'usertype':'designer',
+                                    'disabled':false
+                                };
+                                findUsers( userDoc, ( err, msg, designers ) => {
+                                    console.log( err, msg,designers ); 
+                                    if (err == 2){
+                                        var hostname = req.headers.host;
+                                        var mailOptions = {
+                                            from: '"Server" <server@mail-imgnpro.com>', // sender address
+                                            to: 'jerh56@gmail.com', // list of receivers
+                                            subject: 'Hay nuevos paquetes por atender', // Subject line
+                                            text: `Por favor ingresa al portal http://${hostname}/de_login`
+                                        };
+                                        mailer.sendEmail(mailOptions);
+                                    }else if ( err === 0){
+                                        var hostname = req.headers.host;
+                                        var useremails = getUserEmails(designers);
+                                        var mailOptions = {
+                                            from: '"Server" <server@mail-imgnpro.com>', // sender address
+                                            to: useremails, // list of receivers
+                                            subject: 'Hay nuevos paquetes por atender', // Subject line
+                                            text: `Por favor ingresa al portal http://${hostname}/de_login`
+                                        };
+                                        mailer.sendEmail(mailOptions);
+                                    }
+                                    
+                                });
+
                                 res.redirect('/thankyou/' + numorder );
                             }
                           });
@@ -129,6 +159,42 @@ router.get('/cancel', require('connect-ensure-login').ensureLoggedIn('/login'), 
   };
   res.redirect( '/cancelpayment' );
 });
+
+
+function findUsers(user, cb){
+  
+      User.find({'usertype':user.usertype, 'disabled': user.disabled},function(err, designers) {
+      // In case of any error return
+       if (err){
+         console.log('Error al consultar diseñadores');
+        cb(1, 'Error al consultar diseñadores');
+       }
+       else{
+    // already exists
+          if (designers.length > 0) {
+            //console.log('Se encontró el usuario');
+            //console.log(user);
+            cb( 0,'Se encontraron diseñadores', designers );
+          } 
+          else {
+            console.log( 'No se encontraron diseñadores' );
+              cb( 2, 'No se encontraron diseñadores' );
+          }
+       }
+    });
+  
+}
+
+function getUserEmails(users){
+  var listEmails = '';
+  for (var i = 0; i < users.length; i++){
+    listEmails = listEmails + users[i].email;
+    if ( i < (users.length - 1)){
+      listEmails = listEmails + ',';
+    }
+  }
+  return listEmails;
+}
 
 module.exports = router;
 

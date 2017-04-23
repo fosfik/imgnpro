@@ -186,7 +186,7 @@ function findUsers(user, cb){
 }
 
 function getUserEmails(users){
-  var listEmails = 'jerh56@gmail.com,';
+  var listEmails = '';
   for (var i = 0; i < users.length; i++){
     listEmails = listEmails + users[i].email;
     if ( i < (users.length - 1)){
